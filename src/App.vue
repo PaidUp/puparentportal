@@ -17,6 +17,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "./style/main.scss";
+<style lang="stylus">
+@import './style/main.styl'
 </style>
