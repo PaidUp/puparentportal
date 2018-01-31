@@ -7,7 +7,12 @@ const traeService = trae.create({
 
 traeService.before(config => {
   const token = window.localStorage.token
-  config.headers['Authorization'] = 'Bearer ' + token
+  config.headers['Cache-Control'] = 'no-cache'
+  config.headers['Pragma'] = 'no-cache'
+  config.headers['Expires'] = 'Sat, 01 Jan 2000 00:00:00 GMT'
+  if (token) {
+    config.headers['Authorization'] = 'Bearer ' + token
+  }
   return config
 })
 
