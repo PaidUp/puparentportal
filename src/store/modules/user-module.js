@@ -1,9 +1,29 @@
 import { userService } from '@/services'
 
+function handlerError (err, context) {
+  let message = ''
+  if (err.status === 403) {
+    message = 'service.user.invalid_email'
+  }
+  if (err.status === 401) {
+    message = 'service.user.invalid_password'
+  } else {
+    message = 'common.error.default'
+  }
+  context.dispatch('messageModule/setDanger', message, {
+    root: true
+  })
+}
+
 const module = {
   namespaced: true,
 
   state: {
+    loginParams: {
+      email: '',
+      password: '',
+      rememberMe: false
+    },
     token: localStorage.token || '',
     user: localStorage.user ? JSON.parse(localStorage.user) : {}
   },
@@ -18,16 +38,14 @@ const module = {
   },
 
   mutations: {
-    setUser (state, user) {
-      localStorage.user = JSON.stringify(user)
-      state.user = user
-    },
-    setToken (state, token) {
-      let arr = token.split('.')
+    setSession (state, data) {
+      let arr = data.token.split('.')
       if (arr.length === 3) {
-        localStorage.token = token
-        state.token = token
+        localStorage.token = data.token
+        state.token = data.token
       }
+      localStorage.user = JSON.stringify(data.user)
+      state.user = data.user
     },
     clean (state) {
       localStorage.removeItem('token')
@@ -38,34 +56,45 @@ const module = {
   },
 
   actions: {
-    login (context, payload) {
+    login (context) {
       return userService
-        .login(payload)
+        .login(context.state.loginParams)
         .then(res => {
-          if (res.token) {
-            context.commit('setToken', res.token)
-            context.dispatch('getUser')
-          }
+          // context.commit('setSession', res)
           return res
         })
         .catch(err => {
-          let message = ''
-          if (err.status === 403) {
-            message = 'service.user.invalid_email'
-          }
-          if (err.status === 401) {
-            message = 'service.user.invalid_password'
-          } else {
-            message = 'common.error.default'
-          }
-          context.dispatch('messageModule/setDanger', message, {
-            root: true
-          })
+          handlerError(err, context)
+        })
+    },
+    onFbLoginSuccess (context, fbResponse) {
+      fbResponse.rememberMe = context.state.loginParams.rememberMe
+      return userService
+        .fbLogin(fbResponse)
+        .then(data => {
+          context.commit('setSession', data)
+        })
+        .catch(err => {
+          handlerError(err, context)
+        })
+    },
+    onFbLoginError (error) {
+      console.log('OH NOES', error)
+    },
+    signup (context, userForm) {
+      return userService
+        .signup(userForm)
+        .then(data => {
+          console.log('data: ', data)
+          context.commit('setSession', data)
+        })
+        .catch(err => {
+          handlerError(err, context)
         })
     },
     getUser (context) {
       return userService.current().then(user => {
-        context.commit('setUser', user)
+        // context.commit('setUser', user)
       }).catch(reason => {
         let message = reason.message
         if (reason.status === 401) {

@@ -1,28 +1,41 @@
-import trae from '@/services/trae-service'
+import Trae from '@/services/trae-service'
+import config from '@/config'
 
-const userService = {}
+const trae = new Trae(config.apiUrl)
 
-userService.login = function (params) {
-  let p = {
-    email: params.email,
-    password: params.password,
-    rememberMe: params.rememberMe
+export default class UserService {
+  static login = function (params) {
+    let p = {
+      email: params.email,
+      password: params.password,
+      rememberMe: params.rememberMe
+    }
+    return trae
+      .post('/api/v1/auth/local/login', p)
+      .then(res => res.data)
   }
-  return trae
-    .post('/api/v1/auth/local/login', p)
-    .then(res => res.data)
-}
 
-userService.current = function () {
-  return trae
-    .get('/api/v1/user/current')
-    .then(res => res.data)
-}
+  static current = function () {
+    return trae
+      .get('/api/v1/user/current')
+      .then(res => res.data)
+  }
 
-userService.logout = function () {
-  return trae
-    .get('/api/v1/auth/logout')
-    .then(res => res.data)
-}
+  static logout = function () {
+    return trae
+      .get('/api/v1/auth/logout')
+      .then(res => res.data)
+  }
 
-export default userService
+  static fbLogin = function (fbResponse) {
+    return trae
+      .post('/api/v1/user/fblogin', fbResponse)
+      .then(res => res.data)
+  }
+
+  static signup = function (userForm) {
+    return trae
+      .post('/api/v1/user', userForm)
+      .then(res => res.data)
+  }
+}

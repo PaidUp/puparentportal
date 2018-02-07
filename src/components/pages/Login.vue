@@ -1,6 +1,8 @@
 <template lang="pug">
 .content
   .section
+    fb-signin-button(:params="fbSignInParams" @success="onFbLoginSuccess" @error="onFbLoginError") Sign in with Facebook
+  .section
     .field
       label.label {{ $t('component.login.email') }}
       .control
@@ -17,15 +19,19 @@
     .field.is-grouped
       .control
         button.button.is-link(@click="login(loginParams)") {{ $t('component.login.submit') }}
+        router-link(to="signup") SignUp
 
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
     return {
-      loginParams: {}
+      fbSignInParams: {
+        scope: 'email',
+        return_scopes: true
+      }
     }
   },
   watch: {
@@ -36,15 +42,31 @@ export default {
     }
   },
   computed: {
+    ...mapState('userModule', {
+      loginParams: 'loginParams'
+    }),
     ...mapGetters('userModule', {
       isAutenticated: 'isAutenticated'
     })
   },
   methods: {
     ...mapActions('userModule', {
-      login: 'login'
+      login: 'login',
+      onFbLoginSuccess: 'onFbLoginSuccess',
+      onFbLoginError: 'onFbLoginError'
     })
   }
 }
 </script>
+<style>
+.fb-signin-button {
+  /* This is where you control how the button looks. Be creative! */
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background-color: #4267b2;
+  color: #fff;
+}
+</style>
+
 

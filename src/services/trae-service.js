@@ -1,19 +1,29 @@
 import trae from 'trae'
 import config from '@/config'
 
-const traeService = trae.create({
-  baseUrl: config.apiUrl
-})
+export default class Trae {
+  constructor (baseUrl) {
+    this.instance = trae.create({
+      baseUrl: config.apiUrl
+    })
 
-traeService.before(config => {
-  const token = window.localStorage.token
-  config.headers['Cache-Control'] = 'no-cache'
-  config.headers['Pragma'] = 'no-cache'
-  config.headers['Expires'] = 'Sat, 01 Jan 2000 00:00:00 GMT'
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token
+    this.instance.before(config => {
+      const token = window.localStorage.token
+      config.headers['Cache-Control'] = 'no-cache'
+      config.headers['Pragma'] = 'no-cache'
+      config.headers['Expires'] = 'Sat, 01 Jan 2000 00:00:00 GMT'
+      if (token) {
+        config.headers['Authorization'] = 'Bearer ' + token
+      }
+      return config
+    })
   }
-  return config
-})
 
-export default traeService
+  get get () {
+    return this.instance.get
+  }
+
+  get post () {
+    return this.instance.post
+  }
+}
