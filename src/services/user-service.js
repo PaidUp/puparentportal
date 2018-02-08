@@ -11,7 +11,7 @@ export default class UserService {
       rememberMe: params.rememberMe
     }
     return trae
-      .post('/api/v1/auth/local/login', p)
+      .post('/api/v1/user/login/email', p)
       .then(res => res.data)
   }
 

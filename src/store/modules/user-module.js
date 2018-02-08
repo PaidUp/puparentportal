@@ -60,7 +60,12 @@ const module = {
       return userService
         .login(context.state.loginParams)
         .then(res => {
-          // context.commit('setSession', res)
+          if (res.error) {
+            return context.dispatch('messageModule/setDanger', res.error.message, {
+              root: true
+            })
+          }
+          context.commit('setSession', res)
           return res
         })
         .catch(err => {
