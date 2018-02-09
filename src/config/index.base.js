@@ -1,6 +1,6 @@
 const config = {
   api: {
-    user: 'https://devapi.getpaidup.com'
+    user: 'http://localhost:9001'
   }
 }
 
