@@ -49,6 +49,9 @@ jobs:
           command: sudo apt-get install awscli
       - checkout
       - run:
+          name: install dependencies
+          command: npm install
+      - run:
           name: build
           command: npm run build-dev
       - run:
