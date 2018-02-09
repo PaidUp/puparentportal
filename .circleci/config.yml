@@ -39,18 +39,7 @@ jobs:
       # run tests!
       - run: yarn test
 
-
   deploy-develop:
-    docker:
-      - image: circleci/node:8.9
-    working_directory: /tmp
-    steps:
-      - checkout
-      - run:
-          name: build
-          command: npm run build-dev
-
-  deploy-stage:
     docker:
       - image: circleci/node:8.9
     working_directory: /tmp
