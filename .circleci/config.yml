@@ -42,7 +42,7 @@ jobs:
   deploy-develop:
     docker:
       - image: circleci/node:8.9
-    working_directory: /tmp
+    working_directory: ~/tmp
     steps:
       #- run:
       #    name: install awscli
