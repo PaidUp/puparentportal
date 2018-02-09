@@ -44,9 +44,9 @@ jobs:
       - image: circleci/node:8.9
     working_directory: /tmp
     steps:
-      - run:
-          name: install awscli
-          command: pip install awscli --upgrade --user
+      #- run:
+      #    name: install awscli
+      #    command: pip install awscli --upgrade --user
       - checkout
       - run:
           name: Deploy files to s3
