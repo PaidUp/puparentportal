@@ -4,7 +4,7 @@ import config from '@/config'
 export default class Trae {
   constructor (baseUrl) {
     this.instance = trae.create({
-      baseUrl: config.apiUrl
+      baseUrl: config.api.user
     })
 
     this.instance.before(config => {

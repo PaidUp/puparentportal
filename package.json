@@ -11,7 +11,10 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "build-dev": "cp src/config/development.js src/config/index.js && npm run build",
+    "build-stg": "cp src/config/stage.js src/config/index.js && npm run build",
+    "build-prod": "cp src/config/production.js src/config/index.js && npm run build"
   },
   "dependencies": {
     "trae": "^1.4.2",

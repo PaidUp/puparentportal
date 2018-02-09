@@ -1,0 +1,84 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:8.9.4 
+      
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: yarn install
+      - run:
+          name: copy config file
+          command: cp src/config/index.base.js src/config/index.js
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+        
+      # run tests!
+      - run: yarn test
+
+
+  deploy-develop:
+    docker:
+      - image: circleci/node:8.9
+    environment:
+      - ANSIBLE_HOST_KEY_CHECKING: false
+    working_directory: /tmp
+    steps:
+      - checkout
+
+      - run:
+          name: build
+          command: npm run build-dev
+
+  deploy-stage:
+    docker:
+      - image: circleci/node:8.9
+    working_directory: /tmp
+      - run:
+        name: install awscli
+        command: pip install awscli --upgrade --user
+      - checkout
+      - run:
+          name: Deploy files to s3
+          command: aws s3 sync dist/ s3://http://dev-pp.getpaidup.com.s3-website-us-east-1.amazonaws.com/ --delete
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy-develop:
+          requires:
+            - build
+          filters:
+            branches:
+              only: develop
+      - deploy-stage:
+          requires:
+            - build
+          filters:
+            branches:
+              only: stage

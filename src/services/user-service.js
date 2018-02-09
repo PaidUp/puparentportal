@@ -23,7 +23,7 @@ export default class UserService {
 
   static logout = function () {
     return trae
-      .get('/api/v1/auth/logout')
+      .get('/api/v1/user/logout')
       .then(res => res.data)
   }
 
