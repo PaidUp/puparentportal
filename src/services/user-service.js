@@ -29,7 +29,7 @@ export default class UserService {
 
   static fbLogin = function (fbResponse) {
     return trae
-      .post('/api/v1/user/fblogin', fbResponse)
+      .post('/api/v1/user/login/fb', fbResponse)
       .then(res => res.data)
   }
 
