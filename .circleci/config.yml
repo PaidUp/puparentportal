@@ -49,6 +49,9 @@ jobs:
           command: sudo apt-get install awscli
       - checkout
       - run:
+         name: build
+          command: npm run build-dev
+      - run:
           name: Deploy files to s3
           command: aws s3 sync dist/ s3://http://dev-pp.getpaidup.com.s3-website-us-east-1.amazonaws.com/ --delete
 
