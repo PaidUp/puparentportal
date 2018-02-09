@@ -8,6 +8,9 @@
 # install dependencies
 npm install
 
+# add config file
+cp src/config/index.base.js src/config/index.js
+
 # serve with hot reload at localhost:8080
 npm run dev
 
