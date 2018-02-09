@@ -42,7 +42,6 @@ jobs:
   deploy-develop:
     docker:
       - image: circleci/node:8.9
-    working_directory: /tmp
       - run:
           name: install awscli
           command: pip install awscli --upgrade --user
