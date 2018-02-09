@@ -46,7 +46,7 @@ jobs:
     steps:
       - run:
           name: install awscli
-          command: apt-get install awscli
+          command: sudo apt-get install awscli
       - checkout
       - run:
           name: Deploy files to s3
