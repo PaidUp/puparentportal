@@ -13,8 +13,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const appEnv = process.env.APP_ENV
 const info = require('git-repo-info')()
 
-console.log('APP_ENV: ', APP_ENV)
-
 const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
   : require('../config/prod.env')

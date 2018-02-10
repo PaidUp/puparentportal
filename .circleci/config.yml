@@ -42,6 +42,8 @@ jobs:
   deploy-develop:
     docker:
       - image: circleci/node:8.9
+    environment:
+        - APP_ENV: 'develop'
     working_directory: ~/tmp
     steps:
       - run:
