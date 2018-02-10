@@ -64,7 +64,7 @@ jobs:
           command: aws s3 sync dist/ s3://dev-pp.getpaidup.com --delete
       - run:
           name: Clean aws cloudfront cache
-          command: aws cloudfront create-invalidation --distribution-id E1KJN36UTKVCFF --invalidation-batch /index.html /static
+          command: aws cloudfront create-invalidation --distribution-id E1KJN36UTKVCFF --paths /index.html /static
 
 workflows:
   version: 2
