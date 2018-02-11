@@ -1,14 +1,15 @@
 import { userService } from '@/services'
 
-function handlerError (err, context) {
-  let message = ''
-  if (err.status === 403) {
-    message = 'service.user.invalid_email'
-  }
-  if (err.status === 401) {
-    message = 'service.user.invalid_password'
-  } else {
-    message = 'common.error.default'
+function handlerError (err, context, message) {
+  if (!message) {
+    if (err.status === 403) {
+      message = 'service.user.invalid_email'
+    }
+    if (err.status === 401) {
+      message = 'service.user.invalid_password'
+    } else {
+      message = 'common.error.default'
+    }
   }
   context.dispatch('messageModule/setDanger', message, {
     root: true
@@ -90,8 +91,19 @@ const module = {
       return userService
         .signup(userForm)
         .then(data => {
-          console.log('data: ', data)
           context.commit('setSession', data)
+        })
+        .catch(err => {
+          const message = (err.data.message && err.data.message.includes('The specified email address is already in use')) ? 'module.user.email_address_in_use' : null
+          handlerError(err, context, message)
+        })
+    },
+    logout (context) {
+      return userService
+        .logout()
+        .then(res => {
+          context.commit('clean')
+          return res.data
         })
         .catch(err => {
           handlerError(err, context)
@@ -109,12 +121,6 @@ const module = {
         context.dispatch('messageModule/setDanger', message, {
           root: true
         })
-      })
-    },
-    logout (context) {
-      return userService.logout().then(res => {
-        context.commit('clean')
-        return res.data
       })
     }
   }

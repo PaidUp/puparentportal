@@ -25,7 +25,7 @@
     <div class="info-<%=htmlWebpackPlugin.options.appEnv %> "> 
       <%=  `Env: ${htmlWebpackPlugin.options.appEnv} | 
             branch: ${htmlWebpackPlugin.options.info.branch} | 
-            sha: <a href="https://github.com/PaidUp/PuParentPortal/commit/${htmlWebpackPlugin.options.info.sha}"> ${htmlWebpackPlugin.options.info.abbreviatedSha} </a> `%>
+            sha: <a href="https://github.com/PaidUp/PuParentPortal/commit/${htmlWebpackPlugin.options.info.sha}" target="_blank"> ${htmlWebpackPlugin.options.info.abbreviatedSha} </a> `%>
     </div>
   <% } %>
   <div id="app"></div>

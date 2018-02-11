@@ -25,10 +25,11 @@ const dict = {
       welcome: 'Welcome'
     }
   },
-  service: {
+  module: {
     user: {
       invalid_email: 'This email is not registered.',
-      invalid_password: 'This password is not correct.'
+      invalid_password: 'This password is not correct.',
+      email_address_in_use: 'The specified email address is already in use'
     }
   }
 }

@@ -26,4 +26,8 @@ export default class Trae {
   get post () {
     return this.instance.post
   }
+
+  get delete () {
+    return this.instance.delete
+  }
 }
