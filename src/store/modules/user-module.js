@@ -88,6 +88,7 @@ const module = {
       console.log('OH NOES', error)
     },
     signup (context, userForm) {
+      userForm.type = 'customer'
       return userService
         .signup(userForm)
         .then(data => {
