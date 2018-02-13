@@ -62,7 +62,17 @@ const module = {
         .login(context.state.loginParams)
         .then(res => {
           if (res.error) {
-            return context.dispatch('messageModule/setDanger', res.error.message, {
+            let msg
+            if (res.error.message === 'This email is not registered.') {
+              msg = 'module.user.invalid_email'
+            } else if (res.error.message === 'This a facebook account.') {
+              msg = 'module.user.is_facebook_account'
+            } else if (res.error.message === 'Invalid password.') {
+              msg = 'module.user.invalid_password'
+            } else {
+              msg = res.error.message
+            }
+            return context.dispatch('messageModule/setDanger', msg, {
               root: true
             })
           }
