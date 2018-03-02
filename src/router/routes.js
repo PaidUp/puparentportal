@@ -1,6 +1,7 @@
 import Main from '@/components/pages/Main.vue'
 import Login from '@/components/pages/Login.vue'
 import SignUp from '@/components/pages/SignUp.vue'
+import Card from '@/components/payment/Card.vue'
 
 const routes = [
   {
@@ -23,6 +24,14 @@ const routes = [
     path: '/',
     name: 'main',
     component: Main
+  },
+  {
+    path: '/card',
+    name: 'card',
+    component: Card,
+    meta: {
+      isPublic: true
+    }
   }
 ]
 
