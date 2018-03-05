@@ -47,6 +47,11 @@ const module = {
       }
       localStorage.user = JSON.stringify(data.user)
       state.user = data.user
+      state.loginParams.password = ''
+    },
+    setUser (state, user) {
+      localStorage.user = JSON.stringify(user)
+      state.user = user
     },
     clean (state) {
       localStorage.removeItem('token')
@@ -121,12 +126,12 @@ const module = {
         })
     },
     getUser (context) {
-      return userService.current().then(user => {
-        // context.commit('setUser', user)
-      }).catch(reason => {
+      return userService.current()
+      .then(user => user)
+      .catch(reason => {
         let message = reason.message
         if (reason.status === 401) {
-          context.commit('logout')
+          context.commit('clean')
           message = 'module.user.unauthorized'
         }
         context.dispatch('messageModule/setDanger', message, {

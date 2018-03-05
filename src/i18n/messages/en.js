@@ -30,7 +30,8 @@ const dict = {
       invalid_email: 'This email is not registered.',
       invalid_password: 'Invalid password.',
       email_address_in_use: 'The specified email address is already in use',
-      is_facebook_account: 'This a facebook account.'
+      is_facebook_account: 'This a facebook account.',
+      expired: 'Your session has expired'
     }
   }
 }

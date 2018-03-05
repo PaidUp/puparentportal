@@ -6,7 +6,7 @@ header
   .content(v-if="isAutenticated") {{$t('component.header.default')}}
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import PuLang from '@/components/shared/Lang.vue'
 
 export default {
@@ -25,17 +25,17 @@ export default {
   },
   mounted () {
     if (this.isAutenticated) {
-      this.getUser().then().catch(reason => {
-        if (reason.status === 401) {
-          this.setToken('')
-        }
+      this.getUser().then(user => {
+        this.setUser(user)
       })
     }
   },
   methods: {
+    ...mapMutations('userModule', {
+      setUser: 'setUser'
+    }),
     ...mapActions('userModule', {
       getUser: 'getUser',
-      setToken: 'setToken',
       logout: 'logout'
     })
   },
