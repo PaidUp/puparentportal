@@ -54,7 +54,6 @@ const module = {
       state.user = user
     },
     clean (state) {
-      console.log('into clean')
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       state.user = {}
