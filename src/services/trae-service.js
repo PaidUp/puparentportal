@@ -2,6 +2,10 @@ import trae from 'trae'
 import store from '@/store'
 import router from '@/router'
 
+trae.defaults({
+  mode: 'no-cors'
+})
+
 trae.before(config => {
   const token = window.localStorage.token
   config.headers['Cache-Control'] = 'no-cache'
