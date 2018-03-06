@@ -45,7 +45,7 @@ export default class Trae {
   }
 
   get put () {
-    return this.instance.post
+    return this.instance.put
   }
 
   get delete () {
