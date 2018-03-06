@@ -30,7 +30,7 @@ const routes = [
     name: 'card',
     component: Card,
     meta: {
-      isPublic: true
+      isPublic: false
     }
   }
 ]

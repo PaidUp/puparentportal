@@ -7,13 +7,14 @@
       :options='stripeOptions'
       @change='complete = $event.complete'
     />
-    <button class='pay-with-stripe' @click='add' :disabled='!complete'>Add</button>
+    <button class='pay-with-stripe' @click='addCard(user)' :disabled='!complete'>Add</button>
   </div>
 </template>
 
 <script>
 // import { stripeKey, stripeOptions } from './stripeConfig.json'
-import { Card, createToken } from 'vue-stripe-elements-plus'
+import { Card } from 'vue-stripe-elements-plus'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -24,18 +25,18 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState('userModule', {
+      user: 'user'
+    })
+  },
 
   components: { Card },
 
   methods: {
-    add () {
-      // createToken returns a Promise which resolves in a result object with
-      // either a token or an error key.
-      // See https://stripe.com/docs/api#tokens for the token object.
-      // See https://stripe.com/docs/api#errors for the error object.
-      // More general https://stripe.com/docs/stripe.js#stripe-create-token.
-      createToken().then(data => console.log(data.token))
-    }
+    ...mapActions('paymentModule', {
+      addCard: 'addCard'
+    })
   }
 }
 </script>

@@ -26,12 +26,12 @@ const module = {
       rememberMe: false
     },
     token: localStorage.token || '',
-    user: localStorage.user ? JSON.parse(localStorage.user) : {}
+    user: {}
   },
 
   getters: {
     isAutenticated (state) {
-      if (state.user && state.user._id && state.token && state.token.trim().length !== 0) {
+      if (state.token && state.token.trim().length !== 0) {
         return true
       }
       return false
@@ -54,6 +54,7 @@ const module = {
       state.user = user
     },
     clean (state) {
+      console.log('into clean')
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       state.user = {}
@@ -129,10 +130,20 @@ const module = {
       return userService.current()
       .then(user => user)
       .catch(reason => {
+        console.log(reason)
+      })
+    },
+    update (context, { id, values }) {
+      return userService.update(id, values)
+      .then(user => {
+        context.commit('setUser', user)
+        return user
+      })
+      .catch(reason => {
         let message = reason.message
         if (reason.status === 401) {
           context.commit('clean')
-          message = 'module.user.unauthorized'
+          message = 'module.user.expired'
         }
         context.dispatch('messageModule/setDanger', message, {
           root: true

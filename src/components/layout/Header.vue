@@ -4,6 +4,10 @@ header
   .content(v-show="isAutenticated")
     a(@click="logout()") {{ $t('component.header.logout') }}
   .content(v-if="isAutenticated") {{$t('component.header.default')}}
+  .content
+  <router-link to="card">Card</router-link>
+  <router-link to="main">Main</router-link>
+    
 </template>
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
@@ -12,8 +16,7 @@ import PuLang from '@/components/shared/Lang.vue'
 export default {
   computed: {
     ...mapGetters('userModule', {
-      isAutenticated: 'isAutenticated',
-      token: 'token'
+      isAutenticated: 'isAutenticated'
     })
   },
   watch: {
