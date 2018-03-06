@@ -34,7 +34,6 @@ const module = {
             })
           } else {
             paymentService.associateCard(user.externalCustomerId, token).then(card => {
-              console.log('card: ', card)
               resolve(card)
             })
           }

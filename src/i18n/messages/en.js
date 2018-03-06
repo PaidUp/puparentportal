@@ -32,6 +32,9 @@ const dict = {
       email_address_in_use: 'The specified email address is already in use',
       is_facebook_account: 'This a facebook account.',
       expired: 'Your session has expired'
+    },
+    payment: {
+      add_card_success: 'Your card was added successfully'
     }
   }
 }

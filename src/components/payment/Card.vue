@@ -5,9 +5,8 @@
       :class='{ complete }'
       stripe='pk_test_9WTTkvwiNjZ9IMJVls1iF0fv'
       :options='stripeOptions'
-      @change='complete = $event.complete'
     />
-    <button class='pay-with-stripe' @click='addCard(user)' :disabled='!complete'>Add</button>
+    <button class='pay-with-stripe' @click='add' :disabled='!complete'>Add</button>
   </div>
 </template>
 
@@ -19,7 +18,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      complete: false,
+      complete: true,
       stripeOptions: {
         // see https://stripe.com/docs/stripe.js#element-options for details
       }
@@ -34,9 +33,19 @@ export default {
   components: { Card },
 
   methods: {
+    ...mapActions('messageModule', {
+      setSuccess: 'setSuccess'
+    }),
     ...mapActions('paymentModule', {
       addCard: 'addCard'
-    })
+    }),
+    add () {
+      this.complete = false
+      this.addCard(this.user).then(res => {
+        this.setSuccess('module.payment.add_card_success')
+        this.complete = true
+      })
+    }
   }
 }
 </script>
