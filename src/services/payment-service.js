@@ -14,7 +14,6 @@ class PaymentService {
     }
     return trae
       .post('/customer', p)
-      .then(res => res.data)
   }
 
   associateCard = function (customerId, token) {
@@ -24,7 +23,16 @@ class PaymentService {
     }
     return trae
       .post('/customer/card', p)
-      .then(res => res.data)
+  }
+
+  associateBank = function (customerId, publicToken, accountId) {
+    let p = {
+      customerId,
+      publicToken,
+      accountId
+    }
+    return trae
+      .post('/customer/bank', p)
   }
 }
 

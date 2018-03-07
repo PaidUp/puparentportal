@@ -1,23 +1,21 @@
-<template>
-  <div>
-    <h1>Add Credit Card:</h1>
-    <card class='stripe-card'
-      :class='{ complete }'
-      stripe='pk_test_9WTTkvwiNjZ9IMJVls1iF0fv'
-      :options='stripeOptions'
-    />
-    <button class='pay-with-stripe' @click='add' :disabled='!complete'>Add</button>
-  </div>
+<template lang="pug">
+  div
+    h1 Add Credit Card:
+    card.stripe-card(:class='{ complete }' :stripe='publicKey' :options='stripeOptions')
+    button.pay-with-stripe(@click='add' :disabled='!complete') Add
 </template>
 
 <script>
 // import { stripeKey, stripeOptions } from './stripeConfig.json'
+import Vue from 'vue'
+import config from '@/config'
 import { Card } from 'vue-stripe-elements-plus'
 import { mapState, mapActions } from 'vuex'
 
 export default {
   data () {
     return {
+      publicKey: config.stripe.publicKey,
       complete: true,
       stripeOptions: {
         // see https://stripe.com/docs/stripe.js#element-options for details
@@ -28,6 +26,15 @@ export default {
     ...mapState('userModule', {
       user: 'user'
     })
+  },
+  created () {
+    Vue.loadScript('https://cdn.plaid.com/link/v2/stable/link-initialize.js')
+      .then(() => {
+        console.log('script loaded')
+      })
+      .catch(() => {
+        console.log('There was an issue loading the link-initialize.js script')
+      })
   },
 
   components: { Card },

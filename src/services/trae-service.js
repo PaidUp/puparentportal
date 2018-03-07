@@ -16,7 +16,6 @@ trae.before(config => {
 const rejectMiddleware = (err) => {
   if (err.status === 401 || err.status === 403) {
     store.commit('userModule/clean')
-    console.log('status: ', err.status)
     store.dispatch('messageModule/setDanger', 'module.user.expired', {
       root: true
     })
@@ -25,9 +24,7 @@ const rejectMiddleware = (err) => {
   return Promise.reject(err)
 }
 
-trae.after(resp => {
-  return resp
-}, rejectMiddleware)
+trae.after(resp => resp.data, rejectMiddleware)
 
 export default class Trae {
   constructor (baseUrl) {

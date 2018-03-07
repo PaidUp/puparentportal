@@ -5,8 +5,9 @@ header
     a(@click="logout()") {{ $t('component.header.logout') }}
   .content(v-if="isAutenticated") {{$t('component.header.default')}}
   .content
-  <router-link to="card">Card</router-link>
-  <router-link to="main">Main</router-link>
+  router-link(to="main") Main  
+  router-link(to="bank") Bank  
+  router-link(to="card") Card
     
 </template>
 <script>

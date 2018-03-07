@@ -34,7 +34,9 @@ const dict = {
       expired: 'Your session has expired'
     },
     payment: {
-      add_card_success: 'Your card was added successfully'
+      add_card_success: 'Your card was added successfully',
+      add_bank_success: 'Your bank account was added successfully',
+      add_bank_fail: 'Fail adding your bank account'
     }
   }
 }

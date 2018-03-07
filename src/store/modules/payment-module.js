@@ -39,6 +39,29 @@ const module = {
           }
         })
       })
+    },
+    addBank (context, { user, publicToken, accountId }) {
+      return new Promise((resolve, reject) => {
+        if (!user.externalCustomerId) {
+          paymentService.createCustomer(user).then(externalCustomer => {
+            const externalCustomerId = externalCustomer.id
+            return context.dispatch('userModule/update', {
+              id: user._id,
+              values: { externalCustomerId }
+            }, {
+              root: true
+            })
+          }).then(userUpd => {
+            paymentService.associateBank(userUpd.externalCustomerId, publicToken, accountId).then(bank => {
+              resolve(bank)
+            }).catch(reason => reject(reason))
+          })
+        } else {
+          paymentService.associateBank(user.externalCustomerId, publicToken, accountId).then(bank => {
+            resolve(bank)
+          }).catch(reason => reject(reason))
+        }
+      })
     }
   }
 }
