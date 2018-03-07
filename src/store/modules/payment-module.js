@@ -5,14 +5,29 @@ const module = {
   namespaced: true,
 
   state: {
-    cardAccounts: [],
+    cards: [],
     bankAccounts: []
   },
 
   getters: {
+    paymentAccounts (state) {
+      return state.cards.concat(state.bankAccounts)
+    }
   },
 
   mutations: {
+    setCards (state, cards) {
+      state.cards = cards
+    },
+    setBankAccounts (state, bankAccounts) {
+      state.bankAccounts = bankAccounts
+    },
+    pushCard (state, card) {
+      state.cards.push(card)
+    },
+    pushBankAccount (state, bankAccount) {
+      state.bankAccounts.push(bankAccount)
+    }
   },
 
   actions: {
@@ -22,6 +37,7 @@ const module = {
           const token = data.token.id
           if (!user.externalCustomerId) {
             paymentService.createCustomer(user, token).then(externalCustomer => {
+              context.commit('setCards', externalCustomer.sources.data)
               const externalCustomerId = externalCustomer.id
               return context.dispatch('userModule/update', {
                 id: user._id,
@@ -34,6 +50,7 @@ const module = {
             })
           } else {
             paymentService.associateCard(user.externalCustomerId, token).then(card => {
+              context.commit('pushCard', card)
               resolve(card)
             })
           }
@@ -53,15 +70,31 @@ const module = {
             })
           }).then(userUpd => {
             paymentService.associateBank(userUpd.externalCustomerId, publicToken, accountId).then(bank => {
+              context.commit('pushBankAccounts', bank)
               resolve(bank)
             }).catch(reason => reject(reason))
           })
         } else {
           paymentService.associateBank(user.externalCustomerId, publicToken, accountId).then(bank => {
+            context.commit('pushBankAccounts', bank)
             resolve(bank)
           }).catch(reason => reject(reason))
         }
       })
+    },
+    listCards (context, user) {
+      if (user.externalCustomerId) {
+        paymentService.listCards(user.externalCustomerId).then(cards => {
+          context.commit('setCards', cards.data)
+        })
+      }
+    },
+    listBanks (context, user) {
+      if (user.externalCustomerId) {
+        paymentService.listBanks(user.externalCustomerId).then(banks => {
+          context.commit('setBankAccounts', banks.data)
+        })
+      }
     }
   }
 }

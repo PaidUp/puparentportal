@@ -34,6 +34,16 @@ class PaymentService {
     return trae
       .post('/customer/bank', p)
   }
+
+  listCards = function (customerId) {
+    return trae
+      .get(`/customer/${customerId}/cards`)
+  }
+
+  listBanks = function (customerId) {
+    return trae
+      .get(`/customer/${customerId}/banks`)
+  }
 }
 
 paymentService = new PaymentService()

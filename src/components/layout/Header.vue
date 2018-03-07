@@ -8,10 +8,11 @@ header
   router-link(to="main") Main  
   router-link(to="bank") Bank  
   router-link(to="card") Card
+  router-link(to="accounts") Accounts
     
 </template>
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import PuLang from '@/components/shared/Lang.vue'
 
 export default {
@@ -20,26 +21,8 @@ export default {
       isAutenticated: 'isAutenticated'
     })
   },
-  watch: {
-    isAutenticated () {
-      if (!this.isAutenticated) {
-        this.$router.push({ name: 'login' })
-      }
-    }
-  },
-  mounted () {
-    if (this.isAutenticated) {
-      this.getUser().then(user => {
-        this.setUser(user)
-      })
-    }
-  },
   methods: {
-    ...mapMutations('userModule', {
-      setUser: 'setUser'
-    }),
     ...mapActions('userModule', {
-      getUser: 'getUser',
       logout: 'logout'
     })
   },
