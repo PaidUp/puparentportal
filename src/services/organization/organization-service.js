@@ -5,9 +5,9 @@ const trae = new Trae(config.api.organization)
 let organizationService
 
 class OrganizationService {
-  getAll ({ organizationId, firstName, lastName, assigneesEmail, description }) {
+  getAll () {
     return trae
-      .post('/', { organizationId, firstName, lastName, assigneesEmail, description })
+      .get('/')
   }
 }
 
