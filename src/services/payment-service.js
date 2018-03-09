@@ -5,7 +5,7 @@ const trae = new Trae(config.api.payment)
 let paymentService
 
 class PaymentService {
-  createCustomer = function (user, source) {
+  createCustomer (user, source) {
     let p = {
       description: `${user.firstName} ${user.lastName}`,
       email: user.email,
@@ -16,7 +16,7 @@ class PaymentService {
       .post('/customer', p)
   }
 
-  associateCard = function (customerId, token) {
+  associateCard (customerId, token) {
     let p = {
       customerId,
       token
@@ -25,7 +25,7 @@ class PaymentService {
       .post('/customer/card', p)
   }
 
-  associateBank = function (customerId, publicToken, accountId) {
+  associateBank (customerId, publicToken, accountId) {
     let p = {
       customerId,
       publicToken,
@@ -35,12 +35,12 @@ class PaymentService {
       .post('/customer/bank', p)
   }
 
-  listCards = function (customerId) {
+  listCards (customerId) {
     return trae
       .get(`/customer/${customerId}/cards`)
   }
 
-  listBanks = function (customerId) {
+  listBanks (customerId) {
     return trae
       .get(`/customer/${customerId}/banks`)
   }

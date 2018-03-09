@@ -5,7 +5,7 @@ const trae = new Trae(config.api.user)
 let userService
 
 class UserService {
-  login = function (params) {
+  login (params) {
     let p = {
       email: params.email,
       password: params.password,
@@ -15,27 +15,27 @@ class UserService {
       .post('/login/email', p)
   }
 
-  current = function () {
+  current () {
     return trae
       .get('/current')
   }
 
-  logout = function () {
+  logout () {
     return trae
       .delete('/logout')
   }
 
-  fbLogin = function (fbResponse) {
+  fbLogin (fbResponse) {
     return trae
       .post('/login/fb', fbResponse)
   }
 
-  signup = function (userForm) {
+  signup (userForm) {
     return trae
       .post('/', userForm)
   }
 
-  update = function (id, values) {
+  update (id, values) {
     return trae
       .put('/', { id, values })
   }

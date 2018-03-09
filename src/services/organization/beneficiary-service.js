@@ -2,15 +2,25 @@ import Trae from '@/services/trae-service'
 import config from '@/config'
 
 const trae = new Trae(config.api.organization + '/beneficiary')
-let organizationService
+let beneficiaryService
 
-class OrganizationService {
-  create = function ({ organizationId, firstName, lastName, assigneesEmail, description }) {
+class BeneficiaryService {
+  create ({ organizationId, firstName, lastName, assigneesEmail, description }) {
     return trae
-      .post('/beneficiary', { organizationId, firstName, lastName, assigneesEmail, description })
+      .post('/', { organizationId, firstName, lastName, assigneesEmail, description })
+  }
+
+  import = function (beneficiaries) {
+    return trae
+      .post('/import', beneficiaries)
+  }
+
+  beneficiariesByAssegnee = function (assigneeEmail) {
+    return trae
+      .get(`/assegnee/${assigneeEmail}`)
   }
 }
 
-organizationService = new OrganizationService()
+beneficiaryService = new BeneficiaryService()
 
-export default organizationService
+export default beneficiaryService
