@@ -1,7 +1,9 @@
 const config = {
   api: {
     user: 'https://devapi.getpaidup.com/api/v1/user',
-    payment: 'https://devapi.getpaidup.com/api/v1/payment'
+    payment: 'https://devapi.getpaidup.com/api/v1/payment',
+    organization: 'https://devapi.getpaidup.com/api/v1/organization',
+    commerce: 'https://devapi.getpaidup.com/api/v1/commerce'
   },
   stripe: {
     publicKey: 'pk_test_9WTTkvwiNjZ9IMJVls1iF0fv'
