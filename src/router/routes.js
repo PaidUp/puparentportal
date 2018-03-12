@@ -4,6 +4,7 @@ import SignUp from '@/components/pages/SignUp.vue'
 import Card from '@/components/payment/Card.vue'
 import Bank from '@/components/payment/Bank.vue'
 import Accounts from '@/components/payment/Accounts.vue'
+import MainLayout from '@/components/layout/MainLayout.vue'
 
 const routes = [
   {
@@ -18,6 +19,14 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: SignUp,
+    meta: {
+      isPublic: true
+    }
+  },
+  {
+    path: '/site',
+    name: 'site',
+    component: MainLayout,
     meta: {
       isPublic: true
     }
