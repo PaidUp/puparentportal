@@ -1,9 +1,7 @@
 <template lang="pug">
 #app
-  pu-header
   pu-message
   router-view
-  pu-footer
 </template>
 
 <script>

@@ -8,24 +8,14 @@
   <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
   <!-- TODO: PUT this locally if needed in the future -->
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
-  <style>
-    .info-local {
-      background-color: rgba(151, 151, 211, 0.5)
-    }.info-develop {
-      background-color: rgba(211, 151, 151, 0.5)
-    }.info-stage {
-      background-color: rgba(151, 211, 169, 0.5)
-    }
-  </style>
   <title>PaidUp Portal</title>
-
 </head>
 
 <body>
   <% if (htmlWebpackPlugin.options.appEnv === 'production') { %>
     <!-- <%=  `Env: ${htmlWebpackPlugin.options.appEnv} | branch: ${htmlWebpackPlugin.options.info.branch} | sha: ${htmlWebpackPlugin.options.info.abbreviatedSha} `%>-->
   <% } else {%>
-    <div class="info-<%=htmlWebpackPlugin.options.appEnv %> "> 
+    <div class="debug-info-<%=htmlWebpackPlugin.options.appEnv %> "> 
       <%=  `Env: ${htmlWebpackPlugin.options.appEnv} | 
             branch: ${htmlWebpackPlugin.options.info.branch} | 
             sha: <a href="https://github.com/PaidUp/PuParentPortal/commit/${htmlWebpackPlugin.options.info.sha}" target="_blank"> ${htmlWebpackPlugin.options.info.abbreviatedSha} </a> `%>

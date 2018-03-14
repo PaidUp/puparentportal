@@ -1,3 +1,16 @@
-@require './_tools.styl'
-@require './_vars.styl'
-@require './_global.styl'
+@require './_nav.styl'
+.debug-info-local
+.debug-info-develop
+.debug-info-stage
+  position: fixed
+  top: 0
+  right: 0
+  font-size: 10px
+  z-index: 99
+.debug-info-local
+  background-color: rgba(151, 151, 211, 0.5)
+.debug-info-develop 
+  background-color: rgba(211, 151, 151, 0.5)
+.debug-info-stage 
+  background-color: rgba(151, 211, 169, 0.5)
+    
