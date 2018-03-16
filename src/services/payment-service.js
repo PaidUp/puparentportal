@@ -44,6 +44,16 @@ class PaymentService {
     return trae
       .get(`/customer/${customerId}/banks`)
   }
+
+  removeCard (customerId, cardId) {
+    return trae
+      .delete('/customer/card', { customerId, cardId })
+  }
+
+  removeBank (customerId, bankId) {
+    return trae
+      .delete('/customer/bank', { customerId, bankId })
+  }
 }
 
 paymentService = new PaymentService()
