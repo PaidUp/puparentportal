@@ -26,7 +26,9 @@ const module = {
       rememberMe: false
     },
     token: localStorage.token || '',
-    user: {}
+    user: {
+      firstName: 'HardcodedFirstName'
+    }
   },
 
   getters: {

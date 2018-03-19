@@ -1,8 +1,8 @@
-<template>
-  <div class="content">
-    {{ $t('component.main.welcome') }} {{user.firstName}}
-  </div>
+<template lang="pug">
+  .content {{ $t('component.main.welcome') }} {{user.firstName}}
+    md-button(class='md-raised md-primary') show message
 </template>
+
 <script>
 import { mapState } from 'vuex'
 

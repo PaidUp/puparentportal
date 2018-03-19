@@ -4,6 +4,7 @@ import Card from '@/components/payment/Card.vue'
 import Bank from '@/components/payment/Bank.vue'
 import Accounts from '@/components/payment/Accounts.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
+import Welcome from '@/components/pages/Welcome.vue'
 
 const routes = [
   {
@@ -28,31 +29,40 @@ const routes = [
     component: MainLayout,
     meta: {
       isPublic: true
-    }
-  },
-  {
-    path: '/card',
-    name: 'card',
-    component: Card,
-    meta: {
-      isPublic: false
-    }
-  },
-  {
-    path: '/bank',
-    name: 'bank',
-    component: Bank,
-    meta: {
-      isPublic: false
-    }
-  },
-  {
-    path: '/accounts',
-    name: 'accounts',
-    component: Accounts,
-    meta: {
-      isPublic: false
-    }
+    },
+    children: [
+      {
+        path: '',
+        component: Welcome,
+        meta: {
+          isPublic: true
+        }
+      },
+      {
+        path: '/card',
+        name: 'card',
+        component: Card,
+        meta: {
+          isPublic: true
+        }
+      },
+      {
+        path: '/bank',
+        name: 'bank',
+        component: Bank,
+        meta: {
+          isPublic: true
+        }
+      },
+      {
+        path: '/accounts',
+        name: 'accounts',
+        component: Accounts,
+        meta: {
+          isPublic: true
+        }
+      }
+    ]
   }
 ]
 

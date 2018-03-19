@@ -1,17 +1,12 @@
 <template lang="pug">
 #app
-  pu-message
   router-view
 </template>
 
 <script>
-import PuHeader from '@/components/layout/Header.vue'
-import PuFooter from '@/components/layout/Footer.vue'
-import PuMessage from '@/components/shared/Message.vue'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'app',
-  components: { PuHeader, PuFooter, PuMessage },
   computed: {
     ...mapGetters('userModule', {
       isAutenticated: 'isAutenticated'
