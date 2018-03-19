@@ -27,6 +27,16 @@ const module = {
     },
     pushBankAccount (state, bankAccount) {
       state.bankAccounts.push(bankAccount)
+    },
+    delCard (state, cardId) {
+      state.cards = state.cards.filter(card => {
+        return cardId !== card.id
+      })
+    },
+    delBank (state, bankId) {
+      state.bankAccounts = state.bankAccounts.filter(bank => {
+        return bankId !== bank.id
+      })
     }
   },
 
@@ -92,6 +102,13 @@ const module = {
     listBanks (context, user) {
       if (user.externalCustomerId) {
         paymentService.listBanks(user.externalCustomerId).then(banks => {
+          context.commit('setBankAccounts', banks.data)
+        })
+      }
+    },
+    removeCard (context, { user, cardId }) {
+      if (user.externalCustomerId) {
+        paymentService.removeCard(user.externalCustomerId, cardId).then(banks => {
           context.commit('setBankAccounts', banks.data)
         })
       }
