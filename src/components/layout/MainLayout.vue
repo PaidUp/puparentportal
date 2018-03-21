@@ -1,16 +1,16 @@
 <template lang="pug">
   md-app
     md-app-toolbar.md-primary
-      span.md-title My Title
+      top-toolbar
 
     md-app-drawer.left-nav(md-permanent='clipped')
       md-list.top-list
         md-list-item
           md-icon home
           span.md-list-item-text Dashboard
-        md-list-item
-          md-icon account_circle
-          span.md-list-item-text Player
+        router-link(to="players" tag="md-list-item") 
+            md-icon account_circle
+            span.md-list-item-text Player
         md-list-item
           md-icon shopping_cart
           span.md-list-item-text Make/Schedule Payment
@@ -36,7 +36,9 @@
 </template>
 
 <script>
+import TopToolbar from './TopToolbar.vue'
 export default {
+  components: { TopToolbar },
   data: function () {
     return {
       msg: 'THEE MSAGE BIATH'

@@ -5,6 +5,7 @@ import Bank from '@/components/payment/Bank.vue'
 import Accounts from '@/components/payment/Accounts.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import Welcome from '@/components/pages/Welcome.vue'
+import Players from '@/components/players/Players.vue'
 
 const routes = [
   {
@@ -25,7 +26,6 @@ const routes = [
   },
   {
     path: '/',
-    name: 'main',
     component: MainLayout,
     meta: {
       isPublic: true
@@ -33,7 +33,15 @@ const routes = [
     children: [
       {
         path: '',
+        name: 'home',
         component: Welcome,
+        meta: {
+          isPublic: true
+        }
+      },
+      {
+        path: '/players',
+        component: Players,
         meta: {
           isPublic: true
         }
