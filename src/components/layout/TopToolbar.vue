@@ -2,6 +2,10 @@
   .top-toolbar
     router-link(to="/")
       img.logo(src="@/assets/app-logo-white.svg")
+    md-field(class="search-input")
+      label Search
+      md-input
+      md-icon search
     md-menu.user-menu(md-size="auto" md-align-trigger md-direction="bottom-end")
       md-button(class="md-raised md-primary" md-menu-trigger) 
         md-avatar 
