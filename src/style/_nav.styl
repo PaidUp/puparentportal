@@ -1,16 +1,10 @@
-// We are going to use Material Design CSS so all values taken from there
 .md-app
   height 100vh
 .top-toolbar
-  width: 100%
-  display: flex
-  flex-flow: row nowrap
-  justify-content: space-between
-  align-items: center
+  width 100%
   .logo
     width: 50px
   .search-input
-    width: 40%
     color: #fff
     label,
     input
@@ -18,14 +12,14 @@
       color #fff
     &:after
       background-color: #fff
-  .user-menu
-    .md-button
-      height 46px
 .md-drawer.left-nav
   width: 245px
   display: flex
   flex-flow: column nowrap
   justify-content: space-between
   align-items: flex-start
+  .user-menu
+    .md-button
+      height 46px
   .md-list-item-content>.md-icon:first-child
     margin-right: 20px

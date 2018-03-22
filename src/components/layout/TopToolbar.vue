@@ -1,22 +1,14 @@
-<template lang="pug">
-  .top-toolbar
-    router-link(to="/")
-      img.logo(src="@/assets/app-logo-white.svg")
-    md-field(class="search-input")
-      label Search
-      md-input
-      md-icon search
-    md-menu.user-menu(md-size="auto" md-align-trigger md-direction="bottom-end")
-      md-button(class="md-raised md-primary" md-menu-trigger) 
-        md-avatar 
-          img(src="@/assets/avatar.jpg")
-        | &nbsp; Diego Fortes
-        md-icon keyboard_arrow_down
-      md-menu-content
-        md-menu-item My Item 1
-        md-menu-item My Item 1
-        md-menu-item My Item 1
-
+<template>
+  <div class="top-toolbar md-layout md-alignment-center-left">
+    <router-link to="/" class="md-layout-item md-size-30">
+      <img class="logo" src="@/assets/app-logo-white.svg" />
+    </router-link>
+    <md-field class="search-input md-layout-item md-size-40">
+      <label>Search</label>
+      <md-input></md-input>
+      <md-icon>search</md-icon>
+    </md-field>
+  </div>
 </template>
 
 <script>
