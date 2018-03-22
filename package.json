@@ -13,6 +13,7 @@
     "test": "ls",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
     "build": "node build/build.js",
+    "build-theme": "sass build/theme-input.scss src/style/theme.css",
     "build-dev": "export APP_ENV=develop && cp src/config/development.js src/config/index.js && npm run build",
     "build-stg": "export APP_ENV=stage && cp src/config/stage.js src/config/index.js && npm run build",
     "build-prod": "export APP_ENV=production && cp src/config/production.js src/config/index.js && npm run build"

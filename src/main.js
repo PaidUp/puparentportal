@@ -13,7 +13,8 @@ import fs from '@/vendor/fb'
 // MATERIAL DESIGN COMPONENTS START
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
-import 'vue-material/dist/theme/default.css'
+// import 'vue-material/dist/theme/default.css'
+import '@/style/theme.css'
 Vue.use(VueMaterial)
 // MATERIAL DESIGN COMPONENTS END
 

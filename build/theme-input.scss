@@ -1,0 +1,8 @@
+@import "../node_modules/vue-material/dist/theme/engine"; // Import the theme engine
+
+@include md-register-theme("default", (
+  primary: #00B39F,
+  accent: #145B7D
+));
+
+@import "../node_modules/vue-material/dist/theme/all"; // Apply the theme
