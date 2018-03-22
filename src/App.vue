@@ -24,6 +24,8 @@ export default {
       this.getUser().then(user => {
         this.setUser(user)
       })
+    } else {
+      this.$router.push({ name: 'login' })
     }
   },
   methods: {

@@ -37,7 +37,7 @@ export default {
   watch: {
     isAutenticated () {
       if (this.isAutenticated) {
-        this.$router.push({ name: 'main' })
+        this.$router.push({ name: 'home' })
       }
     }
   },
