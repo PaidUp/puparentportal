@@ -28,7 +28,7 @@ const routes = [
     path: '/',
     component: MainLayout,
     meta: {
-      isPublic: true
+      isPublic: false
     },
     children: [
       {
