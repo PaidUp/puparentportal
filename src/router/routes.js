@@ -28,47 +28,33 @@ const routes = [
     path: '/',
     component: MainLayout,
     meta: {
+      // SKIP LOGIN: change to true
       isPublic: false
     },
     children: [
       {
         path: '',
         name: 'home',
-        component: Welcome,
-        meta: {
-          isPublic: true
-        }
+        component: Welcome
       },
       {
         path: '/players',
-        component: Players,
-        meta: {
-          isPublic: true
-        }
+        component: Players
       },
       {
         path: '/card',
         name: 'card',
-        component: Card,
-        meta: {
-          isPublic: true
-        }
+        component: Card
       },
       {
         path: '/bank',
         name: 'bank',
-        component: Bank,
-        meta: {
-          isPublic: true
-        }
+        component: Bank
       },
       {
         path: '/accounts',
         name: 'accounts',
-        component: Accounts,
-        meta: {
-          isPublic: true
-        }
+        component: Accounts
       }
     ]
   }

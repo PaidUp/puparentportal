@@ -25,6 +25,7 @@ export default {
         this.setUser(user)
       })
     } else {
+      // SKIP LOGIN: comment next statement
       this.$router.push({ name: 'login' })
     }
   },
