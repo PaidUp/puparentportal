@@ -5,7 +5,7 @@ import Bank from '@/components/payment/Bank.vue'
 import Accounts from '@/components/payment/Accounts.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import Welcome from '@/components/pages/Welcome.vue'
-import Players from '@/components/players/Players.vue'
+import PlayersPage from '@/components/pages/PlayersPage.vue'
 
 const routes = [
   {
@@ -39,7 +39,7 @@ const routes = [
       },
       {
         path: '/players',
-        component: Players
+        component: PlayersPage
       },
       {
         path: '/card',

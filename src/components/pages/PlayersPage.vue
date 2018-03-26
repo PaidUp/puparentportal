@@ -1,12 +1,7 @@
 <template>
   <div class="players-view">
     <div class="player">
-      <md-avatar>
-        <img src="@/assets/avatar.jpg" />
-      </md-avatar>
-      <div class="name md-title">Enzo Fernandez</div>
-      <div class="team md-subheading">Isotopes Baseball Club</div>
-      <div class="location md-subheading">Austin, TX</div>
+      <VPlayerInfo :user="userP"/>
     </div>
     <div class="details">
       <div class="md-subheading title">Details</div>
@@ -205,8 +200,20 @@
   import {
     mapState
   } from 'vuex'
-
+  import VPlayerInfo from '@/components/shared/VPlayerInfo.vue'
   export default {
+    components: {
+      VPlayerInfo
+    },
+    data: function () {
+      return {
+        userP: {
+          name: 'Enzo Perez',
+          avatar: 'avatar.jpg',
+          team: 'Isotopes of Springfield'
+        }
+      }
+    },
     computed: {
       ...mapState('userModule', {
         user: 'user'
