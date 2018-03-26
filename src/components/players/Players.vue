@@ -59,19 +59,140 @@
         <md-card md-with-hover>
           <md-ripple>
             <md-card-header>
-              <div class="md-subheading">Dues - Commitment Fee</div>
+              <div class="md-subheading">Dues - Commitment Fee paid to coach </div>
               <div class="md-subhead">Paid to club</div>
             </md-card-header>
-            <md-card-content class="">
-              <div class="">
-                Paid
+            <md-card-content class="card-content">
+              <div class="status">
+                <md-icon class="md-size-2x">check_circle</md-icon>
+                <div class="md-caption">
+                  PAID
+                </div>
               </div>
-              <div class="">
-                $350
+              <div class="amount-details">
+                <div class="details">
+                  <span class="md-caption">INV9203848848</span><br>
+                  <span class="md-caption">09/15/2017</span>
+                </div>
+                <div class="total md-title">
+                  $350.<sup>00</sup>
+                </div>
               </div>
             </md-card-content>
             <md-card-actions>
-              <md-button>Fix</md-button>
+              <md-button class="md-accent">Fix</md-button>
+            </md-card-actions>
+          </md-ripple>
+        </md-card>
+        <md-card md-with-hover>
+          <md-ripple>
+            <md-card-header>
+              <div class="md-subheading">Dues - Commitment Fee paid to coach </div>
+              <div class="md-subhead">Paid to club</div>
+            </md-card-header>
+            <md-card-content class="card-content">
+              <div class="status">
+                <md-icon class="md-size-2x" style="color: #e35565">error</md-icon>
+                <div class="md-caption">
+                  FAILED
+                </div>
+              </div>
+              <div class="amount-details">
+                <div class="details">
+                  <span class="md-caption">INV9203848848</span><br>
+                  <span class="md-caption">09/15/2017</span>
+                </div>
+                <div class="total md-title">
+                  $350.<sup>00</sup>
+                </div>
+              </div>
+            </md-card-content>
+            <md-card-actions>
+              <md-button class="md-accent">Fix</md-button>
+            </md-card-actions>
+          </md-ripple>
+        </md-card>
+        <md-card md-with-hover>
+          <md-ripple>
+            <md-card-header>
+              <div class="md-subheading">Dues - Commitment Fee paid to coach </div>
+              <div class="md-subhead">Paid to club</div>
+            </md-card-header>
+            <md-card-content class="card-content">
+              <div class="status">
+                <md-icon class="md-size-1x" style="color: #006E82">today</md-icon>
+                <div class="md-caption">
+                  AUTOPAID
+                </div>
+              </div>
+              <div class="amount-details">
+                <div class="details">
+                  <span class="md-caption">INV9203848848</span><br>
+                  <span class="md-caption">09/15/2017</span>
+                </div>
+                <div class="total md-title">
+                  $350.<sup>00</sup>
+                </div>
+              </div>
+            </md-card-content>
+            <md-card-actions>
+              <md-button class="md-accent">Fix</md-button>
+            </md-card-actions>
+          </md-ripple>
+        </md-card>
+        <md-card md-with-hover>
+          <md-ripple>
+            <md-card-header>
+              <div class="md-subheading">Dues - Commitment Fee paid to coach </div>
+              <div class="md-subhead">Paid to club</div>
+            </md-card-header>
+            <md-card-content class="card-content">
+              <div class="status">
+                <md-icon class="md-size-2x">check_circle</md-icon>
+                <div class="md-caption">
+                  PAID
+                </div>
+              </div>
+              <div class="amount-details">
+                <div class="details">
+                  <span class="md-caption">INV9203848848</span><br>
+                  <span class="md-caption">09/15/2017</span>
+                </div>
+                <div class="total md-title">
+                  $350.<sup>00</sup>
+                </div>
+              </div>
+            </md-card-content>
+            <md-card-actions>
+              <md-button class="md-accent">Fix</md-button>
+            </md-card-actions>
+          </md-ripple>
+        </md-card>
+        <md-card md-with-hover>
+          <md-ripple>
+            <md-card-header>
+              <div class="md-subheading">Dues - Commitment Fee paid to coach </div>
+              <div class="md-subhead">Paid to club</div>
+            </md-card-header>
+            <md-card-content class="card-content">
+              <div class="status">
+                <md-icon class="md-size-2x">check_circle</md-icon>
+                <div class="md-caption">
+                  PAID
+                </div>
+              </div>
+              <div class="amount-details">
+                <div class="details">
+                  <span class="md-caption">INV9203848848</span><br>
+                  <span class="md-caption">09/15/2017</span>
+                </div>
+                <div class="total md-title">
+                  $350.<sup>00</sup>
+                </div>
+              </div>
+            </md-card-content>
+            <md-card-actions>
+              <md-button class="md-accent">Fix</md-button>
             </md-card-actions>
           </md-ripple>
         </md-card>
