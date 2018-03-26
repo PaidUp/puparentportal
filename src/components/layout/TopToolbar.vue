@@ -1,13 +1,16 @@
 <template>
-  <div class="top-toolbar md-layout md-alignment-center-left">
-    <router-link to="/" class="md-layout-item md-size-30">
-      <img class="logo" src="@/assets/app-logo-white.svg" />
-    </router-link>
-    <md-field class="search-input md-layout-item md-size-40">
+  <div class="top-toolbar">
+    <div class="logo">
+      <router-link to="/">
+        <img src="@/assets/app-logo-white.svg" />
+      </router-link>
+    </div>
+    <md-field class="search-input md-accent">
       <label>Search</label>
       <md-input></md-input>
       <md-icon>search</md-icon>
     </md-field>
+    <div>&nbsp;</div>
   </div>
 </template>
 

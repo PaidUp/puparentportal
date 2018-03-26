@@ -2,15 +2,25 @@
   height 100vh
 .top-toolbar
   width 100%
+  display: flex
+  flex-flow: row nowrap
+  justify-content: space-between
+  align-items: center
   .logo
     width: 50px
+    img 
+      width 100%
   .search-input
     color: #fff
+    width 400px
+    .md-icon
+      color: #fff
     label,
     input
       -webkit-text-fill-color #fff !important
       color #fff
-    &:after
+    &:after,
+    &:before
       background-color: #fff
 .md-drawer.left-nav
   width: 245px

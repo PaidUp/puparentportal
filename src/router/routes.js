@@ -29,7 +29,7 @@ const routes = [
     component: MainLayout,
     meta: {
       // SKIP LOGIN: change to true
-      isPublic: false
+      isPublic: true
     },
     children: [
       {

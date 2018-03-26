@@ -1,14 +1,63 @@
 .players-view
   .player
     text-align: center
+    margin-top: 20px
+    .name
+      color: $cblue
+    .team
+    .location
+      color: $cgray1
     .md-avatar
       width: 60px
       min-width: 60px
       height: 60px
+  .details,
   .invoices
-    .md-card
-      margin: 0 0 30px 0
-      min-width: 23%;
-      max-width: 23%;
-      -webkit-box-flex: 0;
-      flex: 0 1 23%;
+    .title
+      color: $cgray2
+      margin-bottom: 10px
+  .details
+    .details-box
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      align-items: flex-start
+      padding: 10px 16px 0 16px
+    .details-selects
+      width: 40%
+      display: flex
+      flex-flow: row nowrap
+      justify-content: flex-start
+      align-items: center
+      .season-select
+        width 250px
+        margin-right: 20px
+    .details-numbers
+      width 50%
+      margin-top: 4px
+      display: flex
+      flex-flow: row nowrap
+      justify-content: flex-end
+      align-items: center
+      & > div:not(:last-child)
+        margin-right: 20px
+      .concept
+        color: $cgray1
+      .green
+        color: $cgreen
+      .gray
+        color: $cgray1
+      .red
+        color: $cred
+      .blue
+        color: $cblue
+  .invoices
+    margin-top: 20px
+    .inv-cards
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      align-items: center
+      .md-card
+        margin: 0 0 30px 0
+        width: 23%;

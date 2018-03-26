@@ -18,9 +18,9 @@ function isAutenticated () {
 
 router.beforeEach((to, from, next) => {
   // SKIP LOGIN: comment next if
-  if (!to.meta.isPublic && !isAutenticated()) {
-    return next('login')
-  }
+  // if (!to.meta.isPublic && !isAutenticated()) {
+  //   return next('login')
+  // }
   if (to.name === 'login' && isAutenticated()) {
     return next('/')
   }
