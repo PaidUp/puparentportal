@@ -25,6 +25,24 @@ const dict = {
       dont_have_account: 'Don′t have an account',
       sign_up: 'Sign Up'
     },
+    signup: {
+      first_name: 'First Name',
+      last_name: 'Last Name',
+      email: 'Email',
+      password: 'Password',
+      confirm_password: 'Confirm Password',
+      phone: 'Phone Number',
+      create: 'Create Account',
+      login: 'Login',
+      already_have_account: 'Already have an account?',
+      terms: {
+        agree: 'I agree with PaidUp′s',
+        ts: 'Terms of Service',
+        pp: 'Privacy Policy',
+        and: 'and',
+        stripe: 'Stripe′s Connected Account Agreement'
+      }
+    },
     main: {
       welcome: 'Welcome'
     }
