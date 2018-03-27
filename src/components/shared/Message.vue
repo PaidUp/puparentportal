@@ -1,11 +1,7 @@
-<template>
-  <md-snackbar md-position="center" :md-duration="Infinity" :md-active="showSnackbar">
-    <div>
-      <ul v-for="message in messages" :key="message.id">
-        <li>{{ $t(message.content) }}</li>
-      </ul>
-    </div>
-  </md-snackbar>
+<template lang="pug">
+  md-snackbar(md-position="center" :md-duration="Infinity" :md-active="showSnackbar")
+    ul(v-for="message in messages" :key="message.id")
+      li {{ $t(message.content) }}
 </template>
 
 <script>

@@ -59,10 +59,11 @@
   </md-app-drawer>
   <md-app-content>
     <router-view></router-view>
+    <pu-message></pu-message>
   </md-app-content>
+  
  
 </md-app>
-<pu-message></pu-message>
 </div>
 </template>
 

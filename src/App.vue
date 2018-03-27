@@ -1,6 +1,5 @@
 <template lang="pug">
-#app
-  main-layout
+  main-layout(id="app")
 </template>
 
 <script>
