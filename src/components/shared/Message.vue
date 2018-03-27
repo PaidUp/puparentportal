@@ -1,7 +1,8 @@
 <template lang="pug">
   md-snackbar(md-position="center" :md-duration="Infinity" :md-active="showSnackbar")
-    ul(v-for="message in messages" :key="message.id")
-      li {{ $t(message.content) }}
+    div
+      ul(v-for="message in messages" :key="message.id")
+        li {{ $t(message.content) }}
 </template>
 
 <script>
