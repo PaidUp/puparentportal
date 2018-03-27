@@ -1,4 +1,5 @@
 <template>
+<div>
 <md-app>
   <md-app-toolbar class="md-primary">
     <top-toolbar></top-toolbar>
@@ -59,14 +60,18 @@
   <md-app-content>
     <router-view></router-view>
   </md-app-content>
+ 
 </md-app>
-
+<pu-message></pu-message>
+</div>
 </template>
 
 <script>
 import TopToolbar from './TopToolbar.vue'
+import PuMessage from '@/components/shared/Message.vue'
+// import PuMessage from '@/components/shared/Message.vue'
 export default {
-  components: { TopToolbar },
+  components: { TopToolbar, PuMessage },
   data: function () {
     return {
       msg: 'THEE MSAGE BIATH'

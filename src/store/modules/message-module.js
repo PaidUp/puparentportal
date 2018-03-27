@@ -6,6 +6,7 @@ function addMessage (state, content) {
     type: content.type,
     content: content.payload
   }
+  state.showSnackbar = true
   state.messages = newMessage
 }
 
@@ -28,7 +29,8 @@ const module = {
   namespaced: true,
 
   state: {
-    messages: {}
+    messages: {},
+    showSnackbar: false
   },
 
   mutations: {
@@ -42,6 +44,9 @@ const module = {
       let newMessage = JSON.parse(JSON.stringify(state.messages))
       delete newMessage[id]
       state.messages = newMessage
+      if (!Object.keys(state.messages).length) {
+        state.showSnackbar = false
+      }
     }
   },
   actions: {

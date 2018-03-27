@@ -1,12 +1,14 @@
 <template lang="pug">
 #app
-  router-view
+  main-layout
 </template>
 
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import MainLayout from '@/components/layout/MainLayout.vue'
 export default {
   name: 'app',
+  components: { MainLayout },
   computed: {
     ...mapGetters('userModule', {
       isAutenticated: 'isAutenticated'

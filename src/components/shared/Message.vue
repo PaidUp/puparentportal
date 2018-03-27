@@ -1,30 +1,31 @@
-<template lang="pug">
-  .content
-    article.message(:class="'is-' + value.type", v-for="(value, key) in messages")
-      .message-header
-        p 
-        button.delete(aria-label="delete", @click="remove(key)")
-      .message-body {{ $t(value.content) }}
-        p 
+<template>
+  <md-snackbar md-position="center" :md-duration="Infinity" :md-active="showSnackbar">
+    <div>
+      <ul v-for="message in messages" :key="message.id">
+        <li>{{ $t(message.content) }}</li>
+      </ul>
+    </div>
+  </md-snackbar>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
+  data () {
+    return {
+    }
+  },
   computed: {
     ...mapState('messageModule', {
-      messages: 'messages'
+      messages: 'messages',
+      showSnackbar: 'showSnackbar'
     })
   },
   watch: {
-
   },
 
   methods: {
-    ...mapMutations('messageModule', {
-      remove: 'remove'
-    })
   }
 }
 </script>
