@@ -1,25 +1,24 @@
 <template lang="pug">
-.content
-  .section
-    fb-signin-button(:params="fbSignInParams" @success="onFbLoginSuccess" @error="onFbLoginError") Sign in with Facebook
-  .section
-    .field
-      label.label {{ $t('component.login.email') }}
-      .control
-        input.input(v-model="loginParams.email", type="text", :placeholder="$t('component.login.email')")
-    .field
-      label.label {{ $t('component.login.password') }}
-      .control
-        input.input(v-model="loginParams.password", type="text", :placeholder="$t('component.login.password')")
-    .field
-      .control
-        label.checkbox
-          input(v-model="loginParams.rememberMe", type="checkbox") 
-          span {{ $t('component.login.remember_me') }}
-    .field.is-grouped
-      .control
-        button.button.is-link(@click="login(loginParams)") {{ $t('component.login.submit') }}
-        router-link(to="signup") SignUp
+  div
+    md-field
+      label {{ $t('component.login.email') }}
+      md-input(v-model="loginParams.email")
+
+    md-field
+      label {{ $t('component.login.password') }}
+      md-input(v-model="loginParams.password")
+    div
+      md-button.md-raised.md-primary(@click="login(loginParams)") {{ $t('component.login.submit') }}
+
+    div
+      md-switch.md-primary(v-model="loginParams.rememberMe") {{ $t('component.login.remember_me') }}
+
+    div
+      fb-signin-button(:params="fbSignInParams" @success="onFbLoginSuccess" @error="onFbLoginError") {{ $t('component.login.sign_fb') }}
+
+    div
+      span {{ $t('component.login.dont_have_account') }} 
+        router-link(to="signup") {{ $t('component.login.sign_up') }}  
 
 </template>
 <script>

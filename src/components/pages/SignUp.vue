@@ -21,6 +21,16 @@
         input(v-model="userForm.password" id="password", type="password" placeHolder="password")
         span.pure-form-message-inline required
 
+      .pure-control-group
+        label(for="confirmPassword") Confirm Password
+        input(v-model="confirmPassword" id="confirmPassword", type="password" placeHolder="confirm password")
+        span.pure-form-message-inline required
+
+      .pure-control-group
+        label(for="phone") Phone Number
+        input(v-model="userForm.contacts.phone" id="phone", type="text" placeHolder="Phone")
+        span.pure-form-message-inline required
+
       .pure-controls
         label.pure-checkbox
           input(type="checkbox")  
@@ -33,13 +43,16 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      userForm: {}
+      confirmPassword: '',
+      userForm: {
+        contacts: {}
+      }
     }
   },
   watch: {
     isAutenticated () {
       if (this.isAutenticated) {
-        this.$router.push({ name: 'main' })
+        this.$router.push({ name: 'home' })
       }
     }
   },
