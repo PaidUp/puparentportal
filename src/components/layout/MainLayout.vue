@@ -11,8 +11,6 @@
     <router-view></router-view>
     <pu-message></pu-message>
   </md-app-content>
-  
- 
 </md-app>
 </div>
 </template>
@@ -21,7 +19,6 @@
 import TopToolbar from './TopToolbar.vue'
 import LeftSidebar from './LeftSidebar.vue'
 import PuMessage from '@/components/shared/Message.vue'
-// import PuMessage from '@/components/shared/Message.vue'
 export default {
   components: { TopToolbar, PuMessage, LeftSidebar },
   data: function () {
