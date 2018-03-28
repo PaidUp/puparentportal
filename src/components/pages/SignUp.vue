@@ -1,41 +1,43 @@
 <template lang="pug">
-  .pure-form.pure-form-aligned
-    fieldset
-      .pure-control-group
-        label(for="firsName") First Name
-        input(v-model="userForm.firstName" id="firstName", type="text" placeHolder="first name")
-        span.pure-form-message-inline required
+  div
+    md-field
+      label {{ $t('component.signup.first_name') }}
+      md-input(v-model="userForm.firstName")
+    
+    md-field
+      label {{ $t('component.signup.last_name') }}
+      md-input(v-model="userForm.lastName")
 
-      .pure-control-group
-        label(for="lastName") Last Name
-        input(v-model="userForm.lastName" id="lastName", type="text" placeHolder="last name")
-        span.pure-form-message-inline required
+    md-field
+      label {{ $t('component.signup.email') }}
+      md-input(v-model="userForm.email")
 
-      .pure-control-group
-        label(for="email") Email
-        input(v-model="userForm.email" id="email", type="text" placeHolder="email")
-        span.pure-form-message-inline required
+    md-field
+      label {{ $t('component.signup.password') }}
+      md-input(v-model="userForm.password" type="password")
 
-      .pure-control-group
-        label(for="password") Password
-        input(v-model="userForm.password" id="password", type="password" placeHolder="password")
-        span.pure-form-message-inline required
+    md-field
+      label {{ $t('component.signup.confirm_password') }}
+      md-input(v-model="userForm.confirmPassword", type="password")
 
-      .pure-control-group
-        label(for="confirmPassword") Confirm Password
-        input(v-model="confirmPassword" id="confirmPassword", type="password" placeHolder="confirm password")
-        span.pure-form-message-inline required
+    md-field
+      label {{ $t('component.signup.phone') }}
+      md-input(v-model="userForm.contacts.phone")
 
-      .pure-control-group
-        label(for="phone") Phone Number
-        input(v-model="userForm.contacts.phone" id="phone", type="text" placeHolder="Phone")
-        span.pure-form-message-inline required
+    md-checkbox(v-model="agree") {{ $t('component.signup.terms.agree') }} &nbsp;
+      a(href="#") {{ $t('component.signup.terms.ts') }}
+      span , &nbsp;
+      a(href="#") {{ $t('component.signup.terms.pp') }}
+      span , &nbsp; and &nbsp;
+      a(href="#") {{ $t('component.signup.terms.stripe') }}
+      span .
 
-      .pure-controls
-        label.pure-checkbox
-          input(type="checkbox")  
-          span I've read the terms and conditions
-        button.pure-button.pure-button-primary(type="submit" @click="signup(userForm)") submit
+    div
+      md-button.md-raised.md-primary(@click="signup(userForm)") {{ $t('component.signup.create') }}
+
+    div {{ $t('component.signup.already_have_account') }} &nbsp;
+      router-link(to="login") {{ $t('component.signup.login') }}
+
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
@@ -43,6 +45,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      agree: false,
       confirmPassword: '',
       userForm: {
         contacts: {}
