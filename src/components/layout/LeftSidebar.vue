@@ -16,20 +16,16 @@
           </md-menu-content>
         </md-menu>
       </md-list-item>
-      <!-- <md-list-item>
-        <md-icon>home</md-icon>
-        <span class="md-list-item-text">Dashboard</span>
-      </md-list-item> -->
       <router-link to="players" tag="md-list-item">
         <md-icon>account_circle</md-icon>
         <span class="md-list-item-text">Players</span>
       </router-link>
-      <md-list-item>
+     <router-link to="payments" tag="md-list-item">
         <md-icon>shopping_cart</md-icon>
         <span class="md-list-item-text">Make/Schedule Payment
           <span class="notification-number">9</span>
         </span>
-      </md-list-item>
+      </router-link>
       <md-list-item>
         <md-icon>credit_card</md-icon>
         <span class="md-list-item-text">Payments Accounts</span>

@@ -12,6 +12,17 @@
 a, a:hover, a:visited, a:link, a:active, a > *
   text-decoration: none !important
 
+.md-steppers
+  .md-stepper-header
+    .md-stepper-number
+      background: $clblue !important
+      color: #fff
+    &.md-active
+      .md-stepper-number
+        color: #fff !important
+
+
+
 mixin-placeholder(c)
   &::-webkit-input-placeholder
     color: c;

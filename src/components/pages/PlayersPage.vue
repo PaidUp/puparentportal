@@ -1,5 +1,5 @@
 <template>
-  <div class="players-view">
+  <div class="players-page">
     <div class="player">
       <VPlayerInfo :user="userP"/>
     </div>

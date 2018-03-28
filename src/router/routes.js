@@ -5,6 +5,7 @@ import Bank from '@/components/payment/Bank.vue'
 import Accounts from '@/components/payment/Accounts.vue'
 import Welcome from '@/components/pages/Welcome.vue'
 import PlayersPage from '@/components/pages/PlayersPage.vue'
+import PaymentsPage from '@/components/pages/PaymentsPage.vue'
 
 const routes = [
   {
@@ -31,6 +32,10 @@ const routes = [
   {
     path: '/players',
     component: PlayersPage
+  },
+  {
+    path: '/payments',
+    component: PaymentsPage
   },
   {
     path: '/card',
