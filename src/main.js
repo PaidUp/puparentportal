@@ -9,6 +9,7 @@ import FBSignInButton from 'vue-facebook-signin-button'
 import LoadScript from 'vue-plugin-load-script'
 // eslint-disable-next-line
 import fs from '@/vendor/fb'
+import Vuelidate from 'vuelidate'
 
 // MATERIAL DESIGN COMPONENTS START
 import VueMaterial from 'vue-material'
@@ -20,6 +21,7 @@ Vue.use(VueMaterial)
 
 Vue.use(LoadScript)
 Vue.use(FBSignInButton)
+Vue.use(Vuelidate)
 
 Vue.config.productionTip = false
 
