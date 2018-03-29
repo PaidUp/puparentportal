@@ -1,14 +1,18 @@
 <template lang="pug">
   div
-    md-field
+    md-field(:class="{'md-invalid': $v.loginParams.email.$error}")
       label {{ $t('component.login.email') }}
-      md-input(v-model="loginParams.email")
+      md-input(v-model.trim="loginParams.email" @input="$v.loginParams.email.$touch()")
+      span.md-error(v-if="!$v.loginParams.email.required") {{ $t('validations.required', { field: 'Email' }) }}
+      span.md-error(v-if="!$v.loginParams.email.email") {{ $t('validations.email') }}
 
-    md-field
+    md-field(:class="{'md-invalid': $v.loginParams.password.$error}")
       label {{ $t('component.login.password') }}
-      md-input(v-model="loginParams.password")
+      md-input(v-model.trim="loginParams.password" @input="$v.loginParams.password.$touch()" type="password")
+      span.md-error(v-if="!$v.loginParams.password.required") {{ $t('validations.required', { field: 'Password' }) }}
+
     div
-      md-button.md-raised.md-primary(@click="login(loginParams)") {{ $t('component.login.submit') }}
+      md-button.md-raised.md-primary(@click="submit") {{ $t('component.login.submit') }}
 
     div
       md-switch.md-primary(v-model="loginParams.rememberMe") {{ $t('component.login.remember_me') }}
@@ -23,6 +27,7 @@
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
+import { required, email } from 'vuelidate/lib/validators'
 
 export default {
   data () {
@@ -53,7 +58,27 @@ export default {
       login: 'login',
       onFbLoginSuccess: 'onFbLoginSuccess',
       onFbLoginError: 'onFbLoginError'
-    })
+    }),
+    ...mapActions('messageModule', {
+      setWarning: 'setWarning'
+    }),
+    submit () {
+      if (this.$v.loginParams.$invalid) {
+        return this.setWarning('validations.form')
+      }
+      this.login()
+    }
+  },
+  validations: {
+    loginParams: {
+      email: {
+        email,
+        required
+      },
+      password: {
+        required
+      }
+    }
   }
 }
 </script>

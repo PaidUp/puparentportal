@@ -60,6 +60,16 @@ const dict = {
       add_bank_success: 'Your bank account was added successfully',
       add_bank_fail: 'Fail adding your bank account'
     }
+  },
+  validations: {
+    agree: 'Agree terms and conditions',
+    form: 'Please fill form correctly',
+    email: 'Must be a valid email',
+    required: '{field} is required',
+    numeric: '{field} is numeric',
+    min_length: '{field} must have at least {value} letters.',
+    min_length_num: '{field} must have at least {value} digits.',
+    identical: '{field} must be identical.'
   }
 }
 
