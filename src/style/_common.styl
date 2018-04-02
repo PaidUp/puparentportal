@@ -1,3 +1,4 @@
+// MAIN FIXES
 .md-app
   height 100vh
 .md-drawer
@@ -7,11 +8,12 @@
   background: #F5F5F5 !important
   border-left: none
   box-shadow:  inset 5px 0 5px -5px $cgray2
-.md-button-content
-  text-transform: none
+
+// LINKS
 a, a:hover, a:visited, a:link, a:active, a > *
   text-decoration: none !important
 
+// STEPPERS
 .md-steppers
   .md-stepper-header
     .md-stepper-number
@@ -21,8 +23,19 @@ a, a:hover, a:visited, a:link, a:active, a > *
       .md-stepper-number
         color: #fff !important
 
+// BUTTONS
+.md-button
+  .md-ripple
+    padding: 0 14px
+.md-button-content
+  text-transform: none
+// Light Blue button
+.md-button.md-accent.lblue
+  color $clblue
+  &.md-raised
+    background-color $clblue !important
 
-
+// PLACEHOLDER MIXIN
 mixin-placeholder(c)
   &::-webkit-input-placeholder
     color: c;
@@ -32,3 +45,42 @@ mixin-placeholder(c)
     color: c;
   &:-moz-placeholder
     color: c;
+
+// TEXT
+.title
+  font-size: 18px
+  &.bold
+    font-weight: 500
+  &.bolder
+    font-weight: 600
+  
+.caption
+  color: $cgray2
+  font-size: 11px
+  line-height: 1.4
+  &.red
+    color: $cred
+
+.number-big
+  font-size: 22px
+  font-weight: 600
+
+// COLORS
+.cred
+  color $cred!important
+.cblue
+  color $cblue!important
+.cgreen
+  color $cgreen!important
+.cgray
+  color $cgray1!important
+.clblue
+  color $clblue!important
+
+// ICONS
+.md-icon
+  &.md-size-c
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    font-size: 32px!important
