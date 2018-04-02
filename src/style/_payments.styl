@@ -46,3 +46,74 @@
       flex-flow: row wrap
       justify-content: center
       align-items: center
+  .payment-accounts
+    display: flex
+    flex-flow: row wrap
+    justify-content: flex-start
+    align-items: center
+    .account
+      width 200px
+      height 140px
+      margin: 0 20px 20px 0
+      padding: 0px
+      text-align: center
+      cursor: pointer
+      display: flex
+      flex-flow: column wrap
+      justify-content: center
+      align-items: center
+      .md-icon
+        margin: 0 auto
+        color: $cblack
+      .name
+        color: $cblue
+  .payment-plans
+    display: flex
+    flex-flow: row wrap
+    justify-content: flex-start
+    align-items: center
+    .payment-plan
+      width 200px
+      height 160px
+      margin: 0 20px 20px 0
+      padding: 10px
+      text-align: center
+      cursor: pointer
+      .md-subheading
+        color: $cblue
+        line-height: 1.4
+        height: 60px;
+      .md-title
+        color: $cgreen
+        font-weight: bold
+    .payment-single
+      width 200px
+      height 180px
+      margin: 0 20px 20px 0
+      padding: 10px
+      cursor: pointer
+      display: flex
+      flex-flow: column nowrap
+      justify-content: space-between
+      align-items: flex-start
+      .details
+        display: flex
+        flex-flow: row nowrap
+        justify-content: space-between
+        align-items: center
+        width 100%
+        .icon-side
+          text-align: center
+        .amount-side
+          .caption
+            text-align: right
+          .number-big
+            text-align: right
+            margin-top: 5px
+      .actions
+        width 100%
+        text-align: center
+        .md-button
+          margin: 0
+  .additional-info-box
+    max-width 300px
