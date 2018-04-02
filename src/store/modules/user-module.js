@@ -28,6 +28,11 @@ const module = {
     token: localStorage.token || '',
     user: {
       firstName: 'HardcodedFirstName'
+    },
+    fbUser: {
+      contacts: {
+        phone: ''
+      }
     }
   },
 
@@ -60,6 +65,9 @@ const module = {
       localStorage.removeItem('user')
       state.user = {}
       state.token = ''
+    },
+    setFbUser (state, data) {
+      state.fbUser = data
     }
   },
 
@@ -94,6 +102,27 @@ const module = {
       fbResponse.rememberMe = context.state.loginParams.rememberMe
       return userService
         .fbLogin(fbResponse)
+        .then(data => {
+          if (data.fbUser) {
+            return context.commit('setFbUser', {
+              firstName: data.fbUser.first_name,
+              lastName: data.fbUser.last_name,
+              email: data.fbUser.email,
+              contacts: {
+                phone: ''
+              }
+            })
+          }
+          context.commit('setSession', data)
+        })
+        .catch(err => {
+          handlerError(err, context)
+        })
+    },
+    onFbSignupSuccess (context, fbResponse) {
+      fbResponse.phone = context.state.fbUser.contacts.phone
+      return userService
+        .fbSignup(fbResponse)
         .then(data => {
           context.commit('setSession', data)
         })

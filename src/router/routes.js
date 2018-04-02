@@ -1,5 +1,6 @@
 import Login from '@/components/pages/Login.vue'
 import SignUp from '@/components/pages/SignUp.vue'
+import FbSignUp from '@/components/pages/FbSignUp.vue'
 import Card from '@/components/payment/Card.vue'
 import Bank from '@/components/payment/Bank.vue'
 import Accounts from '@/components/payment/Accounts.vue'
@@ -20,6 +21,14 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: SignUp,
+    meta: {
+      isPublic: true
+    }
+  },
+  {
+    path: '/signup/fb',
+    name: 'fbSignup',
+    component: FbSignUp,
     meta: {
       isPublic: true
     }

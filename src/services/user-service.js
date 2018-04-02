@@ -30,6 +30,11 @@ class UserService {
       .post('/login/fb', fbResponse)
   }
 
+  fbSignup (fbResponse) {
+    return trae
+      .post('/signup/fb', fbResponse)
+  }
+
   signup (userForm) {
     return trae
       .post('/', userForm)

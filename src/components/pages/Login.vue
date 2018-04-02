@@ -18,7 +18,7 @@
       md-switch.md-primary(v-model="loginParams.rememberMe") {{ $t('component.login.remember_me') }}
 
     div
-      fb-signin-button(:params="fbSignInParams" @success="onFbLoginSuccess" @error="onFbLoginError") {{ $t('component.login.sign_fb') }}
+      fb-signin-button(:params="fbSignInParams" @success="onFbLoginSuccess" @error="onFbLoginError") {{ $t('component.login.login_fb') }}
 
     div
       span {{ $t('component.login.dont_have_account') }} 
@@ -43,11 +43,17 @@ export default {
       if (this.isAutenticated) {
         this.$router.push({ name: 'home' })
       }
+    },
+    fbUser () {
+      if (this.fbUser.email) {
+        this.$router.push({ name: 'fbSignup' })
+      }
     }
   },
   computed: {
     ...mapState('userModule', {
-      loginParams: 'loginParams'
+      loginParams: 'loginParams',
+      fbUser: 'fbUser'
     }),
     ...mapGetters('userModule', {
       isAutenticated: 'isAutenticated'

@@ -46,7 +46,7 @@
       md-button.md-raised.md-primary(@click="submit") {{ $t('component.signup.create') }}
 
     div {{ $t('component.signup.already_have_account') }} &nbsp;
-      router-link(to="login") {{ $t('component.signup.login') }}
+      router-link(to="../login") {{ $t('component.signup.login') }}
 
 </template>
 <script>

@@ -22,6 +22,7 @@ const dict = {
       submit: 'Login',
       forgot_password: 'Forgot Password?',
       sign_fb: 'Sign in with Facebook',
+      login_fb: 'Login with Facebook',
       dont_have_account: 'Don′t have an account',
       sign_up: 'Sign Up'
     },
