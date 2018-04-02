@@ -1,8 +1,8 @@
 <template lang="pug">
   div
     h1 Add Credit Card:
-    card.stripe-card(:class='{ complete }' :stripe='publicKey' :options='stripeOptions')
-    button.pay-with-stripe(@click='add' :disabled='!complete') Add
+    card.stripe-card(:class='{ complete }' :stripe='publicKey' :options='stripeOptions' @change='complete = $event.complete')
+    md-button.md-raised.md-primary(@click='add' :disabled='!complete') Add
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
   data () {
     return {
       publicKey: config.stripe.publicKey,
-      complete: true,
+      complete: false,
       stripeOptions: {
         // see https://stripe.com/docs/stripe.js#element-options for details
       }
