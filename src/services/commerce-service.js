@@ -17,6 +17,11 @@ class CommerceService {
         last4,
         customInfo })
   }
+
+  ordersByPlayer (beneficiaryKey) {
+    return trae
+      .get('/order/beneficiary/' + encodeURI(beneficiaryKey))
+  }
 }
 
 commerceService = new CommerceService()

@@ -1,7 +1,7 @@
 <template>
   <div class="players-page">
     <div class="player">
-      <VPlayerInfo :user="userP"/>
+      <VPlayerInfo :player="beneficiary"/>
     </div>
     <div class="details">
       <div class="md-subheading title">Details</div>
@@ -24,49 +24,28 @@
             </md-select>
           </md-field>
         </div>
-        <div class="details-numbers">
-          <div>
-            <div class="md-body-2 concept">Total</div>
-            <div class="md-title">$3,250.<sup>00</sup></div>
-          </div>
-          <div>
-            <div class="md-body-2 concept">Paid</div>
-            <div class="md-title green">$1,250.<sup>00</sup></div>
-          </div>
-          <div>
-            <div class="md-body-2 concept">Unpaid</div>
-            <div class="md-title gray">$1,400.<sup>00</sup></div>
-          </div>
-          <div>
-            <div class="md-body-2 concept">Overdue</div>
-            <div class="md-title red">$350.<sup>00</sup></div>
-          </div>
-          <div>
-            <div class="md-body-2 concept">Credited</div>
-            <div class="md-title blue">$250.<sup>00</sup></div>
-          </div>
-        </div>
+        <VPlayerDetails v-if="order" :invoices="order.invoices" />
       </md-content>
     </div>
-    <div class="invoices">
+    <div class="invoices" v-if="order">
       <div class="md-subheading title">Invoices</div>
-      <div class="inv-cards">
-        <VPlayerInvoices :cards="cards" v-for="card in cards" :key="card" />
+      <div class="inv-cards" >
+        <VPlayerInvoices :invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import {
-    mapState
-  } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import VPlayerInfo from '@/components/shared/VPlayerInfo.vue'
+  import VPlayerDetails from '@/components/shared/VPlayerDetails.vue'
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
   export default {
     components: {
       VPlayerInfo,
-      VPlayerInvoices
+      VPlayerInvoices,
+      VPlayerDetails
     },
     data: function () {
       return {
@@ -74,13 +53,36 @@
           name: 'Enzo Perez',
           avatar: 'avatar.jpg',
           team: 'Isotopes of Springfield'
-        },
-        cards: [1, 2, 3, 4, 5]
+        }
       }
     },
     computed: {
       ...mapState('userModule', {
         user: 'user'
+      }),
+      ...mapState('playerModule', {
+        beneficiary: 'beneficiary',
+        orders: 'orders'
+      }),
+      order () {
+        if (this.orders.length) {
+          let order = this.orders[this.orders.length - 1]
+          order.invoices.sort((a, b) => {
+            a.dataCharge = new Date(a.dataCharge)
+            b.dataCharge = new Date(b.dataCharge)
+            return a.dataCharge.getTime() - b.dataCharge.getTime()
+          })
+          return order
+        }
+        return []
+      }
+    },
+    mounted () {
+      this.getOrders()
+    },
+    methods: {
+      ...mapActions('playerModule', {
+        getOrders: 'getOrders'
       })
     }
   }

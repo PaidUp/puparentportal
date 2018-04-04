@@ -3,8 +3,8 @@
     <md-avatar>
       <img src="@/assets/avatar.jpg" />
     </md-avatar>
-    <div class="name md-title">{{user.name}}</div>
-    <div class="team md-subheading">{{user.team}}</div>
+    <div class="name md-title">{{player.firstName}} {{player.lastName}}</div>
+    <div class="team md-subheading">team</div>
     <md-button class="md-primary">Edit</md-button>
   </div>
 </template>
@@ -12,11 +12,12 @@
 <script>
   export default {
     props: {
-      user: Object
+      player: Object,
+      team: Object
     },
     computed: {
       avatarUrl: function () {
-        return '/assets/' + this.user.avatar
+        return '/assets/'
       }
     }
   }

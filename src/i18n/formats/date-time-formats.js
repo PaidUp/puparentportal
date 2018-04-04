@@ -1,8 +1,8 @@
 const dateTimeFormats = {
-  'en-US': {
+  'en': {
     short: {
       year: 'numeric',
-      month: 'short',
+      month: 'numeric',
       day: 'numeric'
     },
     long: {
