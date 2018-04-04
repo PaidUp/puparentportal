@@ -19,6 +19,7 @@
     "build-prod": "export APP_ENV=production && cp src/config/production.js src/config/index.js && npm run build"
   },
   "dependencies": {
+    "numeral": "^2.0.6",
     "trae": "^1.4.2",
     "vue": "^2.5.2",
     "vue-facebook-signin-button": "^1.0.1",
