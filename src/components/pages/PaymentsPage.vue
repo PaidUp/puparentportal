@@ -3,8 +3,7 @@
     <div class="md-title">
       Make/Schedule Payment
     </div>
-    <!-- md-linear -->
-    <md-steppers md-vertical md-dynamic-height :md-active-step.sync="active">
+    <md-steppers md-vertical md-linear md-dynamic-height :md-active-step.sync="active">
       <md-step id="step1" md-label="Player" md-description="Choose a player or add a new one" :md-done.sync="step1">
         <div class="players">
           <div class="player md-elevation-2" @click="setDone('step1', 'step2')">
@@ -47,19 +46,19 @@
 
       <md-step id="step3" md-label="Payment Account" :md-done.sync="step3">
         <div class="payment-accounts">
-          <div class="account md-elevation-2" @click="setDone('step1', 'step2')">
+          <div class="account md-elevation-2" @click="setDone('step3', 'step4')">
             <md-icon class="md-size-2x">account_balance</md-icon>
             <div class="name md-body-2">Felipe Fernandez</div>
             <div class="card-details md-caption">Visa ****12332</div>
             <div class="card-details md-caption">Exp. 11/21</div>
           </div>
-          <div class="account md-elevation-2" @click="setDone('step1', 'step2')">
+          <div class="account md-elevation-2" @click="setDone('step3', 'step4')">
             <md-icon class="md-size-2x">account_balance</md-icon>
             <div class="name md-body-2">Felipe Fernandez</div>
             <div class="card-details md-caption">Visa ****12332</div>
             <div class="card-details md-caption">Exp. 11/21</div>
           </div>
-          <div class="account md-elevation-2" @click="setDone('step1', 'step2')">
+          <div class="account md-elevation-2" @click="setDone('step3', 'step4')">
             <md-icon class="md-size-2x">account_balance</md-icon>
             <div class="name md-body-2">Felipe Fernandez</div>
             <div class="card-details md-caption">Visa ****12332</div>
@@ -155,7 +154,7 @@
             </md-select>
           </md-field>
         </div>
-        <md-button class="lblue md-accent md-raised">NEXT</md-button>
+        <md-button class="lblue md-accent md-raised" @click="setDone('step5', 'step6')">NEXT</md-button>
         <md-button class="lblue md-accent">CANCEL</md-button>
       </md-step>
       <md-step id="step6" md-label="Document Signature">

@@ -16,20 +16,93 @@
           </md-menu-content>
         </md-menu>
       </md-list-item>
-      <router-link to="players" tag="md-list-item">
+      <md-divider></md-divider>
+      <md-list-item md-expand>
+        <span class="md-list-item-text ca1 bold">Player Payment History</span>
+        <md-list slot="md-expand">
+          <md-list-item to="/players/1">
+            <md-avatar>
+              <img src="@/assets/avatar.jpg" />
+            </md-avatar>
+            <div class="md-list-item-text">
+              <div>
+                <span>Mylo Fernandez</span>
+                <br>
+                <span class="caption">Isotopes Voleyball Club</span>
+              </div>
+            </div>
+            <span class="notification-number">9</span>
+          </md-list-item>
+          <md-list-item to="/players/2">
+            <md-avatar>
+              <img src="@/assets/avatar.jpg" />
+            </md-avatar>
+            <div class="md-list-item-text">
+              <div>
+                <span>Mylo Fernandez</span>
+                <br>
+                <span class="caption">Isotopes Voleyball Club</span>
+              </div>
+            </div>
+          </md-list-item>
+          <md-list-item>
+            <md-icon class="add-icon">add</md-icon>
+            <div class="md-list-item-text">
+              <div>
+                Add new player
+              </div>
+            </div>
+          </md-list-item>
+        </md-list>
+      </md-list-item>
+      <md-list-item md-expand>
+        <span class="md-list-item-text ca1 bold">Pay New Invoice</span>
+        <md-list slot="md-expand">
+          <md-list-item to="/payments/1">
+            <md-avatar>
+              <img src="@/assets/avatar.jpg" />
+            </md-avatar>
+            <div class="md-list-item-text">
+              <div>
+                <span>Mylo Fernandez</span>
+                <br>
+                <span class="caption">Isotopes Voleyball Club</span>
+              </div>
+            </div>
+            <span class="notification-number">9</span>
+          </md-list-item>
+          <md-list-item to="/payments/2">
+            <md-avatar>
+              <img src="@/assets/avatar.jpg" />
+            </md-avatar>
+            <div class="md-list-item-text">
+              <div>
+                <span>Mylo Fernandez</span>
+                <br>
+                <span class="caption">Isotopes Voleyball Club</span>
+              </div>
+            </div>
+          </md-list-item>
+          <md-list-item>
+            <md-icon class="add-icon">add</md-icon>
+            <div class="md-list-item-text">
+              <div>
+                Make New Payment(s)
+              </div>
+            </div>
+          </md-list-item>
+        </md-list>
+      </md-list-item>
+      <!-- <router-link to="players" tag="md-list-item">
         <md-icon>account_circle</md-icon>
         <span class="md-list-item-text">Players</span>
       </router-link>
-     <router-link to="payments" tag="md-list-item">
+      <router-link to="payments" tag="md-list-item">
         <md-icon>shopping_cart</md-icon>
         <span class="md-list-item-text">Make/Schedule Payment
           <span class="notification-number">9</span>
         </span>
-      </router-link>
-      <md-list-item>
-        <md-icon>credit_card</md-icon>
-        <span class="md-list-item-text">Payments Accounts</span>
-      </md-list-item>
+      </router-link> -->
     </md-list>
     <md-list class="bottom-list">
       <md-list-item>

@@ -39,11 +39,11 @@ const routes = [
     component: Welcome
   },
   {
-    path: '/players',
+    path: '/players/:id',
     component: PlayersPage
   },
   {
-    path: '/payments',
+    path: '/payments/:id',
     component: PaymentsPage
   },
   {

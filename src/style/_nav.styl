@@ -51,29 +51,32 @@
     .md-list-item
       .md-icon
         color: $ca1
-      &.router-link-active
-        background: $cgray3
+        svg
+          fill: $ca1
+        &.add-icon
+          margin-right: 20px
+          width: 36px
+      .router-link-active
+        background: $cgray4
         box-shadow: inset -3px 0 0 $ca1
         .md-list-item-text
           color: $ca1
       .md-list-item-text
         color: $cgray1
-        display: flex
-        flex-flow: row nowrap
-        justify-content: space-between
-        align-items: center
-        .notification-number
-          background: red
-          color: #fff
-          height 22px
-          width 22px
-          line-height: 22px
-          text-align: center
-          border-radius: 100%
-          font-weight: bold
+        .caption
+          font-size: 13px
+      .notification-number
+        background: red
+        color: #fff
+        height 22px
+        width 22px
+        line-height: 22px
+        text-align: center
+        border-radius: 100%
+        font-weight: bold
   .bottom-list
     width: 100%;
-    border-top: 1px solid $cgray3
+    border-top: 1px solid $cgray4
     .md-list-item
       .md-icon
         color: $cgray2
