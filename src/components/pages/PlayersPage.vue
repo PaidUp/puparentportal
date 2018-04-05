@@ -78,7 +78,12 @@
       }
     },
     mounted () {
-      this.getOrders()
+      if (this.user.email) this.getOrders(this.user.email)
+    },
+    watch: {
+      user () {
+        this.getOrders(this.user.email)
+      }
     },
     methods: {
       ...mapActions('playerModule', {

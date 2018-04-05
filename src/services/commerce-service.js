@@ -18,9 +18,13 @@ class CommerceService {
         customInfo })
   }
 
-  ordersByPlayer (beneficiaryKey) {
+  ordersByPlayer (params) {
+    const organizationId = encodeURI(params.organizationId)
+    const beneficiaryFirstName = encodeURI(params.firstName)
+    const beneficiaryLastName = encodeURI(params.lastName)
+    const userEmail = encodeURI(params.userEmail)
     return trae
-      .get('/order/beneficiary/' + encodeURI(beneficiaryKey))
+      .get(`/order/beneficiary?organizationId=${organizationId}&beneficiaryFirstName=${beneficiaryFirstName}&beneficiaryLastName=${beneficiaryLastName}&userEmail=${userEmail}`)
   }
 }
 
