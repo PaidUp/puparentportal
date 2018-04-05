@@ -17,82 +17,9 @@
         </md-menu>
       </md-list-item>
       <md-divider></md-divider>
-      <md-list-item md-expand>
-        <span class="md-list-item-text ca1 bold">Player Payment History</span>
-        <md-list slot="md-expand">
-          <md-list-item to="/players/1">
-            <md-avatar>
-              <img src="@/assets/avatar.jpg" />
-            </md-avatar>
-            <div class="md-list-item-text">
-              <div>
-                <span>Mylo Fernandez</span>
-                <br>
-                <span class="caption">Isotopes Voleyball Club</span>
-              </div>
-            </div>
-            <span class="notification-number">9</span>
-          </md-list-item>
-          <md-list-item to="/players/2">
-            <md-avatar>
-              <img src="@/assets/avatar.jpg" />
-            </md-avatar>
-            <div class="md-list-item-text">
-              <div>
-                <span>Mylo Fernandez</span>
-                <br>
-                <span class="caption">Isotopes Voleyball Club</span>
-              </div>
-            </div>
-          </md-list-item>
-          <md-list-item>
-            <md-icon class="add-icon">add</md-icon>
-            <div class="md-list-item-text">
-              <div>
-                Add new player
-              </div>
-            </div>
-          </md-list-item>
-        </md-list>
-      </md-list-item>
-      <md-list-item md-expand>
-        <span class="md-list-item-text ca1 bold">Pay New Invoice</span>
-        <md-list slot="md-expand">
-          <md-list-item to="/payments/1">
-            <md-avatar>
-              <img src="@/assets/avatar.jpg" />
-            </md-avatar>
-            <div class="md-list-item-text">
-              <div>
-                <span>Mylo Fernandez</span>
-                <br>
-                <span class="caption">Isotopes Voleyball Club</span>
-              </div>
-            </div>
-            <span class="notification-number">9</span>
-          </md-list-item>
-          <md-list-item to="/payments/2">
-            <md-avatar>
-              <img src="@/assets/avatar.jpg" />
-            </md-avatar>
-            <div class="md-list-item-text">
-              <div>
-                <span>Mylo Fernandez</span>
-                <br>
-                <span class="caption">Isotopes Voleyball Club</span>
-              </div>
-            </div>
-          </md-list-item>
-          <md-list-item>
-            <md-icon class="add-icon">add</md-icon>
-            <div class="md-list-item-text">
-              <div>
-                Make New Payment(s)
-              </div>
-            </div>
-          </md-list-item>
-        </md-list>
-      </md-list-item>
+      <pu-player-payment-history v-if="beneficiary" :beneficiaries="[beneficiary]"/>
+      <pu-pay-new-invoice v-if="beneficiary" :beneficiaries="[beneficiary]"/>
+
       <!-- <router-link to="players" tag="md-list-item">
         <md-icon>account_circle</md-icon>
         <span class="md-list-item-text">Players</span>
@@ -104,37 +31,32 @@
         </span>
       </router-link> -->
     </md-list>
-    <md-list class="bottom-list">
-      <md-list-item>
-        <md-icon>send</md-icon>
-        <a class="md-list-item-text" href="mailto:support@getpaidup.com">
-          <div>Email Support</div>
-          <div>support@getpaidup.com</div>
-        </a>
-      </md-list-item>
-      <md-list-item>
-        <md-icon>call</md-icon>
-        <a class="md-list-item-text" href="tel:855-764-3232">
-          <div>Call Support</div>
-          <div>(855) 764-3232</div>
-        </a>
-      </md-list-item>
-      <md-list-item>
-        <md-icon>help</md-icon>
-        <a class="md-list-item-text" href="#">
-          Help Articles
-        </a>
-        <md-icon>launch</md-icon>
-      </md-list-item>
-    </md-list>
+    <pu-botton />
   </div>
 </template>
 
 <script>
+  import PuItem from './leftSidebar/PuItem.vue'
+  import PuPlayerPaymentHistory from './leftSidebar/PuPlayerPaymentHistory.vue'
+  import PuPayNewInvoice from './leftSidebar/PuPayNewInvoice.vue'
+  import PuBotton from './leftSidebar/PuBotton.vue'
+  import { mapState } from 'vuex'
+
   export default {
+    components: { PuItem, PuBotton, PuPlayerPaymentHistory, PuPayNewInvoice },
     data: function () {
       return {
         msg: 'THEE MSAGE BIATH'
+      }
+    },
+    computed: {
+      ...mapState('playerModule', {
+        beneficiary: 'beneficiary'
+      })
+    },
+    methods: {
+      click () {
+        console.log('clic')
       }
     }
   }
