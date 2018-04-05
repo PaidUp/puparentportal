@@ -23,7 +23,6 @@
     div
       span {{ $t('component.login.dont_have_account') }} 
         router-link(to="signup") {{ $t('component.login.sign_up') }}  
-
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
