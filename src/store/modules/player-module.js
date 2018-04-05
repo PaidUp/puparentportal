@@ -6,10 +6,10 @@ const module = {
   state: {
     beneficiary: {
       _id: '5ac3c604d9903c3bdca904f3',
-      key: '5ab172323ae5252745ae2af8_testfirsname2_testlastname2',
-      organizationId: '5ab172323ae5252745ae2af8',
-      firstName: 'testFirsName2',
-      lastName: 'testLastName2',
+      organizationId: '5a85cfd53ae52527453f9fa2',
+      organizationName: 'Isotopes Baseball',
+      firstName: 'John',
+      lastName: 'Doe',
       type: 'athlete',
       status: 'active',
       assigneesEmail: [
@@ -25,8 +25,13 @@ const module = {
     }
   },
   actions: {
-    getOrders (context) {
-      return commerceService.ordersByPlayer(context.state.beneficiary.key).then(orders => {
+    getOrders (context, userEmail) {
+      return commerceService.ordersByPlayer({
+        organizationId: context.state.beneficiary.organizationId,
+        firstName: context.state.beneficiary.firstName,
+        lastName: context.state.beneficiary.lastName,
+        userEmail
+      }).then(orders => {
         context.commit('setOrders', orders)
       })
     }
