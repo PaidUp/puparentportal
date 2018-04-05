@@ -1,13 +1,12 @@
 <template lang="pug">
 md-list-item(:to="to")
-  md-avatar
-    img(src="@/assets/avatar.jpg")
+  md-avatar.md-avatar-icon.md-accent
+    md-icon account_balance
   .md-list-item-text
     div
       span {{ item.title }}
       br
       span.caption {{ item.description }}
-  span.notification-number(v-if="item.notification") {{ item.notification }}
 </template>
 <script>
 export default {
