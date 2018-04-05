@@ -93,16 +93,51 @@
           </md-list-item>
         </md-list>
       </md-list-item>
-      <!-- <router-link to="players" tag="md-list-item">
-        <md-icon>account_circle</md-icon>
-        <span class="md-list-item-text">Players</span>
-      </router-link>
-      <router-link to="payments" tag="md-list-item">
-        <md-icon>shopping_cart</md-icon>
-        <span class="md-list-item-text">Make/Schedule Payment
-          <span class="notification-number">9</span>
-        </span>
-      </router-link> -->
+      <md-list-item md-expand>
+        <span class="md-list-item-text ca1 bold">Payment Accounts</span>
+        <md-list slot="md-expand">
+          <md-list-item>
+            <md-avatar>
+              <img src="@/assets/avatar.jpg" />
+            </md-avatar>
+            <div class="md-list-item-text">
+              <div>
+                <span>Felipe Fernandez</span>
+                <br>
+                <span class="caption">American Express****2341</span>
+              </div>
+            </div>
+          </md-list-item>
+          <md-list-item>
+            <md-avatar class="md-avatar-icon md-accent">
+              <md-icon>account_balance</md-icon>
+            </md-avatar>
+            <div class="md-list-item-text">
+              <div>
+                <span>Bank of America</span>
+                <br>
+                <span class="caption">Account ****2414</span>
+              </div>
+            </div>
+          </md-list-item>
+          <md-list-item>
+            <md-icon class="add-icon">add</md-icon>
+            <div class="md-list-item-text">
+              <div>
+                Add New Card
+              </div>
+            </div>
+          </md-list-item>
+          <md-list-item>
+            <md-icon class="add-icon">add</md-icon>
+            <div class="md-list-item-text">
+              <div>
+                Add New Bank
+              </div>
+            </div>
+          </md-list-item>
+        </md-list>
+      </md-list-item>
     </md-list>
     <md-list class="bottom-list">
       <md-list-item>
