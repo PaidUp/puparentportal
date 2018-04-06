@@ -1,6 +1,6 @@
 import LoginPage from '@/components/pages/LoginPage.vue'
-import SignUp from '@/components/pages/SignUp.vue'
-import FbSignUp from '@/components/pages/FbSignUp.vue'
+import SignUpPage from '@/components/pages/SignUpPage.vue'
+import FbSignUpPage from '@/components/pages/FbSignUpPage.vue'
 import Card from '@/components/payment/Card.vue'
 import Bank from '@/components/payment/Bank.vue'
 import Accounts from '@/components/payment/Accounts.vue'
@@ -11,22 +11,6 @@ import MainLayout from '@/components/layout/MainLayout.vue'
 import PublicLayout from '@/components/layout/PublicLayout.vue'
 
 const routes = [
-  {
-    path: '/signup',
-    name: 'signup',
-    component: SignUp,
-    meta: {
-      isPublic: true
-    }
-  },
-  {
-    path: '/signup/fb',
-    name: 'fbSignup',
-    component: FbSignUp,
-    meta: {
-      isPublic: true
-    }
-  },
   {
     path: '/',
     component: MainLayout,
@@ -74,6 +58,22 @@ const routes = [
         path: '/login',
         name: 'login',
         component: LoginPage
+      },
+      {
+        path: '/signup',
+        name: 'signup',
+        component: SignUpPage,
+        meta: {
+          isPublic: true
+        }
+      },
+      {
+        path: '/signup/fb',
+        name: 'fbSignup',
+        component: FbSignUpPage,
+        meta: {
+          isPublic: true
+        }
       }
     ]
   }

@@ -23,7 +23,7 @@
     <div>
       <fb-signin-button :params="fbSignInParams" @success="onFbLoginSuccess" @error="onFbLoginError" class="fb-button md-elevation-4">{{ $t('component.login.login_fb') }}</fb-signin-button>
     </div>
-    <div class="no-account-box bold">
+    <div class="last-info-box">
       <span>
         {{ $t('component.login.dont_have_account') }}
         <router-link to="signup" class="clblue signup-link">{{ $t('component.login.sign_up') }} </router-link>
