@@ -1,7 +1,7 @@
 <template>
   <div class="players-page">
     <div class="player">
-      <VPlayerInfo :player="beneficiary"/>
+      <VPlayerInfo v-if="beneficiary" :player="beneficiary"/>
     </div>
     <div class="details">
       <div class="md-subheading title">Details</div>
@@ -49,11 +49,6 @@
     },
     data: function () {
       return {
-        userP: {
-          name: 'Enzo Perez',
-          avatar: 'avatar.jpg',
-          team: 'Isotopes of Springfield'
-        }
       }
     },
     computed: {
@@ -61,9 +56,18 @@
         user: 'user'
       }),
       ...mapState('playerModule', {
-        beneficiary: 'beneficiary',
-        orders: 'orders'
+        orders: 'orders',
+        beneficiaries: 'beneficiaries'
       }),
+      beneficiary () {
+        if (this.beneficiaries) {
+          let id = this.$route.params.id
+          return this.beneficiaries.find(function (element) {
+            return element._id === id
+          })
+        }
+        return null
+      },
       order () {
         if (this.orders.length) {
           let order = this.orders[this.orders.length - 1]
@@ -75,14 +79,21 @@
           return order
         }
         return []
+      },
+      loaded () {
+        return (this.user && this.beneficiary)
       }
     },
     mounted () {
-      if (this.user.email) this.getOrders(this.user.email)
+      if (this.loaded) {
+        console.log('run mounted')
+        this.getOrders({ userEmail: this.user.email, beneficiary: this.beneficiary })
+      }
     },
     watch: {
-      user () {
-        this.getOrders(this.user.email)
+      loaded () {
+        console.log('run watch')
+        this.getOrders({ userEmail: this.user.email, beneficiary: this.beneficiary })
       }
     },
     methods: {

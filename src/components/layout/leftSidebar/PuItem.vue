@@ -1,5 +1,5 @@
 <template lang="pug">
-md-list-item(:to="to")
+md-list-item(:to="item.to")
   md-avatar
     img(src="@/assets/avatar.jpg")
   .md-list-item-text
@@ -14,10 +14,6 @@ export default {
   props: {
     item: {
       type: Object,
-      required: true
-    },
-    to: {
-      type: String,
       required: true
     }
   },

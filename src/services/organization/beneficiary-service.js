@@ -15,9 +15,9 @@ class BeneficiaryService {
       .post('/import', beneficiaries)
   }
 
-  beneficiariesByAssegnee = function (assigneeEmail) {
+  beneficiariesByAssignee = function (assigneeEmail) {
     return trae
-      .get(`/assegnee/${assigneeEmail}`)
+      .get(`/assignee/${assigneeEmail}`)
   }
 }
 

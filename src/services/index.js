@@ -1,7 +1,10 @@
 import userService from './user-service'
 import paymentService from './payment-service'
 import commerceService from './commerce-service'
-import { beneficiaryService, organizationService, planService, productService } from './organization'
+import beneficiaryService from './organization/beneficiary-service'
+import organizationService from './organization/organization-service'
+import planService from './organization/plan-service'
+import productService from './organization/product-service'
 
 export {
   userService,

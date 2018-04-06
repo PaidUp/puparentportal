@@ -18,8 +18,8 @@
       </md-list-item>
       <md-divider></md-divider>
 
-      <pu-player-payment-history v-if="beneficiary" :beneficiaries="[beneficiary]"/>
-      <pu-pay-new-invoice v-if="beneficiary" :beneficiaries="[beneficiary]"/>
+      <pu-player-payment-history v-if="beneficiaries" :beneficiaries="beneficiaries"/>
+      <pu-pay-new-invoice v-if="beneficiaries" :beneficiaries="beneficiaries"/>
       <pu-payment-accounts />
 
       
@@ -35,7 +35,7 @@
   import PuPayNewInvoice from './leftSidebar/PuPayNewInvoice.vue'
   import PuPaymentAccounts from './leftSidebar/PuPaymentAccounts.vue'
   import PuBotton from './leftSidebar/PuBotton.vue'
-  import { mapState } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
 
   export default {
     components: { PuItem, PuBotton, PuPlayerPaymentHistory, PuPayNewInvoice, PuPaymentAccounts },
@@ -46,10 +46,24 @@
     },
     computed: {
       ...mapState('playerModule', {
-        beneficiary: 'beneficiary'
+        beneficiaries: 'beneficiaries'
+      }),
+      ...mapState('userModule', {
+        user: 'user'
       })
     },
+    mounted () {
+      if (this.user.email) this.getBeneficiaries(this.user.email)
+    },
+    watch: {
+      user () {
+        this.getBeneficiaries(this.user.email)
+      }
+    },
     methods: {
+      ...mapActions('playerModule', {
+        getBeneficiaries: 'getBeneficiaries'
+      }),
       click () {
         console.log('clic')
       }
