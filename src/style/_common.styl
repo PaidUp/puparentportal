@@ -23,7 +23,7 @@ a, a:hover, a:visited, a:link, a:active, a > *
       .md-stepper-number
         color: #fff !important
 
-// BUTTONS
+// MD-BUTTONS
 .md-button
   .md-ripple
     padding: 0 14px
@@ -35,6 +35,37 @@ a, a:hover, a:visited, a:link, a:active, a > *
   &.md-raised
     background-color $clblue !important
 
+// MD-SWITCH
+.md-switch.md-accent.lblue
+  .md-switch-container
+    background-color: $clblue2
+  &.md-checked
+    .md-switch-thumb
+      background-color: $clblue
+
+// MD-CHECKBOX
+.md-checkbox
+  label 
+    line-height: 1.2
+    text-align: left
+.md-checkbox.md-accent.lblue
+  &.md-checked
+    .md-checkbox-container
+      background-color: $clblue
+      border-color: $clblue
+
+// MD-AVATAR MD-ICON
+.md-avatar-icon .md-icon
+  color: #fff!important
+
+// MD-ICONS
+.md-icon
+  &.md-size-c
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    font-size: 32px!important
+
 // PLACEHOLDER MIXIN
 mixin-placeholder(c)
   &::-webkit-input-placeholder
@@ -45,9 +76,6 @@ mixin-placeholder(c)
     color: c;
   &:-moz-placeholder
     color: c;
-// MD-AVATAR MD-ICON
-.md-avatar-icon .md-icon
-  color: #fff!important
 
 // TEXT
 .title
@@ -56,14 +84,12 @@ mixin-placeholder(c)
   font-weight: 500
 .bolder
   font-weight: 600
-  
 .caption
   color: $cgray2
   font-size: 11px
   line-height: 1.4
   &.red
     color: $cred
-
 .number-big
   font-size: 22px
   font-weight: 600
@@ -73,19 +99,12 @@ mixin-placeholder(c)
   color $cred!important
 .cblue
   color $cblue!important
+.clblue
+  color $clblue!important
 .cgreen
   color $cgreen!important
 .ca1
   color $ca1!important
 .cgray
   color $cgray1!important
-.clblue
-  color $clblue!important
 
-// ICONS
-.md-icon
-  &.md-size-c
-    width: 32px;
-    min-width: 32px;
-    height: 32px;
-    font-size: 32px!important

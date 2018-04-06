@@ -19,11 +19,11 @@ const dict = {
       email: 'Email',
       password: 'Password',
       remember_me: 'Remember Me',
-      submit: 'Login',
+      submit: 'LOGIN',
       forgot_password: 'Forgot Password?',
       sign_fb: 'Sign in with Facebook',
-      login_fb: 'Login with Facebook',
-      dont_have_account: 'Don′t have an account',
+      login_fb: 'LOGIN WITH FACEBOOK',
+      dont_have_account: 'Don′t have an account?',
       sign_up: 'Sign Up'
     },
     signup: {
@@ -33,7 +33,7 @@ const dict = {
       password: 'Password',
       confirm_password: 'Confirm Password',
       phone: 'Phone Number',
-      create: 'Create Account',
+      create: 'CREATE ACCOUNT',
       login: 'Login',
       already_have_account: 'Already have an account?',
       terms: {
