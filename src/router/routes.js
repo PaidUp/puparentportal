@@ -1,4 +1,4 @@
-import Login from '@/components/pages/Login.vue'
+import LoginPage from '@/components/pages/LoginPage.vue'
 import SignUp from '@/components/pages/SignUp.vue'
 import FbSignUp from '@/components/pages/FbSignUp.vue'
 import Card from '@/components/payment/Card.vue'
@@ -8,16 +8,9 @@ import Welcome from '@/components/pages/Welcome.vue'
 import PlayersPage from '@/components/pages/PlayersPage.vue'
 import PaymentsPage from '@/components/pages/PaymentsPage.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
+import PublicLayout from '@/components/layout/PublicLayout.vue'
 
 const routes = [
-  {
-    path: '/login',
-    name: 'login',
-    component: Login,
-    meta: {
-      isPublic: true
-    }
-  },
   {
     path: '/signup',
     name: 'signup',
@@ -67,6 +60,20 @@ const routes = [
         path: '/accounts',
         name: 'accounts',
         component: Accounts
+      }
+    ]
+  },
+  {
+    path: '/',
+    component: PublicLayout,
+    meta: {
+      isPublic: true
+    },
+    children: [
+      {
+        path: '/login',
+        name: 'login',
+        component: LoginPage
       }
     ]
   }

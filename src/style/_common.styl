@@ -35,6 +35,13 @@ a, a:hover, a:visited, a:link, a:active, a > *
   &.md-raised
     background-color $clblue !important
 
+.md-switch.md-accent.lblue
+  .md-switch-container
+    background-color: $clblue2
+  &.md-checked
+    .md-switch-thumb
+      background-color: $clblue
+
 // PLACEHOLDER MIXIN
 mixin-placeholder(c)
   &::-webkit-input-placeholder
@@ -73,14 +80,14 @@ mixin-placeholder(c)
   color $cred!important
 .cblue
   color $cblue!important
+.clblue
+  color $clblue!important
 .cgreen
   color $cgreen!important
 .ca1
   color $ca1!important
 .cgray
   color $cgray1!important
-.clblue
-  color $clblue!important
 
 // ICONS
 .md-icon

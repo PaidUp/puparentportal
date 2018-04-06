@@ -19,10 +19,10 @@ const dict = {
       email: 'Email',
       password: 'Password',
       remember_me: 'Remember Me',
-      submit: 'Login',
+      submit: 'LOGIN',
       forgot_password: 'Forgot Password?',
       sign_fb: 'Sign in with Facebook',
-      login_fb: 'Login with Facebook',
+      login_fb: 'LOGIN WITH FACEBOOK',
       dont_have_account: 'Don′t have an account',
       sign_up: 'Sign Up'
     },
