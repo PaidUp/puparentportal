@@ -1,6 +1,8 @@
 import LoginPage from '@/components/pages/LoginPage.vue'
 import SignUpPage from '@/components/pages/SignUpPage.vue'
 import FbSignUpPage from '@/components/pages/FbSignUpPage.vue'
+import ForgotPassPage from '@/components/pages/ForgotPassPage.vue'
+import ResetPassPage from '@/components/pages/ResetPassPage.vue'
 import Card from '@/components/payment/Card.vue'
 import Bank from '@/components/payment/Bank.vue'
 import Accounts from '@/components/payment/Accounts.vue'
@@ -71,6 +73,22 @@ const routes = [
         path: '/signup/fb',
         name: 'fbSignup',
         component: FbSignUpPage,
+        meta: {
+          isPublic: true
+        }
+      },
+      {
+        path: '/forgot',
+        name: 'forgotpass',
+        component: ForgotPassPage,
+        meta: {
+          isPublic: true
+        }
+      },
+      {
+        path: '/reset',
+        name: 'resetpass',
+        component: ResetPassPage,
         meta: {
           isPublic: true
         }

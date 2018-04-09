@@ -1,33 +1,20 @@
 <template>
-  <div class="login-page"> 
+  <div class="forgot-page">
+    <div class="info-msg bold">
+      Enter your email address below and we will send you a secure link to reset your password.
+    </div>
     <md-field :class="{'md-invalid': $v.loginParams.email.$error}">
       <label>{{ $t('component.login.email') }}</label>
       <md-input v-model.trim="loginParams.email" @input="$v.loginParams.email.$touch()"></md-input>
       <span class="md-error" v-if="!$v.loginParams.email.required">{{ $t('validations.required', { field: 'Email' }) }}</span>
       <span class="md-error" v-if="!$v.loginParams.email.email">{{ $t('validations.email') }}</span>
     </md-field>
-    <md-field :class="{'md-invalid': $v.loginParams.password.$error}">
-      <label>{{ $t('component.login.password') }}</label>
-      <md-input v-model.trim="loginParams.password" @input="$v.loginParams.password.$touch()" type="password"></md-input>
-      <span class="md-error" v-if="!$v.loginParams.password.required">{{ $t('validations.required', { field: 'Password' }) }}</span>
-    </md-field>
-    <div>
-      <md-button class="md-raised md-accent lblue" @click="submit">{{ $t('component.login.submit') }}</md-button>
-    </div>
-    <div>
-      <md-switch class="md-accent lblue" v-model="loginParams.rememberMe">{{ $t('component.login.remember_me') }}</md-switch>
-    </div>
-    <div>
-      <router-link to="forgot" class="clblue bold">Forgot Password?</router-link>
-    </div>
-    <div>
-      <fb-signin-button :params="fbSignInParams" @success="onFbLoginSuccess" @error="onFbLoginError" class="fb-button md-elevation-4">{{ $t('component.login.login_fb') }}</fb-signin-button>
+    <div class="action-box">
+      <md-button class="md-raised md-accent lblue" @click="submit">RESET PASSWORD</md-button>
     </div>
     <div class="last-info-box">
-      <span>
-        {{ $t('component.login.dont_have_account') }}
-        <router-link to="signup" class="clblue signup-link">{{ $t('component.login.sign_up') }} </router-link>
-      </span>
+      {{ $t('component.signup.already_have_account') }}
+      <router-link to="../login" class="clblue">{{ $t('component.signup.login') }}</router-link>
     </div>
   </div>
 </template>
@@ -43,14 +30,6 @@
   } from 'vuelidate/lib/validators'
 
   export default {
-    data () {
-      return {
-        fbSignInParams: {
-          scope: 'email',
-          return_scopes: true
-        }
-      }
-    },
     watch: {
       isAutenticated () {
         if (this.isAutenticated) {
@@ -86,19 +65,13 @@
         setWarning: 'setWarning'
       }),
       submit () {
-        if (this.$v.loginParams.$invalid) {
-          return this.setWarning('validations.form')
-        }
-        this.login()
+        // RESET LOGIC HERE?
       }
     },
     validations: {
       loginParams: {
         email: {
           email,
-          required
-        },
-        password: {
           required
         }
       }
