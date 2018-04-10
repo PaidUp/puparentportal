@@ -24,6 +24,7 @@ const module = {
         lastName: beneficiary.lastName,
         userEmail
       }).then(orders => {
+        console.log('orders: ', orders)
         context.commit('setOrders', orders)
       })
     },

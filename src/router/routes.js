@@ -16,6 +16,7 @@ const routes = [
   {
     path: '/',
     component: MainLayout,
+    name: 'home',
     meta: {
       isPublic: true
     },

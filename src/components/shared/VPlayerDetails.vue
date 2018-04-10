@@ -10,15 +10,15 @@
     </div>
     <div>
       <div class="md-body-2 concept">Unpaid</div>
-      <div class="md-title gray">$1,400.<sup>00</sup></div>
+      <v-currency :amount="unpaid" clazz="md-title gray" />      
     </div>
     <div>
       <div class="md-body-2 concept">Overdue</div>
-      <div class="md-title red">$350.<sup>00</sup></div>
+      <v-currency :amount="overdue" clazz="md-title red" />
     </div>
     <div>
       <div class="md-body-2 concept">Credited</div>
-      <div class="md-title blue">$250.<sup>00</sup></div>
+      <v-currency :amount="credited" clazz="md-title blue" />
     </div>
   </div>
 </template>
@@ -27,22 +27,53 @@
 import VCurrency from '@/components/shared/VCurrency.vue'
 export default {
   props: {
-    invoices: Array
+    order: {
+      type: Object,
+      required: true
+    }
   },
   components: {
     VCurrency
   },
   computed: {
     total () {
-      if (!this.invoices) return 0
-      return this.invoices.reduce((subTotal, current) => {
+      if (!this.order) return 0
+      return this.order.invoices.reduce((subTotal, current) => {
         return subTotal + current.price
       }, 0)
     },
     paid () {
-      if (!this.invoices) return 0
-      return this.invoices.reduce((subTotal, current) => {
-        if (this.invoices.status === 'charged') return subTotal + current.price
+      if (!this.order) return 0
+      return this.order.invoices.reduce((subTotal, current) => {
+        if (current.status === 'paid' || current.status === 'paidup') return subTotal + current.price
+        return subTotal
+      }, 0)
+    },
+    unpaid () {
+      if (!this.order) return 0
+      return this.order.invoices.reduce((subTotal, current) => {
+        if (current.status === 'autopay' || current.status === 'failed' || current.status === 'due') return subTotal + current.price
+        return subTotal
+      }, 0)
+    },
+    due () {
+      if (!this.order) return 0
+      return this.order.invoices.reduce((subTotal, current) => {
+        if (current.status === 'due') return subTotal + current.price
+        return subTotal
+      }, 0)
+    },
+    overdue () {
+      if (!this.order) return 0
+      return this.order.invoices.reduce((subTotal, current) => {
+        if (current.status === 'overdue') return subTotal + current.price
+        return subTotal
+      }, 0)
+    },
+    credited () {
+      if (!this.order) return 0
+      return this.order.invoices.reduce((subTotal, current) => {
+        if (current.status === 'due') return subTotal + current.price
         return subTotal
       }, 0)
     }

@@ -24,13 +24,13 @@
             </md-select>
           </md-field>
         </div>
-        <VPlayerDetails v-if="order" :invoices="order.invoices" />
+        <v-player-details v-if="order" :order="order" />
       </md-content>
     </div>
     <div class="invoices" v-if="order">
       <div class="md-subheading title">Invoices</div>
       <div class="inv-cards" >
-        <VPlayerInvoices :invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id" />
+        <v-player-invoices :invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id" />
       </div>
     </div>
   </div>
@@ -78,7 +78,7 @@
           })
           return order
         }
-        return []
+        return null
       },
       loaded () {
         return (this.user && this.beneficiary)
