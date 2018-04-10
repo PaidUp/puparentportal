@@ -66,6 +66,38 @@ a, a:hover, a:visited, a:link, a:active, a > *
     height: 32px;
     font-size: 32px!important
 
+// MD-DIALOG
+.md-dialog.custom-dialog
+  .title
+    color: #fff
+    font-size: 18px
+    background: $ca1
+    padding: 16px
+  .md-tabs-navigation
+    padding: 0
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14)
+    .md-button
+      background: $ca1
+      color: #fff
+      &.md-active
+        color: #fff
+    .md-tabs-indicator
+      background-color: #fff
+.md-dialog.invoice-dialog
+  .order-numbers
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-between
+    align-items: center
+    color: $cgray2
+    font-size: 13px
+  .instructions
+    color: $cgray2
+    font-size: 13px
+    margin-top: 10px
+
+
+
 // PLACEHOLDER MIXIN
 mixin-placeholder(c)
   &::-webkit-input-placeholder

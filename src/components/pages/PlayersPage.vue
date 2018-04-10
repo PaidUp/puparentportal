@@ -27,12 +27,14 @@
         <v-player-details v-if="order" :order="order" />
       </md-content>
     </div>
+    <button class="md-button md-raised" v-on:click="openInvoiceDialog">Open Inv details</button>
     <div class="invoices" v-if="order">
       <div class="md-subheading title">Invoices</div>
       <div class="inv-cards" >
         <v-player-invoices :invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id" />
       </div>
     </div>
+    <VInvoiceDialog :invoice="currentInvoice" :closeDialog="closeDialog" />
   </div>
 </template>
 
@@ -41,14 +43,17 @@
   import VPlayerInfo from '@/components/shared/VPlayerInfo.vue'
   import VPlayerDetails from '@/components/shared/VPlayerDetails.vue'
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
+  import VInvoiceDialog from '@/components/shared/VInvoiceDialog.vue'
   export default {
     components: {
       VPlayerInfo,
       VPlayerInvoices,
-      VPlayerDetails
+      VPlayerDetails,
+      VInvoiceDialog
     },
     data: function () {
       return {
+        currentInvoice: {title: ''}
       }
     },
     computed: {
@@ -99,7 +104,13 @@
     methods: {
       ...mapActions('playerModule', {
         getOrders: 'getOrders'
-      })
+      }),
+      closeDialog: function () {
+        this.currentInvoice = null
+      },
+      openInvoiceDialog: function () {
+        this.currentInvoice = {title: 'some'}
+      }
     }
   }
 </script>
