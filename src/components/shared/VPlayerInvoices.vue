@@ -9,7 +9,7 @@
         <div class="status">
           <md-icon class="md-size-2x">{{ icon }}</md-icon>
           <div class="md-caption">
-            {{ invoice.status }}
+            {{ status }}
           </div>
         </div>
         <div class="amount-details">
@@ -35,14 +35,14 @@
         <div class="status">
           <md-icon class="md-size-2x">check_circle</md-icon>
           <div class="md-caption">
-            {{ invoice.status }}
+            {{ status }}
           </div>
         </div>
         <div class="amount-details">
           <div class="details">
             <span class="md-caption">{{ invoice.memoId }}</span>
             <br>
-            <span class="md-caption">{{ $d(invoice.chargeOn, 'short') }}</span>
+            <span class="md-caption">{{ $d(chargeDate, 'short') }}</span>
           </div>
           <v-currency :amount="invoice.price" clazz="total md-title" />
         </div>
@@ -80,10 +80,15 @@
         return this.invoice.paymentDetails.brand + '****' + this.invoice.paymentDetails.last4
       },
       chargeDate () {
-        return this.invoice.dataCharge
+        if (this.invoice.invoiceId) return new Date(this.invoice.dataCharge)
+        if (this.invoice.memoId) return new Date(this.invoice.createOn)
+        return new Date()
       },
       icon () {
         return opt[this.invoice.status]
+      },
+      status () {
+        return this.invoice.status.toUpperCase().replace('_', ' ')
       }
     }
   }

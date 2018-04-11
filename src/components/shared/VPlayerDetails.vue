@@ -37,41 +37,41 @@ export default {
   },
   computed: {
     total () {
-      if (!this.order) return 0
+      if (!this.order || !this.order.invoices) return 0
       return this.order.invoices.reduce((subTotal, current) => {
         return subTotal + current.price
       }, 0)
     },
     paid () {
-      if (!this.order) return 0
+      if (!this.order || !this.order.invoices) return 0
       return this.order.invoices.reduce((subTotal, current) => {
         if (current.status === 'paid' || current.status === 'paidup') return subTotal + current.price
         return subTotal
       }, 0)
     },
     unpaid () {
-      if (!this.order) return 0
+      if (!this.order || !this.order.invoices) return 0
       return this.order.invoices.reduce((subTotal, current) => {
         if (current.status === 'autopay' || current.status === 'failed' || current.status === 'due') return subTotal + current.price
         return subTotal
       }, 0)
     },
     due () {
-      if (!this.order) return 0
+      if (!this.order || !this.order.invoices) return 0
       return this.order.invoices.reduce((subTotal, current) => {
         if (current.status === 'due') return subTotal + current.price
         return subTotal
       }, 0)
     },
     overdue () {
-      if (!this.order) return 0
+      if (!this.order || !this.order.invoices) return 0
       return this.order.invoices.reduce((subTotal, current) => {
         if (current.status === 'overdue') return subTotal + current.price
         return subTotal
       }, 0)
     },
     credited () {
-      if (!this.order) return 0
+      if (!this.order || !this.order.invoices) return 0
       return this.order.invoices.reduce((subTotal, current) => {
         if (current.status === 'due') return subTotal + current.price
         return subTotal

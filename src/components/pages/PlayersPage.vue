@@ -1,30 +1,13 @@
 <template>
   <div class="players-page">
     <div class="player">
-      <VPlayerInfo v-if="beneficiary" :player="beneficiary"/>
+      <v-player-info v-if="beneficiary" :player="beneficiary"/>
     </div>
     <div class="details">
       <div class="md-subheading title">Details</div>
       <md-content class="md-elevation-4 details-box">
-        <div class="details-selects">
-          <md-field class="season-select">
-            <label for="season">Season</label>
-            <md-select name="season" id="season">
-              <md-option value="2017/2018">2017/2018</md-option>
-              <md-option value="2016/2017">2016/2017</md-option>
-              <md-option value="2015/2016">2015/2016</md-option>
-            </md-select>
-          </md-field>
-          <md-field>
-            <label for="program">Program</label>
-            <md-select name="program" id="program">
-              <md-option value="12U Red">12U Red Premier</md-option>
-              <md-option value="12U Red2">12U Red2 Premier</md-option>
-              <md-option value="12U Red3">12U Red3 Premier</md-option>
-            </md-select>
-          </md-field>
-        </div>
-        <v-player-details v-if="order" :order="order" />
+        <v-player-details-selection  :orders="orders" />
+        <v-player-details  :order="order" />
       </md-content>
     </div>
     <div class="invoices" v-if="order">
@@ -37,15 +20,17 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapActions, mapGetters } from 'vuex'
   import VPlayerInfo from '@/components/shared/VPlayerInfo.vue'
   import VPlayerDetails from '@/components/shared/VPlayerDetails.vue'
+  import VPlayerDetailsSelection from '@/components/shared/VPlayerDetailsSelection.vue'
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
   export default {
     components: {
       VPlayerInfo,
       VPlayerInvoices,
-      VPlayerDetails
+      VPlayerDetails,
+      VPlayerDetailsSelection
     },
     data: function () {
       return {
@@ -59,24 +44,15 @@
         orders: 'orders',
         beneficiaries: 'beneficiaries'
       }),
+      ...mapGetters('playerModule', {
+        order: 'order'
+      }),
       beneficiary () {
         if (this.beneficiaries) {
           let id = this.$route.params.id
           return this.beneficiaries.find(function (element) {
             return element._id === id
           })
-        }
-        return null
-      },
-      order () {
-        if (this.orders.length) {
-          let order = this.orders[this.orders.length - 1]
-          order.invoices.sort((a, b) => {
-            a.dataCharge = new Date(a.dataCharge)
-            b.dataCharge = new Date(b.dataCharge)
-            return a.dataCharge.getTime() - b.dataCharge.getTime()
-          })
-          return order
         }
         return null
       },
