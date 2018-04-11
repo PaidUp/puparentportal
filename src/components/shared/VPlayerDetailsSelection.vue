@@ -6,7 +6,7 @@
               <md-option v-for="s in seasons" :value="s" :key="s">{{ s }}</md-option>
             </md-select>
           </md-field>
-          <md-field v-if="order.orderId">
+          <md-field v-if="season">
             <label for="program">Program</label>
             <md-select name="program" id="program" v-model="program">
               <md-option v-for="p in programs" :value="p" :key="p">{{ p }}</md-option>
@@ -77,6 +77,8 @@ export default {
     inputSaeson () {
       if (this.seasonCurrent !== this.season) {
         this.program = null
+      } else {
+        this.program = this.order.productName
       }
     }
   }

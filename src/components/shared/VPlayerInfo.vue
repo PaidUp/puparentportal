@@ -1,7 +1,7 @@
 <template>
   <div class="v-player-info">
     <md-avatar>
-      <img src="@/assets/avatar.jpg" />
+      <img :src="avatarUrl" />
     </md-avatar>
     <div class="name md-title">{{player.firstName}} {{player.lastName}}</div>
     <div class="team md-subheading">team</div>
@@ -10,6 +10,7 @@
 </template>
 
 <script>
+  import config from '@/config'
   export default {
     props: {
       player: Object,
@@ -17,7 +18,7 @@
     },
     computed: {
       avatarUrl: function () {
-        return '/assets/'
+        return this.player.avatar || config.media.beneficiary.url + 'default.png'
       }
     }
   }
