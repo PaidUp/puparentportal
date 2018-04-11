@@ -2,20 +2,20 @@
   <div class="details-selects">
           <md-field class="season-select" v-if="order.orderId">
             <label for="season">Season</label>
-            <md-select name="season" id="season" v-model="seasonLoc">
+            <md-select name="season" id="season" v-model="season" @input="inputSaeson"  @click="clickSaeson">
               <md-option v-for="s in seasons" :value="s" :key="s">{{ s }}</md-option>
             </md-select>
           </md-field>
           <md-field v-if="order.orderId">
             <label for="program">Program</label>
-            <md-select name="program" id="program" v-model="programLoc">
+            <md-select name="program" id="program" v-model="program">
               <md-option v-for="p in programs" :value="p" :key="p">{{ p }}</md-option>
             </md-select>
           </md-field>
         </div>
 </template>
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -23,27 +23,27 @@ export default {
   },
   data () {
     return {
-      seasonLoc: null,
-      programLoc: null
+      seasonCurrent: null,
+      season: null,
+      program: null
     }
   },
   watch: {
-    programLoc () {
-      this.selectOrder({
-        season: this.season,
-        program: this.program
-      })
+    program () {
+      if (this.program) {
+        this.selectOrder({
+          season: this.season,
+          program: this.program
+        })
+      }
     },
     order () {
-      this.seasonLoc = this.order.season
-      this.programLoc = this.order.productName
+      this.seasonCurrent = this.order.season
+      this.season = this.order.season
+      this.program = this.order.productName
     }
   },
   computed: {
-    ...mapState('playerModule', {
-      season: 'season',
-      program: 'program'
-    }),
     ...mapGetters('playerModule', {
       order: 'order'
     }),
@@ -55,10 +55,10 @@ export default {
       return Array.from(set)
     },
     programs () {
-      if (this.seasonLoc) {
+      if (this.season) {
         let set = new Set()
         this.orders.forEach(order => {
-          if (this.seasonLoc === order.season) {
+          if (this.season === order.season) {
             set.add(order.productName)
           }
         })
@@ -70,7 +70,15 @@ export default {
   methods: {
     ...mapMutations('playerModule', {
       selectOrder: 'selectOrder'
-    })
+    }),
+    clickSaeson () {
+      this.seasonCurrent = this.season
+    },
+    inputSaeson () {
+      if (this.seasonCurrent !== this.season) {
+        this.program = null
+      }
+    }
   }
 }
 </script>

@@ -7,7 +7,7 @@
       <div class="md-subheading title">Details</div>
       <md-content class="md-elevation-4 details-box">
         <v-player-details-selection  :orders="orders" />
-        <v-player-details  :order="order" />
+        <v-player-details-totals  :order="order" />
       </md-content>
     </div>
     <div class="invoices" v-if="order">
@@ -22,14 +22,14 @@
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex'
   import VPlayerInfo from '@/components/shared/VPlayerInfo.vue'
-  import VPlayerDetails from '@/components/shared/VPlayerDetails.vue'
+  import VPlayerDetailsTotals from '@/components/shared/VPlayerDetailsTotals.vue'
   import VPlayerDetailsSelection from '@/components/shared/VPlayerDetailsSelection.vue'
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
   export default {
     components: {
       VPlayerInfo,
       VPlayerInvoices,
-      VPlayerDetails,
+      VPlayerDetailsTotals,
       VPlayerDetailsSelection
     },
     data: function () {
@@ -62,13 +62,11 @@
     },
     mounted () {
       if (this.loaded) {
-        console.log('run mounted')
         this.getOrders({ userEmail: this.user.email, beneficiary: this.beneficiary })
       }
     },
     watch: {
       loaded () {
-        console.log('run watch')
         this.getOrders({ userEmail: this.user.email, beneficiary: this.beneficiary })
       }
     },
