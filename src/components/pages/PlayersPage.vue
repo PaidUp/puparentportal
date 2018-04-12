@@ -7,10 +7,12 @@
       md-content.md-elevation-4.details-box
         v-player-details-selection(:orders="orders")
         v-player-details-totals(:order="order")
+    button(class="md-button md-raised" v-on:click="openInvoiceDialog") Open Inv details
     .invoices(v-if="order")
       .md-subheading.title Invoices
       .inv-cards
         v-player-invoices(:invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id")
+    VInvoiceDialog(:invoice="currentInvoice" :closeDialog="closeDialog")
 </template>
 
 <script>
@@ -19,15 +21,18 @@
   import VPlayerDetailsTotals from '@/components/shared/VPlayerDetailsTotals.vue'
   import VPlayerDetailsSelection from '@/components/shared/VPlayerDetailsSelection.vue'
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
+  import VInvoiceDialog from '@/components/shared/VInvoiceDialog.vue'
   export default {
     components: {
       VPlayerInfo,
       VPlayerInvoices,
       VPlayerDetailsTotals,
-      VPlayerDetailsSelection
+      VPlayerDetailsSelection,
+      VInvoiceDialog
     },
     data: function () {
       return {
+        currentInvoice: {title: ''}
       }
     },
     computed: {
@@ -67,7 +72,13 @@
     methods: {
       ...mapActions('playerModule', {
         getOrders: 'getOrders'
-      })
+      }),
+      closeDialog: function () {
+        this.currentInvoice = null
+      },
+      openInvoiceDialog: function () {
+        this.currentInvoice = {title: 'some'}
+      }
     }
   }
 </script>

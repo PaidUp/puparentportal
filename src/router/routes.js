@@ -16,13 +16,13 @@ const routes = [
   {
     path: '/',
     component: MainLayout,
-    name: 'home',
     meta: {
       isPublic: true
     },
     children: [
       {
         path: '/',
+        name: 'home',
         component: Welcome
       },
       {
