@@ -1,7 +1,7 @@
 <template lang="pug">
 md-list-item(:to="item.to")
   md-avatar
-    img(src="@/assets/avatar.jpg")
+    img(:src="avatarUrl")
   .md-list-item-text
     div
       span {{ item.title }}
@@ -10,6 +10,8 @@ md-list-item(:to="item.to")
   span.notification-number(v-if="item.notification") {{ item.notification }}
 </template>
 <script>
+import config from '@/config'
+
 export default {
   props: {
     item: {
@@ -18,8 +20,8 @@ export default {
     }
   },
   computed: {
-    name () {
-      return ''
+    avatarUrl: function () {
+      return this.item.avatar || config.media.beneficiary.url + 'default.png'
     }
   }
 }

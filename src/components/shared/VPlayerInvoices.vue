@@ -1,57 +1,39 @@
-<template>
-  <md-card md-with-hover>
-    <md-ripple v-if="invoice.invoiceId">
-      <md-card-header>
-        <div class="md-subheading">{{ invoice.label }}</div>
-        <div class="md-subhead">{{ paymetMethod }}</div>
-      </md-card-header>
-      <md-card-content class="card-content">
-        <div class="status">
-          <md-icon class="md-size-2x">{{ icon }}</md-icon>
-          <div class="md-caption">
-            {{ invoice.status }}
-          </div>
-        </div>
-        <div class="amount-details">
-          <div class="details">
-            <span class="md-caption">{{ invoice.invoiceId }}</span>
-            <br>
-            <span class="md-caption">{{ $d(chargeDate, 'short') }}</span>
-          </div>
-          <v-currency :amount="invoice.price" clazz="total md-title" />
-        </div>
-      </md-card-content>
-      <md-card-actions>
-        <md-button class="md-accent">Fix</md-button>
-      </md-card-actions>
-    </md-ripple>
+<template lang="pug">
+  md-card(md-with-hover)
+    md-ripple(v-if="invoice.invoiceId")
+      md-card-header
+        .md-subheading {{ invoice.label }}
+        .md-subhead {{ paymetMethod }}
+      md-card-content.card-content
+        .status
+          md-icon.md-size-2x {{ icon }}
+          .md-caption {{ status }}
+        .amount-details
+          .details
+            span.md-caption {{ invoice.invoiceId }}
+            br
+            span.md-caption {{ $d(chargeDate, 'short') }}
+          v-currency(:amount="invoice.price" clazz="total md-title")
+      md-card-actions
+        md-button.md-accent Fix
 
-    <md-ripple v-if="invoice.memoId">
-      <md-card-header>
-        <div class="md-subheading">{{ invoice.label }}</div>
-        <div class="md-subhead">{{ invoice.description }}</div>
-      </md-card-header>
-      <md-card-content class="card-content">
-        <div class="status">
-          <md-icon class="md-size-2x">check_circle</md-icon>
-          <div class="md-caption">
-            {{ invoice.status }}
-          </div>
-        </div>
-        <div class="amount-details">
-          <div class="details">
-            <span class="md-caption">{{ invoice.memoId }}</span>
-            <br>
-            <span class="md-caption">{{ $d(invoice.chargeOn, 'short') }}</span>
-          </div>
-          <v-currency :amount="invoice.price" clazz="total md-title" />
-        </div>
-      </md-card-content>
-      <md-card-actions>
-        <md-button class="md-accent">Fix</md-button>
-      </md-card-actions>
-    </md-ripple>
-  </md-card>
+    md-ripple(v-if="invoice.memoId")
+      md-card-header
+        .md-subheading {{ invoice.label }}
+        .md-subhead {{ invoice.description }}
+      md-card-content.card-content
+        .status
+          md-icon.md-size-2x {{ icon }}
+          .md-caption {{ status }}
+        .amount-details
+          .details
+            span.md-caption {{ invoice.memoId }}
+            br
+            span.md-caption {{ $d(chargeDate, 'short') }}
+          v-currency(:amount="invoice.price" clazz="total md-title")
+      md-card-actions
+        md-button.md-accent Fix
+
 </template>
 
 <script>
@@ -80,10 +62,15 @@
         return this.invoice.paymentDetails.brand + '****' + this.invoice.paymentDetails.last4
       },
       chargeDate () {
-        return this.invoice.dataCharge
+        if (this.invoice.invoiceId) return new Date(this.invoice.dataCharge)
+        if (this.invoice.memoId) return new Date(this.invoice.createOn)
+        return new Date()
       },
       icon () {
         return opt[this.invoice.status]
+      },
+      status () {
+        return this.invoice.status.toUpperCase().replace('_', ' ')
       }
     }
   }
