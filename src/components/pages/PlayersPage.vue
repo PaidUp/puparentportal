@@ -1,22 +1,16 @@
-<template>
-  <div class="players-page">
-    <div class="player">
-      <v-player-info v-if="beneficiary" :player="beneficiary"/>
-    </div>
-    <div class="details">
-      <div class="md-subheading title">Details</div>
-      <md-content class="md-elevation-4 details-box">
-        <v-player-details-selection  :orders="orders" />
-        <v-player-details-totals  :order="order" />
-      </md-content>
-    </div>
-    <div class="invoices" v-if="order">
-      <div class="md-subheading title">Invoices</div>
-      <div class="inv-cards" >
-        <v-player-invoices :invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id" />
-      </div>
-    </div>
-  </div>
+<template lang="pug">
+  .players-page
+    .player
+      v-player-info(v-if="beneficiary" :player="beneficiary")
+    .details
+      .md-subheading.title Details
+      md-content.md-elevation-4.details-box
+        v-player-details-selection(:orders="orders")
+        v-player-details-totals(:order="order")
+    .invoices(v-if="order")
+      .md-subheading.title Invoices
+      .inv-cards
+        v-player-invoices(:invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id")
 </template>
 
 <script>

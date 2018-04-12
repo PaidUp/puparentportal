@@ -1,5 +1,6 @@
-<template>
-  <div :class="[clazz]">${{value[0]}}.<sup>{{value[1]}}</sup></div>
+<template lang="pug">
+  div(:class="[clazz]") ${{value[0]}}.
+    sup {{value[1]}}
 </template>
 <script>
 import numeral from 'numeral'

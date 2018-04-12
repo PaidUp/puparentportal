@@ -1,18 +1,13 @@
-<template>
-  <div class="details-selects">
-          <md-field class="season-select" v-if="order.orderId">
-            <label for="season">Season</label>
-            <md-select name="season" id="season" v-model="season" @input="inputSaeson"  @click="clickSaeson">
-              <md-option v-for="s in seasons" :value="s" :key="s">{{ s }}</md-option>
-            </md-select>
-          </md-field>
-          <md-field v-if="season">
-            <label for="program">Program</label>
-            <md-select name="program" id="program" v-model="program">
-              <md-option v-for="p in programs" :value="p" :key="p">{{ p }}</md-option>
-            </md-select>
-          </md-field>
-        </div>
+<template lang="pug">
+  .details-selects
+    md-field.season-select(v-if="order.orderId")
+      label(for="season") Season
+      md-select(name="season" id="season" v-model="season" @input="inputSaeson"  @click="clickSaeson")
+        md-option(v-for="s in seasons" :value="s" :key="s") {{ s }}
+    md-field(v-if="season")
+      label(for="program") Program
+      md-select(name="program" id="program" v-model="program")
+        md-option(v-for="p in programs" :value="p" :key="p") {{ p }}
 </template>
 <script>
 import { mapGetters, mapMutations } from 'vuex'

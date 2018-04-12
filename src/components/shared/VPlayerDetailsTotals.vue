@@ -1,26 +1,20 @@
-<template>
-  <div class="details-numbers">
-    <div>
-      <div class="md-body-2 concept">Total</div>
-      <v-currency :amount="total" clazz="md-title" />
-    </div>
-    <div>
-      <div class="md-body-2 concept">Paid</div>
-      <v-currency :amount="paid" clazz="md-title green" />
-    </div>
-    <div>
-      <div class="md-body-2 concept">Unpaid</div>
-      <v-currency :amount="unpaid" clazz="md-title gray" />      
-    </div>
-    <div>
-      <div class="md-body-2 concept">Overdue</div>
-      <v-currency :amount="overdue" clazz="md-title red" />
-    </div>
-    <div>
-      <div class="md-body-2 concept">Credited</div>
-      <v-currency :amount="credited" clazz="md-title blue" />
-    </div>
-  </div>
+<template lang="pug">
+  .details-numbers
+    div
+      .md-body-2.concept  Total
+      v-currency(:amount="total" clazz="md-title")
+    div
+      .md-body-2.concept  Paid
+      v-currency(:amount="paid" clazz="md-title green")
+    div
+      .md-body-2.concept  Unpaid
+      v-currency(:amount="unpaid" clazz="md-title gray")
+    div
+      .md-body-2.concept  Overdue
+      v-currency(:amount="overdue" clazz="md-title red")
+    div
+      .md-body-2.concept  Credited
+      v-currency(:amount="credited" clazz="md-title blue")
 </template>
 
 <script>

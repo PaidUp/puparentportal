@@ -1,20 +1,20 @@
-<template>
-  <div class="v-player-info">
-    <md-avatar>
-      <img :src="avatarUrl" />
-    </md-avatar>
-    <div class="name md-title">{{player.firstName}} {{player.lastName}}</div>
-    <div class="team md-subheading">team</div>
-    <md-button class="md-primary">Edit</md-button>
-  </div>
+<template lang="pug">
+  .v-player-info
+    md-avatar
+      img(:src="avatarUrl")
+    .name.md-title {{player.firstName}} {{player.lastName}}
+    .team.md-subheading {{ player.organizationName }}
+    md-button.md-primary Edit
 </template>
 
 <script>
   import config from '@/config'
   export default {
     props: {
-      player: Object,
-      team: Object
+      player: {
+        type: Object,
+        required: true
+      }
     },
     computed: {
       avatarUrl: function () {
