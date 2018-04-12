@@ -5,14 +5,6 @@ const module = {
   namespaced: true,
 
   state: {
-    active: 'step1',
-    step1: false,
-    step2: false,
-    step3: false,
-    check1: false,
-    check2: false,
-    check3: false,
-    selectedDate: null,
     cards: [],
     bankAccounts: []
   },
@@ -24,12 +16,6 @@ const module = {
   },
 
   mutations: {
-    setDone (state, { id, index }) {
-      state[ id ] = true
-      if (index) {
-        state.active = index
-      }
-    },
     setCards (state, cards) {
       state.cards = cards
     },
