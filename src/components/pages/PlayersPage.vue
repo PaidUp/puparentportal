@@ -12,6 +12,7 @@
       .md-subheading.title Invoices
       .inv-cards
         v-player-invoices(:invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id")
+    VInvoiceDialog(:invoice="currentInvoice" :closeDialog="closeDialog")
 </template>
 
 <script>

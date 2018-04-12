@@ -54,6 +54,15 @@ a, a:hover, a:visited, a:link, a:active, a > *
       background-color: $clblue
       border-color: $clblue
 
+// MD-INPUT
+.md-field.md-disabled
+  input 
+    -webkit-text-fill-color: $cgray2!important
+    color: $cgray2!important
+  &:after
+    background-color: $cgray3!important
+    background-image: none!important
+
 // MD-AVATAR MD-ICON
 .md-avatar-icon .md-icon
   color: #fff!important
@@ -66,19 +75,40 @@ a, a:hover, a:visited, a:link, a:active, a > *
     height: 32px;
     font-size: 32px!important
 
+// MD-DATEPICKER
+.md-datepicker-dialog
+  flex-flow: column nowrap
+  .md-datepicker-header
+    color: #ffffff!important
+    .md-datepicker-dayname
+      display inline!important
+  .md-datepicker-body
+    .md-datepicker-day-button.md-datepicker-selected
+      color: #fff!important
+
 // MD-DIALOG
 .md-dialog.custom-dialog
-  .title
-    color: #fff
-    font-size: 18px
+  width: 550px
+  .dialog-header
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-between
+    align-items: center
     background: $ca1
-    padding: 16px
+    .title
+      color: #fff
+      font-size: 18px
+      padding: 16px
+    .md-icon
+      color: #ffffff
   .md-tabs-navigation
+    // background: $ca1
     padding: 0
     box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14)
     .md-button
       background: $ca1
       color: #fff
+      max-width none
       &.md-active
         color: #fff
     .md-tabs-indicator
@@ -94,9 +124,13 @@ a, a:hover, a:visited, a:link, a:active, a > *
   .instructions
     color: $cgray2
     font-size: 13px
-    margin-top: 10px
+    margin: 10px 0
 
-
+// MD-MENU
+.md-menu-content.dialog-menu-content
+  z-index 12
+  .md-icon
+    color: $cblue
 
 // PLACEHOLDER MIXIN
 mixin-placeholder(c)

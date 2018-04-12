@@ -18,9 +18,9 @@
       </md-list-item>
       <md-divider></md-divider>
 
-      <pu-player-payment-history v-if="beneficiaries" :beneficiaries="beneficiaries"/>
-      <pu-pay-new-invoice v-if="beneficiaries" :beneficiaries="beneficiaries"/>
-      <pu-payment-accounts />
+      <!-- <pu-player-payment-history v-if="beneficiaries" :beneficiaries="beneficiaries"/> -->
+      <!-- <pu-pay-new-invoice v-if="beneficiaries" :beneficiaries="beneficiaries"/> -->
+      <!-- <pu-payment-accounts /> -->
 
       
 
