@@ -15,6 +15,11 @@ const config = {
     product: 'auth',
     selectAccount: 'true',
     apiVersion: 'v2'
+  },
+  media: {
+    beneficiary: {
+      url: 'https://s3.amazonaws.com/pu-media-dev/beneficiary/'
+    }
   }
 }
 
