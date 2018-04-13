@@ -32,7 +32,7 @@
     },
     data: function () {
       return {
-        currentInvoice: {title: ''}
+        currentInvoice: null
       }
     },
     computed: {
