@@ -6,7 +6,7 @@
     <md-steppers md-vertical md-linear md-dynamic-height :md-active-step.sync="active">
 
       <v-players :step="step1" @select="setPlayer" />
-      <v-programs :step="step2" @select="setProgram" />
+      <v-programs :player="playerSelected" :step="step2" @select="setProgram" />
       <v-payment-accounts :step="step3" @select="setPaymentAccount" />
       <v-payment-plans @select="setPaymentPlan" />
       <v-additional-info @select="setCustomInfo" />
@@ -35,7 +35,24 @@
         step1: false,
         step2: false,
         step3: false,
-        selectedDate: null
+        selectedDate: null,
+        playerSelected: null
+      }
+    },
+    computed: {
+      ...mapState('userModule', {
+        user: 'user'
+      })
+    },
+    watch: {
+      playerSelected () {
+        if (this.playerSelected) {
+          this.step1 = true
+          this.active = 'step2'
+        } else {
+          this.step1 = false
+          this.active = 'step1'
+        }
       }
     },
     methods: {
@@ -46,7 +63,7 @@
         }
       },
       setPlayer (player) {
-        this.setDone('step1', 'step2')
+        this.playerSelected = player
       },
       setProgram (program) {
         console.log('program: ', program)
@@ -71,11 +88,6 @@
       approve (signature) {
         console.log('aprove: ')
       }
-    },
-    computed: {
-      ...mapState('userModule', {
-        user: 'user'
-      })
     }
   }
 </script>

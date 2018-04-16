@@ -1,4 +1,4 @@
-import { paymentService } from '@/services'
+import { paymentService, organizationService } from '@/services'
 import { createToken } from 'vue-stripe-elements-plus'
 
 const module = {
@@ -6,7 +6,8 @@ const module = {
 
   state: {
     cards: [],
-    bankAccounts: []
+    bankAccounts: [],
+    products: []
   },
 
   getters: {
@@ -21,6 +22,9 @@ const module = {
     },
     setBankAccounts (state, bankAccounts) {
       state.bankAccounts = bankAccounts
+    },
+    setProducts (state, products) {
+      state.products = products
     },
     pushCard (state, card) {
       state.cards.push(card)
@@ -112,6 +116,11 @@ const module = {
           context.commit('setBankAccounts', banks.data)
         })
       }
+    },
+    getProducts (context, organizationId) {
+      organizationService.getProducts(organizationId).then(products => {
+        context.commit('setProducts', products)
+      })
     }
   }
 }
