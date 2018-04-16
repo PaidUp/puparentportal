@@ -90,8 +90,9 @@ a, a:hover, a:visited, a:link, a:active, a > *
         color: $clblue
 
 // MD-DIALOG
-.md-dialog.custom-dialog
-  width: 450px!important
+.md-dialog.invoice-dialog
+.md-dialog.accounts-dialog
+  width: 500px!important
   .dialog-header
     display: flex
     flex-flow: row nowrap
@@ -105,12 +106,9 @@ a, a:hover, a:visited, a:link, a:active, a > *
     .md-icon
       color: #ffffff
     &.white-dialog-header
-      background: $cgray4
+      background: #fff
       .title
         color: $cgray1
-      .subtitle
-        color: $cgray2
-        padding: 16px
   .md-tabs-navigation
     // background: $ca1
     padding: 0
@@ -125,6 +123,9 @@ a, a:hover, a:visited, a:link, a:active, a > *
       background-color: #fff
   .md-tab
     padding: 16px!important
+
+// INVOICE DIALOG
+.md-dialog.invoice-dialog
   .order-numbers
     display: flex
     flex-flow: row nowrap
@@ -136,8 +137,12 @@ a, a:hover, a:visited, a:link, a:active, a > *
     color: $cgray2
     font-size: 13px
     margin: 10px 0
-  .main-box
-    padding: 16px
+
+// ACCOUNTS DIALOG
+.md-dialog.accounts-dialog
+  .md-list
+    margin-bottom: 50px
+
 
 // MD-MENU
 .md-menu-content.dialog-menu-content

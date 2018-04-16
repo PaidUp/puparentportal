@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="custom-dialog">
+  <md-dialog :md-active.sync="showDialog" class="invoice-dialog">
     <div class="dialog-header">
       <div class="title">Invoice: INV1234563</div>
       <md-button class="md-icon-button" md-menu-trigger>
