@@ -1,0 +1,62 @@
+<template lang="pug">
+  .payment-plan.md-elevation-2(@click="click")
+    .md-subheading {{ plan.description }}
+    div
+      .md-title ${{ total }}
+      .md-caption {{ plan.dues.length }} {{ plan.dues.length === 1 ? 'installment' : 'installments' }}
+      .md-caption(v-if="chargeToday") ${{ format(chargeToday) }} PaiUp by Today
+      .md-caption(v-if="chargeRemaining") ${{ format(chargeRemaining) }} PaiUp by {{ $d(lastDataCharge, 'card') }}
+
+</template>
+<script>
+import numeral from 'numeral'
+
+export default {
+  props: {
+    plan: {
+      type: Object,
+      required: true
+    }
+  },
+  data () {
+    return {
+      description: 'If you need a custom payment plan, please email support@getpaidup.com or call (855) 764-3232',
+      today: (new Date()).setHours(24, 0, 0, 0)
+    }
+  },
+  computed: {
+    total () {
+      let total = this.plan.dues.reduce((subTotal, due) => {
+        return subTotal + due.amount
+      }, 0)
+      return numeral(total).format('0,0.00')
+    },
+    chargeToday () {
+      return this.plan.dues.reduce((subTotal, due) => {
+        if (this.today > due.dateCharge.getTime()) return subTotal + due.amount
+        return subTotal
+      }, 0)
+    },
+    chargeRemaining () {
+      return this.plan.dues.reduce((subTotal, due) => {
+        if (this.today <= due.dateCharge.getTime()) return subTotal + due.amount
+        return subTotal
+      }, 0)
+    },
+    lastDataCharge () {
+      return this.plan.dues[this.plan.dues.length - 1].dateCharge
+    }
+  },
+  methods: {
+    select (param) {
+      this.$emit('select', param)
+    },
+    format (amount) {
+      return numeral(amount).format('0,0.00')
+    },
+    click () {
+      this.$emit('click', this.plan)
+    }
+  }
+}
+</script>

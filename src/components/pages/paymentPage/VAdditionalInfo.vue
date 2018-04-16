@@ -1,5 +1,5 @@
 <template>
-  <md-step id="step5" md-label="Additional Info">
+  <md-step id="step5" md-label="Additional Info" :md-done.sync="step">
     <div class="additional-info-box">
       <md-field>
         <label>Desired Position</label>

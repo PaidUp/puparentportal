@@ -1,4 +1,4 @@
-import { paymentService, organizationService } from '@/services'
+import { paymentService, organizationService, productService } from '@/services'
 import { createToken } from 'vue-stripe-elements-plus'
 
 const module = {
@@ -7,7 +7,8 @@ const module = {
   state: {
     cards: [],
     bankAccounts: [],
-    products: []
+    products: [],
+    plans: []
   },
 
   getters: {
@@ -25,6 +26,9 @@ const module = {
     },
     setProducts (state, products) {
       state.products = products
+    },
+    setPlans (state, plans) {
+      state.plans = plans
     },
     pushCard (state, card) {
       state.cards.push(card)
@@ -120,6 +124,19 @@ const module = {
     getProducts (context, organizationId) {
       organizationService.getProducts(organizationId).then(products => {
         context.commit('setProducts', products)
+      })
+    },
+    getPlans (context, productId) {
+      productService.getPlans(productId).then(plans => {
+        plans.forEach(plan => {
+          if (plan.dues.length === 1) { plan.dues[0].dateCharge = new Date(plan.dues[0].dateCharge) }
+          plan.dues = plan.dues.sort((dueA, dueB) => {
+            dueA.dateCharge = new Date(dueA.dateCharge)
+            dueB.dateCharge = new Date(dueB.dateCharge)
+            return dueA.dateCharge.getTime() - dueB.dateCharge.getTime()
+          })
+        })
+        context.commit('setPlans', plans)
       })
     }
   }
