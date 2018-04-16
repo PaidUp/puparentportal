@@ -7,12 +7,14 @@
       md-content.md-elevation-4.details-box
         v-player-details-selection(:orders="orders")
         v-player-details-totals(:order="order")
-    button(class="md-button md-raised" v-on:click="openInvoiceDialog") Open Inv details
+    button(class="md-button md-raised" v-on:click="openViewInvoiceDialog") View Invoice
+    button(class="md-button md-raised" v-on:click="openEditInvoiceDialog") Edit Invoice
     .invoices(v-if="order")
       .md-subheading.title Invoices
       .inv-cards
         v-player-invoices(:invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id")
-    VInvoiceDialog(:invoice="currentInvoice" :closeDialog="closeDialog")
+    ViewInvoiceDialog(:invoice="viewInvoice" :closeDialog="closeInvoiceDialog")
+    EditInvoiceDialog(:invoice="editInvoice" :closeDialog="closeInvoiceDialog")
 </template>
 
 <script>
@@ -21,18 +23,21 @@
   import VPlayerDetailsTotals from '@/components/shared/VPlayerDetailsTotals.vue'
   import VPlayerDetailsSelection from '@/components/shared/VPlayerDetailsSelection.vue'
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
-  import VInvoiceDialog from '@/components/shared/VInvoiceDialog.vue'
+  import ViewInvoiceDialog from '@/components/shared/ViewInvoiceDialog.vue'
+  import EditInvoiceDialog from '@/components/shared/EditInvoiceDialog.vue'
   export default {
     components: {
       VPlayerInfo,
       VPlayerInvoices,
       VPlayerDetailsTotals,
       VPlayerDetailsSelection,
-      VInvoiceDialog
+      ViewInvoiceDialog,
+      EditInvoiceDialog
     },
     data: function () {
       return {
-        currentInvoice: null
+        viewInvoice: null,
+        editInvoice: {}
       }
     },
     computed: {
@@ -73,11 +78,15 @@
       ...mapActions('playerModule', {
         getOrders: 'getOrders'
       }),
-      closeDialog: function () {
-        this.currentInvoice = null
+      closeInvoiceDialog: function () {
+        this.viewInvoice = null
+        this.editInvoice = null
       },
-      openInvoiceDialog: function () {
-        this.currentInvoice = {title: 'some'}
+      openViewInvoiceDialog: function () {
+        this.viewInvoice = {title: 'some'}
+      },
+      openEditInvoiceDialog: function () {
+        this.editInvoice = {title: 'some'}
       }
     }
   }

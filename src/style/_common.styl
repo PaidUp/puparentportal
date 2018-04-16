@@ -85,10 +85,13 @@ a, a:hover, a:visited, a:link, a:active, a > *
   .md-datepicker-body
     .md-datepicker-day-button.md-datepicker-selected
       color: #fff!important
+    .md-dialog-actions.md-datepicker-body-footer
+      .md-button
+        color: $clblue
 
 // MD-DIALOG
 .md-dialog.custom-dialog
-  width: 550px!important
+  width: 450px!important
   .dialog-header
     display: flex
     flex-flow: row nowrap
@@ -101,6 +104,13 @@ a, a:hover, a:visited, a:link, a:active, a > *
       padding: 16px
     .md-icon
       color: #ffffff
+    &.white-dialog-header
+      background: $cgray4
+      .title
+        color: $cgray1
+      .subtitle
+        color: $cgray2
+        padding: 16px
   .md-tabs-navigation
     // background: $ca1
     padding: 0
@@ -113,7 +123,8 @@ a, a:hover, a:visited, a:link, a:active, a > *
         color: #fff!important
     .md-tabs-indicator
       background-color: #fff
-.md-dialog.invoice-dialog
+  .md-tab
+    padding: 16px!important
   .order-numbers
     display: flex
     flex-flow: row nowrap
@@ -125,6 +136,8 @@ a, a:hover, a:visited, a:link, a:active, a > *
     color: $cgray2
     font-size: 13px
     margin: 10px 0
+  .main-box
+    padding: 16px
 
 // MD-MENU
 .md-menu-content.dialog-menu-content
