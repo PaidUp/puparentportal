@@ -37,7 +37,7 @@
     data: function () {
       return {
         viewInvoice: null,
-        paymentsAccounts: {}
+        paymentsAccounts: null
       }
     },
     computed: {
