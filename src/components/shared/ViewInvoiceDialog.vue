@@ -1,24 +1,10 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="custom-dialog invoice-dialog">
+  <md-dialog :md-active.sync="showDialog" class="invoice-dialog">
     <div class="dialog-header">
       <div class="title">Invoice: INV1234563</div>
-       <md-menu md-direction="bottom-end" md-size="auto">
-        <md-button class="md-icon-button" md-menu-trigger>
-          <md-icon>more_vert</md-icon>
-        </md-button>
-  
-        <md-menu-content class="dialog-menu-content">
-          <md-menu-item>
-            <span>Print</span>
-            <md-icon>print</md-icon>
-          </md-menu-item>
-  
-          <md-menu-item>
-            <span>Download</span>
-            <md-icon>file_download</md-icon>
-          </md-menu-item>
-        </md-menu-content>
-      </md-menu>
+      <md-button class="md-icon-button" md-menu-trigger>
+        <md-icon>file_download</md-icon>
+      </md-button>
     </div>
     <md-tabs md-alignment="fixed">
       <md-tab md-label="DETAILS">
@@ -73,6 +59,7 @@
 </template>
 
 <script>
+  
   export default {
     props: {
       invoice: Object,
@@ -82,6 +69,8 @@
       return {
         description: 'Dues - Pay 4'
       }
+    },
+    methods: {
     },
     computed: {
       showDialog () {

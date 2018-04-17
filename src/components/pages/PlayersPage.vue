@@ -7,12 +7,14 @@
       md-content.md-elevation-4.details-box
         v-player-details-selection(:orders="orders")
         v-player-details-totals(:order="order")
-    button(class="md-button md-raised" v-on:click="openInvoiceDialog") Open Inv details
+    button(class="md-button md-raised" v-on:click="openViewInvoiceDialog") View Invoice
+    button(class="md-button md-raised" v-on:click="openPaymentAccountsDialog") Payments Accounts
     .invoices(v-if="order")
       .md-subheading.title Invoices
       .inv-cards
         v-player-invoices(:invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id")
-    VInvoiceDialog(:invoice="currentInvoice" :closeDialog="closeDialog")
+    ViewInvoiceDialog(:invoice="viewInvoice" :closeDialog="closeDialog")
+    PaymentAccountsDialog(:accounts="paymentsAccounts" :closeDialog="closeDialog")
 </template>
 
 <script>
@@ -21,18 +23,21 @@
   import VPlayerDetailsTotals from '@/components/shared/VPlayerDetailsTotals.vue'
   import VPlayerDetailsSelection from '@/components/shared/VPlayerDetailsSelection.vue'
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
-  import VInvoiceDialog from '@/components/shared/VInvoiceDialog.vue'
+  import ViewInvoiceDialog from '@/components/shared/ViewInvoiceDialog.vue'
+  import PaymentAccountsDialog from '@/components/shared/PaymentAccountsDialog.vue'
   export default {
     components: {
       VPlayerInfo,
       VPlayerInvoices,
       VPlayerDetailsTotals,
       VPlayerDetailsSelection,
-      VInvoiceDialog
+      ViewInvoiceDialog,
+      PaymentAccountsDialog
     },
     data: function () {
       return {
-        currentInvoice: null
+        viewInvoice: null,
+        paymentsAccounts: null
       }
     },
     computed: {
@@ -74,10 +79,14 @@
         getOrders: 'getOrders'
       }),
       closeDialog: function () {
-        this.currentInvoice = null
+        this.viewInvoice = null
+        this.paymentsAccounts = null
       },
-      openInvoiceDialog: function () {
-        this.currentInvoice = {title: 'some'}
+      openViewInvoiceDialog: function () {
+        this.viewInvoice = {title: 'some'}
+      },
+      openPaymentAccountsDialog: function () {
+        this.paymentsAccounts = {title: 'some'}
       }
     }
   }

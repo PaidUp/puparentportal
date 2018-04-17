@@ -8,6 +8,7 @@ import Bank from '@/components/payment/Bank.vue'
 import Accounts from '@/components/payment/Accounts.vue'
 import Welcome from '@/components/pages/Welcome.vue'
 import PlayersPage from '@/components/pages/PlayersPage.vue'
+import AddNewPlayerPage from '@/components/pages/AddNewPlayerPage.vue'
 import PaymentsPage from '@/components/pages/PaymentsPage.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import PublicLayout from '@/components/layout/PublicLayout.vue'
@@ -24,6 +25,10 @@ const routes = [
         path: '/',
         name: 'home',
         component: Welcome
+      },
+      {
+        path: '/players/new',
+        component: AddNewPlayerPage
       },
       {
         path: '/players/:id',

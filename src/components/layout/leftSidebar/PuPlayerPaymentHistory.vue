@@ -3,7 +3,7 @@ md-list-item(md-expand)
   span.md-list-item-text.ca1.bold Player Payment History
   md-list(slot="md-expand" v-if="beneficiaries")
     pu-item(:item="item" v-for="item in items" :key="item.id")
-    md-list-item(@click="click")
+    md-list-item(to="/players/new")
       md-icon.add-icon add
       .md-list-item-text
         div Add New Player
@@ -33,9 +33,6 @@ export default {
     }
   },
   methods: {
-    click () {
-      console.log('click')
-    }
   }
 }
 </script>

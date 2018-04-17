@@ -14,6 +14,14 @@ a, a:hover, a:visited, a:link, a:active, a > *
   text-decoration: none !important
 
 // STEPPERS
+.has-steppers
+  background: #fff
+  padding: 16px
+  .md-title
+    color: $cgray1
+  .md-stepper-header.md-done
+    .md-stepper-number .md-icon svg
+      fill: #fff !important
 .md-steppers
   .md-stepper-header
     .md-stepper-number
@@ -85,10 +93,14 @@ a, a:hover, a:visited, a:link, a:active, a > *
   .md-datepicker-body
     .md-datepicker-day-button.md-datepicker-selected
       color: #fff!important
+    .md-dialog-actions.md-datepicker-body-footer
+      .md-button
+        color: $clblue
 
 // MD-DIALOG
-.md-dialog.custom-dialog
-  width: 550px!important
+.md-dialog.invoice-dialog
+.md-dialog.accounts-dialog
+  width: 500px!important
   .dialog-header
     display: flex
     flex-flow: row nowrap
@@ -101,6 +113,10 @@ a, a:hover, a:visited, a:link, a:active, a > *
       padding: 16px
     .md-icon
       color: #ffffff
+    &.white-dialog-header
+      background: #fff
+      .title
+        color: $cgray1
   .md-tabs-navigation
     // background: $ca1
     padding: 0
@@ -113,6 +129,10 @@ a, a:hover, a:visited, a:link, a:active, a > *
         color: #fff!important
     .md-tabs-indicator
       background-color: #fff
+  .md-tab
+    padding: 16px!important
+
+// INVOICE DIALOG
 .md-dialog.invoice-dialog
   .order-numbers
     display: flex
@@ -125,6 +145,12 @@ a, a:hover, a:visited, a:link, a:active, a > *
     color: $cgray2
     font-size: 13px
     margin: 10px 0
+
+// ACCOUNTS DIALOG
+.md-dialog.accounts-dialog
+  .md-list
+    margin-bottom: 50px
+
 
 // MD-MENU
 .md-menu-content.dialog-menu-content
