@@ -4,53 +4,81 @@
       Add New Player
     </div>
     <md-steppers md-vertical md-linear md-dynamic-height :md-active-step.sync="active">
-      <md-step id="step1" md-label="Player Info" >
+      <md-step id="step1" md-label="Player Info" :md-description="nameSelected">
         <div class="step-box">
           <div class="update-pic">
             <md-icon class="md-size-3x md-primary">account_circle</md-icon>
-            <div class="clblue bold">UPDATE PROFILE PICTURE</div>
+            <div>
+              <md-button class="clblue bold">UPDATE PROFILE PICTURE</md-button>
+            </div>
           </div>
-          <md-button @click="setDone('step1', 'step2')"></md-button>
+          <div class="names-box">
+            <md-field>
+              <label>First Name</label>
+              <md-input></md-input>
+            </md-field>
+            <md-field>
+              <label>Last Name</label>
+              <md-input></md-input>
+            </md-field>
+          </div>
+          <md-button class="lblue md-accent md-raised" @click="setDone('step1', 'step2')">NEXT</md-button>
+          <md-button class="lblue md-accent" @click="setDone('step1', 'step2')">CANCEL</md-button>
         </div>
       </md-step>
-      <md-step id="step2" md-label="Second Step" md-description="Optional">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias doloribus eveniet quaerat modi cumque quos sed, temporibus nemo eius amet aliquid, illo minus blanditiis tempore, dolores voluptas dolore placeat nulla.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias doloribus eveniet quaerat modi cumque quos sed, temporibus nemo eius amet aliquid, illo minus blanditiis tempore, dolores voluptas dolore placeat nulla.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias doloribus eveniet quaerat modi cumque quos sed, temporibus nemo eius amet aliquid, illo minus blanditiis tempore, dolores voluptas dolore placeat nulla.</p>
+      <md-step id="step2" md-label="Second Step" md-description="Start typing below to search and choose your club">
+        <md-field class="club-search-field">
+          <label>Club</label>
+          <md-input></md-input>
+        </md-field>
+        <div class="clubs">
+          <div class="club md-elevation-2">
+            <img src="@/assets/ntxbanditos.png" alt="club">
+            <div class="title cblue bold">Isotopes Volleyball Club</div>
+            <div class="location">Springfield, MA</div>
+          </div>
+          <div class="club md-elevation-2 selected">
+            <img src="@/assets/ntxbanditos.png" alt="club">
+            <div class="title cblue bold">Isotopes Volleyball Club</div>
+            <div class="location">Springfield, MA</div>
+          </div>
+          <div class="club md-elevation-2">
+            <img src="@/assets/ntxbanditos.png" alt="club">
+            <div class="title cblue bold">Isotopes Volleyball Club</div>
+            <div class="location">Springfield, MA</div>
+          </div>
+          <div class="club md-elevation-2">
+            <img src="@/assets/ntxbanditos.png" alt="club">
+            <div class="title cblue bold">Isotopes Volleyball Club</div>
+            <div class="location">Springfield, MA</div>
+          </div>
+        </div>
+        <md-button class="lblue md-accent md-raised" to="/players/99">ADD PLAYER</md-button>
+        <md-button class="lblue md-accent" @click="setDone('step2')">CANCEL</md-button>
       </md-step>
-     
+
     </md-steppers>
   </div>
 </template>
 
 <script>
-  // import { mapState } from 'vuex'
-  // import VPlayers from './paymentPage/VPlayers.vue'
-  // import VPrograms from './paymentPage/VPrograms.vue'
-  // import VPaymentAccounts from './paymentPage/VPaymentAccounts.vue'
-  // import VPaymentPlans from './paymentPage/VPaymentPlans.vue'
-  // import VAdditionalInfo from './paymentPage/VAdditionalInfo.vue'
-  // import VDocumentSignature from './paymentPage/VDocumentSignature.vue'
-  // import VReviewApprove from './paymentPage/VReviewApprove.vue'
-
   export default {
-    components: { },
+    components: {},
     data: function () {
       return {
         active: 'step1',
         step1: false,
-        step2: false
+        step2: false,
+        nameSelected: ''
       }
     },
     methods: {
       setDone (id, index) {
-        this[id] = true
-
-        this.secondStepError = null
-
+        this[ id ] = true
         if (index) {
           this.active = index
         }
+        this.nameSelected = 'Enzo Hernandez'
       }
     }
   }

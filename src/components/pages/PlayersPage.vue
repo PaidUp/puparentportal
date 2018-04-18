@@ -2,17 +2,24 @@
   .players-page
     .player
       v-player-info(v-if="beneficiary" :player="beneficiary")
-    .details
-      .md-subheading.title Details
-      md-content.md-elevation-4.details-box
-        v-player-details-selection(:orders="orders")
-        v-player-details-totals(:order="order")
-    button(class="md-button md-raised" v-on:click="openViewInvoiceDialog") View Invoice
-    button(class="md-button md-raised" v-on:click="openPaymentAccountsDialog") Payments Accounts
-    .invoices(v-if="order")
-      .md-subheading.title Invoices
-      .inv-cards
-        v-player-invoices(:invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id")
+    .player-empty(v-if="showEmpty")
+      div(class="title bold cgray") Enzo does not have any payment history yet.
+      div(class="cgray") Start by making a payment to Isotopes Volleyball Club.
+      md-button(class="md-raised md-accent lblue") MAKE A NEW PAYMENT
+      div
+        img(src="@/assets/icons/ico02-01.svg" alt="pay")
+    .player-with-payments(v-if="!showEmpty")
+      .details
+        .md-subheading.title Details
+        md-content.md-elevation-4.details-box
+          v-player-details-selection(:orders="orders")
+          v-player-details-totals(:order="order")
+      button(class="md-button md-raised" v-on:click="openViewInvoiceDialog") View Invoice
+      button(class="md-button md-raised" v-on:click="openPaymentAccountsDialog") Payments Accounts
+      .invoices(v-if="order")
+        .md-subheading.title Invoices
+        .inv-cards
+          v-player-invoices(:invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id")
     ViewInvoiceDialog(:invoice="viewInvoice" :closeDialog="closeDialog")
     PaymentAccountsDialog(:accounts="paymentsAccounts" :closeDialog="closeDialog")
 </template>
@@ -51,6 +58,9 @@
       ...mapGetters('playerModule', {
         order: 'order'
       }),
+      showEmpty () {
+        return this.$route.params.id === '99'
+      },
       beneficiary () {
         if (this.beneficiaries) {
           let id = this.$route.params.id
