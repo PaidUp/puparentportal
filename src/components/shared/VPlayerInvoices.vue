@@ -6,8 +6,8 @@
         .md-subhead {{ paymetMethod }}
       md-card-content.card-content
         .status
-          md-icon.md-size-2x {{ icon }}
-          .md-caption {{ status }}
+          md-icon.md-size-2x(:class="clazz") {{ icon }}
+          .md-caption(v-html="status")
         .amount-details
           .details
             span.md-caption {{ invoice.invoiceId }}
@@ -23,8 +23,8 @@
         .md-subhead {{ invoice.description }}
       md-card-content.card-content
         .status
-          md-icon.md-size-2x {{ icon }}
-          .md-caption {{ status }}
+          md-icon.md-size-2x(:class="clazz") {{ icon }}
+          .md-caption(v-html="status")
         .amount-details
           .details
             span.md-caption {{ invoice.memoId }}
@@ -40,14 +40,12 @@
   import VCurrency from '@/components/shared/VCurrency.vue'
 
   const opt = {
-    autopay: 'today',
-    paidup: 'check_circle',
-    credited: 'check_circle',
-    partially_refunded: 'check_circle',
-    paid: 'check_circle',
-    failed: 'cancel',
-    overdue: 'note_add',
-    due: 'note_add'
+    autopay: { key: 'today', class: 'cgray' },
+    paidup: { key: 'check_circle', class: '' },
+    credited: { key: 'check_circle', class: 'cblue' },
+    partially_refunded: { key: 'check_circle', class: 'cblue' },
+    paid: { key: 'check_circle', class: '' },
+    failed: { key: 'check_circle', class: 'cred' }
   }
   
   export default {
@@ -59,7 +57,7 @@
     },
     computed: {
       paymetMethod () {
-        return this.invoice.paymentDetails.brand + '****' + this.invoice.paymentDetails.last4
+        return this.invoice.paymentDetails.brand + '••••' + this.invoice.paymentDetails.last4
       },
       chargeDate () {
         if (this.invoice.invoiceId) return new Date(this.invoice.dataCharge)
@@ -67,10 +65,13 @@
         return new Date()
       },
       icon () {
-        return opt[this.invoice.status]
+        return opt[this.invoice.status] ? opt[this.invoice.status].key : ''
+      },
+      clazz () {
+        return opt[this.invoice.status] ? [opt[this.invoice.status].class] : []
       },
       status () {
-        return this.invoice.status.toUpperCase().replace('_', ' ')
+        return this.invoice.status.toUpperCase().replace('_', '<br/>')
       }
     }
   }

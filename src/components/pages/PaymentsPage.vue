@@ -1,17 +1,17 @@
 <template>
   <div class="payments-page md-elevation-4">
     <div class="md-title">
-      Make/Schedule Payment
+      Make/Schedule Payment for {{ playerSelected ? playerSelected.firstName : '' }}
     </div>
-    <md-steppers md-vertical md-linear md-dynamic-height :md-active-step.sync="active">
+    <md-steppers @md-changed="changeStep" md-vertical md-linear md-dynamic-height :md-active-step.sync="active">
 
-      <v-players :step="step1" @select="setPlayer" />
-      <v-programs :step="step2" :player="playerSelected" @select="setProgram" />
-      <v-payment-accounts :step="step3" @select="setPaymentAccount" />
-      <v-payment-plans :step="step4" @select="setPaymentPlan" :account="paymentAccountSelected" />
-      <v-additional-info :step="step5" @select="setCustomInfo" />
-      <v-document-signature :step="step6" @select="setSignature" />
-      <v-review-approve :step="step7" :account="paymentAccountSelected" :plan="paymentPlanSelected" @select="approve" />
+      <v-players v-if="!id" step-id="step1" :step="step1" @select="setPlayer" />
+      <v-programs step-id="step2" :step="step2" :player="playerSelected" @select="setProgram" />
+      <v-payment-accounts step-id="step3" :step="step3" @select="setPaymentAccount" />
+      <v-payment-plans step-id="step4" :step="step4" @select="setPaymentPlan" :account="paymentAccountSelected" />
+      <v-additional-info step-id="step5" :step="step5" @select="setCustomInfo" />
+      <v-document-signature step-id="step6" :step="step6" @select="setSignature" />
+      <v-review-approve step-id="step7" :step="step7" :current-step="active" :account="paymentAccountSelected" :plan="paymentPlanSelected" @select="approve" />
      
     </md-steppers>
   </div>
@@ -31,13 +31,13 @@
     components: { VPlayers, VPrograms, VPaymentAccounts, VPaymentPlans, VAdditionalInfo, VDocumentSignature, VReviewApprove },
     data: function () {
       return {
-        active: 'step1',
+        active: 'step2',
         step1: false,
         step2: false,
         step3: false,
         step4: false,
-        step5: false,
-        step6: false,
+        step5: true,
+        step6: true,
         step7: false,
         selectedDate: null,
         playerSelected: null,
@@ -49,33 +49,28 @@
     computed: {
       ...mapState('userModule', {
         user: 'user'
-      })
+      }),
+      ...mapState('playerModule', {
+        beneficiaries: 'beneficiaries'
+      }),
+      id () {
+        return this.$route.params.id
+      }
     },
     watch: {
-      playerSelected () {
-        if (this.playerSelected) {
-          this.step1 = true
-          this.active = 'step2'
-        }
+      id () {
+        this.beneficiaries.forEach(beneficiary => {
+          if (beneficiary._id === this.$route.params.id) {
+            this.playerSelected = beneficiary
+          }
+        })
       },
-      programSelected () {
-        if (this.programSelected) {
-          this.getPlans(this.programSelected._id)
-          this.step2 = true
-          this.active = 'step3'
-        }
-      },
-      paymentAccountSelected () {
-        if (this.paymentAccountSelected) {
-          this.step3 = true
-          this.active = 'step4'
-        }
-      },
-      paymentPlanSelected () {
-        if (this.paymentPlanSelected) {
-          this.step7 = true
-          this.active = 'step7'
-        }
+      beneficiaries () {
+        this.beneficiaries.forEach(beneficiary => {
+          if (beneficiary._id === this.$route.params.id) {
+            this.playerSelected = beneficiary
+          }
+        })
       }
     },
     methods: {
@@ -90,15 +85,32 @@
       },
       setPlayer (player) {
         this.playerSelected = player
+        if (player) {
+          this.step1 = true
+          this.active = 'step2'
+        }
       },
       setProgram (program) {
         this.programSelected = program
+        if (program) {
+          this.getPlans(this.programSelected._id)
+          this.step2 = true
+          this.active = 'step3'
+        }
       },
       setPaymentAccount (paymetAccount) {
         this.paymentAccountSelected = paymetAccount
+        if (paymetAccount) {
+          this.step3 = true
+          this.active = 'step4'
+        }
       },
       setPaymentPlan (paymentPlan) {
         this.paymentPlanSelected = paymentPlan
+        if (paymentPlan) {
+          this.step4 = true
+          this.active = 'step7'
+        }
       },
       setCustomInfo (setCustomInfo) {
         console.log('setCustomInfo: ', setCustomInfo)
@@ -110,6 +122,9 @@
       },
       approve (signature) {
         console.log('aprove: ')
+      },
+      changeStep (step) {
+        console.log('change step: ', step)
       }
     }
   }

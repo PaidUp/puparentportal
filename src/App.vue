@@ -33,7 +33,7 @@
         })
       } else {
         // SKIP LOGIN: comment next statement
-        // this.$router.push({ name: 'login' })
+        this.$router.push({ name: 'login' })
       }
     },
     methods: {

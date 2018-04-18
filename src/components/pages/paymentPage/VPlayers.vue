@@ -1,5 +1,5 @@
 <template lang="pug">
-  md-step(id="step1" md-label="Player" md-description="Choose a player or add a new one" :md-done.sync="step")
+  md-step(:id="stepId" md-label="Player" md-description="Choose a player or add a new one" :md-done.sync="step")
     .players
       .player.md-elevation-2(@click="select(beneficiary)" v-for="beneficiary in beneficiaries" :key="beneficiary._id")
         md-avatar.md-elevation-4
@@ -7,13 +7,17 @@
         .name.md-body-2 {{ beneficiary.firstName }} {{ beneficiary.firstLastName }}
         .team.md-caption {{ beneficiary.organizationName }}
     md-button.lblue.md-accent.md-raised ADD NEW PLAYER
-    md-button.lblue.md-accent CANCEL
+    md-button.lblue.md-accent(@click="cancel") CANCEL
 </template>
 <script>
 import { mapState } from 'vuex'
 
 export default {
   props: {
+    stepId: {
+      type: String,
+      required: true
+    },
     step: Boolean
   },
   data () {
@@ -28,8 +32,12 @@ export default {
   },
   methods: {
     select (param) {
-      console.log('param: ', param)
       this.$emit('select', param)
+    },
+    cancel () {
+      this.$router.push({
+        name: 'home'
+      })
     }
   }
 }
