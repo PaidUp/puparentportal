@@ -7,13 +7,13 @@
       md-card-content.card-content
         .status
           md-icon.md-size-2x(:class="clazz") {{ icon }}
-          .md-caption {{ status }}
+          .md-caption(v-html="status")
         .amount-details
           .details
             span.md-caption {{ invoice.invoiceId }}
             br
             span.md-caption {{ $d(chargeDate, 'short') }}
-          v-currency(:amount="invoice.price" :class="clazz" clazz="total md-title")
+          v-currency(:amount="invoice.price" clazz="total md-title")
       md-card-actions
         md-button.md-accent Fix
 
@@ -24,7 +24,7 @@
       md-card-content.card-content
         .status
           md-icon.md-size-2x(:class="clazz") {{ icon }}
-          .md-caption {{ status }}
+          .md-caption(v-html="status")
         .amount-details
           .details
             span.md-caption {{ invoice.memoId }}
@@ -40,10 +40,10 @@
   import VCurrency from '@/components/shared/VCurrency.vue'
 
   const opt = {
-    autopay: { key: 'today', class: 'cblue' },
+    autopay: { key: 'today', class: 'cgray' },
     paidup: { key: 'check_circle', class: '' },
-    credited: { key: 'check_circle', class: '' },
-    partially_refunded: { key: 'check_circle', class: '' },
+    credited: { key: 'check_circle', class: 'cblue' },
+    partially_refunded: { key: 'check_circle', class: 'cblue' },
     paid: { key: 'check_circle', class: '' },
     failed: { key: 'check_circle', class: 'cred' }
   }
@@ -57,7 +57,7 @@
     },
     computed: {
       paymetMethod () {
-        return this.invoice.paymentDetails.brand + '****' + this.invoice.paymentDetails.last4
+        return this.invoice.paymentDetails.brand + '••••' + this.invoice.paymentDetails.last4
       },
       chargeDate () {
         if (this.invoice.invoiceId) return new Date(this.invoice.dataCharge)
@@ -71,7 +71,7 @@
         return opt[this.invoice.status] ? [opt[this.invoice.status].class] : []
       },
       status () {
-        return this.invoice.status.toUpperCase().replace('_', ' ')
+        return this.invoice.status.toUpperCase().replace('_', '<br/>')
       }
     }
   }

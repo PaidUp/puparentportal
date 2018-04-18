@@ -46,7 +46,7 @@ export default {
     unpaid () {
       if (!this.order || !this.order.invoices) return 0
       return this.order.invoices.reduce((subTotal, current) => {
-        if (current.status === 'autopay' || current.status === 'failed' || current.status === 'due') return subTotal + current.price
+        if (current.status === 'autopay') return subTotal + current.price
         return subTotal
       }, 0)
     },
@@ -60,14 +60,14 @@ export default {
     overdue () {
       if (!this.order || !this.order.invoices) return 0
       return this.order.invoices.reduce((subTotal, current) => {
-        if (current.status === 'overdue') return subTotal + current.price
+        if (current.status === 'failed') return subTotal + current.price
         return subTotal
       }, 0)
     },
     credited () {
       if (!this.order || !this.order.invoices) return 0
       return this.order.invoices.reduce((subTotal, current) => {
-        if (current.status === 'due') return subTotal + current.price
+        if (current.status === 'credited' || current.status === 'partially_refunded' || current.status === 'refunded') return subTotal + current.price
         return subTotal
       }, 0)
     }
