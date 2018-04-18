@@ -6,13 +6,13 @@
       .md-subheading.title Details
       md-content.md-elevation-4.details-box
         v-player-details-selection(:orders="orders")
-        v-player-details-totals(:order="order")
+        v-player-details-totals(:invoices="invoices")
     button(class="md-button md-raised" v-on:click="openViewInvoiceDialog") View Invoice
     button(class="md-button md-raised" v-on:click="openPaymentAccountsDialog") Payments Accounts
-    .invoices(v-if="order")
+    .invoices(v-if="invoices")
       .md-subheading.title Invoices
       .inv-cards
-        v-player-invoices(:invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id")
+        v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id")
     ViewInvoiceDialog(:invoice="viewInvoice" :closeDialog="closeDialog")
     PaymentAccountsDialog(:accounts="paymentsAccounts" :closeDialog="closeDialog")
 </template>
@@ -49,7 +49,7 @@
         beneficiaries: 'beneficiaries'
       }),
       ...mapGetters('playerModule', {
-        order: 'order'
+        invoices: 'invoices'
       }),
       beneficiary () {
         if (this.beneficiaries) {

@@ -6,7 +6,7 @@
       md-button.lblue.md-accent(@click="cancel") CANCEL
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -27,17 +27,7 @@ export default {
       products: 'products'
     })
   },
-  watch: {
-    player () {
-      if (this.player) {
-        this.getProducts(this.player.organizationId)
-      }
-    }
-  },
   methods: {
-    ...mapActions('paymentModule', {
-      getProducts: 'getProducts'
-    }),
     select (param) {
       this.selected = param
       this.$emit('select', param)

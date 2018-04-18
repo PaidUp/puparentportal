@@ -1,16 +1,16 @@
 <template lang="pug">
   .details-selects
-    md-field.season-select(v-if="order.orderId")
+    md-field.season-select(v-if="season")
       label(for="season") Season
-      md-select(name="season" id="season" v-model="season" @input="inputSaeson"  @click="clickSaeson")
+      md-select(name="season" id="season" v-model="seasonLoc" @input="inputSaeson"  @click="clickSaeson")
         md-option(v-for="s in seasons" :value="s" :key="s") {{ s }}
     md-field(v-if="season")
       label(for="program") Program
-      md-select(name="program" id="program" v-model="program")
+      md-select(name="program" id="program" v-model="programLoc")
         md-option(v-for="p in programs" :value="p" :key="p") {{ p }}
 </template>
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -19,8 +19,8 @@ export default {
   data () {
     return {
       seasonCurrent: null,
-      season: null,
-      program: null
+      seasonLoc: null,
+      programLoc: null
     }
   },
   watch: {
@@ -39,8 +39,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('playerModule', {
-      order: 'order'
+    ...mapState('playerModule', {
+      season: 'season',
+      program: 'program'
     }),
     seasons () {
       let set = new Set()

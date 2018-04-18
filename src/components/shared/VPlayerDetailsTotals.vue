@@ -21,8 +21,8 @@
 import VCurrency from '@/components/shared/VCurrency.vue'
 export default {
   props: {
-    order: {
-      type: Object,
+    invoices: {
+      type: Array,
       required: true
     }
   },
@@ -31,42 +31,42 @@ export default {
   },
   computed: {
     total () {
-      if (!this.order || !this.order.invoices) return 0
-      return this.order.invoices.reduce((subTotal, current) => {
+      if (!this.invoices) return 0
+      return this.invoices.reduce((subTotal, current) => {
         return subTotal + current.price
       }, 0)
     },
     paid () {
-      if (!this.order || !this.order.invoices) return 0
-      return this.order.invoices.reduce((subTotal, current) => {
+      if (!this.invoices) return 0
+      return this.invoices.reduce((subTotal, current) => {
         if (current.status === 'paid' || current.status === 'paidup') return subTotal + current.price
         return subTotal
       }, 0)
     },
     unpaid () {
-      if (!this.order || !this.order.invoices) return 0
-      return this.order.invoices.reduce((subTotal, current) => {
+      if (!this.invoices) return 0
+      return this.invoices.reduce((subTotal, current) => {
         if (current.status === 'autopay') return subTotal + current.price
         return subTotal
       }, 0)
     },
     due () {
-      if (!this.order || !this.order.invoices) return 0
-      return this.order.invoices.reduce((subTotal, current) => {
+      if (!this.invoices) return 0
+      return this.invoices.reduce((subTotal, current) => {
         if (current.status === 'due') return subTotal + current.price
         return subTotal
       }, 0)
     },
     overdue () {
-      if (!this.order || !this.order.invoices) return 0
-      return this.order.invoices.reduce((subTotal, current) => {
+      if (!this.invoices) return 0
+      return this.invoices.reduce((subTotal, current) => {
         if (current.status === 'failed') return subTotal + current.price
         return subTotal
       }, 0)
     },
     credited () {
-      if (!this.order || !this.order.invoices) return 0
-      return this.order.invoices.reduce((subTotal, current) => {
+      if (!this.invoices) return 0
+      return this.invoices.reduce((subTotal, current) => {
         if (current.status === 'credited' || current.status === 'partially_refunded' || current.status === 'refunded') return subTotal + current.price
         return subTotal
       }, 0)

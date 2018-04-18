@@ -17,18 +17,32 @@ const module = {
     program: ''
   },
   getters: {
-    order (state) {
-      let result = {}
+    // order (state) {
+      // let result = {}
+      // if (state.orders.length && !state.season && !state.program) {
+        // result = state.orders[state.orders.length - 1]
+        // result.invoices.sort(sort)
+        // state.season = result.season
+        // state.program = result.productName
+      // } else {
+        // state.orders.forEach(order => {
+          // if (order.season === state.season && order.productName === state.program) result = order
+        // })
+      // }
+      // return result
+    // },
+    invoices (state) {
+      let result = []
       if (state.orders.length && !state.season && !state.program) {
-        result = state.orders[state.orders.length - 1]
-        result.invoices.sort(sort)
-        state.season = result.season
-        state.program = result.productName
+        let ord = state.orders[state.orders.length - 1]
+        state.season = ord.season
+        state.program = ord.productName
       } else {
         state.orders.forEach(order => {
-          if (order.season === state.season && order.productName === state.program) result = order
+          if (order.season === state.season && order.productName === state.program) result.concat(order.invoices)
         })
       }
+      result.sort(sort)
       return result
     }
   },

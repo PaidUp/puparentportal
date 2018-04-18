@@ -3,16 +3,13 @@
     <div class="md-title">
       Make/Schedule Payment for {{ playerSelected ? playerSelected.firstName : '' }}
     </div>
-    <md-steppers @md-changed="changeStep" md-vertical md-linear md-dynamic-height :md-active-step.sync="active">
-
-      <v-players v-if="!id" step-id="step1" :step="step1" @select="setPlayer" />
+    <md-steppers md-vertical md-linear md-dynamic-height :md-active-step.sync="active">
       <v-programs step-id="step2" :step="step2" :player="playerSelected" @select="setProgram" />
       <v-payment-accounts step-id="step3" :step="step3" @select="setPaymentAccount" />
       <v-payment-plans step-id="step4" :step="step4" @select="setPaymentPlan" :account="paymentAccountSelected" />
       <v-additional-info step-id="step5" :step="step5" @select="setCustomInfo" />
       <v-document-signature step-id="step6" :step="step6" @select="setSignature" />
-      <v-review-approve step-id="step7" :step="step7" :current-step="active" :account="paymentAccountSelected" :plan="paymentPlanSelected" @select="approve" />
-     
+      <v-review-approve step-id="step7" :step="step7" :account="paymentAccountSelected" :plan="paymentPlanSelected" @select="approve" />
     </md-steppers>
   </div>
 </template>
@@ -32,15 +29,12 @@
     data: function () {
       return {
         active: 'step2',
-        step1: false,
         step2: false,
         step3: false,
         step4: false,
-        step5: true,
-        step6: true,
+        step5: false,
+        step6: false,
         step7: false,
-        selectedDate: null,
-        playerSelected: null,
         programSelected: null,
         paymentAccountSelected: null,
         paymentPlanSelected: null
@@ -53,36 +47,25 @@
       ...mapState('playerModule', {
         beneficiaries: 'beneficiaries'
       }),
-      id () {
-        return this.$route.params.id
-      }
-    },
-    watch: {
-      id () {
-        this.beneficiaries.forEach(beneficiary => {
-          if (beneficiary._id === this.$route.params.id) {
-            this.playerSelected = beneficiary
-          }
-        })
-      },
-      beneficiaries () {
-        this.beneficiaries.forEach(beneficiary => {
-          if (beneficiary._id === this.$route.params.id) {
-            this.playerSelected = beneficiary
-          }
-        })
+      playerSelected () {
+        let ps
+        if (this.beneficiaries) {
+          this.beneficiaries.forEach(beneficiary => {
+            if (beneficiary._id === this.$route.params.id) {
+              ps = beneficiary
+              this.getProducts(ps.organizationId)
+            }
+          })
+        }
+        return ps
       }
     },
     methods: {
       ...mapActions('paymentModule', {
-        getPlans: 'getPlans'
+        getPlans: 'getPlans',
+        getProducts: 'getProducts',
+        checkout: 'checkout'
       }),
-      setDone (id, index) {
-        this[ id ] = true
-        if (index) {
-          this.active = index
-        }
-      },
       setPlayer (player) {
         this.playerSelected = player
         if (player) {
@@ -109,6 +92,8 @@
         this.paymentPlanSelected = paymentPlan
         if (paymentPlan) {
           this.step4 = true
+          this.step5 = true
+          this.step6 = true
           this.active = 'step7'
         }
       },
@@ -120,11 +105,17 @@
         console.log('setCustomInfo: ', signature)
         this.setDone('step6', 'step7')
       },
-      approve (signature) {
-        console.log('aprove: ')
-      },
-      changeStep (step) {
-        console.log('change step: ', step)
+      approve (status) {
+        console.log('playerSelected: ', this.playerSelected)
+        console.log('programSelected: ', this.programSelected)
+        console.log('paymentAccountSelected: ', this.paymentAccountSelected)
+        console.log('paymentPlanSelected: ', this.paymentPlanSelected)
+        this.checkout({
+          playerSelected: this.playerSelected,
+          programSelected: this.programSelected,
+          paymentAccountSelected: this.paymentAccountSelected,
+          paymentPlanSelected: this.paymentPlanSelected
+        })
       }
     }
   }

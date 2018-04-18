@@ -1,4 +1,4 @@
-import { paymentService, organizationService, productService } from '@/services'
+import { paymentService, organizationService, productService, commerceService } from '@/services'
 import { createToken } from 'vue-stripe-elements-plus'
 
 const module = {
@@ -137,6 +137,25 @@ const module = {
           })
         })
         context.commit('setPlans', plans)
+      })
+    },
+    checkout (context, { playerSelected, programSelected, paymentAccountSelected, paymentPlanSelected }) {
+      let order = {
+        organizationId: playerSelected.organizationId,
+        organizationName: playerSelected.organizationName,
+        productId: programSelected._id,
+        productName: programSelected.name,
+        productImage: programSelected.image,
+        season: programSelected.season,
+        beneficiaryFirstName: playerSelected.firstName,
+        beneficiaryLastName: playerSelected.lastName
+      }
+      commerceService.checkout({
+        order,
+        dues: paymentPlanSelected.dues,
+        product: programSelected
+      }).then(res => {
+        console.log('Res: ' + res)
       })
     }
   }
