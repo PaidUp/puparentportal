@@ -1,5 +1,5 @@
 <template>
-  <md-step id="step5" md-label="Additional Info" :md-done.sync="step">
+  <md-step :id="stepId" md-label="Additional Info" md-description="N/A" :md-editable="false" :md-done.sync="step">
     <div class="additional-info-box">
       <md-field>
         <label>Desired Position</label>
@@ -25,6 +25,10 @@
 <script>
 export default {
   props: {
+    stepId: {
+      type: String,
+      required: true
+    },
     step: Boolean
   },
   data () {

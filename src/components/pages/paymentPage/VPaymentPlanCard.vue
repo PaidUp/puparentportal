@@ -20,7 +20,6 @@ export default {
   },
   data () {
     return {
-      description: 'If you need a custom payment plan, please email support@getpaidup.com or call (855) 764-3232',
       today: (new Date()).setHours(24, 0, 0, 0)
     }
   },

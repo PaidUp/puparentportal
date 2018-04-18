@@ -6,14 +6,14 @@
         .md-subhead {{ paymetMethod }}
       md-card-content.card-content
         .status
-          md-icon.md-size-2x {{ icon }}
+          md-icon.md-size-2x(:class="clazz") {{ icon }}
           .md-caption {{ status }}
         .amount-details
           .details
             span.md-caption {{ invoice.invoiceId }}
             br
             span.md-caption {{ $d(chargeDate, 'short') }}
-          v-currency(:amount="invoice.price" clazz="total md-title")
+          v-currency(:amount="invoice.price" :class="clazz" clazz="total md-title")
       md-card-actions
         md-button.md-accent Fix
 
@@ -23,7 +23,7 @@
         .md-subhead {{ invoice.description }}
       md-card-content.card-content
         .status
-          md-icon.md-size-2x {{ icon }}
+          md-icon.md-size-2x(:class="clazz") {{ icon }}
           .md-caption {{ status }}
         .amount-details
           .details
@@ -40,14 +40,12 @@
   import VCurrency from '@/components/shared/VCurrency.vue'
 
   const opt = {
-    autopay: 'today',
-    paidup: 'check_circle',
-    credited: 'check_circle',
-    partially_refunded: 'check_circle',
-    paid: 'check_circle',
-    failed: 'cancel',
-    overdue: 'note_add',
-    due: 'note_add'
+    autopay: { key: 'today', class: 'cblue' },
+    paidup: { key: 'check_circle', class: '' },
+    credited: { key: 'check_circle', class: '' },
+    partially_refunded: { key: 'check_circle', class: '' },
+    paid: { key: 'check_circle', class: '' },
+    failed: { key: 'check_circle', class: 'cred' }
   }
   
   export default {
@@ -67,7 +65,10 @@
         return new Date()
       },
       icon () {
-        return opt[this.invoice.status]
+        return opt[this.invoice.status] ? opt[this.invoice.status].key : ''
+      },
+      clazz () {
+        return opt[this.invoice.status] ? [opt[this.invoice.status].class] : []
       },
       status () {
         return this.invoice.status.toUpperCase().replace('_', ' ')

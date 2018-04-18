@@ -48,17 +48,19 @@ const module = {
   mutations: {
     setSession (state, data) {
       let arr = data.token.split('.')
-      if (arr.length === 3) {
+      if (arr.length === 3 && data.user) {
         localStorage.token = data.token
         state.token = data.token
+        localStorage.user = JSON.stringify(data.user)
+        state.user = data.user
       }
-      localStorage.user = JSON.stringify(data.user)
-      state.user = data.user
       state.loginParams.password = ''
     },
     setUser (state, user) {
-      localStorage.user = JSON.stringify(user)
-      state.user = user
+      if (user) {
+        localStorage.user = JSON.stringify(user)
+        state.user = user
+      }
     },
     clean (state) {
       localStorage.removeItem('token')

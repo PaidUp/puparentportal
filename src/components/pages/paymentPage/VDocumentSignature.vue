@@ -1,5 +1,5 @@
 <template>
-  <md-step id="step6" md-label="Document Signature" :md-done.sync="step">
+  <md-step :id="stepId" md-label="Document Signature" md-description="N/A" :md-editable="false" :md-done.sync="step">
     <div class="docs-signature">
       <div class="doc-signature md-elevation-2 title cblue" @click="select('select 1')">Isotopes Baseball Club Code of Conduct Agreement 2019 & Financial Agreement 2019</div>
       <div class="doc-signature md-elevation-2 title cblue" @click="select('select 2')">Isotopes Baseball Club Code of Conduct Agreement 2019 & Financial Agreement 2019</div>
@@ -9,6 +9,10 @@
 <script>
 export default {
   props: {
+    stepId: {
+      type: String,
+      required: true
+    },
     step: Boolean
   },
   data () {

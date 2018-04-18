@@ -1,5 +1,5 @@
 <template lang="pug">
-  md-step(id="step3" md-label="Payment Account" :md-done.sync="step")
+  md-step(:id="stepId" md-label="Payment Account" :md-description="description" :md-done.sync="step")
     .payment-accounts
       .account.md-elevation-2(@click="select(account)" v-for="account in paymentAccounts" :key="account._id")
         md-icon.md-size-2x(v-if="account.object==='bank_account'") account_balance
@@ -13,7 +13,7 @@
 
     md-button.lblue.md-accent.md-raised ADD NEW CARD
     md-button.lblue.md-accent.md-raised ADD NEW BANK
-    md-button.lblue.md-accent CANCEL
+    md-button.lblue.md-accent(@click="cancel") CANCEL
 
 </template>
 <script>
@@ -21,10 +21,15 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   props: {
+    stepId: {
+      type: String,
+      required: true
+    },
     step: Boolean
   },
   data () {
     return {
+      selected: null
     }
   },
   watch: {
@@ -41,7 +46,11 @@ export default {
     }),
     ...mapGetters('paymentModule', {
       paymentAccounts: 'paymentAccounts'
-    })
+    }),
+    description () {
+      if (!this.selected) return ''
+      return `${this.selected.bank_name || this.selected.brand}••••${this.selected.last4}`
+    }
   },
   mounted () {
     if (this.user && this.user.externalCustomerId) {
@@ -50,13 +59,19 @@ export default {
     }
   },
   methods: {
-    select (param) {
-      this.$emit('select', param)
-    },
     ...mapActions('paymentModule', {
       listCards: 'listCards',
       listBanks: 'listBanks'
-    })
+    }),
+    select (param) {
+      this.selected = param
+      this.$emit('select', param)
+    },
+    cancel () {
+      this.$router.push({
+        name: 'home'
+      })
+    }
   }
 }
 </script>
