@@ -13,21 +13,17 @@ const module = {
   state: {
     beneficiaries: [],
     orders: [],
-    season: '',
-    program: ''
+    season: null,
+    program: null
   },
   getters: {
-    order (state) {
-      let result = {}
-      if (state.orders.length && !state.season && !state.program) {
-        result = state.orders[state.orders.length - 1]
-        result.invoices.sort(sort)
-        state.season = result.season
-        state.program = result.productName
-      } else {
+    invoices (state) {
+      let result = []
+      if (state.orders.length && state.season && state.program) {
         state.orders.forEach(order => {
-          if (order.season === state.season && order.productName === state.program) result = order
+          if (order.season === state.season && order.productName === state.program) result = result.concat(order.invoices)
         })
+        result.sort(sort)
       }
       return result
     }
@@ -39,8 +35,10 @@ const module = {
     setBeneficiaries (state, beneficiaries) {
       state.beneficiaries = beneficiaries
     },
-    selectOrder (state, {season, program}) {
+    setSeason (state, season) {
       state.season = season
+    },
+    setProgram (state, program) {
       state.program = program
     }
   },

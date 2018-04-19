@@ -46,6 +46,9 @@ const dict = {
     },
     main: {
       welcome: 'Welcome'
+    },
+    payment: {
+      done: 'Thank you for your payment'
     }
   },
   module: {

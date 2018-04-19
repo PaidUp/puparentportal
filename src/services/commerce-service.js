@@ -5,17 +5,9 @@ const trae = new Trae(config.api.commerce)
 let commerceService
 
 class CommerceService {
-  createOrder ({ planId, beneficiaryFirstName, beneficiaryLastName, paymentMethodtype,
-    externalPaymentMethodId, brand, last4, customInfo }) {
+  checkout ({ order, dues, product }) {
     return trae
-      .post('/customer', { planId,
-        beneficiaryFirstName,
-        beneficiaryLastName,
-        paymentMethodtype,
-        externalPaymentMethodId,
-        brand,
-        last4,
-        customInfo })
+      .post('/order/checkout', { order, dues, product })
   }
 
   ordersByPlayer (params) {
