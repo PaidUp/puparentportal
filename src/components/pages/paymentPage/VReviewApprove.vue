@@ -12,7 +12,7 @@
         b on autopay 
         | on the dates and amount in the payment plan I selected
       md-checkbox(v-model="check3") I agree that PaidUp cannot modify or cancel any payments without approval from the club
-    md-button.lblue.md-accent.md-raised(:disabled="!enable" @click="select") AUTHORIZE PAYMENTS
+    md-button.lblue.md-accent.md-raised(:disabled="!enable || processing" @click="select") AUTHORIZE PAYMENTS
     md-button.lblue.md-accent(@click="cancel") CANCEL
 
 </template>
@@ -26,6 +26,10 @@ export default {
       required: true
     },
     step: {
+      type: Boolean,
+      required: true
+    },
+    processing: {
       type: Boolean,
       required: true
     },
@@ -63,12 +67,6 @@ export default {
       return ((!this.chargeToday || this.check1) && (!this.chargeRemaining || this.check2) && this.check3)
     }
   },
-  watch: {
-    step () {
-      console.log('this.step: ', this.step)
-    }
-  },
-
   methods: {
     select () {
       this.$emit('select', this.enable)

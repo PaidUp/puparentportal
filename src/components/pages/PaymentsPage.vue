@@ -9,7 +9,7 @@
       <v-payment-plans step-id="step4" :step="step4" @select="setPaymentPlan" :account="paymentAccountSelected" />
       <v-additional-info step-id="step5" :step="step5" @select="setCustomInfo" />
       <v-document-signature step-id="step6" :step="step6" @select="setSignature" />
-      <v-review-approve step-id="step7" :step="step7" :account="paymentAccountSelected" :plan="paymentPlanSelected" @select="approve" />
+      <v-review-approve step-id="step7" :processing="processing" :step="step7" :account="paymentAccountSelected" :plan="paymentPlanSelected" @select="approve" />
     </md-steppers>
   </div>
 </template>
@@ -35,6 +35,7 @@
         step5: false,
         step6: false,
         step7: false,
+        processing: false,
         programSelected: null,
         paymentAccountSelected: null,
         paymentPlanSelected: null
@@ -65,6 +66,10 @@
         getPlans: 'getPlans',
         getProducts: 'getProducts',
         checkout: 'checkout'
+      }),
+      ...mapActions('messageModule', {
+        setWarning: 'setWarning',
+        setSuccess: 'setSuccess'
       }),
       setPlayer (player) {
         this.playerSelected = player
@@ -106,15 +111,22 @@
         this.setDone('step6', 'step7')
       },
       approve (status) {
-        console.log('playerSelected: ', this.playerSelected)
-        console.log('programSelected: ', this.programSelected)
-        console.log('paymentAccountSelected: ', this.paymentAccountSelected)
-        console.log('paymentPlanSelected: ', this.paymentPlanSelected)
+        if (!status) return
+        this.processing = true
         this.checkout({
           playerSelected: this.playerSelected,
           programSelected: this.programSelected,
           paymentAccountSelected: this.paymentAccountSelected,
           paymentPlanSelected: this.paymentPlanSelected
+        }).then(res => {
+          this.setSuccess('component.payment.done')
+          this.$router.push({
+            name: 'history',
+            params: { id: this.playerSelected._id }
+          })
+        }).catch(reason => {
+          this.setSuccess('common.error')
+          this.processing = false
         })
       }
     }

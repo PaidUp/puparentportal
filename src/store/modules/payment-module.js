@@ -150,12 +150,10 @@ const module = {
         beneficiaryFirstName: playerSelected.firstName,
         beneficiaryLastName: playerSelected.lastName
       }
-      commerceService.checkout({
+      return commerceService.checkout({
         order,
         dues: paymentPlanSelected.dues,
         product: programSelected
-      }).then(res => {
-        console.log('Res: ' + res)
       })
     }
   }

@@ -19,17 +19,17 @@
 
 <script>
 import VCurrency from '@/components/shared/VCurrency.vue'
+import { mapGetters } from 'vuex'
 export default {
   props: {
-    invoices: {
-      type: Array,
-      required: true
-    }
   },
   components: {
     VCurrency
   },
   computed: {
+    ...mapGetters('playerModule', {
+      invoices: 'invoices'
+    }),
     total () {
       if (!this.invoices) return 0
       return this.invoices.reduce((subTotal, current) => {

@@ -2,15 +2,15 @@
   .details-selects
     md-field.season-select(v-if="season")
       label(for="season") Season
-      md-select(name="season" id="season" v-model="seasonLoc" @input="inputSaeson"  @click="clickSaeson")
+      md-select(name="season" id="season" v-model="season" @input="inputSaeson"  @click="clickSaeson")
         md-option(v-for="s in seasons" :value="s" :key="s") {{ s }}
     md-field(v-if="season")
       label(for="program") Program
-      md-select(name="program" id="program" v-model="programLoc")
+      md-select(name="program" id="program" v-model="program")
         md-option(v-for="p in programs" :value="p" :key="p") {{ p }}
 </template>
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -19,30 +19,29 @@ export default {
   data () {
     return {
       seasonCurrent: null,
-      seasonLoc: null,
-      programLoc: null
+      season: null,
+      program: null
     }
   },
+  mounted () {
+
+  },
   watch: {
-    program () {
-      if (this.program) {
-        this.selectOrder({
-          season: this.season,
-          program: this.program
-        })
+    orders () {
+      if (this.orders.length && !this.season && !this.program) {
+        let ord = this.orders[this.orders.length - 1]
+        this.season = ord.season
+        this.program = ord.productName
       }
     },
-    order () {
-      this.seasonCurrent = this.order.season
-      this.season = this.order.season
-      this.program = this.order.productName
+    season () {
+      this.setSeason(this.season)
+    },
+    program () {
+      this.setProgram(this.program)
     }
   },
   computed: {
-    ...mapState('playerModule', {
-      season: 'season',
-      program: 'program'
-    }),
     seasons () {
       let set = new Set()
       this.orders.forEach(order => {
@@ -65,7 +64,8 @@ export default {
   },
   methods: {
     ...mapMutations('playerModule', {
-      selectOrder: 'selectOrder'
+      setSeason: 'setSeason',
+      setProgram: 'setProgram'
     }),
     clickSaeson () {
       this.seasonCurrent = this.season

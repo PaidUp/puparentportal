@@ -32,7 +32,8 @@ const routes = [
       },
       {
         path: '/players/:id',
-        component: PlayersPage
+        component: PlayersPage,
+        name: 'history'
       },
       {
         path: '/payments/:id',
