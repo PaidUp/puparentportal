@@ -45,7 +45,8 @@
     credited: { key: 'check_circle', class: 'cblue' },
     partially_refunded: { key: 'check_circle', class: 'cblue' },
     paid: { key: 'check_circle', class: '' },
-    failed: { key: 'check_circle', class: 'cred' }
+    failed: { key: 'check_circle', class: 'cred' },
+    submitted: { key: 'check_circle', class: 'cblue' }
   }
   
   export default {

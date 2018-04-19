@@ -39,7 +39,7 @@ export default {
     paid () {
       if (!this.invoices) return 0
       return this.invoices.reduce((subTotal, current) => {
-        if (current.status === 'paid' || current.status === 'paidup') return subTotal + current.price
+        if (current.status === 'paid' || current.status === 'paidup' || current.status === 'submitted') return subTotal + current.price
         return subTotal
       }, 0)
     },
