@@ -66,7 +66,7 @@ jobs:
           name: Clean aws cloudfront cache
           command: aws cloudfront create-invalidation --distribution-id E1KJN36UTKVCFF --paths /index.html /static
 
-  stage-develop:
+  deploy-stage:
     docker:
       - image: circleci/node:8.9
     environment:
