@@ -57,6 +57,9 @@ const module = {
       return beneficiaryService.beneficiariesByAssignee(userEmail).then(beneficiaries => {
         context.commit('setBeneficiaries', beneficiaries)
       })
+    },
+    create (context, body) {
+      return beneficiaryService.create(body)
     }
   }
 }

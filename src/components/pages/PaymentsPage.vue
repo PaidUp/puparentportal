@@ -125,7 +125,7 @@
             params: { id: this.playerSelected._id }
           })
         }).catch(reason => {
-          this.setSuccess('common.error')
+          this.setWarning('common.error')
           this.processing = false
         })
       }
