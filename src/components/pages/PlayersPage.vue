@@ -2,24 +2,24 @@
   .players-page
     .player
       v-player-info(v-if="beneficiary" :player="beneficiary")
-    .player-empty(v-if="showEmpty")
-      div(class="title bold cgray") Enzo does not have any payment history yet.
-      div(class="cgray") Start by making a payment to Isotopes Volleyball Club.
-      md-button(class="md-raised md-accent lblue") MAKE A NEW PAYMENT
+    .player-empty(v-if="!invoices.length")
+      div(class="title bold cgray") {{ beneficiary ? beneficiary.firstName : '' }} does not have any payment history yet.
+      div(class="cgray") Start by making a payment to {{ beneficiary ? beneficiary.organizationName : '' }}.
+      md-button(v-if="beneficiary" class="md-raised md-accent lblue" :to="'/payments/'+beneficiary._id") MAKE A NEW PAYMENT
       div
         img(src="@/assets/icons/ico02-01.svg" alt="pay")
-    .player-with-payments(v-if="!showEmpty")
+    .player-with-payments(v-show="invoices.length")
       .details
         .md-subheading.title Details
         md-content.md-elevation-4.details-box
           v-player-details-selection(:orders="orders")
-          v-player-details-totals(:order="order")
+          v-player-details-totals(:invoices="invoices")
       button(class="md-button md-raised" v-on:click="openViewInvoiceDialog") View Invoice
       button(class="md-button md-raised" v-on:click="openPaymentAccountsDialog") Payments Accounts
-      .invoices(v-if="order")
+      .invoices(v-if="invoices")
         .md-subheading.title Invoices
         .inv-cards
-          v-player-invoices(:invoice="invoice" v-for="invoice in order.invoices" :key="invoice._id")
+          v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id")
     ViewInvoiceDialog(:invoice="viewInvoice" :closeDialog="closeDialog")
     PaymentAccountsDialog(:accounts="paymentsAccounts" :closeDialog="closeDialog")
 </template>
@@ -56,11 +56,8 @@
         beneficiaries: 'beneficiaries'
       }),
       ...mapGetters('playerModule', {
-        order: 'order'
+        invoices: 'invoices'
       }),
-      showEmpty () {
-        return this.$route.params.id === '99'
-      },
       beneficiary () {
         if (this.beneficiaries) {
           let id = this.$route.params.id

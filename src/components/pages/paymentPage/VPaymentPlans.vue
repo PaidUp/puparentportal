@@ -2,7 +2,7 @@
   md-step(:id="stepId" md-label="Payment Plan" :md-description="description" :md-done.sync="step")
     .payment-plans
       v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in plans" :key="plan._id" :plan="plan")
-      v-payment-plan-details(v-if="planSelected" v-for="due in dues" :key="due._id" :due="due" :account="account")
+      v-payment-plan-details(v-if="planSelected" v-for="due in dues" :key="due._id" :due="due")
     md-button.lblue.md-accent.md-raised(v-if="planSelected" @click="acept") ACEPT PAYMENT PLAN
     md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK
     md-button.lblue.md-accent(@click="cancel") CANCEL
@@ -21,7 +21,10 @@ export default {
       required: true
     },
     step: Boolean,
-    account: Object
+    account: {
+      type: Object,
+      required: false
+    }
   },
   data () {
     return {
@@ -34,7 +37,13 @@ export default {
       plans: 'plans'
     }),
     dues () {
-      return this.planSelected ? this.planSelected.dues : []
+      if (!this.planSelected) return []
+      let resp = {}
+      this.planSelected.dues.forEach(due => {
+        due.account = this.account
+        resp[due._id] = due
+      })
+      return resp
     }
   },
   watch: {

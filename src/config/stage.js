@@ -1,0 +1,26 @@
+const config = {
+  api: {
+    user: 'https://stgapi.getpaidup.com/api/v1/user',
+    payment: 'https://stgapi.getpaidup.com/api/v1/payment',
+    organization: 'https://stgapi.getpaidup.com/api/v1/organization',
+    commerce: 'https://stgapi.getpaidup.com/api/v1/commerce'
+  },
+  stripe: {
+    publicKey: 'pk_test_jQmpXGw5GUbXSyDi0TN5gx9R'
+  },
+  plaid: {
+    env: 'sandbox',
+    publicKey: 'c104e73c056e34530e2c5774e6fc5f',
+    clientName: 'Paidup stg',
+    product: 'auth',
+    selectAccount: 'true',
+    apiVersion: 'v2'
+  },
+  media: {
+    beneficiary: {
+      url: 'https://s3.amazonaws.com/pu-media-stg/beneficiary/'
+    }
+  }
+}
+
+export default config

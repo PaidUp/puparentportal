@@ -16,7 +16,7 @@
               </div>
             </div>
             <div class="actions">
-              <md-button class="lblue md-accent">EDIT</md-button>
+              <md-button class="lblue md-accent" @click="modify">EDIT</md-button>
             </div>
           </div>
 </template>
@@ -26,8 +26,7 @@ import VCurrency from '@/components/shared/VCurrency.vue'
 export default {
   components: { VCurrency },
   props: {
-    due: Object,
-    account: Object
+    due: Object
   },
   data () {
     return {
@@ -40,9 +39,15 @@ export default {
       return ['cblue']
     },
     accountDescription () {
-      if (this.account.object === 'card') return `${this.account.brand}••••${this.account.last4}`
-      else if (this.account.object === 'bank_account') return `${this.account.bank_name}••••${this.account.last4}`
+      if (this.due.account.object === 'card') return `${this.due.account.brand}••••${this.due.account.last4}`
+      else if (this.due.account.object === 'bank_account') return `${this.due.account.bank_name}••••${this.due.account.last4}`
       else return ''
+    }
+  },
+  methods: {
+    modify () {
+      this.due.modify = true
+      console.log('modify...')
     }
   }
 }

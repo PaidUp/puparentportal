@@ -1,5 +1,5 @@
 <template lang="pug">
-  md-step(:id="stepId" md-label="Review & Approve" :md-done.sync="step")
+  md-step(:id="stepId" md-label="Review & Approve" md-description="" :md-done.sync="step")
     .review-checks(v-if="account && plan")
       md-checkbox(v-if="chargeToday" v-model="check1") I authorize PaiUp to charge me 
         span.cgreen
@@ -12,7 +12,7 @@
         b on autopay 
         | on the dates and amount in the payment plan I selected
       md-checkbox(v-model="check3") I agree that PaidUp cannot modify or cancel any payments without approval from the club
-    md-button.lblue.md-accent.md-raised(:disabled="!enable") AUTHORIZE PAYMENTS
+    md-button.lblue.md-accent.md-raised(:disabled="!enable || processing" @click="select") AUTHORIZE PAYMENTS
     md-button.lblue.md-accent(@click="cancel") CANCEL
 
 </template>
@@ -25,11 +25,14 @@ export default {
       type: String,
       required: true
     },
-    currentStep: {
-      type: String,
+    step: {
+      type: Boolean,
       required: true
     },
-    step: Boolean,
+    processing: {
+      type: Boolean,
+      required: true
+    },
     account: Object,
     plan: Object
   },
@@ -61,25 +64,12 @@ export default {
       return res
     },
     enable () {
-      console.log('exp: ', ((!this.chargeToday || this.check1) && (!this.chargeRemaining || this.check2) && this.check3))
       return ((!this.chargeToday || this.check1) && (!this.chargeRemaining || this.check2) && this.check3)
     }
   },
-  watch: {
-    currentStep () {
-      console.log('step changed...')
-
-      this.check1 = false
-      this.check2 = false
-      this.check3 = false
-    }
-  },
-  mounted () {
-    console.log('mounted')
-  },
   methods: {
-    select (param) {
-      this.$emit('select', param)
+    select () {
+      this.$emit('select', this.enable)
     },
     format (amount) {
       return numeral(amount).format('0,0.00')

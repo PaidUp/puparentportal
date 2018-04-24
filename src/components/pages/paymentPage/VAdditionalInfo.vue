@@ -1,5 +1,5 @@
 <template>
-  <md-step :id="stepId" md-label="Additional Info" md-description="N/A" :md-editable="false" :md-done.sync="step">
+  <md-step :id="stepId" md-label="Additional Info" :md-description="description" :md-editable="false" :md-done.sync="step">
     <div class="additional-info-box">
       <md-field>
         <label>Desired Position</label>
@@ -36,7 +36,9 @@ export default {
     }
   },
   computed: {
-
+    description () {
+      return this.step ? 'N/A' : ''
+    }
   },
   methods: {
     select (param) {
