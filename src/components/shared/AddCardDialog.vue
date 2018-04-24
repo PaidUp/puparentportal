@@ -7,9 +7,12 @@
       <div class="field-info">Credit or Debit Card</div>
       <div class="card-fields">
         <md-field>
-          <md-icon>credit_card</md-icon>
+          <span class="md-icon" v-if="cardIcon === 'mastercard'">
+            <img src="@/assets/icons/mastercard.svg" alt="card" >
+          </span>
+          <md-icon v-if="cardIcon === 'default'">credit_card</md-icon>
           <label>Card Number</label>
-          <md-input></md-input>
+          <md-input v-model="cardValue"></md-input>
         </md-field>
         <md-field>
           <label>MM/YY</label>
@@ -61,12 +64,19 @@
       showDialog: Boolean,
       closeDialog: Function
     },
-    data: function () {
-      return {}
+    data () {
+      return {
+        cardValue: ''
+      }
     },
-    methods: {
-      handler: function () {}
-    },
-    computed: {}
+    computed: {
+      cardIcon: function () {
+        if (this.cardValue === '') {
+          return 'default'
+        } else {
+          return 'mastercard'
+        }
+      }
+    }
   }
 </script>
