@@ -119,6 +119,8 @@ a, a:hover, a:visited, a:link, a:active, a > *
       .title
         color: $cgray1
         font-weight: 500
+  .md-dialog-actions
+    padding: 16px
   .md-tabs-navigation
     // background: $ca1
     padding: 0
@@ -167,8 +169,27 @@ a, a:hover, a:visited, a:link, a:active, a > *
       flex-flow: row nowrap
       justify-content: space-between
       align-items: center
+      div:nth-child(1)
+        width: 49%
+      div:nth-child(2)
+        width: 29%
+      div:nth-child(3)
+        width: 20%
+    .address-info
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      align-items: center
+      div:nth-child(1)
+        width: 49%
+      div:nth-child(2)
+        width: 20%
+      div:nth-child(3)
+        width: 29%
 
-
+// SELECT MENU FIX
+.md-select-menu.md-menu-content
+  z-index 12
 
 // MD-MENU
 .md-menu-content.dialog-menu-content

@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="add-card-dialog">
+  <md-dialog :md-active.sync="showDialog" class="add-card-dialog" :md-close-on-esc="false" :md-click-outside-to-close="false">
     <div class="dialog-header white-dialog-header">
       <div class="title">Add New Card</div>
     </div>
@@ -11,14 +11,41 @@
           <label>Card Number</label>
           <md-input></md-input>
         </md-field>
-        <!-- <md-field>
-          <label>Exp. Date</label>
+        <md-field>
+          <label>MM/YY</label>
           <md-input></md-input>
         </md-field>
         <md-field>
           <label>CVC</label>
           <md-input></md-input>
-        </md-field> -->
+        </md-field>
+      </div>
+      <md-field>
+        <label>Name on Card</label>
+        <md-input></md-input>
+      </md-field>
+      <md-field>
+        <label>Address</label>
+        <md-input></md-input>
+      </md-field>
+      <div class="address-info">
+        <md-field>
+          <label>City</label>
+          <md-input></md-input>
+        </md-field>
+        <md-field>
+          <label>State</label>
+          <md-select name="state" id="state" md-dense>
+            <md-option value="TX">TX</md-option>
+            <md-option value="TX">TX</md-option>
+            <md-option value="TX">TX</md-option>
+            <md-option value="TX">TX</md-option>
+          </md-select>
+        </md-field>
+        <md-field>
+          <label>Zip</label>
+          <md-input></md-input>
+        </md-field>
       </div>
     </div>
     <md-dialog-actions>
@@ -35,13 +62,11 @@
       closeDialog: Function
     },
     data: function () {
-      return {
-      }
+      return {}
     },
     methods: {
       handler: function () {}
     },
-    computed: {
-    }
+    computed: {}
   }
 </script>
