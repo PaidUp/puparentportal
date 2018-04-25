@@ -4,25 +4,9 @@
       <div class="title">Add New Card</div>
     </div>
     <div class="main-box">
-      <div class="field-info">Credit or Debit Card</div>
-      <div class="card-fields">
-        <md-field>
-          <span class="md-icon" v-if="cardIcon === 'mastercard'">
-            <img src="@/assets/icons/mastercard.svg" alt="card" >
-          </span>
-          <md-icon v-if="cardIcon === 'default'">credit_card</md-icon>
-          <label>Card Number</label>
-          <md-input v-model="cardValue"></md-input>
-        </md-field>
-        <md-field>
-          <label>MM/YY</label>
-          <md-input></md-input>
-        </md-field>
-        <md-field>
-          <label>CVC</label>
-          <md-input></md-input>
-        </md-field>
-      </div>
+      <div class="field-info">Credit or Debit Card*</div>
+      <Card :class="{'stripe-card':true, complete: complete}" :stripe='publicKey' :options='stripeOptions' @change='complete = $event.complete' />
+   
       <md-field>
         <label>Name on Card</label>
         <md-input></md-input>
@@ -53,30 +37,62 @@
     </div>
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="closeDialog()">Cancel</md-button>
-      <md-button class="md-accent md-raised lblue" @click="closeDialog()">ADD NEW CARD</md-button>
+      <md-button class="md-accent md-raised lblue" @click='add' :disabled='!complete'>ADD NEW CARD</md-button>
     </md-dialog-actions>
   </md-dialog>
 </template>
 
 <script>
-  export default {
+  import Vue from 'vue'
+  import config from '@/config'
+  import { Card } from 'vue-stripe-elements-plus'
+  import { mapState, mapActions } from 'vuex'
+
+export default {
     props: {
       showDialog: Boolean,
       closeDialog: Function
     },
+    components: { Card },
     data () {
       return {
-        cardValue: ''
+        publicKey: config.stripe.publicKey,
+        complete: false,
+        stripeOptions: {
+        // see https://stripe.com/docs/stripe.js#element-options for details
+        }
       }
     },
     computed: {
-      cardIcon: function () {
-        if (this.cardValue === '') {
-          return 'default'
-        } else {
-          return 'mastercard'
-        }
+      ...mapState('userModule', {
+        user: 'user'
+      })
+    },
+    created () {
+      Vue.loadScript('https://cdn.plaid.com/link/v2/stable/link-initialize.js')
+      .then(() => {
+        console.log('script loaded')
+      })
+      .catch(() => {
+        console.log('There was an issue loading the link-initialize.js script')
+      })
+    },
+    methods: {
+      ...mapActions('messageModule', {
+        setSuccess: 'setSuccess'
+      }),
+      ...mapActions('paymentModule', {
+        addCard: 'addCard'
+      }),
+      add () {
+        this.complete = false
+        this.addCard(this.user).then(res => {
+          this.setSuccess('module.payment.add_card_success')
+          this.complete = true
+        })
       }
     }
-  }
+
+}
 </script>
+
