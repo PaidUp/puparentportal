@@ -42,6 +42,9 @@ a, a:hover, a:visited, a:link, a:active, a > *
   color $clblue
   &.md-raised
     background-color $clblue !important
+  &[disabled]
+    opacity: .4
+    color: $cgray4
 
 // MD-SWITCH
 .md-switch.md-accent.lblue
@@ -98,6 +101,7 @@ a, a:hover, a:visited, a:link, a:active, a > *
         color: $clblue
 
 // MD-DIALOG
+.md-dialog.add-card-dialog
 .md-dialog.invoice-dialog
 .md-dialog.accounts-dialog
   width: 500px!important
@@ -117,6 +121,9 @@ a, a:hover, a:visited, a:link, a:active, a > *
       background: #fff
       .title
         color: $cgray1
+        font-weight: 500
+  .md-dialog-actions
+    padding: 16px
   .md-tabs-navigation
     // background: $ca1
     padding: 0
@@ -151,6 +158,41 @@ a, a:hover, a:visited, a:link, a:active, a > *
   .md-list
     margin-bottom: 50px
 
+// ADD CARD DIALOG
+.md-dialog.add-card-dialog
+  .main-box
+    padding: 16px
+    .field-info
+      color: $cgray2
+      font-size: 12px
+      line-height: 1
+      font-weight: 500 
+    .card-fields
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      align-items: center
+      div:nth-child(1)
+        width: 49%
+      div:nth-child(2)
+        width: 29%
+      div:nth-child(3)
+        width: 20%
+    .address-info
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      align-items: center
+      div:nth-child(1)
+        width: 49%
+      div:nth-child(2)
+        width: 20%
+      div:nth-child(3)
+        width: 29%
+
+// SELECT MENU FIX
+.md-select-menu.md-menu-content
+  z-index 12
 
 // MD-MENU
 .md-menu-content.dialog-menu-content
@@ -168,6 +210,23 @@ mixin-placeholder(c)
     color: c;
   &:-moz-placeholder
     color: c;
+
+// STRIPE CARD OVERRIDE
+.StripeElement
+  background-color: white
+  height: 40px
+  padding: 10px 0px
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42)
+  transition all ease 400ms
+  margin: 4px 0 24px
+  &.StripeElement--focus 
+    border-bottom: 2px solid $ca1
+    border-color: $ca1
+  &.StripeElement--invalid 
+    border-color: #fa755a
+  &.StripeElement--webkit-autofill 
+    background-color: #fefde5 !important
+
 
 // TEXT
 .title

@@ -1,7 +1,7 @@
 <template>
   <md-dialog :md-active.sync="showDialog" class="accounts-dialog">
     <div class="dialog-header white-dialog-header">
-      <div class="title bold">Choose Payment Account</div>
+      <div class="title">Choose Payment Account</div>
     </div>
     <md-list class="md-double-line">
       <md-subheader>Existing Accounts</md-subheader>
