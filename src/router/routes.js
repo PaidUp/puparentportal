@@ -3,7 +3,7 @@ import SignUpPage from '@/components/pages/SignUpPage.vue'
 import FbSignUpPage from '@/components/pages/FbSignUpPage.vue'
 import ForgotPassPage from '@/components/pages/ForgotPassPage.vue'
 import ResetPassPage from '@/components/pages/ResetPassPage.vue'
-import Card from '@/components/payment/Card.vue'
+import PuCard from '@/components/payment/PuCard.vue'
 import Bank from '@/components/payment/Bank.vue'
 import Accounts from '@/components/payment/Accounts.vue'
 import Welcome from '@/components/pages/Welcome.vue'
@@ -42,7 +42,7 @@ const routes = [
       {
         path: '/card',
         name: 'card',
-        component: Card
+        component: PuCard
       },
       {
         path: '/bank',

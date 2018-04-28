@@ -11,13 +11,15 @@
         .card-details.md-caption(v-if="account.object==='bank_account'") ••••{{ account.last4 }}
         .card-details.md-caption(v-if="account.object==='card'") Exp. {{ account.exp_month }}/{{ account.exp_year % 100 }}
 
-    md-button.lblue.md-accent.md-raised ADD NEW CARD
+    md-button.lblue.md-accent.md-raised(@click="showAddCardDialog=true") ADD NEW CARD
     md-button.lblue.md-accent.md-raised ADD NEW BANK
     md-button.lblue.md-accent(@click="cancel") CANCEL
+    add-card-dialog(:showDialog="showAddCardDialog" @close="showAddCardDialog = false")
 
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
+import AddCardDialog from '@/components/shared/AddCardDialog.vue'
 
 export default {
   props: {
@@ -27,9 +29,11 @@ export default {
     },
     step: Boolean
   },
+  components: { AddCardDialog },
   data () {
     return {
-      selected: null
+      selected: null,
+      showAddCardDialog: false
     }
   },
   watch: {
@@ -66,6 +70,9 @@ export default {
     select (param) {
       this.selected = param
       this.$emit('select', param)
+    },
+    closeDialog () {
+      this.showAddCardDialog = false
     },
     cancel () {
       this.$router.push({

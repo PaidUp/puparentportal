@@ -1,5 +1,4 @@
 import { paymentService, organizationService, productService, commerceService } from '@/services'
-import { createToken } from 'vue-stripe-elements-plus'
 
 const module = {
   namespaced: true,
@@ -49,30 +48,27 @@ const module = {
   },
 
   actions: {
-    addCard (context, user) {
+    addCard (context, {user, token}) {
       return new Promise((resolve, reject) => {
-        createToken().then(data => {
-          const token = data.token.id
-          if (!user.externalCustomerId) {
-            paymentService.createCustomer(user, token).then(externalCustomer => {
-              context.commit('setCards', externalCustomer.sources.data)
-              const externalCustomerId = externalCustomer.id
-              return context.dispatch('userModule/update', {
-                id: user._id,
-                values: { externalCustomerId }
-              }, {
-                root: true
-              })
-            }).then(userUpd => {
-              resolve(userUpd)
+        if (!user.externalCustomerId) {
+          paymentService.createCustomer(user, token).then(externalCustomer => {
+            context.commit('setCards', externalCustomer.sources.data)
+            const externalCustomerId = externalCustomer.id
+            return context.dispatch('userModule/update', {
+              id: user._id,
+              values: { externalCustomerId }
+            }, {
+              root: true
             })
-          } else {
-            paymentService.associateCard(user.externalCustomerId, token).then(card => {
-              context.commit('pushCard', card)
-              resolve(card)
-            })
-          }
-        })
+          }).then(userUpd => {
+            resolve(userUpd)
+          })
+        } else {
+          paymentService.associateCard(user.externalCustomerId, token).then(card => {
+            context.commit('pushCard', card)
+            resolve(card)
+          })
+        }
       })
     },
     addBank (context, { user, publicToken, accountId }) {
