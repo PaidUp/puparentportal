@@ -7,33 +7,34 @@
       <div class="field-info">Credit or Debit Card*</div>
       <pu-card :class="{'stripe-card':true, complete: complete}" @done="done" @token="closeDialog" :details="details"  :submited="submited" />
    
-      <md-field>
+      <md-field :class="{'md-invalid': $v.details.name.$error}">
         <label>Name on Card</label>
-        <md-input v-model.trim="details.name" ></md-input>
+        <md-input v-model.trim="details.name" @input="$v.details.name.$touch()"></md-input>
+        <span class="md-error" v-if="!$v.details.name.required">{{ $t('validations.required', { field: 'Name' }) }}</span>        
       </md-field>
-      <md-field>
+      <md-field :class="{'md-invalid': $v.details.address_line1.$error}">
         <label>Address</label>
-        <md-input></md-input>
+        <md-input v-model.trim="details.address_line1" @input="$v.details.address_line1.$touch()"></md-input>
+        <span class="md-error" v-if="!$v.details.address_line1.required">{{ $t('validations.required', { field: 'Address' }) }}</span>        
       </md-field>
       <div class="address-info">
-        <md-field>
+        <md-field :class="{'md-invalid': $v.details.address_city.$error}">
           <label>City</label>
-          <md-input></md-input>
+          <md-input v-model.trim="details.address_city" @input="$v.details.address_city.$touch()"></md-input>
+          <span class="md-error" v-if="!$v.details.address_city.required">{{ $t('validations.required', { field: 'City' }) }}</span>          
         </md-field>
-        <md-field>
+        <md-field :class="{'md-invalid': $v.details.address_state.$error}">
           <label>State</label>
-          <md-select name="state" id="state" md-dense>
-            <md-option value="TX">TX</md-option>
-            <md-option value="TX">TX</md-option>
-            <md-option value="TX">TX</md-option>
-            <md-option value="TX">TX</md-option>
+          <md-select v-model="details.address_state" @input="$v.details.address_state.$touch()" name="state" id="state" md-dense>
+            <md-option v-for="state in states" :key="state.abbreviation" :value="state.abbreviation">{{ state.name }}</md-option>
           </md-select>
+          <span class="md-error" v-if="!$v.details.address_state.required">{{ $t('validations.required', { field: 'State' }) }}</span>
         </md-field>
       </div>
     </div>
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="closeDialog">Cancel</md-button>
-      <md-button class="md-accent md-raised lblue" @click='submited = !submited' :disabled="!complete">ADD NEW CARD</md-button>
+      <md-button class="md-accent md-raised lblue" @click='submited = !submited' :disabled="disabled">ADD NEW CARD</md-button>
     </md-dialog-actions>
   </md-dialog>
 </template>
@@ -41,6 +42,7 @@
 <script>
   import config from '@/config'
   import PuCard from '@/components/payment/PuCard.vue'
+  import { required } from 'vuelidate/lib/validators'
 
 export default {
     props: {
@@ -58,7 +60,245 @@ export default {
           address_state: '',
           address_country: 'US'
         },
-        submited: false
+        submited: false,
+        states: [
+          {
+            'name': 'Alabama',
+            'abbreviation': 'AL'
+          },
+          {
+            'name': 'Alaska',
+            'abbreviation': 'AK'
+          },
+          {
+            'name': 'American Samoa',
+            'abbreviation': 'AS'
+          },
+          {
+            'name': 'Arizona',
+            'abbreviation': 'AZ'
+          },
+          {
+            'name': 'Arkansas',
+            'abbreviation': 'AR'
+          },
+          {
+            'name': 'California',
+            'abbreviation': 'CA'
+          },
+          {
+            'name': 'Colorado',
+            'abbreviation': 'CO'
+          },
+          {
+            'name': 'Connecticut',
+            'abbreviation': 'CT'
+          },
+          {
+            'name': 'Delaware',
+            'abbreviation': 'DE'
+          },
+          {
+            'name': 'District Of Columbia',
+            'abbreviation': 'DC'
+          },
+          {
+            'name': 'Federated States Of Micronesia',
+            'abbreviation': 'FM'
+          },
+          {
+            'name': 'Florida',
+            'abbreviation': 'FL'
+          },
+          {
+            'name': 'Georgia',
+            'abbreviation': 'GA'
+          },
+          {
+            'name': 'Guam',
+            'abbreviation': 'GU'
+          },
+          {
+            'name': 'Hawaii',
+            'abbreviation': 'HI'
+          },
+          {
+            'name': 'Idaho',
+            'abbreviation': 'ID'
+          },
+          {
+            'name': 'Illinois',
+            'abbreviation': 'IL'
+          },
+          {
+            'name': 'Indiana',
+            'abbreviation': 'IN'
+          },
+          {
+            'name': 'Iowa',
+            'abbreviation': 'IA'
+          },
+          {
+            'name': 'Kansas',
+            'abbreviation': 'KS'
+          },
+          {
+            'name': 'Kentucky',
+            'abbreviation': 'KY'
+          },
+          {
+            'name': 'Louisiana',
+            'abbreviation': 'LA'
+          },
+          {
+            'name': 'Maine',
+            'abbreviation': 'ME'
+          },
+          {
+            'name': 'Marshall Islands',
+            'abbreviation': 'MH'
+          },
+          {
+            'name': 'Maryland',
+            'abbreviation': 'MD'
+          },
+          {
+            'name': 'Massachusetts',
+            'abbreviation': 'MA'
+          },
+          {
+            'name': 'Michigan',
+            'abbreviation': 'MI'
+          },
+          {
+            'name': 'Minnesota',
+            'abbreviation': 'MN'
+          },
+          {
+            'name': 'Mississippi',
+            'abbreviation': 'MS'
+          },
+          {
+            'name': 'Missouri',
+            'abbreviation': 'MO'
+          },
+          {
+            'name': 'Montana',
+            'abbreviation': 'MT'
+          },
+          {
+            'name': 'Nebraska',
+            'abbreviation': 'NE'
+          },
+          {
+            'name': 'Nevada',
+            'abbreviation': 'NV'
+          },
+          {
+            'name': 'New Hampshire',
+            'abbreviation': 'NH'
+          },
+          {
+            'name': 'New Jersey',
+            'abbreviation': 'NJ'
+          },
+          {
+            'name': 'New Mexico',
+            'abbreviation': 'NM'
+          },
+          {
+            'name': 'New York',
+            'abbreviation': 'NY'
+          },
+          {
+            'name': 'North Carolina',
+            'abbreviation': 'NC'
+          },
+          {
+            'name': 'North Dakota',
+            'abbreviation': 'ND'
+          },
+          {
+            'name': 'Northern Mariana Islands',
+            'abbreviation': 'MP'
+          },
+          {
+            'name': 'Ohio',
+            'abbreviation': 'OH'
+          },
+          {
+            'name': 'Oklahoma',
+            'abbreviation': 'OK'
+          },
+          {
+            'name': 'Oregon',
+            'abbreviation': 'OR'
+          },
+          {
+            'name': 'Palau',
+            'abbreviation': 'PW'
+          },
+          {
+            'name': 'Pennsylvania',
+            'abbreviation': 'PA'
+          },
+          {
+            'name': 'Puerto Rico',
+            'abbreviation': 'PR'
+          },
+          {
+            'name': 'Rhode Island',
+            'abbreviation': 'RI'
+          },
+          {
+            'name': 'South Carolina',
+            'abbreviation': 'SC'
+          },
+          {
+            'name': 'South Dakota',
+            'abbreviation': 'SD'
+          },
+          {
+            'name': 'Tennessee',
+            'abbreviation': 'TN'
+          },
+          {
+            'name': 'Texas',
+            'abbreviation': 'TX'
+          },
+          {
+            'name': 'Utah',
+            'abbreviation': 'UT'
+          },
+          {
+            'name': 'Vermont',
+            'abbreviation': 'VT'
+          },
+          {
+            'name': 'Virgin Islands',
+            'abbreviation': 'VI'
+          },
+          {
+            'name': 'Virginia',
+            'abbreviation': 'VA'
+          },
+          {
+            'name': 'Washington',
+            'abbreviation': 'WA'
+          },
+          {
+            'name': 'West Virginia',
+            'abbreviation': 'WV'
+          },
+          {
+            'name': 'Wisconsin',
+            'abbreviation': 'WI'
+          },
+          {
+            'name': 'Wyoming',
+            'abbreviation': 'WY'
+          }
+        ]
       }
     },
     methods: {
@@ -67,6 +307,27 @@ export default {
       },
       closeDialog () {
         this.$emit('close')
+      }
+    },
+    computed: {
+      disabled () {
+        return !this.complete || this.$v.details.$invalid || this.submited
+      }
+    },
+    validations: {
+      details: {
+        name: {
+          required
+        },
+        address_line1: {
+          required
+        },
+        address_state: {
+          required
+        },
+        address_city: {
+          required
+        }
       }
     }
 

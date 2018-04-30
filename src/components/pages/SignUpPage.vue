@@ -51,17 +51,8 @@
   </div>
 </template>
 <script>
-  import {
-    mapActions,
-    mapGetters
-  } from 'vuex'
-  import {
-    required,
-    email,
-    minLength,
-    sameAs,
-    numeric
-  } from 'vuelidate/lib/validators'
+  import { mapActions, mapGetters } from 'vuex'
+  import { required, email, minLength, sameAs, numeric } from 'vuelidate/lib/validators'
 
   export default {
     data () {
