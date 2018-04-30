@@ -18,7 +18,7 @@
 
 </template>
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import AddCardDialog from '@/components/shared/AddCardDialog.vue'
 
 export default {
@@ -45,9 +45,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('userModule', {
-      user: 'user'
-    }),
     ...mapGetters('paymentModule', {
       paymentAccounts: 'paymentAccounts'
     }),
@@ -56,17 +53,7 @@ export default {
       return `${this.selected.bank_name || this.selected.brand}••••${this.selected.last4}`
     }
   },
-  mounted () {
-    if (this.user && this.user.externalCustomerId) {
-      this.listCards(this.user)
-      this.listBanks(this.user)
-    }
-  },
   methods: {
-    ...mapActions('paymentModule', {
-      listCards: 'listCards',
-      listBanks: 'listBanks'
-    }),
     select (param) {
       this.selected = param
       this.$emit('select', param)
