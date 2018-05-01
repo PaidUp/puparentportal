@@ -4,7 +4,7 @@ md-list-item(md-expand)
   md-list(slot="md-expand")
     pu-item-account(:item="item" v-for="item in cards" :key="item.id")
     pu-item-account(:item="item" v-for="item in bankAccounts" :key="item.id")
-    md-list-item
+    md-list-item(@click="showAddCardDialog=true")
       md-icon.add-icon add
       .md-list-item-text
         div Add New Card
@@ -12,14 +12,21 @@ md-list-item(md-expand)
       md-icon.add-icon add
       .md-list-item-text
         div Add New Bank
+  add-card-dialog(:showDialog="showAddCardDialog" @close="showAddCardDialog = false")
 </template>
 <script>
 import PuItem from './PuItem.vue'
 import PuItemAccount from './PuItemAccount.vue'
 import { mapState, mapGetters, mapActions } from 'vuex'
+import AddCardDialog from '@/components/shared/AddCardDialog.vue'
 
 export default {
-  components: { PuItem, PuItemAccount },
+  components: { PuItem, PuItemAccount, AddCardDialog },
+  data () {
+    return {
+      showAddCardDialog: false
+    }
+  },
   computed: {
     ...mapState('userModule', {
       user: 'user'
