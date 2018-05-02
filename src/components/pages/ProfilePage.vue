@@ -44,7 +44,7 @@
         <div class="upgrade-box" v-if="!editing">
           Upgrade your account if your are a Club Director to receive payments from parents
           and access the Scoreboard (PaidUp approval required).
-          <md-button class="md-accent md-raised lblue upgrade-btn">UPGRADE TO CLUB DIRECTOR ACCOUNT</md-button>
+          <md-button to="/upgrade" class="md-accent md-raised lblue upgrade-btn">UPGRADE TO CLUB DIRECTOR ACCOUNT</md-button>
         </div>
       
       </div>

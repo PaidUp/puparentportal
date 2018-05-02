@@ -24,6 +24,7 @@ Vue.use(FBSignInButton)
 Vue.use(Vuelidate)
 
 Vue.config.productionTip = false
+Vue.material.locale.dateFormat = 'MM-DD-YYYY'
 
 /* eslint-disable no-new */
 new Vue({

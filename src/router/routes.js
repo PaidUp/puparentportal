@@ -10,9 +10,10 @@ import Welcome from '@/components/pages/Welcome.vue'
 import PlayersPage from '@/components/pages/PlayersPage.vue'
 import AddNewPlayerPage from '@/components/pages/AddNewPlayerPage.vue'
 import PaymentsPage from '@/components/pages/PaymentsPage.vue'
-import ProfilePage from '@/components/pages/ProfilePage.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import PublicLayout from '@/components/layout/PublicLayout.vue'
+import ProfilePage from '@/components/pages/ProfilePage.vue'
+import UpgradePage from '@/components/pages/UpgradePage.vue'
 
 const routes = [
   {
@@ -34,6 +35,10 @@ const routes = [
       {
         path: '/profile',
         component: ProfilePage
+      },
+      {
+        path: '/upgrade',
+        component: UpgradePage
       },
       {
         path: '/players/:id',
