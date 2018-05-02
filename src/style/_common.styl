@@ -178,17 +178,19 @@ a, a:hover, a:visited, a:link, a:active, a > *
         width: 29%
       div:nth-child(3)
         width: 20%
-    .address-info
-      display: flex
-      flex-flow: row nowrap
-      justify-content: space-between
-      align-items: center
-      div:nth-child(1)
-        width: 49%
-      div:nth-child(2)
-        width: 20%
-      div:nth-child(3)
-        width: 29%
+
+// City-State-ZIP in one row
+.address-info
+  display: flex
+  flex-flow: row nowrap
+  justify-content: space-between
+  align-items: center
+  div:nth-child(1)
+    width: 49%
+  div:nth-child(2)
+    width: 20%
+  div:nth-child(3)
+    width: 29%
 
 // SELECT MENU FIX
 .md-select-menu.md-menu-content
@@ -229,6 +231,8 @@ mixin-placeholder(c)
 
 
 // TEXT
+.centered
+  text-align: center
 .title
   font-size: 18px
 .bold
@@ -241,6 +245,10 @@ mixin-placeholder(c)
   line-height: 1.4
   &.red
     color: $cred
+.field-caption
+  @extends .caption;
+  margin-top: -18px
+  margin-bottom: 15px
 .number-big
   font-size: 22px
   font-weight: 600

@@ -1,22 +1,14 @@
 <template>
   <div class="left-sidebar">
     <md-list class="top-list">
-      <md-list-item class="user-menu">
-        <md-menu md-size="auto" md-align-trigger="md-align-trigger" md-direction="bottom-end">
-          <md-button class="md-primary" md-menu-trigger="md-menu-trigger">
-            <md-avatar>
-              <img src="@/assets/avatar.jpg" />
-            </md-avatar>&nbsp; Diego Fortes
-            <md-icon>keyboard_arrow_down</md-icon>
-          </md-button>
-          <md-menu-content>
-            <md-menu-item>My Item 1</md-menu-item>
-            <md-menu-item>My Item 1</md-menu-item>
-            <md-menu-item>My Item 1</md-menu-item>
-          </md-menu-content>
-        </md-menu>
+      <md-list-item class="edit-user-nav-item" to="/profile">
+        <md-avatar>
+          <img src="@/assets/avatar.jpg" />
+        </md-avatar>
+        <div class="md-list-item-text bold">
+          Diego Fortes
+        </div>
       </md-list-item>
-      <md-divider></md-divider>
 
       <pu-player-payment-history v-if="beneficiaries" :beneficiaries="beneficiaries"/>
       <pu-pay-new-invoice v-if="beneficiaries" :beneficiaries="beneficiaries"/>

@@ -12,6 +12,8 @@ import AddNewPlayerPage from '@/components/pages/AddNewPlayerPage.vue'
 import PaymentsPage from '@/components/pages/PaymentsPage.vue'
 import MainLayout from '@/components/layout/MainLayout.vue'
 import PublicLayout from '@/components/layout/PublicLayout.vue'
+import ProfilePage from '@/components/pages/ProfilePage.vue'
+import UpgradePage from '@/components/pages/UpgradePage.vue'
 
 const routes = [
   {
@@ -29,6 +31,14 @@ const routes = [
       {
         path: '/players/new',
         component: AddNewPlayerPage
+      },
+      {
+        path: '/profile',
+        component: ProfilePage
+      },
+      {
+        path: '/upgrade',
+        component: UpgradePage
       },
       {
         path: '/players/:id',
