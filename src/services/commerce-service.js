@@ -10,6 +10,11 @@ class CommerceService {
       .post('/order/checkout', { order, dues, product })
   }
 
+  invoicesByPayentMethod (paymentMethodId) {
+    return trae
+      .get(`/invoice/method/${paymentMethodId}`)
+  }
+
   ordersByPlayer (params) {
     const organizationId = encodeURI(params.organizationId)
     const beneficiaryFirstName = encodeURI(params.firstName)

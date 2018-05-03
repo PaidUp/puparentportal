@@ -1,5 +1,5 @@
 <template lang="pug">
-md-list-item()
+md-list-item(@click="click")
   md-avatar(v-if="item.object==='card'")
     img(src="avatarUrl")
   md-avatar.md-avatar-icon.md-accent(v-if="item.object==='bank_account'")
@@ -30,6 +30,11 @@ export default {
       return ''
     }
 
+  },
+  methods: {
+    click () {
+      this.$emit('click', this.item)
+    }
   }
 }
 </script>
