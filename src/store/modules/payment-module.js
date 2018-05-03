@@ -112,15 +112,16 @@ const module = {
     },
     removeCard (context, { user, cardId }) {
       if (user.externalCustomerId) {
-        paymentService.removeCard(user.externalCustomerId, cardId).then(banks => {
-          context.commit('setBankAccounts', banks.data)
-        })
+        return paymentService.removeCard(user.externalCustomerId, cardId)
       }
     },
     getProducts (context, organizationId) {
       organizationService.getProducts(organizationId).then(products => {
         context.commit('setProducts', products)
       })
+    },
+    getInvoicesByPaymetMethod (context, paymentMethodId) {
+      return commerceService.invoicesByPayentMethod(paymentMethodId)
     },
     getPlans (context, productId) {
       productService.getPlans(productId).then(plans => {

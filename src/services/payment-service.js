@@ -47,7 +47,7 @@ class PaymentService {
 
   removeCard (customerId, cardId) {
     return trae
-      .delete('/customer/card', { customerId, cardId })
+      .put('/customer/card', { customerId, cardId })
   }
 
   removeBank (customerId, bankId) {

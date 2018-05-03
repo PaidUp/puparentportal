@@ -306,7 +306,20 @@ export default {
         this.complete = status
       },
       closeDialog () {
+        this.reset()
         this.$emit('close')
+      },
+      reset () {
+        this.$v.details.$reset()
+        this.complete = false
+        this.details = {
+          name: '',
+          address_line1: '',
+          address_city: '',
+          address_state: '',
+          address_country: 'US'
+        }
+        this.submited = false
       }
     },
     computed: {
