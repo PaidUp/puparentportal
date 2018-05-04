@@ -16,11 +16,14 @@
       or Email
       <a href="mailto:support@getpaidup.com" class="clblue">support@getpaidup.com</a>
     </footer>
+    <pu-message></pu-message>
   </div>
 </template>
 
 <script>
+  import PuMessage from '@/components/shared/Message.vue'
   export default {
+    components: { PuMessage },
     data: function () {
       return {
         msg: 'THEE MSAGE BIATH'
