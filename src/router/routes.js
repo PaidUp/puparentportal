@@ -15,6 +15,7 @@ import MainLayout from '@/components/layout/MainLayout.vue'
 import PublicLayout from '@/components/layout/PublicLayout.vue'
 import ProfilePage from '@/components/pages/ProfilePage.vue'
 import UpgradePage from '@/components/pages/UpgradePage.vue'
+import NewInvoicesPage from '@/components/pages/NewInvoicesPage.vue'
 
 const routes = [
   {
@@ -36,6 +37,10 @@ const routes = [
       {
         path: '/profile',
         component: ProfilePage
+      },
+      {
+        path: '/new-invoices',
+        component: NewInvoicesPage
       },
       {
         path: '/upgrade',

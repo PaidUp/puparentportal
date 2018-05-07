@@ -1,6 +1,6 @@
 <template>
-  <div class="payments-page md-elevation-4">
-    <div class="md-title">
+  <div class="common-page payments-page">
+    <div class="title">
       Make/Schedule Payment for {{ playerSelected ? playerSelected.firstName : '' }}
     </div>
     <md-steppers md-vertical md-linear md-dynamic-height :md-active-step.sync="active">

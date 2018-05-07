@@ -8,6 +8,41 @@
   background: #F5F5F5 !important
   border-left: none
   box-shadow:  inset 5px 0 5px -5px $cgray2
+sup 
+  top: -.3em!important
+
+.has-elevation-4
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+
+// COMMON PAGE WHITE
+.common-page
+  @extends .has-elevation-4;
+  background: #ffffff
+  padding: 16px
+  margin-bottom: 16px;
+  .title
+    color: $cgray1
+    font-weight: 500
+  .title-info
+    color: $cgray2
+    font-size: 13px
+    line-height: 1.4
+
+// COMMON PLAYER INFO
+.common-player-info
+  text-align: center
+  .md-avatar
+    @extends .has-elevation-4;
+    margin-bottom: 10px
+  .name
+    color: $cc1
+    font-size: 16px
+  .team
+    color: $cgray2
+    font-size: 14px
+    line-height: 1
+  
+
 
 // LINKS
 a, a:hover, a:visited, a:link, a:active, a > *
@@ -30,6 +65,14 @@ a, a:hover, a:visited, a:link, a:active, a > *
     &.md-active
       .md-stepper-number
         color: #fff !important
+
+// MD-CARD
+.common-card
+  padding: 16px 16px 10px 16px
+  .actions
+    text-align: center
+    .md-button
+      margin: 0
 
 // MD-BUTTONS
 .md-button
@@ -234,7 +277,13 @@ mixin-placeholder(c)
 .centered
   text-align: center
 .title
+  color: $cgray1
+  font-weight: 500
   font-size: 18px
+.title-info
+  color: $cgray2
+  font-size: 13px
+  line-height: 1.4
 .bold
   font-weight: 500
 .bolder
