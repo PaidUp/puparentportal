@@ -1,6 +1,6 @@
 <template>
   <div class="pay-animation">
-    <div :class="{container: true, animate: startTrigger}">
+    <div :class="{container: true, animate: (!stop && start), stop: stop}">
       <svg class="svg-container" version="1.1" xmlns="http://www.w3.org/2000/svg">
         <circle class="circle circle-base"></circle>
         <circle class="circle circle-bar"></circle>
@@ -8,7 +8,7 @@
       <div class="content">
         <img src="@/assets/app-logo-white.svg" class="logo-img" alt="logo">
         <!-- <md-icon class="material-icons place">place</md-icon> -->
-        <md-icon class="material-icons check">check</md-icon>
+        <md-icon class="check">check</md-icon>
       </div>
       <svg class="mask-shadow" viewBox="0 0 115 115" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <defs>
@@ -45,16 +45,8 @@
 <script>
   export default {
     props: {
-      callback: Function,
-      startTrigger: Boolean
-    },
-    watch: {
-      startTrigger: function () {
-        const vueInstance = this
-        setTimeout(function () {
-          vueInstance.callback()
-        }, 2500)
-      }
+      start: Boolean,
+      stop: Boolean
     }
   }
 </script>
