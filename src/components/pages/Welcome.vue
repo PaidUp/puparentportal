@@ -5,7 +5,8 @@
     </div>
     <div class="title-info">Let's get started by adding a new player</div>
     <md-button class="md-raised md-accent lblue">ADD NEW PLAYER</md-button>
-    <img src="@/assets/icons/ico08-01.svg" alt="welcome">
+    <img src="@/assets/icons/ico08-01.svg" alt="welcome" @click="startPayAnimation=true">
+    <VPayAnimation :startTrigger="startPayAnimation" :callback="exCallback"/>
   </div>
 </template>
 
@@ -13,15 +14,22 @@
   import {
     mapState
   } from 'vuex'
+  import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 
   export default {
-    components: {},
+    components: {
+      VPayAnimation
+    },
     data: function () {
       return {
-        showAddCardDialog: false
+        startPayAnimation: false
       }
     },
-    methods: {},
+    methods: {
+      exCallback: function () {
+        console.log('ANIMATION COMPLETED')
+      }
+    },
     computed: {
       ...mapState('userModule', {
         user: 'user'
