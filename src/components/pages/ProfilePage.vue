@@ -52,9 +52,9 @@
           <span class="md-error" v-if="!$v.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: $v.phone.$params.minLength.min }) }}</span>
           <span class="md-error" v-if="!$v.phone.numeric">{{ $t('validations.numeric', { field: 'Phone' }) }} </span>
         </md-field>
-        <div class="actions-box">
-          <md-button class="md-accent lblue" v-if="false" >CANCEL</md-button>
-          <md-button class="md-accent lblue md-raised" @click="submmit" :disabled="disableSaveButton" v-show="showSaveButton">SAVE</md-button>
+        <div class="actions-box" v-show="showSaveButton">
+          <md-button class="md-accent lblue" @click="reset" >CANCEL</md-button>
+          <md-button class="md-accent lblue md-raised" @click="submmit" :disabled="disableSaveButton">SAVE</md-button>
         </div>
         <div class="upgrade-box">
           Upgrade your account if your are a Club Director to receive payments from parents
@@ -118,6 +118,7 @@
         setWarning: 'setWarning'
       }),
       reset () {
+        this.load()
         this.editName = false
         this.editEmail = false
         this.password = null
