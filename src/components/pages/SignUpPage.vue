@@ -28,12 +28,11 @@
       <md-input v-model.trim="confirmPassword" @input="$v.confirmPassword.$touch()" type="password"></md-input>
       <span class="md-error" v-if="!$v.confirmPassword.sameAsPassword">{{ $t('validations.identical', { field: 'Password' }) }}</span>
     </md-field>
-    <md-field :class="{'md-invalid': $v.userForm.contacts.phone.$error}">
+    <md-field :class="{'md-invalid': $v.userForm.phone.$error}">
       <label>{{ $t('component.signup.phone') }}</label>
-      <md-input v-model="userForm.contacts.phone" type="number" @input="$v.userForm.contacts.phone.$touch()"></md-input>
-      <span class="md-error" v-if="!$v.userForm.contacts.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: $v.userForm.contacts.phone.$params.minLength.min }) }}
-      </span>
-      <span class="md-error" v-if="!$v.userForm.contacts.phone.numeric">{{ $t('validations.numeric', { field: 'Phone' }) }} </span>
+      <md-input v-model="userForm.phone" type="number" @input="$v.userForm.phone.$touch()"></md-input>
+      <span class="md-error" v-if="!$v.userForm.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: $v.userForm.phone.$params.minLength.min }) }}</span>
+      <span class="md-error" v-if="!$v.userForm.phone.numeric">{{ $t('validations.numeric', { field: 'Phone' }) }} </span>
     </md-field>
     <md-checkbox v-model="agree" class="md-accent lblue bold">
       {{ $t('component.signup.terms.agree') }}
@@ -59,9 +58,7 @@
       return {
         agree: false,
         confirmPassword: '',
-        userForm: {
-          contacts: {}
-        }
+        userForm: {}
       }
     },
     watch: {
@@ -119,11 +116,9 @@
         password: {
           required
         },
-        contacts: {
-          phone: {
-            numeric,
-            minLength: minLength(10)
-          }
+        phone: {
+          numeric,
+          minLength: minLength(10)
         }
       }
     }

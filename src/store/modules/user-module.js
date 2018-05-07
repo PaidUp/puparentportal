@@ -173,10 +173,6 @@ const module = {
       })
       .catch(reason => {
         let message = reason.message
-        if (reason.status === 401) {
-          context.commit('clean')
-          message = 'module.user.expired'
-        }
         context.dispatch('messageModule/setDanger', message, {
           root: true
         })
