@@ -9,6 +9,37 @@
   border-left: none
   box-shadow:  inset 5px 0 5px -5px $cgray2
 
+.has-elevation-4
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+
+// COMMON PAGE WHITE
+.common-page
+  @extends .has-elevation-4;
+  background: #ffffff
+  padding: 16px
+  .title
+    color: $cgray1
+    font-weight: 500
+  .title-info
+    color: $cgray2
+    font-size: 13px
+    line-height: 1.4
+
+.common-player-info
+  text-align: center
+  .md-avatar
+    @extends .has-elevation-4;
+    margin-bottom: 10px
+  .name
+    color: $cblue
+    font-size: 16px
+  .team
+    color: $cgray2
+    font-size: 14px
+    line-height: 1
+  
+
+
 // LINKS
 a, a:hover, a:visited, a:link, a:active, a > *
   text-decoration: none !important
