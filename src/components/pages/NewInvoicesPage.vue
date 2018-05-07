@@ -13,6 +13,69 @@
         Isotopes Club
       </div>
     </div>
+    <div class="cards">
+      <md-card class="common-card">
+        <div class="title">
+          Player Travel - JVA World Championship
+        </div>
+        <div class="content">
+          <div class="centered">
+            <md-icon class="md-size-c">note_add</md-icon>
+            <div class="caption">NEW INVOICE</div>
+          </div>
+          <div class="total">
+            <sup>$</sup>1,500.<sup>00</sup>
+          </div>
+        </div>
+        <div class="actions">
+          <md-button class="lblue md-accent">
+            VIEW &amp; PAY
+          </md-button>
+        </div>
+      </md-card>
+      <md-card class="common-card">
+        <div class="title">
+          Player Travel - JVA World Championship
+        </div>
+        <div class="content">
+          <div class="centered">
+            <md-icon class="md-size-c">note_add</md-icon>
+            <div class="caption">NEW INVOICE</div>
+          </div>
+          <div class="total">
+            <sup>$</sup>1,500.<sup>00</sup>
+          </div>
+        </div>
+        <div class="actions">
+          <md-button class="lblue md-accent">
+            VIEW &amp; PAY
+          </md-button>
+        </div>
+      </md-card>
+      <md-card class="common-card">
+        <div class="title">
+          Player Travel - JVA World Championship
+        </div>
+        <div class="content">
+          <div class="centered">
+            <md-icon class="md-size-c">note_add</md-icon>
+            <div class="caption">NEW INVOICE</div>
+          </div>
+          <div class="total">
+            <sup>$</sup>1,500.<sup>00</sup>
+          </div>
+        </div>
+        <div class="actions">
+          <md-button class="lblue md-accent">
+            VIEW &amp; PAY
+          </md-button>
+        </div>
+      </md-card>
+    </div>
+    <div>
+      <md-button class="lblue md-accent md-raised">VIEW STANDARD PLANS</md-button>
+      <md-button class="lblue md-accent">CANCEL</md-button>
+    </div>
   </div>
 
 </template>
