@@ -2,17 +2,17 @@
   .players-page
     .player
       v-player-info(v-if="beneficiary" :player="beneficiary")
-    .player-empty(v-if="!invoices.length")
+    .player-empty(v-if="!allInvoices.length")
       div(class="title bold cgray") {{ beneficiary ? beneficiary.firstName : '' }} does not have any payment history yet.
       div(class="cgray") Start by making a payment to {{ beneficiary ? beneficiary.organizationName : '' }}.
       md-button(v-if="beneficiary" class="md-raised md-accent lblue" :to="'/payments/'+beneficiary._id") MAKE A NEW PAYMENT
       div
         img(src="@/assets/icons/ico02-01.svg" alt="pay")
-    .player-with-payments(v-show="invoices.length")
+    .player-with-payments(v-show="allInvoices.length")
       .details
         .md-subheading.title Details
         md-content.md-elevation-4.details-box
-          v-player-details-selection(:orders="orders")
+          v-player-details-selection(:invoices="allInvoices")
           v-player-details-totals(:invoices="invoices")
       button(class="md-button md-raised" v-on:click="openViewInvoiceDialog") View Invoice
       button(class="md-button md-raised" v-on:click="openPaymentAccountsDialog") Payments Accounts
@@ -52,8 +52,8 @@
         user: 'user'
       }),
       ...mapState('playerModule', {
-        orders: 'orders',
-        beneficiaries: 'beneficiaries'
+        beneficiaries: 'beneficiaries',
+        allInvoices: 'allInvoices'
       }),
       ...mapGetters('playerModule', {
         invoices: 'invoices'
@@ -73,17 +73,20 @@
     },
     mounted () {
       if (this.loaded) {
-        this.getOrders({ userEmail: this.user.email, beneficiary: this.beneficiary })
+        this.getInvoices({ beneficiary: this.beneficiary })
+        this.getCredits(this.beneficiary)
       }
     },
     watch: {
       loaded () {
-        this.getOrders({ userEmail: this.user.email, beneficiary: this.beneficiary })
+        this.getInvoices({ beneficiary: this.beneficiary })
+        this.getCredits(this.beneficiary)
       }
     },
     methods: {
       ...mapActions('playerModule', {
-        getOrders: 'getOrders'
+        getInvoices: 'getInvoices',
+        getCredits: 'getCredits'
       }),
       closeDialog: function () {
         this.viewInvoice = null

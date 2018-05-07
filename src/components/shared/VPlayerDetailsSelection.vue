@@ -7,14 +7,14 @@
     md-field(v-if="season")
       label(for="program") Program
       md-select(name="program" id="program" v-model="program")
-        md-option(v-for="p in programs" :value="p" :key="p") {{ p }}
+        md-option(v-for="p in programs" :value="p" :key="p") {{ p.split('|')[1] }}
 </template>
 <script>
 import { mapMutations } from 'vuex'
 
 export default {
   props: {
-    orders: Array
+    invoices: Array
   },
   data () {
     return {
@@ -27,11 +27,11 @@ export default {
 
   },
   watch: {
-    orders () {
-      if (this.orders.length && !this.season && !this.program) {
-        let ord = this.orders[this.orders.length - 1]
-        this.season = ord.season
-        this.program = ord.productName
+    invoices () {
+      if (this.invoices.length && !this.season && !this.program) {
+        let inv = this.invoices[this.invoices.length - 1]
+        this.season = inv.season
+        this.program = inv.productId + '|' + inv.productName
       }
     },
     season () {
@@ -44,17 +44,17 @@ export default {
   computed: {
     seasons () {
       let set = new Set()
-      this.orders.forEach(order => {
-        set.add(order.season)
+      this.invoices.forEach(inv => {
+        set.add(inv.season)
       })
       return Array.from(set)
     },
     programs () {
       if (this.season) {
         let set = new Set()
-        this.orders.forEach(order => {
-          if (this.season === order.season) {
-            set.add(order.productName)
+        this.invoices.forEach(inv => {
+          if (this.season === inv.season) {
+            set.add(inv.productId + '|' + inv.productName)
           }
         })
         return Array.from(set)
@@ -74,7 +74,7 @@ export default {
       if (this.seasonCurrent !== this.season) {
         this.program = null
       } else {
-        this.program = this.order.productName
+        this.program = this.invoice.productName
       }
     }
   }

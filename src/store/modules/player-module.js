@@ -12,25 +12,31 @@ const module = {
 
   state: {
     beneficiaries: [],
-    orders: [],
+    allInvoices: [],
+    allCredits: [],
     season: null,
     program: null
   },
   getters: {
     invoices (state) {
-      let result = []
-      if (state.orders.length && state.season && state.program) {
-        state.orders.forEach(order => {
-          if (order.season === state.season && order.productName === state.program) result = result.concat(order.invoices)
+      if (state.season && state.program) {
+        let invs = state.allInvoices.filter(inv => {
+          return state.season === inv.season && state.program.split('|')[0] === inv.productId
         })
-        result.sort(sort)
+        let creds = state.allCredits.filter(cred => {
+          return state.season === cred.season && state.program.split('|')[0] === cred.productId
+        })
+        return invs.concat(creds).sort(sort)
       }
-      return result
+      return []
     }
   },
   mutations: {
-    setOrders (state, orders) {
-      state.orders = orders
+    setAllInvoices (state, invoices) {
+      state.allInvoices = invoices
+    },
+    setAllCredits (state, credits) {
+      state.allCredits = credits
     },
     setBeneficiaries (state, beneficiaries) {
       state.beneficiaries = beneficiaries
@@ -43,14 +49,14 @@ const module = {
     }
   },
   actions: {
-    getOrders (context, { userEmail, beneficiary }) {
-      return commerceService.ordersByPlayer({
-        organizationId: beneficiary.organizationId,
-        firstName: beneficiary.firstName,
-        lastName: beneficiary.lastName,
-        userEmail
-      }).then(orders => {
-        context.commit('setOrders', orders)
+    getInvoices (context, { userEmail, beneficiary }) {
+      return commerceService.invoicesByBeneficiary(beneficiary._id).then(invoices => {
+        context.commit('setAllInvoices', invoices)
+      })
+    },
+    getCredits (context, beneficiary) {
+      return commerceService.creditsByBeneficiary(beneficiary._id).then(credits => {
+        context.commit('setAllCredits', credits)
       })
     },
     getBeneficiaries (context, userEmail) {

@@ -7,7 +7,7 @@ let commerceService
 class CommerceService {
   checkout ({ order, dues, product }) {
     return trae
-      .post('/order/checkout', { order, dues, product })
+      .post('/invoice/checkout', { order, dues, product })
   }
 
   invoicesByPayentMethod (paymentMethodId) {
@@ -15,13 +15,14 @@ class CommerceService {
       .get(`/invoice/method/${paymentMethodId}`)
   }
 
-  ordersByPlayer (params) {
-    const organizationId = encodeURI(params.organizationId)
-    const beneficiaryFirstName = encodeURI(params.firstName)
-    const beneficiaryLastName = encodeURI(params.lastName)
-    const userEmail = encodeURI(params.userEmail)
+  invoicesByBeneficiary (beneficiaryId) {
     return trae
-      .get(`/order/beneficiary?organizationId=${organizationId}&beneficiaryFirstName=${beneficiaryFirstName}&beneficiaryLastName=${beneficiaryLastName}&userEmail=${userEmail}`)
+      .get(`/invoice/beneficiary/${beneficiaryId}`)
+  }
+
+  creditsByBeneficiary (beneficiaryId) {
+    return trae
+      .get(`/credit/beneficiary/${beneficiaryId}`)
   }
 }
 

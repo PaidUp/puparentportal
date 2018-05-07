@@ -144,14 +144,16 @@ const module = {
         productName: programSelected.name,
         productImage: programSelected.image,
         season: programSelected.season,
+        beneficiaryId: playerSelected._id,
         beneficiaryFirstName: playerSelected.firstName,
         beneficiaryLastName: playerSelected.lastName
       }
-      return commerceService.checkout({
+      let params = {
         order,
         dues: paymentPlanSelected.dues,
         product: programSelected
-      })
+      }
+      return commerceService.checkout(params)
     }
   }
 }
