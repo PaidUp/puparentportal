@@ -1,3 +1,4 @@
+import Logout from '@/components/shared/Logout.vue'
 import LoginPage from '@/components/pages/LoginPage.vue'
 import SignUpPage from '@/components/pages/SignUpPage.vue'
 import FbSignUpPage from '@/components/pages/FbSignUpPage.vue'
@@ -77,6 +78,11 @@ const routes = [
         path: '/login',
         name: 'login',
         component: LoginPage
+      },
+      {
+        path: '/logout',
+        name: 'logout',
+        component: Logout
       },
       {
         path: '/signup',
