@@ -1,6 +1,10 @@
 <template lang="pug">
   md-step(:id="stepId" md-label="Payment Plan" :md-description="description" :md-done.sync="step")
+    div(v-if="preorders.length && !planSelected") Your payment plans
     .payment-plans
+      v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in preorders" :key="plan._id" :plan="plan")
+    div(v-if="preorders.length && !planSelected") All Payments Plan
+    .payment-plans 
       v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in plansFiltered" :key="plan._id" :plan="plan")
       v-payment-plan-details(v-if="planSelected" v-for="due in dues" :key="due._id" :due="due")
     md-button.lblue.md-accent.md-raised(v-if="planSelected" @click="acept") ACEPT PAYMENT PLAN
@@ -56,6 +60,18 @@ export default {
         return pps
       }
     },
+    preorders () {
+      if (!this.allPreorders.length) return []
+      let pps = []
+      this.plans.forEach(plan => {
+        let exist = false
+        this.allPreorders.forEach(po => {
+          if (plan._id === po.planId) exist = true
+        })
+        if (exist) pps.push(plan)
+      })
+      return pps
+    },
     dues () {
       if (!this.planSelected) return []
       let resp = {}
@@ -73,6 +89,9 @@ export default {
       } else {
         this.description = this.planSelected.description
       }
+    },
+    step () {
+      if (!this.step) this.planSelected = null
     }
   },
   methods: {

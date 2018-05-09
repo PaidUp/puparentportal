@@ -88,10 +88,21 @@
       },
       setProgram (program) {
         this.programSelected = program
-        if (program) {
+        if (program._id) {
           this.getPlans(this.programSelected._id)
           this.step2 = true
           this.active = 'step3'
+        } else {
+          this.step2 = false
+          this.active = 'step2'
+          this.step3 = false
+          this.step4 = false
+          this.step5 = false
+          this.step6 = false
+          this.step7 = false
+          this.programSelected = null
+          this.paymentAccountSelected = null
+          this.paymentPlanSelected = null
         }
       },
       setPaymentAccount (paymetAccount) {

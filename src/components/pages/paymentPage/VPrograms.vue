@@ -32,9 +32,13 @@ export default {
     productFiltered () {
       if (this.allPreorders.length) {
         return this.products.filter(prod => {
-          return prod._id === this.allPreorders[0].productId
+          if (prod._id === this.allPreorders[0].productId) {
+            this.select(prod)
+            return true
+          }
         })
       }
+      this.select({})
       return this.products
     }
   },
