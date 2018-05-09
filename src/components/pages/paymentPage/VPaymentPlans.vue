@@ -1,7 +1,7 @@
 <template lang="pug">
   md-step(:id="stepId" md-label="Payment Plan" :md-description="description" :md-done.sync="step")
     .payment-plans
-      v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in plans" :key="plan._id" :plan="plan")
+      v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in plansFiltered" :key="plan._id" :plan="plan")
       v-payment-plan-details(v-if="planSelected" v-for="due in dues" :key="due._id" :due="due")
     md-button.lblue.md-accent.md-raised(v-if="planSelected" @click="acept") ACEPT PAYMENT PLAN
     md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK
@@ -36,6 +36,26 @@ export default {
     ...mapState('paymentModule', {
       plans: 'plans'
     }),
+    ...mapState('playerModule', {
+      allPreorders: 'allPreorders'
+    }),
+    plansFiltered () {
+      if (!this.allPreorders.length) {
+        return this.plans.filter(plan => {
+          return plan.status === 'active'
+        })
+      } else {
+        let pps = []
+        this.plans.forEach(plan => {
+          let exist = false
+          this.allPreorders.forEach(po => {
+            if (plan._id === po.planId) exist = true
+          })
+          if (!exist && plan.status === 'active') pps.push(plan)
+        })
+        return pps
+      }
+    },
     dues () {
       if (!this.planSelected) return []
       let resp = {}

@@ -19,7 +19,7 @@ const rejectMiddleware = (err) => {
     store.dispatch('messageModule/setDanger', 'module.user.expired', {
       root: true
     })
-    router.push('login')
+    router.push({name: 'login'})
   }
   return Promise.reject(err)
 }

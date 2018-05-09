@@ -14,6 +14,7 @@ const module = {
     beneficiaries: [],
     allInvoices: [],
     allCredits: [],
+    allPreorders: [],
     season: null,
     program: null
   },
@@ -35,6 +36,9 @@ const module = {
     setAllInvoices (state, invoices) {
       state.allInvoices = invoices
     },
+    setAllPreorders (state, preorders) {
+      state.allPreorders = preorders
+    },
     setAllCredits (state, credits) {
       state.allCredits = credits
     },
@@ -54,14 +58,37 @@ const module = {
         context.commit('setAllInvoices', invoices)
       })
     },
+    getPreorders (context, beneficiaryId) {
+      console.log('bene: ', beneficiaryId)
+      return commerceService.preordersByBeneficiary(beneficiaryId).then(preorders => {
+        context.commit('setAllPreorders', preorders)
+      })
+    },
+    getNumPreorders (context, beneficiary) {
+      return commerceService.preordersByBeneficiary(beneficiary._id).then(preorders => {
+        console.log('pre: ', preorders)
+        return preorders.length
+      })
+    },
     getCredits (context, beneficiary) {
       return commerceService.creditsByBeneficiary(beneficiary._id).then(credits => {
         context.commit('setAllCredits', credits)
       })
     },
     getBeneficiaries (context, userEmail) {
+      let promises = []
       return beneficiaryService.beneficiariesByAssignee(userEmail).then(beneficiaries => {
-        context.commit('setBeneficiaries', beneficiaries)
+        beneficiaries.forEach(beneficiary => {
+          promises.push(
+            commerceService.preordersByBeneficiary(beneficiary._id).then(preorders => {
+              beneficiary.numPreorders = preorders.length
+              return beneficiary
+            })
+          )
+        })
+        Promise.all(promises).then(values => {
+          context.commit('setBeneficiaries', values)
+        })
       })
     },
     create (context, body) {

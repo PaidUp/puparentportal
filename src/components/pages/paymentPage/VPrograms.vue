@@ -1,7 +1,7 @@
 <template lang="pug">
   md-step(:id="stepId" md-label="Program" :md-description="selected.name" :md-done.sync="step")
     .programs
-      .program.md-elevation-2.md-body-2(@click="select(product)" v-for="product in products" :key="product._id") {{ product.name }}
+      .program.md-elevation-2.md-body-2(@click="select(product)" v-for="product in productFiltered" :key="product._id") {{ product.name }}
     .step-actions
       md-button.lblue.md-accent(@click="cancel") CANCEL
 </template>
@@ -25,7 +25,18 @@ export default {
   computed: {
     ...mapState('paymentModule', {
       products: 'products'
-    })
+    }),
+    ...mapState('playerModule', {
+      allPreorders: 'allPreorders'
+    }),
+    productFiltered () {
+      if (this.allPreorders.length) {
+        return this.products.filter(prod => {
+          return prod._id === this.allPreorders[0].productId
+        })
+      }
+      return this.products
+    }
   },
   methods: {
     select (param) {

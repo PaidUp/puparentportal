@@ -27,7 +27,7 @@ export default {
           to: '/payments/' + ele._id,
           title: `${ele.firstName} ${ele.lastName}`,
           description: ele.organizationName,
-          notification: 2
+          notification: ele.numPreorders
         }
       })
     }

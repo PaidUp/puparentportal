@@ -46,7 +46,8 @@
         user: 'user'
       }),
       ...mapState('playerModule', {
-        beneficiaries: 'beneficiaries'
+        beneficiaries: 'beneficiaries',
+        allPreorders: 'allPreorders'
       }),
       playerSelected () {
         let ps
@@ -54,11 +55,15 @@
           this.beneficiaries.forEach(beneficiary => {
             if (beneficiary._id === this.$route.params.id) {
               ps = beneficiary
+              this.getPreorders(this.$route.params.id)
               this.getProducts(ps.organizationId)
             }
           })
         }
         return ps
+      },
+      preorders () {
+        // dfs
       }
     },
     methods: {
@@ -70,6 +75,9 @@
       ...mapActions('messageModule', {
         setWarning: 'setWarning',
         setSuccess: 'setSuccess'
+      }),
+      ...mapActions('playerModule', {
+        getPreorders: 'getPreorders'
       }),
       setPlayer (player) {
         this.playerSelected = player

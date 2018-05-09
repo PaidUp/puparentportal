@@ -20,6 +20,11 @@ class CommerceService {
       .get(`/invoice/beneficiary/${beneficiaryId}`)
   }
 
+  preordersByBeneficiary (beneficiaryId) {
+    return trae
+      .get(`/preorder/beneficiary/${beneficiaryId}`)
+  }
+
   creditsByBeneficiary (beneficiaryId) {
     return trae
       .get(`/credit/beneficiary/${beneficiaryId}`)
