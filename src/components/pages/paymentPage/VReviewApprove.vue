@@ -52,7 +52,6 @@ export default {
         return subTotal
       }, 0)
       if (res) this.check1 = false
-      this.check3 = false
       return res
     },
     chargeRemaining () {

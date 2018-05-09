@@ -59,7 +59,6 @@ const module = {
       })
     },
     getPreorders (context, beneficiaryId) {
-      console.log('bene: ', beneficiaryId)
       return commerceService.preordersByBeneficiary(beneficiaryId).then(preorders => {
         context.commit('setAllPreorders', preorders)
       })

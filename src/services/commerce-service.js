@@ -25,6 +25,11 @@ class CommerceService {
       .get(`/preorder/beneficiary/${beneficiaryId}`)
   }
 
+  inactivePreorder (id) {
+    return trae
+      .put('/preorder', { id, values: { status: 'inactive' } })
+  }
+
   creditsByBeneficiary (beneficiaryId) {
     return trae
       .get(`/credit/beneficiary/${beneficiaryId}`)

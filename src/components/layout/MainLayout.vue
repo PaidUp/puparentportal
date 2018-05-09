@@ -8,7 +8,7 @@
         <LeftSidebar />
       </md-app-drawer>
       <md-app-content>
-        <router-view></router-view>
+        <router-view :key="$route.fullPath"></router-view>
         <pu-message></pu-message>
       </md-app-content>
     </md-app>

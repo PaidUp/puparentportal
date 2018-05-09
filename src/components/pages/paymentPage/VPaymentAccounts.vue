@@ -42,12 +42,6 @@ export default {
         this.listCards(this.user)
         this.listBanks(this.user)
       }
-    },
-    step () {
-      if (!this.step) {
-        this.selected = null
-        this.showAddCardDialog = false
-      }
     }
   },
   computed: {

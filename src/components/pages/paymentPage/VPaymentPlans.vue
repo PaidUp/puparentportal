@@ -64,11 +64,12 @@ export default {
       if (!this.allPreorders.length) return []
       let pps = []
       this.plans.forEach(plan => {
-        let exist = false
         this.allPreorders.forEach(po => {
-          if (plan._id === po.planId) exist = true
+          if (plan._id === po.planId) {
+            plan.preorderId = po._id
+            pps.push(plan)
+          }
         })
-        if (exist) pps.push(plan)
       })
       return pps
     },
@@ -89,9 +90,6 @@ export default {
       } else {
         this.description = this.planSelected.description
       }
-    },
-    step () {
-      if (!this.step) this.planSelected = null
     }
   },
   methods: {

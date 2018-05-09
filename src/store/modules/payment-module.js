@@ -136,6 +136,9 @@ const module = {
         context.commit('setPlans', plans)
       })
     },
+    inactivePreorder (context, id) {
+      return commerceService.inactivePreorder(id)
+    },
     checkout (context, { playerSelected, programSelected, paymentAccountSelected, paymentPlanSelected }) {
       let order = {
         organizationId: playerSelected.organizationId,

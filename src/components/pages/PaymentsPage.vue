@@ -61,23 +61,22 @@
           })
         }
         return ps
-      },
-      preorders () {
-        // dfs
       }
     },
     methods: {
       ...mapActions('paymentModule', {
         getPlans: 'getPlans',
         getProducts: 'getProducts',
-        checkout: 'checkout'
+        checkout: 'checkout',
+        inactivePreorder: 'inactivePreorder'
       }),
       ...mapActions('messageModule', {
         setWarning: 'setWarning',
         setSuccess: 'setSuccess'
       }),
       ...mapActions('playerModule', {
-        getPreorders: 'getPreorders'
+        getPreorders: 'getPreorders',
+        getBeneficiaries: 'getBeneficiaries'
       }),
       setPlayer (player) {
         this.playerSelected = player
@@ -95,14 +94,6 @@
         } else {
           this.step2 = false
           this.active = 'step2'
-          this.step3 = false
-          this.step4 = false
-          this.step5 = false
-          this.step6 = false
-          this.step7 = false
-          this.programSelected = null
-          this.paymentAccountSelected = null
-          this.paymentPlanSelected = null
         }
       },
       setPaymentAccount (paymetAccount) {
@@ -138,12 +129,18 @@
           paymentAccountSelected: this.paymentAccountSelected,
           paymentPlanSelected: this.paymentPlanSelected
         }).then(res => {
+          if (this.paymentPlanSelected.preorderId) {
+            this.inactivePreorder(this.paymentPlanSelected.preorderId).then(res => {
+              this.getBeneficiaries(this.user.email)
+            })
+          }
           this.setSuccess('component.payment.done')
           this.$router.push({
             name: 'history',
             params: { id: this.playerSelected._id }
           })
         }).catch(reason => {
+          console.log('reason: ', reason)
           this.setWarning('common.error')
           this.processing = false
         })
