@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import userModule from './modules/user-module'
+import uiModule from './modules/ui-module'
 import paymentModule from './modules/payment-module'
 import messageModule from './modules/message-module'
 import playerModule from './modules/player-module'
@@ -14,7 +15,8 @@ const store = new Vuex.Store({
     paymentModule,
     messageModule,
     playerModule,
-    organizationModule
+    organizationModule,
+    uiModule
   }
 })
 

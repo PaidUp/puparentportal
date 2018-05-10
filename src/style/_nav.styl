@@ -5,6 +5,14 @@
   flex-flow: row nowrap
   justify-content: space-between
   align-items: center
+  .menu-icon
+    display: none
+    margin: 0
+    .md-icon
+      color: #fff!important
+
+    @media $small-only
+      display block
   .logo
     width: 50px
     img 
@@ -19,6 +27,10 @@
     flex-flow: row nowrap
     justify-content: flex-start
     align-items: center
+    @media $small-only2
+      height 38px
+    @media $small-only
+      display none
     .md-icon
       color: #fff !important
       margin: 0 12px
