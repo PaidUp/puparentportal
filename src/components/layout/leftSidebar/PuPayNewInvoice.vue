@@ -3,6 +3,10 @@ md-list-item(md-expand)
   span.md-list-item-text.ca1.bold Pay New Invoice
   md-list(slot="md-expand")
     pu-item(:item="item" :to="item.to" v-for="item in items" :key="item.id")
+    md-list-item(to="/players/new")
+      md-icon.add-icon add
+      .md-list-item-text
+        div Add New Player
     md-list-item(v-if="false" @click="click")
       md-icon.add-icon add
       .md-list-item-text
