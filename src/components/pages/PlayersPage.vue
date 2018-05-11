@@ -15,13 +15,12 @@
           v-player-details-selection(:invoices="allInvoices")
           v-player-details-totals(:invoices="invoices")
       button(class="md-button md-raised" v-on:click="openViewInvoiceDialog") View Invoice
-      button(class="md-button md-raised" v-on:click="openPaymentAccountsDialog") Payments Accounts
       .invoices(v-if="invoices")
         .md-subheading.title Invoices
         .inv-cards
           v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id")
-    ViewInvoiceDialog(:invoice="viewInvoice" :closeDialog="closeDialog")
-    PaymentAccountsDialog(:accounts="paymentsAccounts" :closeDialog="closeDialog")
+    view-invoice-dialog(:invoice="viewInvoice" :closeDialog="closeDialog")
+    payment-accounts-dialog(:accounts="paymentsAccounts" :closeDialog="closeDialog")
 </template>
 
 <script>
