@@ -8,10 +8,10 @@
         <img src="@/assets/app-logo-white.svg" />
       </router-link>
     </div>
-    <div class="search-input">
+    <!-- <div class="search-input">
       <md-icon>search</md-icon>
       <input type="text" placeholder="Search">
-    </div>
+    </div> -->
     <div>&nbsp;</div>
   </div>
 </template>
