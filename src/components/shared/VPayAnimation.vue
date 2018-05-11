@@ -1,6 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showModal" :md-close-on-esc="false" :md-click-outside-to-close="false">
-    <div class="pay-animation">
+  <md-dialog class="pay-animation" :md-active.sync="showModal" :md-close-on-esc="false" :md-click-outside-to-close="false">
       <div :class="{container: true, animate, stop: !animate}">
         <svg class="svg-container" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <circle class="circle circle-base"></circle>
@@ -40,7 +39,6 @@
           </g>
         </svg>
       </div>
-    </div>
   </md-dialog>
 </template>
 
