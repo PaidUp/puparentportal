@@ -5,7 +5,7 @@
     </div>
     <div class="main-box">
       <div class="field-info">Credit or Debit Card*</div>
-      <pu-card :class="{'stripe-card':true, complete: complete}" @done="done" @token="closeDialog" :details="details"  :submited="submited" />
+      <pu-card :class="{'stripe-card':true, complete: complete}" @done="done" @token="animation = false" :details="details"  :submited="submited" />
    
       <md-field :class="{'md-invalid': $v.details.name.$error}">
         <label>Name on Card</label>
@@ -32,6 +32,7 @@
         </md-field>
       </div>
     </div>
+    <v-pay-animation :animate="animation" @finish="closeDialog" />
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="closeDialog">Cancel</md-button>
       <md-button class="md-accent md-raised lblue" @click='submited = !submited' :disabled="disabled">ADD NEW CARD</md-button>
@@ -43,12 +44,13 @@
   import config from '@/config'
   import PuCard from '@/components/payment/PuCard.vue'
   import { required } from 'vuelidate/lib/validators'
-
+  import VPayAnimation from '@/components/shared/VPayAnimation.vue'
+  
 export default {
     props: {
       showDialog: Boolean
     },
-    components: { PuCard },
+    components: { PuCard, VPayAnimation },
     data () {
       return {
         publicKey: config.stripe.publicKey,
@@ -298,7 +300,13 @@ export default {
             'name': 'Wyoming',
             'abbreviation': 'WY'
           }
-        ]
+        ],
+        animation: false
+      }
+    },
+    watch: {
+      submited () {
+        if (this.submited) this.animation = true
       }
     },
     methods: {

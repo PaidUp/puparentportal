@@ -1,19 +1,17 @@
 <template>
   <div class="welcome-page">
     <div class="title">
-      Welcome to PaidUp Felipe.
+      Welcome to PaidUp {{user.firstName}}.
     </div>
     <div class="title-info">Let's get started by adding a new player</div>
-    <md-button class="md-raised md-accent lblue">ADD NEW PLAYER</md-button>
+    <md-button class="md-raised md-accent lblue" to="/players/new">ADD NEW PLAYER</md-button>
     <img src="@/assets/icons/ico08-01.svg" alt="welcome" @click="animate()">
-    <VPayAnimation :start="startPayAnimation" :stop="stopPayAnimation"/>
+    <v-pay-animation :animate="animation" />
   </div>
 </template>
 
 <script>
-  import {
-    mapState
-  } from 'vuex'
+  import { mapState } from 'vuex'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 
   export default {
@@ -22,18 +20,15 @@
     },
     data: function () {
       return {
-        startPayAnimation: false,
-        stopPayAnimation: false
+        animation: false
       }
     },
     methods: {
       animate: function () {
-        console.log('ANIMATION START')
         const vuewInstance = this
-        vuewInstance.startPayAnimation = true
+        vuewInstance.animation = true
         setTimeout(function () {
-          console.log('ANIMATION ENDED')
-          vuewInstance.stopPayAnimation = true
+          vuewInstance.animation = false
         }, 5000)
       }
     },

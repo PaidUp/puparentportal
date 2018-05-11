@@ -33,6 +33,7 @@
         </md-field>
       </div>
     </div>
+    <v-pay-animation :animate="submited" @finish="done" />
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="closeDialog">Cancel</md-button>
       <md-button class="md-accent md-raised lblue" @click='remove' :disabled="submited">DELETE CARD</md-button>
@@ -42,11 +43,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 export default {
   props: {
     showDialog: Boolean,
     card: Object
   },
+  components: { VPayAnimation },
   data () {
     return {
       submited: false,
@@ -318,12 +321,11 @@ export default {
         }).then(res => {
           this.submited = false
           this.listCards(this.user)
-          this.$emit('close', res)
         })
       })
     },
-    done (status) {
-      this.complete = status
+    done () {
+      this.$emit('close', { deleted: true })
     },
     closeDialog () {
       this.$emit('close')

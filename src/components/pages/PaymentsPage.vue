@@ -11,6 +11,7 @@
       <v-document-signature step-id="step6" :step="step6" @select="setSignature" />
       <v-review-approve step-id="step7" :processing="processing" :step="step7" :account="paymentAccountSelected" :plan="paymentPlanSelected" @select="approve" />
     </md-steppers>
+    <v-pay-animation :animate="processing" @finish="redirect" />
   </div>
 </template>
 
@@ -23,11 +24,13 @@
   import VAdditionalInfo from './paymentPage/VAdditionalInfo.vue'
   import VDocumentSignature from './paymentPage/VDocumentSignature.vue'
   import VReviewApprove from './paymentPage/VReviewApprove.vue'
+  import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 
   export default {
-    components: { VPlayers, VPrograms, VPaymentAccounts, VPaymentPlans, VAdditionalInfo, VDocumentSignature, VReviewApprove },
+    components: { VPlayers, VPrograms, VPaymentAccounts, VPaymentPlans, VAdditionalInfo, VDocumentSignature, VReviewApprove, VPayAnimation },
     data: function () {
       return {
+        animation: false,
         active: 'step2',
         step2: false,
         step3: false,
@@ -127,7 +130,8 @@
           playerSelected: this.playerSelected,
           programSelected: this.programSelected,
           paymentAccountSelected: this.paymentAccountSelected,
-          paymentPlanSelected: this.paymentPlanSelected
+          paymentPlanSelected: this.paymentPlanSelected,
+          user: this.user
         }).then(res => {
           if (this.paymentPlanSelected.preorderId) {
             this.inactivePreorder(this.paymentPlanSelected.preorderId).then(res => {
@@ -135,14 +139,17 @@
             })
           }
           this.setSuccess('component.payment.done')
-          this.$router.push({
-            name: 'history',
-            params: { id: this.playerSelected._id }
-          })
+          this.processing = false
         }).catch(reason => {
           console.log('reason: ', reason)
           this.setWarning('common.error')
           this.processing = false
+        })
+      },
+      redirect () {
+        this.$router.push({
+          name: 'history',
+          params: { id: this.playerSelected._id }
         })
       }
     }
