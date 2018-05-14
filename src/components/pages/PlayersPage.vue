@@ -16,12 +16,14 @@
           v-player-details-totals(:invoices="invoices")
       button(class="md-button md-raised" v-on:click="openViewInvoiceDialog") View Invoice
       button(class="md-button md-raised" v-on:click="openPaymentAccountsDialog") Payments Accounts
+      button(class="md-button md-raised" @click="showDuplicateDialog = true") Duplicate Payment Dialog
       .invoices(v-if="invoices")
         .md-subheading.title Invoices
         .inv-cards
           v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id")
     ViewInvoiceDialog(:invoice="viewInvoice" :closeDialog="closeDialog")
     PaymentAccountsDialog(:accounts="paymentsAccounts" :closeDialog="closeDialog")
+    DuplicatePaymentDialog(:showDialog="showDuplicateDialog" :closeDialog="closeDialog")
 </template>
 
 <script>
@@ -32,6 +34,7 @@
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
   import ViewInvoiceDialog from '@/components/shared/ViewInvoiceDialog.vue'
   import PaymentAccountsDialog from '@/components/shared/PaymentAccountsDialog.vue'
+  import DuplicatePaymentDialog from '@/components/shared/DuplicatePaymentDialog.vue'
   export default {
     components: {
       VPlayerInfo,
@@ -39,12 +42,14 @@
       VPlayerDetailsTotals,
       VPlayerDetailsSelection,
       ViewInvoiceDialog,
+      DuplicatePaymentDialog,
       PaymentAccountsDialog
     },
     data: function () {
       return {
         viewInvoice: null,
-        paymentsAccounts: null
+        paymentsAccounts: null,
+        showDuplicateDialog: false
       }
     },
     computed: {
@@ -91,6 +96,7 @@
       closeDialog: function () {
         this.viewInvoice = null
         this.paymentsAccounts = null
+        this.showDuplicateDialog = false
       },
       openViewInvoiceDialog: function () {
         this.viewInvoice = {title: 'some'}

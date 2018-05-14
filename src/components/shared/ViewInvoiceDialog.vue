@@ -2,9 +2,15 @@
   <md-dialog :md-active.sync="showDialog" class="invoice-dialog small">
     <div class="dialog-header">
       <div class="title">Invoice: INV1234563</div>
-      <md-button class="md-icon-button" md-menu-trigger>
-        <md-icon>file_download</md-icon>
-      </md-button>
+      <md-menu md-size="small" md-direction="bottom-end">
+        <md-button class="md-icon-button" md-menu-trigger>
+          <md-icon>file_download</md-icon>
+        </md-button>
+        <md-menu-content class="dialog-menu-content">
+          <md-menu-item @click="v=false">Download Invoice</md-menu-item>
+          <md-menu-item @click="v=false">Download Contract</md-menu-item>
+        </md-menu-content>
+      </md-menu>
     </div>
     <md-tabs md-alignment="fixed">
       <md-tab md-label="DETAILS">
