@@ -14,11 +14,10 @@
         md-content.md-elevation-4.details-box
           v-player-details-selection(:invoices="allInvoices")
           v-player-details-totals(:invoices="invoices")
-      button(class="md-button md-raised" v-on:click="openViewInvoiceDialog") View Invoice
       .invoices(v-if="invoices")
         .md-subheading.title Invoices
         .inv-cards
-          v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id")
+          v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id" @select="selectInvoice")
     view-invoice-dialog(:invoice="viewInvoice" :closeDialog="closeDialog")
     payment-accounts-dialog(:accounts="paymentsAccounts" :closeDialog="closeDialog")
 </template>
@@ -42,7 +41,7 @@
     },
     data: function () {
       return {
-        viewInvoice: null,
+        viewInvoice: {},
         paymentsAccounts: null
       }
     },
@@ -88,14 +87,12 @@
         getCredits: 'getCredits'
       }),
       closeDialog: function () {
-        this.viewInvoice = null
+        this.viewInvoice = {}
         this.paymentsAccounts = null
+        this.getInvoices({ beneficiary: this.beneficiary })
       },
-      openViewInvoiceDialog: function () {
-        this.viewInvoice = {title: 'some'}
-      },
-      openPaymentAccountsDialog: function () {
-        this.paymentsAccounts = {title: 'some'}
+      selectInvoice (invoice) {
+        this.viewInvoice = invoice
       }
     }
   }

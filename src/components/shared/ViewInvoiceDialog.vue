@@ -9,11 +9,9 @@
     <md-tabs md-alignment="fixed">
       <md-tab md-label="DETAILS">
         <div class="order-numbers">
-          <div>
-            Order: ORD1234534U
-          </div>
-          <div>
-            Order Date: 11-13-2018
+          <div></div>
+          <div v-if="invoice.createOn">
+            Date: {{ $d(date, 'short') }}
           </div>
         </div>
         <div class="instructions">
@@ -24,27 +22,27 @@
         </div>
         <md-field>
           <label>Description</label>
-          <md-input disabled v-model="description"></md-input>
+          <md-input disabled v-model="invoice.label"></md-input>
         </md-field>
         <md-field>
           <label>Amount</label>
-          <md-input></md-input>
+          <md-input :disabled="true" v-model="invoice.price"></md-input>
         </md-field>
-        <md-datepicker>
+        <md-datepicker v-model="dateCharge" :md-disabled-dates="disabledDates">
           <label>Charge date</label>
         </md-datepicker>
         <md-field>
           <label for="payment">Payment Account</label>
-          <md-select name="payment" id="payment">
-            <md-option value="fight-club">Visa *1234</md-option>
+          <md-select name="payment" id="payment" v-model="paymentMethod">
+            <md-option v-for="pm in paymentAccounts" :key="pm.id" :value="pm.id">{{pm.name}}</md-option>
           </md-select>
         </md-field>
         <md-field>
           <label>Status</label>
-          <md-input></md-input>
+          <md-input :disabled="true" v-model="status"></md-input>
         </md-field>
       </md-tab>
-      <md-tab md-label="HISTORY">
+      <md-tab v-if="false" md-label="HISTORY">
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam mollitia dolorum dolores quae commodi impedit possimus
           qui, atque at voluptates cupiditate. Neque quae culpa suscipit praesentium inventore ducimus ipsa aut.</p>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam mollitia dolorum dolores quae commodi impedit possimus
@@ -52,29 +50,102 @@
       </md-tab>
     </md-tabs>
     <md-dialog-actions>
-      <md-button class="md-accent lblue" @click="closeDialog()">CANCEL</md-button>
-      <md-button class="md-accent lblue" @click="closeDialog()">SAVE</md-button>
+      <md-button class="md-accent lblue" @click="closeDialog">CANCEL</md-button>
+      <md-button class="md-accent lblue" :disabled="submited" @click="submit">SAVE</md-button>
     </md-dialog-actions>
+    <v-pay-animation :animate="submited" @finish="closeDialog" />
   </md-dialog>
 </template>
 
 <script>
-  
+  import VPayAnimation from '@/components/shared/VPayAnimation.vue'
+  import { mapGetters, mapActions } from 'vuex'
   export default {
     props: {
       invoice: Object,
       closeDialog: Function
     },
+    components: { VPayAnimation },
     data: function () {
       return {
-        description: 'Dues - Pay 4'
+        disabledDates: date => {
+          if (!this.invoice.maxDateCharge) return true
+          const maxDateCharge = new Date(this.invoice.maxDateCharge).getTime()
+          const dateCharge = new Date(this.invoice.dateCharge).getTime()
+          return date.getTime() <= dateCharge || date.getTime() > maxDateCharge
+        },
+        dateCharge: new Date(),
+        description: '',
+        amount: 0,
+        status: '',
+        paymentMethod: '',
+        paymentMethodObj: '',
+        submited: false
+      }
+    },
+    watch: {
+      invoice () {
+        this.dateCharge = new Date(this.invoice.dateCharge)
+        this.description = this.invoice.label
+        this.amount = this.invoice.price
+        this.status = this.invoice.status
+        this.paymentMethod = this.invoice.paymentDetails.externalPaymentMethodId
+      },
+      paymentMethod () {
+        this.paymentAccounts.forEach(pa => {
+          if (pa.id === this.paymentMethod) {
+            this.paymentMethodObj = {
+              paymentMethodtype: pa.object,
+              externalPaymentMethodId: pa.id,
+              brand: pa.brand || pa.bank_name,
+              last4: pa.last4
+            }
+          }
+        })
       }
     },
     methods: {
+      ...mapActions('paymentModule', {
+        updateInvoice: 'updateInvoice'
+      }),
+      ...mapActions('messageModule', {
+        setSuccess: 'setSuccess',
+        setWarning: 'setWarning'
+      }),
+      submit () {
+        this.submited = true
+        this.updateInvoice({
+          id: this.invoice._id,
+          values: {
+            dateCharge: this.dateCharge,
+            status: 'autopay',
+            paymentDetails: {
+              externalCustomerId: this.invoice.paymentDetails.externalCustomerId,
+              statementDescriptor: this.invoice.paymentDetails.statementDescriptor,
+              paymentMethodtype: this.paymentMethodObj.paymentMethodtype,
+              externalPaymentMethodId: this.paymentMethodObj.externalPaymentMethodId,
+              brand: this.paymentMethodObj.brand,
+              last4: this.paymentMethodObj.last4
+            }
+          }
+        }).then(res => {
+          this.submited = false
+          this.setSuccess('ok')
+        }).catch(reason => {
+          this.submited = false
+          this.setWarning('common.error')
+        })
+      }
     },
     computed: {
+      ...mapGetters('paymentModule', {
+        paymentAccounts: 'paymentAccounts'
+      }),
       showDialog () {
-        return this.invoice !== null
+        return typeof this.invoice._id === 'string'
+      },
+      date () {
+        return new Date(this.invoice.createOn)
       }
     }
   }

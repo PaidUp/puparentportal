@@ -10,6 +10,11 @@ class CommerceService {
       .post('/invoice/checkout', { order, dues, product })
   }
 
+  updateInvoice ({ id, values }) {
+    return trae
+      .put('/invoice', { id, values })
+  }
+
   invoicesByPayentMethod (paymentMethodId) {
     return trae
       .get(`/invoice/method/${paymentMethodId}`)

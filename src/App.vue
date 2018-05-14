@@ -20,9 +20,7 @@
     watch: {
       isAutenticated () {
         if (!this.isAutenticated) {
-          this.$router.push({
-            name: 'login'
-          })
+          this.$router.push({ name: 'login' })
         }
       }
     },
@@ -32,8 +30,7 @@
           this.setUser(user)
         })
       } else {
-        // SKIP LOGIN: comment next statement
-        // this.$router.push({ name: 'login' })
+        this.$router.push({ name: 'login' })
       }
     },
     methods: {
