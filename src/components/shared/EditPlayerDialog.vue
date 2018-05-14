@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="edit-player-dialog" :md-close-on-esc="false" :md-click-outside-to-close="false">
+  <md-dialog :md-active.sync="showDialog" class="edit-player-dialog small" :md-close-on-esc="false" :md-click-outside-to-close="false">
     <div class="dialog-header white-dialog-header">
       <div class="title">Player Details</div>
     </div>

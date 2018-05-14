@@ -14,12 +14,14 @@
         md-content.md-elevation-4.details-box
           v-player-details-selection(:invoices="allInvoices")
           v-player-details-totals(:invoices="invoices")
+      button(class="md-button md-raised" @click="showDuplicateDialog = true") Duplicate Payment Dialog
       .invoices(v-if="invoices")
         .md-subheading.title Invoices
         .inv-cards
           v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id" @select="selectInvoice")
     view-invoice-dialog(:invoice="viewInvoice" :closeDialog="closeDialog")
     payment-accounts-dialog(:accounts="paymentsAccounts" :closeDialog="closeDialog")
+    DuplicatePaymentDialog(:showDialog="showDuplicateDialog" :closeDialog="closeDialog")
 </template>
 
 <script>
@@ -30,6 +32,7 @@
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
   import ViewInvoiceDialog from '@/components/shared/ViewInvoiceDialog.vue'
   import PaymentAccountsDialog from '@/components/shared/PaymentAccountsDialog.vue'
+  import DuplicatePaymentDialog from '@/components/shared/DuplicatePaymentDialog.vue'
   export default {
     components: {
       VPlayerInfo,
@@ -37,12 +40,14 @@
       VPlayerDetailsTotals,
       VPlayerDetailsSelection,
       ViewInvoiceDialog,
+      DuplicatePaymentDialog,
       PaymentAccountsDialog
     },
     data: function () {
       return {
         viewInvoice: {},
-        paymentsAccounts: null
+        paymentsAccounts: null,
+        showDuplicateDialog: false
       }
     },
     computed: {

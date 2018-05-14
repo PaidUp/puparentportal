@@ -163,8 +163,11 @@ a, a:hover, a:visited, a:link, a:active, a > *
 // MD-MENU
 .md-menu-content.dialog-menu-content
   z-index 12
-  .md-icon
-    color: $cblue
+  .md-list-item-container
+    color: $clblue
+    text-align: right
+    &:hover
+      color: $clblue!important
 
 // PLACEHOLDER MIXIN
 mixin-placeholder(c)

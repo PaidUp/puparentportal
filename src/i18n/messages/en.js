@@ -48,7 +48,8 @@ const dict = {
       welcome: 'Welcome'
     },
     payment: {
-      done: 'Thank you for your payment'
+      done: 'Thank you for your payment',
+      update: 'Your invoice was updated successfully'
     },
     left_side_bar: {
       del_card_success: 'Your card was deleted successfully',

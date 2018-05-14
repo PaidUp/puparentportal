@@ -1,20 +1,28 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="invoice-dialog">
+  <md-dialog :md-active.sync="showDialog" class="invoice-dialog small">
     <div class="dialog-header">
-      <div class="title">Invoice: INV1234563</div>
-      <md-button class="md-icon-button" md-menu-trigger>
-        <md-icon>file_download</md-icon>
-      </md-button>
+      <div class="title">Invoice: {{ invoice.invoiceId }}</div>
+      <md-menu md-size="small" md-direction="bottom-end">
+        <md-button class="md-icon-button" md-menu-trigger>
+          <md-icon>file_download</md-icon>
+        </md-button>
+        <md-menu-content class="dialog-menu-content">
+          <md-menu-item @click="v=false">Download Invoice</md-menu-item>
+          <md-menu-item @click="v=false">Download Contract</md-menu-item>
+        </md-menu-content>
+      </md-menu>
     </div>
     <md-tabs md-alignment="fixed">
       <md-tab md-label="DETAILS">
-        <div class="order-numbers">
-          <div></div>
-          <div v-if="invoice.createOn">
-            Date: {{ $d(date, 'short') }}
+        <div class="tab-box">
+          <div class="order-numbers">
+            <div>
+            </div>
+            <div>
+              Date: {{ $d(date, 'short') }}
+            </div>
           </div>
-        </div>
-        <div class="instructions">
+          <div class="instructions">
           If you have problems making changes to your invoice, please contact PaidUp Support M-F 9am-5pm CST.
           <a href="mailto:support@getpaidup.com">support@getpaidup.com</a>
           -
@@ -41,6 +49,7 @@
           <label>Status</label>
           <md-input :disabled="true" v-model="status"></md-input>
         </md-field>
+        </div>
       </md-tab>
       <md-tab v-if="false" md-label="HISTORY">
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam mollitia dolorum dolores quae commodi impedit possimus
@@ -85,11 +94,13 @@
     },
     watch: {
       invoice () {
-        this.dateCharge = new Date(this.invoice.dateCharge)
-        this.description = this.invoice.label
-        this.amount = this.invoice.price
-        this.status = this.invoice.status
-        this.paymentMethod = this.invoice.paymentDetails.externalPaymentMethodId
+        if (this.invoice._id) {
+          this.dateCharge = new Date(this.invoice.dateCharge)
+          this.description = this.invoice.label
+          this.amount = this.invoice.price
+          this.status = this.invoice.status
+          this.paymentMethod = this.invoice.paymentDetails.externalPaymentMethodId
+        }
       },
       paymentMethod () {
         this.paymentAccounts.forEach(pa => {
@@ -130,7 +141,7 @@
           }
         }).then(res => {
           this.submited = false
-          this.setSuccess('ok')
+          this.setSuccess('component.payment.update')
         }).catch(reason => {
           this.submited = false
           this.setWarning('common.error')
@@ -145,7 +156,8 @@
         return typeof this.invoice._id === 'string'
       },
       date () {
-        return new Date(this.invoice.createOn)
+        if (this.invoice.createOn) return new Date(this.invoice.createOn)
+        return new Date()
       }
     }
   }

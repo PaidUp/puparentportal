@@ -85,7 +85,6 @@
     },
     methods: {
       select () {
-        console.log('close...', this.invoice)
         this.$emit('select', this.invoice)
       }
     }

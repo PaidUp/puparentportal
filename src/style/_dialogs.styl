@@ -3,7 +3,14 @@
 .md-dialog.invoice-dialog
 .md-dialog.accounts-dialog
 .md-dialog.edit-player-dialog
+.md-dialog.duplicate-payment-dialog
   width: 500px!important
+  @media $small-only
+    width: 100%!important
+  &.small
+    width: 400px!important
+    @media $small-only
+      width: 100%!important
   .dialog-header
     display: flex
     flex-flow: row nowrap
@@ -27,16 +34,33 @@
     // background: $ca1
     padding: 0
     box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14)
+    min-height: 48px!important
     .md-button
       background: $ca1!important
       color: #fff!important
       max-width none!important
+      min-height: 48px!important
+      .md-ripple
+        height auto!important
+        min-height: 48px!important
+        padding: 16px 0
       &.md-active
         color: #fff!important
     .md-tabs-indicator
       background-color: #fff
-  .md-tab
-    padding: 16px!important
+  .md-tabs-content
+    overflow-y: auto
+  // .tab-box
+
+.duplicate-payment-dialog
+  .text-instructions
+    padding: 16px
+  .actions
+    margin-bottom: 16px
+    display: flex
+    flex-flow: column nowrap
+    justify-content: flex-end
+    align-items: flex-end
 
 // INVOICE DIALOG
 .md-dialog.invoice-dialog
@@ -80,7 +104,6 @@
 
 // EDIT PLAYER DIALOG
 .md-dialog.edit-player-dialog
-  width: 400px!important
   .update-pic
     margin-top: 20px
   .names-box
