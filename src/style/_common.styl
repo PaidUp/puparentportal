@@ -41,6 +41,20 @@ sup
     color: $cgray2
     font-size: 14px
     line-height: 1
+  .with-menu-box
+    display: flex
+    flex-flow: row nowrap
+    justify-content: center
+    align-items: flex-end
+    .player-info
+      margin-right: 10px
+    .md-menu
+      margin-bottom: 5px;
+      .md-icon 
+        width: 18px;
+        min-width: 18px;
+        height: 18px;
+        font-size: 18px!important;
   
 
 
@@ -161,7 +175,7 @@ a, a:hover, a:visited, a:link, a:active, a > *
   z-index 12
 
 // MD-MENU
-.md-menu-content.dialog-menu-content
+.md-menu-content.custom-menu-content
   z-index 12
   .md-list-item-container
     color: $clblue

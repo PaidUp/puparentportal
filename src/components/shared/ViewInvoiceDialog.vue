@@ -6,7 +6,7 @@
         <md-button class="md-icon-button" md-menu-trigger>
           <md-icon>file_download</md-icon>
         </md-button>
-        <md-menu-content class="dialog-menu-content">
+        <md-menu-content class="custom-menu-content">
           <md-menu-item @click="v=false">Download Invoice</md-menu-item>
           <md-menu-item @click="v=false">Download Contract</md-menu-item>
         </md-menu-content>
