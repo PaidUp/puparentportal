@@ -1,7 +1,7 @@
 <template lang="pug">
   .players-page
     .player
-      v-player-info(v-if="beneficiary" :player="beneficiary")
+      v-player-info(v-if="beneficiary" :player="beneficiary", :numInvoices="allInvoices.length")
     .player-empty(v-if="!allInvoices.length")
       div(class="title bold cgray") {{ beneficiary ? beneficiary.firstName : '' }} does not have any payment history yet.
       div(class="cgray") Start by making a payment to {{ beneficiary ? beneficiary.organizationName : '' }}.

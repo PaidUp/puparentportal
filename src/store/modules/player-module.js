@@ -92,6 +92,9 @@ const module = {
     },
     create (context, body) {
       return beneficiaryService.create(body)
+    },
+    update (context, {id, values}) {
+      return beneficiaryService.update(id, values)
     }
   }
 }
