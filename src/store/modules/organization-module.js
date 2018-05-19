@@ -14,6 +14,9 @@ const module = {
       organizationService.getAll().then(organizations => {
         context.commit('setOrganizations', organizations)
       })
+    },
+    getOrganization (context, organizationId) {
+      return organizationService.getOrganization(organizationId)
     }
   }
 }

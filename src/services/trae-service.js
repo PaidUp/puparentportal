@@ -4,6 +4,7 @@ import router from '@/router'
 
 trae.before(config => {
   const token = window.localStorage.token
+  config.headers['Access-Control-Allow-Origin'] = '*'
   config.headers['Cache-Control'] = 'no-cache'
   config.headers['Pragma'] = 'no-cache'
   config.headers['Expires'] = 'Sat, 01 Jan 2000 00:00:00 GMT'

@@ -1,8 +1,8 @@
 import { commerceService, beneficiaryService } from '@/services'
 
 function sort (a, b) {
-  let dataA = a.dataCharge || a.createOn
-  let dataB = b.dataCharge || b.createOn
+  let dataA = a.dateCharge || a.createOn
+  let dataB = b.dateCharge || b.createOn
 
   return new Date(dataA).getTime() - new Date(dataB).getTime()
 }
@@ -92,6 +92,9 @@ const module = {
     },
     create (context, body) {
       return beneficiaryService.create(body)
+    },
+    update (context, {id, values}) {
+      return beneficiaryService.update(id, values)
     }
   }
 }

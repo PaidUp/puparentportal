@@ -5,7 +5,7 @@
       .md-title ${{ total }}
       .md-caption {{ plan.dues.length }} {{ plan.dues.length === 1 ? 'installment' : 'installments' }}
       .md-caption(v-if="chargeToday") ${{ format(chargeToday) }} PaiUp by Today
-      .md-caption(v-if="chargeRemaining") ${{ format(chargeRemaining) }} PaiUp by {{ $d(lastDataCharge, 'card') }}
+      .md-caption(v-if="chargeRemaining") ${{ format(chargeRemaining) }} PaiUp by {{ $d(lastDateCharge, 'card') }}
 
 </template>
 <script>
@@ -42,7 +42,7 @@ export default {
         return subTotal
       }, 0)
     },
-    lastDataCharge () {
+    lastDateCharge () {
       return this.plan.dues[this.plan.dues.length - 1].dateCharge
     }
   },

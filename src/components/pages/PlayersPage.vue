@@ -1,7 +1,7 @@
 <template lang="pug">
   .players-page
     .player
-      v-player-info(v-if="beneficiary" :player="beneficiary")
+      v-player-info(v-if="beneficiary" :player="beneficiary", :numInvoices="allInvoices.length")
     .player-empty(v-if="!allInvoices.length")
       div(class="title bold cgray") {{ beneficiary ? beneficiary.firstName : '' }} does not have any payment history yet.
       div(class="cgray") Start by making a payment to {{ beneficiary ? beneficiary.organizationName : '' }}.
@@ -14,15 +14,13 @@
         md-content.md-elevation-4.details-box
           v-player-details-selection(:invoices="allInvoices")
           v-player-details-totals(:invoices="invoices")
-      button(class="md-button md-raised" v-on:click="openViewInvoiceDialog") View Invoice
-      button(class="md-button md-raised" v-on:click="openPaymentAccountsDialog") Payments Accounts
       button(class="md-button md-raised" @click="showDuplicateDialog = true") Duplicate Payment Dialog
       .invoices(v-if="invoices")
         .md-subheading.title Invoices
         .inv-cards
-          v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id")
-    ViewInvoiceDialog(:invoice="viewInvoice" :closeDialog="closeDialog")
-    PaymentAccountsDialog(:accounts="paymentsAccounts" :closeDialog="closeDialog")
+          v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id" @select="selectInvoice")
+    view-invoice-dialog(:invoice="viewInvoice" :closeDialog="closeDialog")
+    payment-accounts-dialog(:accounts="paymentsAccounts" :closeDialog="closeDialog")
     DuplicatePaymentDialog(:showDialog="showDuplicateDialog" :closeDialog="closeDialog")
 </template>
 
@@ -47,7 +45,7 @@
     },
     data: function () {
       return {
-        viewInvoice: null,
+        viewInvoice: {},
         paymentsAccounts: null,
         showDuplicateDialog: false
       }
@@ -94,15 +92,12 @@
         getCredits: 'getCredits'
       }),
       closeDialog: function () {
-        this.viewInvoice = null
+        this.viewInvoice = {}
         this.paymentsAccounts = null
-        this.showDuplicateDialog = false
+        this.getInvoices({ beneficiary: this.beneficiary })
       },
-      openViewInvoiceDialog: function () {
-        this.viewInvoice = {title: 'some'}
-      },
-      openPaymentAccountsDialog: function () {
-        this.paymentsAccounts = {title: 'some'}
+      selectInvoice (invoice) {
+        this.viewInvoice = invoice
       }
     }
   }

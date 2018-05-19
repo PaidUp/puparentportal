@@ -9,6 +9,10 @@ class BeneficiaryService {
     return trae
       .post('/', { organizationId, organizationName, firstName, lastName, assigneesEmail, description })
   }
+  update (id, values) {
+    return trae
+      .put('/' + id, values)
+  }
 
   import = function (beneficiaries) {
     return trae

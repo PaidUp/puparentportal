@@ -10,11 +10,9 @@
         md-button(md-menu-trigger class="md-icon-button md-raised md-accent md-dense lblue")
           md-icon menu
         md-menu-content.custom-menu-content
-          md-menu-item MAKE NEW PAYMENT(S)
+          md-menu-item(:to="to") MAKE NEW PAYMENT(S)
           md-menu-item(@click="editPlayerDialog = true") EDIT PLAYER
-    </md-menu>
-      
-    EditPlayerDialog(:showDialog="editPlayerDialog")
+    edit-player-dialog(:showDialog="editPlayerDialog" :numInvoices="numInvoices" :player="player" @close="editPlayerDialog = false")
 </template>
 
 <script>
@@ -33,11 +31,18 @@
       player: {
         type: Object,
         required: true
+      },
+      numInvoices: {
+        type: Number,
+        required: true
       }
     },
     computed: {
-      avatarUrl: function () {
+      avatarUrl () {
         return this.player.avatar || config.media.beneficiary.url + 'default.png'
+      },
+      to () {
+        return '/payments/' + this.player._id
       }
     }
   }

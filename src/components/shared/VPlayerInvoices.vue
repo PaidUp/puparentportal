@@ -15,7 +15,7 @@
             span.md-caption {{ $d(chargeDate, 'short') }}
           v-currency(:amount="invoice.price" clazz="total md-title")
       md-card-actions
-        md-button.md-accent Fix
+        md-button.md-accent(@click="select" :disabled="disableButton") {{ nameButton }}
 
     md-ripple(v-if="invoice.memoId")
       md-card-header
@@ -32,7 +32,7 @@
             span.md-caption {{ $d(chargeDate, 'short') }}
           v-currency(:amount="invoice.price" clazz="total md-title")
       md-card-actions
-        md-button.md-accent Fix
+        md-button.md-accent(v-if=false)
 
 </template>
 
@@ -57,11 +57,19 @@
       VCurrency
     },
     computed: {
+      disableButton () {
+        return !(this.invoice.status === 'autopay' || this.invoice.status === 'failed')
+      },
+      nameButton () {
+        if (this.invoice.status === 'autopay') return 'Edit'
+        if (this.invoice.status === 'failed') return 'Fix'
+        return ''
+      },
       paymetMethod () {
         return this.invoice.paymentDetails.brand + '••••' + this.invoice.paymentDetails.last4
       },
       chargeDate () {
-        if (this.invoice.invoiceId) return new Date(this.invoice.dataCharge)
+        if (this.invoice.invoiceId) return new Date(this.invoice.dateCharge)
         if (this.invoice.memoId) return new Date(this.invoice.createOn)
         return new Date()
       },
@@ -73,6 +81,11 @@
       },
       status () {
         return this.invoice.status.toUpperCase().replace('_', '<br/>')
+      }
+    },
+    methods: {
+      select () {
+        this.$emit('select', this.invoice)
       }
     }
   }

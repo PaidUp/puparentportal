@@ -157,6 +157,9 @@ const module = {
         product: programSelected
       }
       return commerceService.checkout(params)
+    },
+    updateInvoice (context, { id, values }) {
+      return commerceService.updateInvoice({ id, values })
     }
   }
 }
