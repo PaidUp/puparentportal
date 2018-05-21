@@ -8,6 +8,7 @@ const config = {
   stripe: {
     publicKey: 'pk_test_9WTTkvwiNjZ9IMJVls1iF0fv'
   },
+  fbId: '521919851516443',
   plaid: {
     env: 'sandbox',
     publicKey: '5a537132a52c4ead4feab6358c62eb',
