@@ -151,12 +151,19 @@ const module = {
         beneficiaryFirstName: playerSelected.firstName,
         beneficiaryLastName: playerSelected.lastName
       }
-      let params = {
+      let promises = []
+      promises.push(commerceService.checkoutInvoice({
         order,
         dues: paymentPlanSelected.dues,
         product: programSelected
+      }))
+      if (paymentPlanSelected.credits && paymentPlanSelected.credits.length) {
+        promises.push(commerceService.checkoutCredit({
+          order,
+          credits: paymentPlanSelected.credits
+        }))
       }
-      return commerceService.checkout(params)
+      return Promise.all(promises).then(values => values)
     },
     updateInvoice (context, { id, values }) {
       return commerceService.updateInvoice({ id, values })
