@@ -32,9 +32,6 @@ const module = {
     pushCard (state, card) {
       state.cards.push(card)
     },
-    pushBankAccount (state, bankAccount) {
-      state.bankAccounts.push(bankAccount)
-    },
     delCard (state, cardId) {
       state.cards = state.cards.filter(card => {
         return cardId !== card.id
@@ -84,13 +81,11 @@ const module = {
             })
           }).then(userUpd => {
             paymentService.associateBank(userUpd.externalCustomerId, publicToken, accountId).then(bank => {
-              context.commit('pushBankAccounts', bank)
               resolve(bank)
             }).catch(reason => reject(reason))
           })
         } else {
           paymentService.associateBank(user.externalCustomerId, publicToken, accountId).then(bank => {
-            context.commit('pushBankAccounts', bank)
             resolve(bank)
           }).catch(reason => reject(reason))
         }

@@ -36,6 +36,7 @@ export default {
     onSuccess (publicToken, metadata) {
       const accountId = metadata.account_id
       this.addBank({ user: this.user, publicToken, accountId }).then(bank => {
+        this.listBanks(this.user)
         this.setSuccess('module.payment.add_bank_success')
       }).catch(reason => {
         this.setSuccess('module.payment.add_bank_fail')
