@@ -2,11 +2,12 @@
   <div class="left-sidebar">
     <md-list class="top-list">
       <md-list-item class="edit-user-nav-item" to="/profile">
-        <md-avatar>
+        <md-avatar v-if="false">
           <img src="@/assets/avatar.jpg" />
         </md-avatar>
+        <md-icon v-if="true" class="md-size-2x ca1">account_circle</md-icon>
         <div class="md-list-item-text bold">
-          Diego Fortes
+          {{ user.firstName }} {{ user.lastName}}
         </div>
       </md-list-item>
 
