@@ -4,7 +4,8 @@
       <div class="title bold">Profile</div>
       <div class="content-box">
         <div class="centered">
-          <md-avatar class="md-avatar-icon md-large md-elevation-4">
+          <md-icon v-if="true" class="md-size-2x ca1">account_circle</md-icon>
+          <md-avatar v-if="false" class="md-avatar-icon md-large md-elevation-4">
             <img src="@/assets/avatar.jpg" />
           </md-avatar>
         </div>
