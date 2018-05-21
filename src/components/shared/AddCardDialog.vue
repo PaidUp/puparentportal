@@ -42,7 +42,7 @@
 
 <script>
   import config from '@/config'
-  import PuCard from '@/components/payment/PuCard.vue'
+  import PuCard from '@/components/shared/payment/PuCard.vue'
   import { required } from 'vuelidate/lib/validators'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
   import states from '@/util/states'

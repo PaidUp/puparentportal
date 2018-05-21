@@ -12,7 +12,7 @@ const config = {
   plaid: {
     env: 'sandbox',
     publicKey: 'c104e73c056e34530e2c5774e6fc5f',
-    clientName: 'Paidup stg',
+    clientName: 'Paidup',
     product: 'auth',
     selectAccount: 'true',
     apiVersion: 'v2'

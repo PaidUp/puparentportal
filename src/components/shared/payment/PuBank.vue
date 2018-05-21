@@ -1,15 +1,18 @@
 <template lang="pug">
   plaid-link(:env="props.env" :publicKey="props.publicKey" :clientName="props.clientName"
     :product="props.product" :selectAccount="props.selectAccount"
-    :apiVersion='props.apiVersion' v-bind="{ onSuccess }") Open Plaid Link
+    :apiVersion='props.apiVersion' :type="type" v-bind="{ onSuccess }") Open Plaid Link
 </template>
 
 <script>
-import PlaidLink from './plaid/PlaidLink.vue'
+import PlaidLink from './PlaidLink.vue'
 import config from '@/config'
 import { mapState, mapActions } from 'vuex'
 
 export default {
+  props: {
+    type: String
+  },
   data () {
     return {
       props: config.plaid
@@ -27,7 +30,8 @@ export default {
       setDanger: 'setDanger'
     }),
     ...mapActions('paymentModule', {
-      addBank: 'addBank'
+      addBank: 'addBank',
+      listBanks: 'listBanks'
     }),
     onSuccess (publicToken, metadata) {
       const accountId = metadata.account_id
@@ -42,5 +46,5 @@ export default {
 </script>
 
 <style>
-  #plaid-link-iframe-1{height:100vh !important;}
+  #plaid-link-iframe-1{height:100vh!important;}
 </style>

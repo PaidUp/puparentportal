@@ -8,10 +8,7 @@ md-list-item(md-expand)
       md-icon.add-icon add
       .md-list-item-text
         div Add New Card
-    md-list-item
-      md-icon.add-icon add
-      .md-list-item-text
-        div Add New Bank
+    pu-bank(type="item")
   add-card-dialog(:showDialog="showAddCardDialog" @close="showAddCardDialog = false")
   del-card-dialog(:card="cardSelected" :showDialog="showDelCardDialog" @close="close")
 </template>
@@ -21,9 +18,10 @@ import PuItemAccount from './PuItemAccount.vue'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import AddCardDialog from '@/components/shared/AddCardDialog.vue'
 import DelCardDialog from '@/components/shared/DelCardDialog.vue'
+import PuBank from '@/components/shared/payment/PuBank.vue'
 
 export default {
-  components: { PuItem, PuItemAccount, AddCardDialog, DelCardDialog },
+  components: { PuItem, PuItemAccount, AddCardDialog, DelCardDialog, PuBank },
   data () {
     return {
       showAddCardDialog: false,

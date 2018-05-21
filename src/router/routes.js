@@ -4,9 +4,6 @@ import SignUpPage from '@/components/pages/SignUpPage.vue'
 import FbSignUpPage from '@/components/pages/FbSignUpPage.vue'
 import ForgotPassPage from '@/components/pages/ForgotPassPage.vue'
 import ResetPassPage from '@/components/pages/ResetPassPage.vue'
-import PuCard from '@/components/payment/PuCard.vue'
-import Bank from '@/components/payment/Bank.vue'
-import Accounts from '@/components/payment/Accounts.vue'
 import Welcome from '@/components/pages/Welcome.vue'
 import PlayersPage from '@/components/pages/PlayersPage.vue'
 import AddNewPlayerPage from '@/components/pages/AddNewPlayerPage.vue'
@@ -54,21 +51,6 @@ const routes = [
       {
         path: '/payments/:id',
         component: PaymentsPage
-      },
-      {
-        path: '/card',
-        name: 'card',
-        component: PuCard
-      },
-      {
-        path: '/bank',
-        name: 'bank',
-        component: Bank
-      },
-      {
-        path: '/accounts',
-        name: 'accounts',
-        component: Accounts
       }
     ]
   },

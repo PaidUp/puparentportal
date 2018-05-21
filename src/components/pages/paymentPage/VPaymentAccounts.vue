@@ -13,13 +13,14 @@
 
     md-button.lblue.md-accent(@click="cancel") CANCEL
     md-button.lblue.md-accent.md-raised(@click="showAddCardDialog=true") ADD NEW CARD
-    md-button.lblue.md-accent.md-raised ADD NEW BANK
+    pu-bank(type="button")
     add-card-dialog(:showDialog="showAddCardDialog" @close="showAddCardDialog = false")
 
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import AddCardDialog from '@/components/shared/AddCardDialog.vue'
+import PuBank from '@/components/shared/payment/PuBank.vue'
 
 export default {
   props: {
@@ -29,21 +30,21 @@ export default {
     },
     step: Boolean
   },
-  components: { AddCardDialog },
+  components: { AddCardDialog, PuBank },
   data () {
     return {
       selected: null,
       showAddCardDialog: false
     }
   },
-  watch: {
-    user () {
-      if (this.user && this.user.externalCustomerId) {
-        this.listCards(this.user)
-        this.listBanks(this.user)
-      }
-    }
-  },
+  // watch: {
+  //   user () {
+  //     if (this.user && this.user.externalCustomerId) {
+  //       this.listCards(this.user)
+  //       this.listBanks(this.user)
+  //     }
+  //   }
+  // },
   computed: {
     ...mapGetters('paymentModule', {
       paymentAccounts: 'paymentAccounts'

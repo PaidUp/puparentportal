@@ -1,6 +1,12 @@
 <template lang="pug">
-  button.plaid-link-button(@click="handleOnClick") 
-    slot
+  span
+    md-list-item(v-if="type === 'item'" @click="handleOnClick")
+        md-icon.add-icon add
+        .md-list-item-text
+          div Add New Bank
+    md-button.lblue.md-accent.md-raised(v-if="type === 'button'" @click="handleOnClick") ADD NEW BANK
+    button.plaid-link-button(v-if="false" @click="handleOnClick") 
+      slot
 </template>
 
 <script>
@@ -8,6 +14,9 @@ import Vue from 'vue'
 export default {
   name: 'plaid-link',
   props: {
+    type: {
+      type: String
+    },
     plaidUrl: {
       type: String,
       default: 'https://cdn.plaid.com/link/v2/stable/link-initialize.js'
