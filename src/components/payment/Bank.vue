@@ -1,8 +1,7 @@
 <template lang="pug">
-  section
-    plaid-link(:env="props.env" :publicKey="props.publicKey" :clientName="props.clientName"
-      :product="props.product" :selectAccount="props.selectAccount"
-      :apiVersion='props.apiVersion' v-bind="{ onSuccess }") Open Plaid Link
+  plaid-link(:env="props.env" :publicKey="props.publicKey" :clientName="props.clientName"
+    :product="props.product" :selectAccount="props.selectAccount"
+    :apiVersion='props.apiVersion' v-bind="{ onSuccess }") Open Plaid Link
 </template>
 
 <script>
@@ -43,4 +42,5 @@ export default {
 </script>
 
 <style>
+  #plaid-link-iframe-1{height:100vh !important;}
 </style>
