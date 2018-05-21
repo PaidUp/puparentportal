@@ -90,7 +90,7 @@ const module = {
           })
         } else {
           paymentService.associateBank(user.externalCustomerId, publicToken, accountId).then(bank => {
-            // context.commit('pushBankAccounts', bank)
+            context.commit('pushBankAccounts', bank)
             resolve(bank)
           }).catch(reason => reject(reason))
         }
