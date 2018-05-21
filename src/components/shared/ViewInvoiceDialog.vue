@@ -34,6 +34,7 @@
         </md-field>
         <md-field>
           <label>Amount</label>
+          <span class="md-prefix">$</span>
           <md-input :disabled="true" v-model="invoice.price"></md-input>
         </md-field>
         <md-datepicker v-model="dateCharge" :md-disabled-dates="disabledDates">

@@ -17,8 +17,8 @@
         </md-select>
       </md-field>
     </div>
-    <md-button class="lblue md-accent md-raised" @click="select('add custom unfo')">NEXT</md-button>
     <md-button class="lblue md-accent">CANCEL</md-button>
+    <md-button class="lblue md-accent md-raised" @click="select('add custom unfo')">NEXT</md-button>
   </md-step>
 
 </template>

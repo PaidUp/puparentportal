@@ -53,37 +53,54 @@
       .inv-cards
         display: flex
         flex-flow: row wrap
-        justify-content: space-between
+        justify-content: flex-start
         align-items: center
         .md-card
-          margin: 0 0 30px 0
-          width: 23%;
-          .card-content
+          margin: 15px
+          width: 250px;
+          height 230px
+          .main-card-box
             display: flex
-            flex-flow: row nowrap
+            flex-flow: column nowrap
             justify-content: space-between
-            align-items: center
-            .status
-              text-align: center
-              .md-icon
-                color: $cgreen
-            .amount-details
-              margin-top: 5px
-              color: $cgray1
-              text-align: right
-              .details
-                line-height: 1
-              .total
+            align-items: flex-start
+            width 100%
+            .md-card-header
+            .md-card-content
+            .md-card-actions
+              width 100%
+            .md-card-header
+              .title
+                color: $cblack
+                margin-bottom: 5px
+            .md-card-content.card-content
+              display: flex
+              flex-flow: row nowrap
+              justify-content: space-between
+              align-items: center
+              .status
+                text-align: center
+                .md-icon
+                  color: $cgreen
+              .amount-details
                 margin-top: 5px
-                font-weight: bold
+                color: $cgray1
+                text-align: right
+                .details
+                  line-height: 1
+                .total
+                  margin-top: 5px
+                  font-weight: bold
               
 .add-new-player-page
   @extend .has-steppers;
   .step-box
     width 300px
     .update-pic
-      text-align: center
-      width auto
+      display: flex
+      flex-flow: column nowrap
+      justify-content: center
+      align-items: center
       padding: 16px 0
       cursor pointer
     .names-box
@@ -100,15 +117,15 @@
   .clubs
     display: flex
     flex-flow: row wrap
-    justify-content: space-around
+    justify-content: flex-start
     align-items: center
     margin: 40px 0
     .club
       text-align: center
-      width 280px
+      width 250px
       padding: 20px 10px
       cursor pointer
-      margin-bottom: 20px
+      margin: 15px
       &.selected
         // border: 2px solid $cblue
         background: rgba($ca1,.2)

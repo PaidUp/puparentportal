@@ -11,9 +11,9 @@
         .card-details.md-caption(v-if="account.object==='bank_account'") ••••{{ account.last4 }}
         .card-details.md-caption(v-if="account.object==='card'") Exp. {{ account.exp_month }}/{{ account.exp_year % 100 }}
 
+    md-button.lblue.md-accent(@click="cancel") CANCEL
     md-button.lblue.md-accent.md-raised(@click="showAddCardDialog=true") ADD NEW CARD
     md-button.lblue.md-accent.md-raised ADD NEW BANK
-    md-button.lblue.md-accent(@click="cancel") CANCEL
     add-card-dialog(:showDialog="showAddCardDialog" @close="showAddCardDialog = false")
 
 </template>

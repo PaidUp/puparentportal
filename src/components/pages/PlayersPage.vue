@@ -7,7 +7,7 @@
       div(class="cgray") Start by making a payment to {{ beneficiary ? beneficiary.organizationName : '' }}.
       md-button(v-if="beneficiary" class="md-raised md-accent lblue" :to="'/payments/'+beneficiary._id") MAKE A NEW PAYMENT
       div
-        img(src="@/assets/icons/ico02-01.svg" alt="pay")
+        img(src="@/assets/shield.svg" alt="pay")
     .player-with-payments(v-show="allInvoices.length")
       .details
         .md-subheading.title Details

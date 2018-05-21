@@ -1,12 +1,12 @@
 <template lang="pug">
   md-card(md-with-hover)
-    md-ripple(v-if="invoice.invoiceId")
+    md-ripple(v-if="invoice.invoiceId" class="main-card-box")
       md-card-header
-        .md-subheading {{ invoice.label }}
-        .md-subhead {{ paymetMethod }}
+        .title {{ invoice.label }}
+        .caption {{ paymetMethod }}
       md-card-content.card-content
         .status
-          md-icon.md-size-2x(:class="clazz") {{ icon }}
+          md-icon.md-size-c(:class="clazz") {{ icon }}
           .md-caption(v-html="status")
         .amount-details
           .details
@@ -17,13 +17,13 @@
       md-card-actions
         md-button.md-accent(@click="select" :disabled="disableButton") {{ nameButton }}
 
-    md-ripple(v-if="invoice.memoId")
+    md-ripple(v-if="invoice.memoId" class="main-card-box")
       md-card-header
-        .md-subheading {{ invoice.label }}
-        .md-subhead {{ invoice.description }}
+        .title {{ invoice.label }}
+        .caption {{ invoice.description }}
       md-card-content.card-content
         .status
-          md-icon.md-size-2x(:class="clazz") {{ icon }}
+          md-icon.md-size-c(:class="clazz") {{ icon }}
           .md-caption(v-html="status")
         .amount-details
           .details

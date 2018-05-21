@@ -12,8 +12,8 @@
         b on autopay 
         | on the dates and amount in the payment plan I selected
       md-checkbox(v-model="check3") I agree that PaidUp cannot modify, cancel or refund any payments without approval from the club
-    md-button.lblue.md-accent.md-raised(:disabled="!enable || processing" @click="select") AUTHORIZE PAYMENTS
     md-button.lblue.md-accent(@click="cancel") CANCEL
+    md-button.lblue.md-accent.md-raised(:disabled="!enable || processing" @click="select") AUTHORIZE PAYMENTS
 
 </template>
 <script>
