@@ -7,9 +7,9 @@
     .payment-plans 
       v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in plansFiltered" :key="plan._id" :plan="plan")
       v-payment-plan-details(v-if="planSelected" v-for="due in dues" :key="due._id" :due="due")
+    md-button.lblue.md-accent(@click="cancel") CANCEL
     md-button.lblue.md-accent.md-raised(v-if="planSelected" @click="acept") ACEPT PAYMENT PLAN
     md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK
-    md-button.lblue.md-accent(@click="cancel") CANCEL
 
 </template>
 <script>

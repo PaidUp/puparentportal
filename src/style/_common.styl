@@ -123,13 +123,19 @@ a, a:hover, a:visited, a:link, a:active, a > *
       border-color: $clblue
 
 // MD-INPUT
-.md-field.md-disabled
-  input 
-    -webkit-text-fill-color: $cgray2!important
-    color: $cgray2!important
-  &:after
-    background-color: $cgray3!important
-    background-image: none!important
+.md-field
+  .md-prefix
+    margin-top: 5px
+  &.md-disabled
+    input 
+      -webkit-text-fill-color: $cgray2!important
+      color: $cgray2!important
+    &:after
+      background-color: $cgray3!important
+      background-image: none!important
+    .md-prefix
+      color: $cgray2!important
+
 
 // MD-AVATAR MD-ICON
 .md-avatar-icon .md-icon
@@ -138,10 +144,10 @@ a, a:hover, a:visited, a:link, a:active, a > *
 // MD-ICONS
 .md-icon
   &.md-size-c
-    width: 32px;
-    min-width: 32px;
-    height: 32px;
-    font-size: 32px!important
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    font-size: 34px!important
 
 // MD-DATEPICKER
 .md-datepicker-dialog

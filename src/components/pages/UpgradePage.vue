@@ -52,8 +52,8 @@
           </div>
 
         </div>
-        <md-button class="md-raised md-accent lblue" @click="setDone('step1', 'step2')">NEXT</md-button>
         <md-button class="md-accent lblue" to="/profile">CANCEL</md-button>
+        <md-button class="md-raised md-accent lblue" @click="setDone('step1', 'step2')">NEXT</md-button>
       </md-step>
       <md-step id="step2" md-label="Business Info" :md-editable="false" :md-done.sync="step2">
         <div class="step-box">
@@ -82,8 +82,8 @@
           </md-field>
 
         </div>
-        <md-button class="md-raised md-accent lblue" @click="setDone('step2', 'step3')">NEXT</md-button>
         <md-button class="md-accent lblue" to="/profile">CANCEL</md-button>
+        <md-button class="md-raised md-accent lblue" @click="setDone('step2', 'step3')">NEXT</md-button>
       </md-step>
       <md-step id="step3" md-label="First Step" md-description="Optional" :md-editable="false" :md-done.sync="step3">
         <div class="step-box">
@@ -104,9 +104,9 @@
           </md-field>
 
         </div>
-        <md-button class="md-raised md-accent lblue" @click="setDone('step2', 'step3')">UPGRADE ACCOUNT</md-button>
         <md-button class="md-accent lblue" to="/profile">CANCEL</md-button>
-         </md-step>
+        <md-button class="md-raised md-accent lblue" @click="setDone('step2', 'step3')">UPGRADE ACCOUNT</md-button>
+      </md-step>
     </md-steppers>
   </div>
 

@@ -6,8 +6,8 @@
           img(src="@/assets/avatar.jpg")
         .name.md-body-2 {{ beneficiary.firstName }} {{ beneficiary.firstLastName }}
         .team.md-caption {{ beneficiary.organizationName }}
-    md-button.lblue.md-accent.md-raised ADD NEW PLAYER
     md-button.lblue.md-accent(@click="cancel") CANCEL
+    md-button.lblue.md-accent.md-raised ADD NEW PLAYER
 </template>
 <script>
 import { mapState } from 'vuex'

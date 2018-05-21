@@ -73,8 +73,8 @@
       </md-card>
     </div>
     <div>
-      <md-button class="lblue md-accent md-raised">VIEW STANDARD PLANS</md-button>
       <md-button class="lblue md-accent">CANCEL</md-button>
+      <md-button class="lblue md-accent md-raised">VIEW STANDARD PLANS</md-button>
     </div>
   </div>
 

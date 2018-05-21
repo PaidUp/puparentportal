@@ -16,9 +16,9 @@
               label Last Name
               md-input(v-model.trim="lastName" @input="$v.lastName.$touch()")
               span.md-error(v-if="!$v.lastName.required") {{ $t('validations.required', { field: 'Last Name' }) }}
+          md-button.lblue.md-accent(@click="cancel") Cancel
           md-button.lblue.md-accent.md-raised(:disabled="nextStep1" @click="setDone('step1', 'step2')") NEXT
-          md-button.lblue.md-accent(@click="cancel")
-      md-step(id="step2" md-label="Second Step" md-description="Start typing below to search and choose your club")
+      md-step(id="step2" md-label="Second Step" md-description="Start typing below to search and click to choose your club")
         md-field.club-search-field
           label Club
           md-input(v-model.trim="filter")
@@ -27,8 +27,8 @@
             img(src="@/assets/ntxbanditos.png" alt="club")
             .title.cblue.bold {{ organization.businessName }}
             .location {{ organization.city }}, {{ organization.state }}
-        md-button.lblue.md-accent.md-raised(@click="cretePlayer" :disabled="processing || !organizationSelected._id") ADD PLAYER
         md-button.lblue.md-accent(@click="cancel") CANCEL
+        md-button.lblue.md-accent.md-raised(@click="cretePlayer" :disabled="processing || !organizationSelected._id") ADD PLAYER
 
 
 </template>

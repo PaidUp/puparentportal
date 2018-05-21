@@ -2,8 +2,9 @@
   .common-player-info
     .with-menu-box
       div.player-info
-        md-avatar.md-large
-          img(:src="avatarUrl")
+        md-icon(v-if="!player.avatar" class="md-size-3x ca1") account_circle
+        md-avatar.md-large(v-if="player.avatar")
+          img(:src="player.avatar")
         .name.md-title {{player.firstName}} {{player.lastName}}
         .team.md-subheading {{ player.organizationName }}
       md-menu(md-size="small" md-direction="bottom-start")
@@ -16,7 +17,7 @@
 </template>
 
 <script>
-  import config from '@/config'
+  // import config from '@/config'
   import EditPlayerDialog from '@/components/shared/EditPlayerDialog.vue'
   export default {
     components: {
@@ -39,7 +40,8 @@
     },
     computed: {
       avatarUrl () {
-        return this.player.avatar || config.media.beneficiary.url + 'default.png'
+        // return this.player.avatar || `/static/img/user.svg`
+        return ''
       },
       to () {
         return '/payments/' + this.player._id
