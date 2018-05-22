@@ -24,7 +24,7 @@
           md-input(v-model.trim="filter")
         .clubs
           .club.md-elevation-2(:class="{ selected: organizationSelected._id === organization._id }" @click="selectOrganization(organization)" v-for="organization in filtered" :key="organization._id")
-            img(src="@/assets/ntxbanditos.png" alt="club")
+            img(:src="mediaUrl + organization._id + '.png'" alt="club")
             .title.cblue.bold {{ organization.businessName }}
             .location {{ organization.city }}, {{ organization.state }}
         md-button.lblue.md-accent(@click="cancel") CANCEL
@@ -36,6 +36,7 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import { required } from 'vuelidate/lib/validators'
+  import config from '@/config'
 
   export default {
     components: {},
@@ -48,7 +49,8 @@
         lastName: '',
         organizationSelected: {},
         filter: '',
-        processing: false
+        processing: false,
+        mediaUrl: config.media.organization.url + 'logo/'
       }
     },
     mounted () {

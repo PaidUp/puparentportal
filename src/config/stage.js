@@ -20,6 +20,9 @@ const config = {
   media: {
     beneficiary: {
       url: 'https://s3.amazonaws.com/pu-media-stg/beneficiary/'
+    },
+    organization: {
+      url: 'https://s3.amazonaws.com/pu-media-stg/organization/'
     }
   }
 }
