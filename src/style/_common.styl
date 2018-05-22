@@ -92,16 +92,16 @@ a, a:hover, a:visited, a:link, a:active, a > *
 .md-button
   .md-ripple
     padding: 0 14px
-.md-button-content
-  text-transform: none
 // Light Blue button
 .md-button.md-accent.lblue
   color $clblue
   &.md-raised
     background-color $clblue !important
   &[disabled]
-    opacity: .4
-    color: $cgray4
+    // opacity: .4
+    // color: $cgray4
+    color: rgba(0,0,0,.26)!important
+    background-color: rgba(0,0,0,.12)!important
 
 // MD-SWITCH
 .md-switch.md-accent.lblue
@@ -169,19 +169,24 @@ a, a:hover, a:visited, a:link, a:active, a > *
   flex-flow: row nowrap
   justify-content: space-between
   align-items: center
-  div:nth-child(1)
+  & > div:nth-child(1)
     width: 49%
-  div:nth-child(2)
+  & > div:nth-child(2)
     width: 20%
-  div:nth-child(3)
+  & > div:nth-child(3)
     width: 29%
+  &.no-zip
+    & > div:nth-child(1)
+      width: 64%
+    & > div:nth-child(2)
+      width: 35%
 
 // SELECT MENU FIX
 .md-select-menu.md-menu-content
   z-index 12
 
 // MD-MENU
-.md-menu-content.custom-menu-content
+.md-menu-content
   z-index 12
   .md-list-item-container
     color: $clblue

@@ -12,6 +12,6 @@ md-list.bottom-list
       div (855) 764-3232
   md-list-item
     md-icon help
-    a.md-list-item-text(href="#") Help Articles
+    a.md-list-item-text(href="https://getpaidup.zendesk.com/hc/en-us" target="_blank") Help Articles
     md-icon launch
 </template>

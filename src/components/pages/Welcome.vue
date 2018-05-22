@@ -5,7 +5,7 @@
     </div>
     <div class="title-info">Let's get started by adding a new player</div>
     <md-button class="md-raised md-accent lblue" to="/players/new">ADD NEW PLAYER</md-button>
-    <img src="@/assets/icons/ico08-01.svg" alt="welcome" @click="animate()">
+    <img src="@/assets/shuttle.svg" alt="welcome" @click="animate()">
     <v-pay-animation :animate="animation" />
   </div>
 </template>

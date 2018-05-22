@@ -28,17 +28,16 @@
         <md-field>
           <label>Email</label>
           <md-input v-model="email" :disabled= "!editEmail"></md-input>
-          <md-icon v-if="false">editable</md-icon>
           <img v-if="user.facebookId" class="fb-icon" src="@/assets/facebook.png" />
         </md-field>
-        <md-field v-show="!user.facebookId">
+        <md-field v-show="!user.facebookId" :md-toggle-password="editPassword">
           <label>Password</label>
           <md-input v-model.trim="password" type="password" :disabled="!editPassword"></md-input>
           <span @click="editPassword = true" v-show="!editPassword">
             <md-icon>editable</md-icon>            
           </span>
         </md-field>
-        <md-field v-show="editPassword" :class="{'md-invalid': $v.cpassword.$error}">
+        <md-field v-show="editPassword" :class="{'md-invalid': $v.cpassword.$error}" :md-toggle-password="editPassword">
           <label>Confirm Password</label>
           <md-input v-model.trim="cpassword" @input="$v.cpassword.$touch()" type="password"></md-input>
           <span class="md-error" v-if="!$v.cpassword.sameAsPassword">{{ $t('validations.identical', { field: 'Password' }) }}</span>
