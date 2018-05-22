@@ -16,21 +16,24 @@
               </div>
             </div>
             <div class="actions">
-              <md-button class="lblue md-accent" @click="modify">EDIT</md-button>
+              <md-button class="lblue md-accent" @click="showEditDialog = true">EDIT</md-button>
             </div>
+            <view-due-dialog :due="due" :showDialog="showEditDialog" @cancel="showEditDialog = false"/>
           </div>
 </template>
 <script>
 import VCurrency from '@/components/shared/VCurrency.vue'
+import ViewDueDialog from '@/components/shared/ViewDueDialog.vue'
 
 export default {
-  components: { VCurrency },
+  components: { VCurrency, ViewDueDialog },
   props: {
     due: Object
   },
   data () {
     return {
-      overdue: (new Date()).setHours(24, 0, 0, 0) > this.due.dateCharge.getTime()
+      overdue: (new Date()).setHours(24, 0, 0, 0) > this.due.dateCharge.getTime(),
+      showEditDialog: false
     }
   },
   computed: {
