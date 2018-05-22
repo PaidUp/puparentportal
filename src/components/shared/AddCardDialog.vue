@@ -17,19 +17,22 @@
         <md-input v-model.trim="details.address_line1" @input="$v.details.address_line1.$touch()"></md-input>
         <span class="md-error" v-if="!$v.details.address_line1.required">{{ $t('validations.required', { field: 'Address' }) }}</span>        
       </md-field>
-      <div class="address-info">
+      <div class="address-info no-zip">
         <md-field :class="{'md-invalid': $v.details.address_city.$error}">
           <label>City</label>
           <md-input v-model.trim="details.address_city" @input="$v.details.address_city.$touch()"></md-input>
           <span class="md-error" v-if="!$v.details.address_city.required">{{ $t('validations.required', { field: 'City' }) }}</span>          
         </md-field>
-        <md-field :class="{'md-invalid': $v.details.address_state.$error}">
+        <md-autocomplete v-model="details.address_state" @input="$v.details.address_state.$touch()" name="state" id="state" :md-options="['Arizona', 'New York', 'Texas', 'Delware', 'California']" md-dense>
+          <label>State</label>
+        </md-autocomplete>
+        <!-- <md-field :class="{'md-invalid': $v.details.address_state.$error}">
           <label>State</label>
           <md-select v-model="details.address_state" @input="$v.details.address_state.$touch()" name="state" id="state" md-dense>
             <md-option v-for="state in states" :key="state.abbreviation" :value="state.abbreviation">{{ state.name }}</md-option>
           </md-select>
           <span class="md-error" v-if="!$v.details.address_state.required">{{ $t('validations.required', { field: 'State' }) }}</span>
-        </md-field>
+        </md-field> -->
       </div>
     </div>
     <v-pay-animation :animate="animation" @finish="closeDialog" />
