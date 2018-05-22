@@ -20,8 +20,7 @@
         .inv-cards
           v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id" @select="selectInvoice")
     view-invoice-dialog(:invoice="viewInvoice" :closeDialog="closeDialog")
-    payment-accounts-dialog(:accounts="paymentsAccounts" :closeDialog="closeDialog")
-    DuplicatePaymentDialog(:showDialog="showDuplicateDialog" :closeDialog="closeDialog")
+    duplicate-payment-dialog(:showDialog="showDuplicateDialog" :closeDialog="closeDialog")
 </template>
 
 <script>
@@ -31,7 +30,6 @@
   import VPlayerDetailsSelection from '@/components/shared/VPlayerDetailsSelection.vue'
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
   import ViewInvoiceDialog from '@/components/shared/ViewInvoiceDialog.vue'
-  import PaymentAccountsDialog from '@/components/shared/PaymentAccountsDialog.vue'
   import DuplicatePaymentDialog from '@/components/shared/DuplicatePaymentDialog.vue'
   export default {
     components: {
@@ -40,13 +38,11 @@
       VPlayerDetailsTotals,
       VPlayerDetailsSelection,
       ViewInvoiceDialog,
-      DuplicatePaymentDialog,
-      PaymentAccountsDialog
+      DuplicatePaymentDialog
     },
     data: function () {
       return {
         viewInvoice: {},
-        paymentsAccounts: null,
         showDuplicateDialog: false
       }
     },
@@ -93,7 +89,6 @@
       }),
       closeDialog: function () {
         this.viewInvoice = {}
-        this.paymentsAccounts = null
         this.getInvoices({ beneficiary: this.beneficiary })
       },
       selectInvoice (invoice) {

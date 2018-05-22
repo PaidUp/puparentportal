@@ -42,9 +42,7 @@
         </md-datepicker>
         <md-field>
           <label for="payment">Payment Account</label>
-          <md-select name="payment" id="payment" v-model="paymentMethod">
-            <md-option v-for="pm in paymentAccounts" :key="pm.id" :value="pm.id">{{pm.name}}</md-option>
-          </md-select>
+          <md-input :readonly="true" v-model="paymentMethod" @click="showPaymentAccountDialog = true"></md-input>
         </md-field>
         <md-field>
           <label>Status</label>
@@ -64,18 +62,20 @@
       <md-button class="md-accent lblue" :disabled="submited" @click="submit">SAVE</md-button>
     </md-dialog-actions>
     <v-pay-animation :animate="submited" @finish="closeDialog" />
+    <payment-accounts-dialog :showDialog="showPaymentAccountDialog" :accounts="paymentAccounts" @selected="selectAccount"/>
   </md-dialog>
 </template>
 
 <script>
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
+  import PaymentAccountsDialog from '@/components/shared/payment/PaymentAccountsDialog.vue'
   import { mapGetters, mapActions } from 'vuex'
   export default {
+    components: { VPayAnimation, PaymentAccountsDialog },
     props: {
       invoice: Object,
       closeDialog: Function
     },
-    components: { VPayAnimation },
     data: function () {
       return {
         disabledDates: date => {
@@ -89,8 +89,9 @@
         amount: 0,
         status: '',
         paymentMethod: '',
-        paymentMethodObj: '',
-        submited: false
+        paymentMethodObj: null,
+        submited: false,
+        showPaymentAccountDialog: false
       }
     },
     watch: {
@@ -100,20 +101,8 @@
           this.description = this.invoice.label
           this.amount = this.invoice.price
           this.status = this.invoice.status
-          this.paymentMethod = this.invoice.paymentDetails.externalPaymentMethodId
+          this.paymentMethod = `${this.invoice.paymentDetails.brand}••••${this.invoice.paymentDetails.last4}`
         }
-      },
-      paymentMethod () {
-        this.paymentAccounts.forEach(pa => {
-          if (pa.id === this.paymentMethod) {
-            this.paymentMethodObj = {
-              paymentMethodtype: pa.object,
-              externalPaymentMethodId: pa.id,
-              brand: pa.brand || pa.bank_name,
-              last4: pa.last4
-            }
-          }
-        })
       }
     },
     methods: {
@@ -124,26 +113,41 @@
         setSuccess: 'setSuccess',
         setWarning: 'setWarning'
       }),
+      selectAccount (account) {
+        if (account && account.id) {
+          this.paymentMethod = `${account.brand || account.bank_name}••••${account.last4}`
+          this.paymentMethodObj = account
+        } else {
+          this.paymentMethodObj = null
+          this.paymentMethod = `${this.invoice.paymentDetails.brand}••••${this.invoice.paymentDetails.last4}`
+        }
+        this.showPaymentAccountDialog = false
+      },
       submit () {
         this.submited = true
-        this.updateInvoice({
+        let params = {
           id: this.invoice._id,
           values: {
             dateCharge: this.dateCharge,
-            status: 'autopay',
-            paymentDetails: {
-              externalCustomerId: this.invoice.paymentDetails.externalCustomerId,
-              statementDescriptor: this.invoice.paymentDetails.statementDescriptor,
-              paymentMethodtype: this.paymentMethodObj.paymentMethodtype,
-              externalPaymentMethodId: this.paymentMethodObj.externalPaymentMethodId,
-              brand: this.paymentMethodObj.brand,
-              last4: this.paymentMethodObj.last4
-            }
+            status: 'autopay'
           }
-        }).then(res => {
+        }
+        if (this.paymentMethodObj) {
+          params.values.paymentDetails = {
+            externalCustomerId: this.invoice.paymentDetails.externalCustomerId,
+            statementDescriptor: this.invoice.paymentDetails.statementDescriptor,
+            paymentMethodtype: this.paymentMethodObj.paymentMethodtype,
+            externalPaymentMethodId: this.paymentMethodObj.externalPaymentMethodId,
+            brand: this.paymentMethodObj.brand,
+            last4: this.paymentMethodObj.last4
+          }
+        }
+  
+        this.updateInvoice(params).then(res => {
           this.submited = false
           this.setSuccess('component.payment.update')
         }).catch(reason => {
+          this.paymentMethodObj = null
           this.submited = false
           this.setWarning('common.error')
         })

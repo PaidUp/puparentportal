@@ -37,14 +37,6 @@ export default {
       showAddCardDialog: false
     }
   },
-  // watch: {
-  //   user () {
-  //     if (this.user && this.user.externalCustomerId) {
-  //       this.listCards(this.user)
-  //       this.listBanks(this.user)
-  //     }
-  //   }
-  // },
   computed: {
     ...mapGetters('paymentModule', {
       paymentAccounts: 'paymentAccounts'

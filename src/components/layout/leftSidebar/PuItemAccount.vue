@@ -1,7 +1,7 @@
 <template lang="pug">
 md-list-item(@click="click")
   md-avatar(v-if="item.object==='card'")
-    img(src="avatarUrl")
+    img(:src="'/static/pm/' + item.brand + '.svg'")
   md-avatar.md-avatar-icon.md-accent(v-if="item.object==='bank_account'")
     md-icon account_balance
   .md-list-item-text

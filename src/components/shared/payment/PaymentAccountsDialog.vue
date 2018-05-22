@@ -1,0 +1,54 @@
+<template>
+  <md-dialog :md-active.sync="showDialog" class="accounts-dialog">
+    <div class="dialog-header white-dialog-header">
+      <div class="title">Choose Payment Account</div>
+    </div>
+    <md-list class="md-double-line">
+      <md-subheader>Existing Accounts</md-subheader>
+      <div v-for="account in accounts" :key="account.id">
+        <md-divider></md-divider>
+        <md-list-item @click="selectAccount(account)" v-if="account.object === 'card'">
+          <md-avatar >
+            <img :src="'/static/pm/' + account.brand + '.svg'" />
+          </md-avatar>
+          <div class="md-list-item-text">
+            <span>{{ account.name}}</span>
+            <span>{{ account.brand}}••••{{ account.last4}} Exp. {{ account.exp_month}}/{{ account.exp_year}}</span>
+          </div>
+        </md-list-item>
+        <md-list-item @click="selectAccount(account)" v-if="account.object === 'bank_account'">
+          <md-icon class="md-size-c">account_balance</md-icon>
+          <div class="md-list-item-text">
+            <span>{{ account.account_holder_name }}</span>
+            <span>{{ account.bank_name}}••••{{ account.last4}}</span>
+          </div>
+        </md-list-item>
+      </div>
+      <md-divider></md-divider>
+    </md-list>
+    <md-dialog-actions>
+      <md-button class="md-accent lblue" @click="selectAccount">CANCEL</md-button>
+    </md-dialog-actions>
+  </md-dialog>
+</template>
+
+<script>
+  export default {
+    props: {
+      accounts: Array,
+      showDialog: Boolean
+    },
+    data: function () {
+      return {
+        title: 'Edit Invoice'
+      }
+    },
+    methods: {
+      selectAccount (account) {
+        this.$emit('selected', account)
+      }
+    },
+    computed: {
+    }
+  }
+</script>
