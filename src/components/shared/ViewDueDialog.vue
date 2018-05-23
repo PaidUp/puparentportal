@@ -40,7 +40,7 @@
     </md-tabs>
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="$emit('cancel')">CANCEL</md-button>
-      <md-button class="md-accent lblue" >APPLY</md-button>
+      <md-button class="md-accent lblue" @click="apply">APPLY</md-button>
     </md-dialog-actions>
     <payment-accounts-dialog :showDialog="showPaymentAccountDialog" :accounts="paymentAccounts" @selected="selectAccount"/>
   </md-dialog>
@@ -81,6 +81,13 @@
           this.paymentMethod = `${this.due.account.brand}••••${this.due.account.last4}`
         }
         this.showPaymentAccountDialog = false
+      },
+      apply () {
+        this.due.dateCharge = this.dateCharge
+        if (this.paymentMethodObj) {
+          this.due.account = this.paymentMethodObj
+        }
+        this.$emit('updated', this.due)
       }
     },
     computed: {

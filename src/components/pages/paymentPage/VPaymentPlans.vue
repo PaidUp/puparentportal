@@ -6,7 +6,7 @@
     div(v-if="preorders.length && !planSelected") All Payments Plan
     .payment-plans 
       v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in plansFiltered" :key="plan._id" :plan="plan")
-      v-payment-plan-details(v-if="planSelected" v-for="due in dues" :key="due._id" :due="due")
+      v-payment-plan-details(v-if="planSelected" v-for="due in dues" :key="due._id" :due="due" @updated="editDue")
     md-button.lblue.md-accent(@click="cancel") CANCEL
     md-button.lblue.md-accent.md-raised(v-if="planSelected" @click="acept") ACEPT PAYMENT PLAN
     md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK
@@ -33,7 +33,8 @@ export default {
   data () {
     return {
       description: 'If you need a custom payment plan, please email support@getpaidup.com or call (855) 764-3232',
-      planSelected: null
+      planSelected: null,
+      dues: {}
     }
   },
   computed: {
@@ -72,15 +73,6 @@ export default {
         })
       })
       return pps
-    },
-    dues () {
-      if (!this.planSelected) return []
-      let resp = {}
-      this.planSelected.dues.forEach(due => {
-        due.account = this.account
-        resp[due._id] = due
-      })
-      return resp
     }
   },
   watch: {
@@ -89,6 +81,12 @@ export default {
         this.description = 'If you need a custom payment plan, please email support@getpaidup.com or call (855) 764-3232'
       } else {
         this.description = this.planSelected.description
+        let resp = {}
+        this.planSelected.dues.forEach(due => {
+          due.account = this.account
+          resp[due._id] = due
+        })
+        this.dues = resp
       }
     }
   },
@@ -103,6 +101,17 @@ export default {
       this.$router.push({
         name: 'home'
       })
+    },
+    editDue (due) {
+      let dues = []
+      this.dues[due._id] = due
+      let newDues = JSON.parse(JSON.stringify(this.dues))
+      for (var key in newDues) {
+        newDues[key].dateCharge = new Date(newDues[key].dateCharge)
+        dues.push(newDues[key])
+      }
+      this.dues = newDues
+      this.planSelected.dues = dues
     }
   }
 }

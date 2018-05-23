@@ -18,7 +18,7 @@
             <div class="actions">
               <md-button class="lblue md-accent" @click="showEditDialog = true">EDIT</md-button>
             </div>
-            <view-due-dialog :due="due" :showDialog="showEditDialog" @cancel="showEditDialog = false"/>
+            <view-due-dialog :due="due" :showDialog="showEditDialog" @cancel="showEditDialog = false" @updated="editDue"/>
           </div>
 </template>
 <script>
@@ -48,9 +48,9 @@ export default {
     }
   },
   methods: {
-    modify () {
-      this.due.modify = true
-      console.log('modify...')
+    editDue (due) {
+      this.$emit('updated', due)
+      this.showEditDialog = false
     }
   }
 }

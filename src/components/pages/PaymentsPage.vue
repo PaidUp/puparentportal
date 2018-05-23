@@ -123,6 +123,9 @@
         console.log('setCustomInfo: ', signature)
         this.setDone('step6', 'step7')
       },
+      updateDues (dues) {
+        this.paymentPlanSelected = dues
+      },
       approve (status) {
         if (!status) return
         this.processing = true
