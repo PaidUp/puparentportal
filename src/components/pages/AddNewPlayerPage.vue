@@ -67,7 +67,7 @@
         return this.firstName + ' ' + this.lastName
       },
       filtered () {
-        if (!this.filter) return this.organizations
+        if (!this.filter || this.filter.length < 3) return []
         return this.organizations.filter(org => {
           return org.businessName.toUpperCase().includes(this.filter.toUpperCase())
         })
