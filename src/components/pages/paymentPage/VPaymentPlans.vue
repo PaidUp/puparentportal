@@ -6,7 +6,9 @@
     div(v-if="preorders.length && !planSelected") All Payments Plan
     .payment-plans 
       v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in plansFiltered" :key="plan._id" :plan="plan")
-      v-payment-plan-details(v-if="planSelected" v-for="due in dues" :key="due._id" :due="due" @updated="editDue")
+      div(v-if="planSelected" v-for="due in dues" :key="due._id")
+        v-payment-plan-details(v-if="due.account" :due="due" @updated="editDue")
+        v-payment-plan-credit-details(v-if="!due.account" :due="due" @updated="editDue")
     md-button.lblue.md-accent(@click="cancel") CANCEL
     md-button.lblue.md-accent.md-raised(v-if="planSelected" @click="acept") ACEPT PAYMENT PLAN
     md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK
@@ -15,10 +17,11 @@
 <script>
 import VPaymentPlanCard from './VPaymentPlanCard.vue'
 import VPaymentPlanDetails from './VPaymentPlanDetails.vue'
+import VPaymentPlanCreditDetails from './VPaymentPlanCreditDetails.vue'
 import { mapState } from 'vuex'
 
 export default {
-  components: { VPaymentPlanCard, VPaymentPlanDetails },
+  components: { VPaymentPlanCard, VPaymentPlanDetails, VPaymentPlanCreditDetails },
   props: {
     stepId: {
       type: String,
@@ -81,9 +84,17 @@ export default {
         this.description = 'If you need a custom payment plan, please email support@getpaidup.com or call (855) 764-3232'
       } else {
         this.description = this.planSelected.description
-        let resp = {}
         this.planSelected.dues.forEach(due => {
           due.account = this.account
+        })
+        let items = this.planSelected.dues.concat(this.planSelected.credits)
+        items.sort((itemA, itemB) => {
+          itemA.dateCharge = typeof itemA.dateCharge === 'string' ? new Date(itemA.dateCharge) : itemA.dateCharge
+          itemB.dateCharge = typeof itemB.dateCharge === 'string' ? new Date(itemB.dateCharge) : itemB.dateCharge
+          return itemA.dateCharge.getTime() - itemB.dateCharge.getTime()
+        })
+        let resp = {}
+        items.forEach(due => {
           resp[due._id] = due
         })
         this.dues = resp
@@ -111,7 +122,9 @@ export default {
         dues.push(newDues[key])
       }
       this.dues = newDues
-      this.planSelected.dues = dues
+      this.planSelected.dues = dues.filter(due => {
+        return typeof due.account === 'object'
+      })
     }
   }
 }
