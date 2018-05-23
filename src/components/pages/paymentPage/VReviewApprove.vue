@@ -1,12 +1,12 @@
 <template lang="pug">
   md-step(:id="stepId" md-label="Review & Approve" md-description="" :md-done.sync="step")
     .review-checks(v-if="account && plan")
-      md-checkbox(v-if="chargeToday" v-model="check1") I authorize PaiUp to charge me 
+      md-checkbox(v-if="chargeToday" v-model="check1") I authorize PaidUp to charge me 
         span.cgreen
           b ${{ format(chargeToday) }} 
         b today 
         | on my {{ account.bank_name || account.brand }}••••{{ account.last4 }}
-      md-checkbox(v-if="chargeRemaining" v-model="check2") I authorize PaiUp to setup the remaining 
+      md-checkbox(v-if="chargeRemaining" v-model="check2") I authorize PaidUp to setup the remaining 
         span.cgreen
           b ${{ format(chargeRemaining) }} 
         b on autopay 
