@@ -31,6 +31,10 @@ export default {
     account: {
       type: Object,
       required: false
+    },
+    program: {
+      type: Object,
+      required: false
     }
   },
   data () {
@@ -99,6 +103,11 @@ export default {
         })
         this.dues = resp
       }
+    },
+    program () {
+      this.description = 'If you need a custom payment plan, please email support@getpaidup.com or call (855) 764-3232'
+      this.planSelected = null
+      this.dues = {}
     }
   },
   methods: {

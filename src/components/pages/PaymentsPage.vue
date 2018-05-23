@@ -6,7 +6,7 @@
     <md-steppers md-vertical md-linear md-dynamic-height :md-active-step.sync="active">
       <v-programs step-id="step2" :step="step2" :player="playerSelected" @select="setProgram" />
       <v-payment-accounts step-id="step3" :step="step3" @select="setPaymentAccount" />
-      <v-payment-plans step-id="step4" :step="step4" @select="setPaymentPlan" :account="paymentAccountSelected" />
+      <v-payment-plans step-id="step4" :program="programSelected" :step="step4" @select="setPaymentPlan" :account="paymentAccountSelected" />
       <v-additional-info step-id="step5" :step="step5" @select="setCustomInfo" />
       <v-document-signature step-id="step6" :step="step6" @select="setSignature" />
       <v-review-approve step-id="step7" :processing="processing" :step="step7" :account="paymentAccountSelected" :plan="paymentPlanSelected" @select="approve" />
@@ -64,6 +64,11 @@
           })
         }
         return ps
+      }
+    },
+    watch: {
+      programSelected () {
+        this.paymentPlanSelected = null
       }
     },
     methods: {

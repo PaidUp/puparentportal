@@ -67,6 +67,13 @@ export default {
       return ((!this.chargeToday || this.check1) && (!this.chargeRemaining || this.check2) && this.check3)
     }
   },
+  watch: {
+    plan () {
+      this.check1 = true
+      this.check2 = true
+      this.check3 = false
+    }
+  },
   methods: {
     select () {
       this.$emit('select', this.enable)
