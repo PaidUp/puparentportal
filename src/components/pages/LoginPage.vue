@@ -12,7 +12,7 @@
       <span class="md-error" v-if="!$v.loginParams.password.required">{{ $t('validations.required', { field: 'Password' }) }}</span>
     </md-field>
     <div>
-      <md-button class="md-raised md-accent lblue" @click="submit">{{ $t('component.login.submit') }}</md-button>
+      <md-button class="md-raised md-accent lblue" :disabled="$v.loginParams.$invalid" @click="submit">{{ $t('component.login.submit') }}</md-button>
     </div>
     <div>
       <md-switch class="md-accent lblue" v-model="loginParams.rememberMe">{{ $t('component.login.remember_me') }}</md-switch>

@@ -41,7 +41,7 @@
       <a href="https://getpaidup.com/privacy-policy/" class="clblue">{{ $t('component.signup.terms.pp') }}</a>.
     </md-checkbox>
     <div class="create-account-box">
-      <md-button class="md-raised md-accent lblue" @click="submit">{{ $t('component.signup.create') }}</md-button>
+      <md-button class="md-raised md-accent lblue" :disabled="$v.userForm.$invalid || !agree"  @click="submit">{{ $t('component.signup.create') }}</md-button>
     </div>
     <div class="last-info-box">
       {{ $t('component.signup.already_have_account') }}
