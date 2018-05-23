@@ -2,8 +2,10 @@
   md-step(:id="stepId" md-label="Payment Account" :md-description="description" :md-done.sync="step")
     .payment-accounts
       .account.md-elevation-2(@click="select(account)" v-for="account in paymentAccounts" :key="account._id")
-        md-icon.md-size-2x(v-if="account.object==='bank_account'") account_balance
-        md-icon.md-size-2x(v-if="account.object==='card'") credit_card
+        md-avatar(v-if="account.object==='bank_account'")
+          img(:src="'/static/pm/Bank.svg'")
+        md-avatar(v-if="account.object==='card'")
+          img(:src="'/static/pm/' + account.brand + '.svg'")
         .name.md-body-2(v-if="account.object==='bank_account'") {{ account.account_holder_name }} 
         .name.md-body-2(v-if="account.object==='card'") {{ account.name }}
         .card-details.md-caption(v-if="account.object==='bank_account'") {{ account.bank_name }}
