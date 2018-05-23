@@ -26,7 +26,7 @@
         <md-field>
           <label>Amount</label>
           <span class="md-prefix">$</span>
-          <md-input :disabled="true" v-model="due.amount"></md-input>
+          <md-input :disabled="true" v-model="amount"></md-input>
         </md-field>
         <md-datepicker v-model="dateCharge" :md-disabled-dates="disabledDates">
           <label>Charge date</label>
@@ -49,6 +49,8 @@
 <script>
   import PaymentAccountsDialog from '@/components/shared/payment/PaymentAccountsDialog.vue'
   import { mapGetters } from 'vuex'
+  import numeral from 'numeral'
+
   export default {
     components: { PaymentAccountsDialog },
     props: {
@@ -63,6 +65,7 @@
           const dateCharge = new Date(this.due.dateCharge).getTime()
           return date.getTime() <= dateCharge || date.getTime() > maxDateCharge
         },
+        amount: numeral(this.due.amount).format('0,0.00'),
         dateCharge: new Date(this.due.dateCharge),
         description: this.due.description,
         paymentMethod: `${this.due.account.brand || this.due.account.bank_name}••••${this.due.account.last4}`,

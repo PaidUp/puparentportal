@@ -35,7 +35,7 @@
         <md-field>
           <label>Amount</label>
           <span class="md-prefix">$</span>
-          <md-input :disabled="true" v-model="invoice.price"></md-input>
+          <md-input :disabled="true" v-model="amount"></md-input>
         </md-field>
         <md-datepicker v-model="dateCharge" :md-disabled-dates="disabledDates">
           <label>Charge date</label>
@@ -70,6 +70,8 @@
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
   import PaymentAccountsDialog from '@/components/shared/payment/PaymentAccountsDialog.vue'
   import { mapGetters, mapActions } from 'vuex'
+  import numeral from 'numeral'
+
   export default {
     components: { VPayAnimation, PaymentAccountsDialog },
     props: {
@@ -99,8 +101,8 @@
         if (this.invoice._id) {
           this.dateCharge = new Date(this.invoice.dateCharge)
           this.description = this.invoice.label
-          this.amount = this.invoice.price
-          this.status = this.invoice.status
+          this.amount = numeral(this.invoice.price).format('0,0.00')
+          this.status = this.invoice.status.toUpperCase()
           this.paymentMethod = `${this.invoice.paymentDetails.brand}••••${this.invoice.paymentDetails.last4}`
         }
       }
