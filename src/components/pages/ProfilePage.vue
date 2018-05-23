@@ -94,11 +94,7 @@
         return this.$v.$invalid || this.submmited
       },
       showSaveButton () {
-        return !(this.user.firstName === this.firstName &&
-          this.user.lastName === this.lastName &&
-          this.user.email === this.email &&
-          !this.password &&
-          this.user.phone === this.phone)
+        return this.editName || this.editEmail || this.editPassword || this.editPhone
       }
     },
     mounted () {
