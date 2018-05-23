@@ -32,9 +32,24 @@
         }, 5000)
       }
     },
+    watch: {
+      beneficiaries () {
+        if (this.beneficiaries.length) {
+          this.$router.push('/players/' + this.beneficiaries[0]._id)
+        }
+      }
+    },
+    mounted () {
+      if (this.beneficiaries.length) {
+        this.$router.push('/players/' + this.beneficiaries[0]._id)
+      }
+    },
     computed: {
       ...mapState('userModule', {
         user: 'user'
+      }),
+      ...mapState('playerModule', {
+        beneficiaries: 'beneficiaries'
       })
     }
   }
