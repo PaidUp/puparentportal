@@ -36,9 +36,9 @@
     </md-field>
     <md-checkbox v-model="agree" class="md-accent lblue bold">
       {{ $t('component.signup.terms.agree') }}
-      <a href="https://getpaidup.com/terms-of-service/" class="clblue">{{ $t('component.signup.terms.ts') }}</a>
+      <a href="https://getpaidup.com/terms-of-service/" target="_blank" class="clblue">{{ $t('component.signup.terms.ts') }}</a>
       {{ $t('component.signup.terms.and') }}
-      <a href="https://getpaidup.com/privacy-policy/" class="clblue">{{ $t('component.signup.terms.pp') }}</a>.
+      <a href="https://getpaidup.com/privacy-policy/" target="_blank" class="clblue">{{ $t('component.signup.terms.pp') }}</a>.
     </md-checkbox>
     <div class="create-account-box">
       <md-button class="md-raised md-accent lblue" :disabled="$v.userForm.$invalid || !agree"  @click="submit">{{ $t('component.signup.create') }}</md-button>

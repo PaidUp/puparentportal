@@ -124,8 +124,8 @@ a, a:hover, a:visited, a:link, a:active, a > *
 
 // MD-INPUT
 .md-field
-  .md-prefix
-    margin-top: 5px
+  // .md-prefix
+  //   margin-top: 5px
   &.md-disabled
     input 
       -webkit-text-fill-color: $cgray2!important
@@ -265,3 +265,12 @@ mixin-placeholder(c)
 .cgray
   color $cgray1!important
 
+// Input type number remove arrows
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
