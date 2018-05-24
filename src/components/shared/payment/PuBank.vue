@@ -45,7 +45,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  #plaid-link-iframe-1{height:100vh!important;}
-</style>

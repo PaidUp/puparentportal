@@ -72,3 +72,7 @@ export default {
   }
 }
 </script>
+<style>
+  #plaid-link-iframe-1{height:100vh !important;}
+  #plaid-link-iframe-2{height:100vh !important;}
+</style>

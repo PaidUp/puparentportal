@@ -48,7 +48,7 @@ export default {
     }
   },
   created () {
-    Vue.loadScript('https://cdn.plaid.com/link/v2/stable/link-initialize.js')
+    Vue.loadScript('https://js.stripe.com/v3/')
       .then(() => {
         this.stripe = window.Stripe(config.stripe.publicKey)
         this.elements = this.stripe.elements()
