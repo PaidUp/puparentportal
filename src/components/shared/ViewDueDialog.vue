@@ -62,8 +62,9 @@
         disabledDates: date => {
           if (!this.due.maxDateCharge) return true
           const maxDateCharge = new Date(this.due.maxDateCharge).getTime()
-          const dateCharge = new Date(this.due.dateCharge).getTime()
-          return date.getTime() <= dateCharge || date.getTime() > maxDateCharge
+          const today = new Date()
+          today.setHours(0, 0, 0, 0)
+          return date.getTime() < today.getTime() || date.getTime() > maxDateCharge
         },
         amount: numeral(this.due.amount).format('0,0.00'),
         dateCharge: new Date(this.due.dateCharge),

@@ -83,8 +83,9 @@
         disabledDates: date => {
           if (!this.invoice.maxDateCharge) return true
           const maxDateCharge = new Date(this.invoice.maxDateCharge).getTime()
-          const dateCharge = new Date(this.invoice.dateCharge).getTime()
-          return date.getTime() <= dateCharge || date.getTime() > maxDateCharge
+          const today = new Date()
+          today.setHours(0, 0, 0, 0)
+          return date.getTime() < today.getTime() || date.getTime() > maxDateCharge
         },
         dateCharge: new Date(),
         description: '',
