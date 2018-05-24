@@ -26,9 +26,9 @@
     </md-field>
     <md-checkbox v-model="agree" class="md-accent lblue bold">
       {{ $t('component.signup.terms.agree') }}
-      <a href="#" class="clblue">{{ $t('component.signup.terms.ts') }}</a>,
-      <a href="#" class="clblue">{{ $t('component.signup.terms.pp') }}</a>, and
-      <a href="#" class="clblue">{{ $t('component.signup.terms.stripe') }}</a>.
+      <a href="https://getpaidup.com/terms-of-service/" target="_blank" class="clblue">{{ $t('component.signup.terms.ts') }}</a>
+      {{ $t('component.signup.terms.and') }}
+      <a href="https://getpaidup.com/privacy-policy/" target="_blank" class="clblue">{{ $t('component.signup.terms.pp') }}</a>.
     </md-checkbox>
     <div class="create-account-box">
       <fb-signin-button :params="fbSignInParams" @success="submit" @error="onFbLoginError" class="fb-button md-elevation-4">{{ $t('component.signup.create') }}</fb-signin-button>

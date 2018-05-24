@@ -55,10 +55,15 @@
         flex-flow: row wrap
         justify-content: flex-start
         align-items: center
+        @media $xlarge-up
+          .md-card
+            width: 250px
         .md-card
-          margin: 15px
-          width: 250px;
-          height 230px
+          margin: 0 15px 15px 0
+          width: 220px;
+          height 200px
+          .md-card-actions
+            justify-content: center
           .main-card-box
             display: flex
             flex-flow: column nowrap
