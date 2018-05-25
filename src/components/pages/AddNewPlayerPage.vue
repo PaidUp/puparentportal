@@ -18,7 +18,7 @@
               span.md-error(v-if="!$v.lastName.required") {{ $t('validations.required', { field: 'Last Name' }) }}
           md-button.lblue.md-accent(@click="cancel") Cancel
           md-button.lblue.md-accent.md-raised(:disabled="nextStep1" @click="setDone('step1', 'step2')") NEXT
-      md-step(id="step2" md-label="Second Step" md-description="Start typing below to search and click to choose your club")
+      md-step(id="step2" md-label="Choose Club" md-description="Start typing below to search and click to choose your club")
         md-field.club-search-field
           label Club
           md-input(v-model.trim="filter")
