@@ -72,7 +72,7 @@ const dict = {
   },
   validations: {
     agree: 'Please agree to the Terms of Service and Privacy Policy.',
-    form: 'Please fill form correctly',
+    form: 'Please enter valid login credentials.',
     email: 'Must be a valid email',
     required: '{field} is required',
     numeric: '{field} is numeric',
