@@ -1,5 +1,5 @@
 <template lang="pug">
-md-list-item(md-expand)
+md-list-item(md-expand :md-expanded.sync="expand")
   span.md-list-item-text.ca1.bold Payment Accounts
   md-list(slot="md-expand")
     pu-item-account(:item="item" v-for="item in cards" :key="item.id" @closed="" @click="selectCard(item)")
@@ -26,7 +26,14 @@ export default {
     return {
       showAddCardDialog: false,
       showDelCardDialog: false,
-      cardSelected: {}
+      cardSelected: {},
+      expand: this.expanded
+    }
+  },
+  props: {
+    expanded: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {

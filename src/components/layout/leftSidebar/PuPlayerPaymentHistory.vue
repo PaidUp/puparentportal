@@ -1,5 +1,5 @@
 <template lang="pug">
-md-list-item(md-expand)
+md-list-item(md-expand, :md-expanded.sync="expand")
   span.md-list-item-text.ca1.bold Player Payment History
   md-list(slot="md-expand" v-if="beneficiaries")
     pu-item(:item="item" v-for="item in items" :key="item.id")
@@ -17,6 +17,15 @@ export default {
     beneficiaries: {
       type: Array,
       require: true
+    },
+    expanded: {
+      type: Boolean,
+      default: true
+    }
+  },
+  data () {
+    return {
+      expand: this.expanded
     }
   },
   computed: {

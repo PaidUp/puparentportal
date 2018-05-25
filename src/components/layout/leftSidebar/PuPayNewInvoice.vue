@@ -1,5 +1,5 @@
 <template lang="pug">
-md-list-item(md-expand)
+md-list-item(md-expand :md-expanded.sync="expand")
   span.md-list-item-text.ca1.bold Pay New Invoice
   md-list(slot="md-expand")
     pu-item(:item="item" :to="item.to" v-for="item in items" :key="item.id")
@@ -17,10 +17,19 @@ import PuItem from './PuItem.vue'
 
 export default {
   components: { PuItem },
+  data () {
+    return {
+      expand: this.expanded
+    }
+  },
   props: {
     beneficiaries: {
       type: Array,
       require: true
+    },
+    expanded: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
