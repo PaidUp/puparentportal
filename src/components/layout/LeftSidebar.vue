@@ -10,7 +10,9 @@
           {{ user.firstName }} {{ user.lastName}}
         </div>
       </md-list-item>
-
+      <md-list-item to="/programs">
+        <span class="md-list-item-text ca1 bold">Programs</span>
+      </md-list-item>
       <pu-player-payment-history v-if="beneficiaries" :beneficiaries="beneficiaries"/>
       <pu-pay-new-invoice v-if="beneficiaries" :beneficiaries="beneficiaries"/>
       <pu-payment-accounts />

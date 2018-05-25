@@ -1,6 +1,6 @@
 <template lang="pug">
   .details-selects
-    md-field.season-select(v-if="season")
+    md-field(v-if="season")
       label(for="season") Season
       md-select(name="season" id="season" v-model="season" @input="inputSaeson"  @click="clickSaeson")
         md-option(v-for="s in seasons" :value="s" :key="s") {{ s }}
