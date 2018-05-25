@@ -37,12 +37,16 @@
           <span class="md-prefix">$</span>
           <md-input :disabled="true" v-model="amount"></md-input>
         </md-field>
-        <md-datepicker v-model="dateCharge" :md-disabled-dates="disabledDates">
+        <md-datepicker v-if="!disabled" v-model="dateCharge" :md-disabled-dates="disabledDates">
           <label>Charge date</label>
         </md-datepicker>
+        <md-field v-if="disabled">
+          <label>Charge date</label>
+          <md-input :disabled="true" v-model="dateChargeDisable"></md-input>
+        </md-field>
         <md-field>
           <label for="payment">Payment Account</label>
-          <md-input :readonly="true" v-model="paymentMethod" @click="showPaymentAccountDialog = true"></md-input>
+          <md-input :readonly="true" :disabled="disabled" v-model="paymentMethod" @click="showPaymentAccountDialog = true"></md-input>
         </md-field>
         <md-field>
           <label>Status</label>
@@ -59,7 +63,7 @@
     </md-tabs>
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="closeDialog">CANCEL</md-button>
-      <md-button class="md-accent lblue" :disabled="submited" @click="submit">SAVE</md-button>
+      <md-button v-if="!disabled" class="md-accent lblue" :disabled="submited" @click="submit">SAVE</md-button>
     </md-dialog-actions>
     <v-pay-animation :animate="submited" @finish="closeDialog" />
     <payment-accounts-dialog :showDialog="showPaymentAccountDialog" :accounts="paymentAccounts" @selected="selectAccount"/>
@@ -94,13 +98,15 @@
         paymentMethod: '',
         paymentMethodObj: null,
         submited: false,
-        showPaymentAccountDialog: false
+        showPaymentAccountDialog: false,
+        dateChargeDisable: ''
       }
     },
     watch: {
       invoice () {
         if (this.invoice._id) {
           this.dateCharge = new Date(this.invoice.dateCharge)
+          this.dateChargeDisable = this.$d(this.dateCharge, 'short')
           this.description = this.invoice.label
           this.amount = numeral(this.invoice.price).format('0,0.00')
           this.status = this.invoice.status.toUpperCase()
@@ -157,6 +163,9 @@
       }
     },
     computed: {
+      disabled () {
+        return !(this.invoice.status === 'autopay' || this.invoice.status === 'failed')
+      },
       ...mapGetters('paymentModule', {
         paymentAccounts: 'paymentAccounts'
       }),

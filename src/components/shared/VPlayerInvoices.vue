@@ -15,7 +15,7 @@
             span.md-caption {{ $d(chargeDate, 'short') }}
           v-currency(:amount="invoice.price" clazz="total md-title")
       md-card-actions
-        md-button.md-accent(@click="select" :disabled="disableButton") {{ nameButton }}
+        md-button.md-accent(@click="select") {{ nameButton }}
 
     md-ripple(v-if="invoice.memoId" class="main-card-box")
       md-card-header
@@ -57,13 +57,10 @@
       VCurrency
     },
     computed: {
-      disableButton () {
-        return !(this.invoice.status === 'autopay' || this.invoice.status === 'failed')
-      },
       nameButton () {
         if (this.invoice.status === 'autopay') return 'Edit'
-        if (this.invoice.status === 'failed') return 'Fix'
-        return ''
+        else if (this.invoice.status === 'failed') return 'Fix'
+        else return 'VIEW'
       },
       paymetMethod () {
         return this.invoice.paymentDetails.brand + '••••' + this.invoice.paymentDetails.last4
