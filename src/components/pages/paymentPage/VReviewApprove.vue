@@ -5,7 +5,7 @@
         span.cgreen
           b ${{ format(chargeToday) }} 
         b today 
-        | on my {{ account.bank_name || account.brand }}••••{{ account.last4 }}
+        // | on my {{ account.bank_name || account.brand }}••••{{ account.last4 }}
       md-checkbox(v-if="chargeRemaining" v-model="check2") I authorize PaidUp to setup the remaining 
         span.cgreen
           b ${{ format(chargeRemaining) }} 
