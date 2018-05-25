@@ -10,14 +10,14 @@
         img(src="@/assets/shield.svg" alt="pay")
     .player-with-payments(v-show="allInvoices.length")
       .details
-        .md-subheading.title Details
-        md-content.md-elevation-4.details-box
+        .details-title Details
+        .details-box
           v-player-details-selection(:invoices="allInvoices")
           v-player-details-totals(:invoices="invoices")
       button(class="md-button md-raised" @click="showDuplicateDialog = true") Duplicate Payment Dialog
       .invoices(v-if="invoices")
-        .md-subheading.title Invoices
-        .inv-cards
+        .invoices-title Invoices
+        .cards-layout
           v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id" @select="selectInvoice")
     view-invoice-dialog(:invoice="viewInvoice" :closeDialog="closeDialog")
     duplicate-payment-dialog(:showDialog="showDuplicateDialog" :closeDialog="closeDialog")

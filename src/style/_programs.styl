@@ -1,0 +1,114 @@
+.programs-page
+  .details
+    margin-top: 40px
+  .programs
+    margin-top: 20px
+    .cards-layout
+      .md-card
+        display: flex
+        flex-flow: column nowrap
+        justify-content: space-between
+        align-items: flex-start
+        padding: 10px 
+        .main-box
+          width: 100%
+          .eligibility-box
+            display: flex
+            flex-flow: row nowrap
+            justify-content: center
+            align-items: center
+            margin-bottom: 10px
+            & > div:first-child
+              margin-right: 10px
+            .concept
+              color: $cblue
+              font-size: 13px
+            .number
+              font-size: 16px
+              text-align: center
+          .total
+            text-align: center
+            margin-bottom: 10px
+            color: $cblue
+            .tot-title
+              font-size: 13px
+            .tot-number
+              font-size: 16px
+          .bars
+            width: 100%
+            display: flex
+            flex-flow: row nowrap
+            justify-content: space-between
+            align-items: center
+            & > div
+              height 25px
+              position relative
+              .hover
+                display none
+                position: absolute
+                top: -45px
+                right 50%
+                margin-right: -45px
+                z-index 10
+                height 35px
+                width: 90px
+                flex-flow: column nowrap
+                justify-content: center
+                align-items: center
+                background: yellow
+                border-radius: 8px
+                &:after
+                  content: ''
+                  position absolute
+                  bottom: -10px
+                  width: 0; 
+                  height: 0; 
+                  border-left: 10px solid transparent;
+                  border-right: 10px solid transparent;
+                  border-top: 10px solid yellow;
+                  z-index 12
+                .hover-title
+                  color: #ffffff
+                  line-height: 1
+                  font-size: 11px
+                .hover-number
+                  line-height: 1
+                  color: #ffffff
+                  font-weight: bold
+                  font-size: 13px
+            .green
+              width: 10%
+              background: $cgreen
+              &:hover
+                .hover
+                  background: $cgreen
+                  display flex
+                  &:after
+                    border-top: 10px solid $cgreen;
+            .gray
+              width: 10%
+              background: $cgray3
+              &:hover
+                .hover
+                  display flex
+                  background: $cgray3
+                  &:after
+                    border-top: 10px solid $cgray3;
+            .red
+              width: 50%
+              background: $cred
+              &:hover
+                .hover
+                  background: $cred
+                  display flex
+                  &:after
+                    border-top: 10px solid $cred;
+            .blue
+              width: 30%
+              background: $cblue
+              &:hover
+                .hover
+                  display flex
+                  background: $cblue
+                  &:after
+                    border-top: 10px solid $cblue;

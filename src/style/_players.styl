@@ -8,94 +8,41 @@
     .md-button
       margin: 30px auto
   .player-with-payments  
-    .details,
-    .invoices
-      .title
-        color: $cgray2
-        margin-bottom: 10px
-    .details
-      .details-box
-        display: flex
-        flex-flow: row nowrap
-        justify-content: space-between
-        align-items: flex-start
-        padding: 10px 16px 0 16px
-      .details-selects
-        width: 40%
-        display: flex
-        flex-flow: row nowrap
-        justify-content: flex-start
-        align-items: center
-        .season-select
-          width 250px
-          margin-right: 20px
-      .details-numbers
-        width 50%
-        margin-top: 4px
-        display: flex
-        flex-flow: row nowrap
-        justify-content: flex-end
-        align-items: center
-        & > div:not(:last-child)
-          margin-right: 20px
-        .concept
-          color: $cgray1
-        .green
-          color: $cgreen
-        .gray
-          color: $cgray1
-        .red
-          color: $cred
-        .blue
-          color: $cblue
     .invoices
       margin-top: 20px
-      .inv-cards
-        display: flex
-        flex-flow: row wrap
-        justify-content: flex-start
-        align-items: center
-        @media $xlarge-up
-          .md-card
-            width: 250px
-        .md-card
-          margin: 0 15px 15px 0
-          width: 220px;
-          height 200px
+      .cards-layout
+        .main-card-box
+          display: flex
+          flex-flow: column nowrap
+          justify-content: space-between
+          align-items: flex-start
+          width 100%
+          .md-card-header
+          .md-card-content
           .md-card-actions
-            justify-content: center
-          .main-card-box
-            display: flex
-            flex-flow: column nowrap
-            justify-content: space-between
-            align-items: flex-start
             width 100%
-            .md-card-header
-            .md-card-content
-            .md-card-actions
-              width 100%
-            .md-card-header
-              .title
-                color: $cblack
-                margin-bottom: 5px
-            .md-card-content.card-content
-              display: flex
-              flex-flow: row nowrap
-              justify-content: space-between
-              align-items: center
-              .status
-                text-align: center
-                .md-icon
-                  color: $cgreen
-              .amount-details
+          .md-card-header
+            .title
+              color: $cblack
+              margin-bottom: 5px
+          .md-card-content.card-content
+            display: flex
+            flex-flow: row nowrap
+            justify-content: space-between
+            align-items: center
+            .status
+              text-align: center
+              .md-icon
+                color: $cgreen
+            .amount-details
+              margin-top: 5px
+              color: $cgray1
+              text-align: right
+              .details
+                line-height: 1
+              .total
                 margin-top: 5px
-                color: $cgray1
-                text-align: right
-                .details
-                  line-height: 1
-                .total
-                  margin-top: 5px
-                  font-weight: bold
+                font-weight: bold
               
 .add-new-player-page
   @extend .has-steppers;

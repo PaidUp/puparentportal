@@ -230,6 +230,10 @@ mixin-placeholder(c)
   color: $cgray1
   font-weight: 500
   font-size: 18px
+.title-big
+  color: $cgray1
+  font-weight: 500
+  font-size: 20px
 .title-info
   color: $cgray2
   font-size: 13px
@@ -275,3 +279,66 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
+// Details Box - used in programs/players
+.details-title,
+.invoices-title,
+.programs-title
+  color: $cgray2
+  margin-bottom: 10px
+
+.details-box
+  @extends .has-elevation-4;
+  display: flex
+  flex-flow: row wrap
+  justify-content: space-between
+  align-items: flex-start
+  padding: 10px 12px
+  background: #fff
+  .details-selects
+    display: flex
+    flex-flow: row nowrap
+    justify-content: flex-start
+    align-items: center
+    .md-field
+      width auto
+      margin-bottom: 10px
+      &:not(:last-child)
+        margin-right: 20px
+  .details-numbers
+    margin-top: 4px
+    display: flex
+    flex-flow: row nowrap
+    justify-content: flex-end
+    align-items: center
+    .title-big
+      margin-top: 2px
+    & > div:not(:last-child)
+      margin-right: 20px
+    .concept
+      color: $cgray2
+      font-size: 13px
+    .green
+      color: $cgreen
+    .gray
+      color: $cgray1
+    .red
+      color: $cred
+    .blue
+      color: $cblue
+
+// CARDS layout 1
+.cards-layout
+  display: flex
+  flex-flow: row wrap
+  justify-content: flex-start
+  align-items: center
+  @media $xlarge-up
+    .md-card
+      width: 250px
+  .md-card
+    margin: 0 15px 15px 0
+    width: 220px;
+    height 200px
+    .md-card-actions
+      justify-content: center

@@ -1,20 +1,20 @@
 <template lang="pug">
   .details-numbers
     div
-      .md-body-2.concept  Total
-      v-currency(:amount="total" clazz="md-title")
+      .concept  Total
+      v-currency(:amount="total" clazz="title-big")
     div
-      .md-body-2.concept  Paid
-      v-currency(:amount="paid" clazz="md-title green")
+      .concept  Paid
+      v-currency(:amount="paid" clazz="title-big green")
     div
-      .md-body-2.concept  Unpaid
-      v-currency(:amount="unpaid" clazz="md-title gray")
+      .concept  Unpaid
+      v-currency(:amount="unpaid" clazz="title-big gray")
     div
-      .md-body-2.concept  Overdue
-      v-currency(:amount="overdue" clazz="md-title red")
+      .concept  Overdue
+      v-currency(:amount="overdue" clazz="title-big red")
     div
-      .md-body-2.concept  Credited
-      v-currency(:amount="credited" clazz="md-title blue")
+      .concept  Credited
+      v-currency(:amount="credited" clazz="title-big blue")
 </template>
 
 <script>
