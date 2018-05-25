@@ -10,8 +10,8 @@
         v-payment-plan-details(v-if="due.account" :due="due" @updated="editDue")
         v-payment-plan-credit-details(v-if="!due.account" :due="due" @updated="editDue")
     md-button.lblue.md-accent(@click="cancel") CANCEL
+    md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK    
     md-button.lblue.md-accent.md-raised(v-if="planSelected" @click="acept") ACEPT PAYMENT PLAN
-    md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK
 
 </template>
 <script>
