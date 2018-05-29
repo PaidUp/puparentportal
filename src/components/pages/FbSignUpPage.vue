@@ -24,7 +24,7 @@
       <span class="md-error" v-if="!$v.fbUser.contacts.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: $v.fbUser.contacts.phone.$params.minLength.min }) }} </span>
       <span class="md-error" v-if="!$v.fbUser.contacts.phone.numeric">{{ $t('validations.numeric', { field: 'Phone' }) }} </span>
     </md-field>
-    <md-checkbox v-model="agree" class="md-accent lblue bold">
+    <md-checkbox v-model="agree" class="lblue bold">
       {{ $t('component.signup.terms.agree') }}
       <a href="https://getpaidup.com/terms-of-service/" target="_blank" class="clblue">{{ $t('component.signup.terms.ts') }}</a>
       {{ $t('component.signup.terms.and') }}
