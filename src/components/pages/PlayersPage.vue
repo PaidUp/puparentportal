@@ -10,13 +10,46 @@
         img(src="@/assets/shield.svg" alt="pay")
     .player-with-payments(v-show="allInvoices.length")
       .details
-        .details-title Details
+        .pre-cards-title Details
         .details-box
           v-player-details-selection(:invoices="allInvoices")
           v-player-details-totals(:invoices="invoices")
       button(class="md-button md-raised" @click="showDuplicateDialog = true") Duplicate Payment Dialog
       .invoices(v-if="invoices")
-        .invoices-title Invoices
+        .pre-cards-title.with-sort-filter
+          div Invoices
+          div.sort-filter-box
+            md-menu(md-direction="bottom-start")
+                md-button(md-menu-trigger class="md-button md-accent lblue")
+                  md-icon sort
+                  | Sort
+                md-menu-content.sort-box
+                  .title Sort
+                  .caption Date:
+                  div
+                    md-radio(class="lblue" v-model="sortRadio" value="asc") Ascending
+                  div 
+                    md-radio(class="lblue" v-model="sortRadio" value="desc") Descending
+                  div.actions
+                    md-button(class="md-button md-accent lblue") Cancel
+                    md-button(class="md-button md-accent md-raised lblue") OK
+            md-menu(md-direction="bottom-start")
+                md-button(md-menu-trigger class="md-button md-accent lblue")
+                  md-icon filter_list
+                  | Filter
+                md-menu-content.filter-box
+                    .title Filter
+                    .caption Invoice Status:
+                    div
+                      md-checkbox(indeterminate v-model="filterChecks" class="lblue" value="1") All
+                      md-checkbox(v-model="filterChecks" class="lblue" value="2") Credited
+                      md-checkbox(v-model="filterChecks" class="lblue" value="3") Disabled
+                      md-checkbox(v-model="filterChecks" class="lblue" value="4") Due
+                      md-checkbox(v-model="filterChecks" class="lblue" value="5") Failed
+                    div.actions
+                      md-button(class="md-button md-accent lblue") Cancel
+                      md-button(class="md-button md-accent md-raised lblue") OK
+
         .cards-layout
           v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id" @select="selectInvoice")
     view-invoice-dialog(:invoice="viewInvoice" :closeDialog="closeDialog")
@@ -43,7 +76,9 @@
     data: function () {
       return {
         viewInvoice: {},
-        showDuplicateDialog: false
+        showDuplicateDialog: false,
+        sortRadio: 'asc',
+        filterChecks: []
       }
     },
     computed: {
