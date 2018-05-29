@@ -2,9 +2,9 @@
   .common-player-info
     .with-menu-box
       div.player-info
-        md-icon(v-if="!player.avatar" class="md-size-3x ca1") account_circle
-        md-avatar.md-large(v-if="player.avatar")
-          img(:src="player.avatar")
+        md-avatar.md-large(v-if="avatar")
+          img(:src="avatar")
+        md-icon(v-else class="md-size-3x ca1") account_circle        
         .name.md-title {{player.firstName}} {{player.lastName}}
         .team.md-subheading {{ player.organizationName }}
       md-menu(md-size="small" md-direction="bottom-start")
@@ -13,11 +13,12 @@
         md-menu-content.custom-menu-content
           md-menu-item(:to="to") MAKE NEW PAYMENT(S)
           md-menu-item(@click="editPlayerDialog = true") EDIT PLAYER
-    edit-player-dialog(:showDialog="editPlayerDialog" :numInvoices="numInvoices" :player="player" @close="editPlayerDialog = false")
+    edit-player-dialog(:showDialog="editPlayerDialog" @avatarChanged="setAvatar" :numInvoices="numInvoices" :player="player" @close="editPlayerDialog = false")
 </template>
 
 <script>
   // import config from '@/config'
+  import config from '@/config'
   import EditPlayerDialog from '@/components/shared/EditPlayerDialog.vue'
   export default {
     components: {
@@ -25,7 +26,8 @@
     },
     data () {
       return {
-        editPlayerDialog: false
+        editPlayerDialog: false,
+        avatar: null
       }
     },
     props: {
@@ -38,11 +40,22 @@
         required: true
       }
     },
+    mounted () {
+      if (this.player) {
+        let urlPath = `${config.media.beneficiary.url}avatar/${this.player._id}.png?a=${Math.random()}`
+        this.$http.get(urlPath).then(resp => {
+          this.avatar = resp.url
+        }).catch(reason => {
+        })
+      }
+    },
+    methods: {
+      setAvatar (url) {
+        this.avatar = url
+        this.$emit('avatarChanged', url)
+      }
+    },
     computed: {
-      avatarUrl () {
-        // return this.player.avatar || `/static/img/user.svg`
-        return ''
-      },
       to () {
         return '/payments/' + this.player._id
       }

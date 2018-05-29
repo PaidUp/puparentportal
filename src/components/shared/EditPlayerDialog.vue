@@ -4,16 +4,17 @@
       <div class="title">Player Details</div>
     </div>
     <div class="common-player-info">
-      <md-avatar class="md-large">
-        <img src="@/assets/avatar.jpg" alt="avatar">
+      <md-avatar v-if="avatar" class="md-large">
+        <img :src="avatar" alt="avatar">
       </md-avatar>
+      <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
       <div class="name">
         {{ player.organizationName }}
       </div>
       <div class="team">
         {{ organization.city }}, {{ organization.state }}
       </div>
-      <md-button class="md-accent lblue update-pic">UPDATE PROFILE PICTURE</md-button>
+      <update-avatar :url="url" @charged="setAvatar"></update-avatar>
     </div>
     <div class="names-box">
       <md-field :class="{'md-invalid': $v.firstName.$error}">
@@ -39,11 +40,13 @@
 </template>
 
 <script>
+  import config from '@/config'
   import { mapState, mapActions } from 'vuex'
   import { required } from 'vuelidate/lib/validators'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
+  import UpdateAvatar from '@/components/shared/UpdateAvatar.vue'
   export default {
-    components: { VPayAnimation },
+    components: { VPayAnimation, UpdateAvatar },
     props: {
       player: Object,
       showDialog: Boolean,
@@ -51,10 +54,12 @@
     },
     data () {
       return {
+        url: `${config.api.organization}/beneficiary/avatar/${this.player._id}`,
         firstName: this.player.firstName,
         lastName: this.player.lastName,
         organization: {},
-        submited: false
+        submited: false,
+        avatar: null
       }
     },
     computed: {
@@ -70,6 +75,12 @@
     },
     mounted () {
       if (this.player) {
+        let urlPath = `${config.media.beneficiary.url}avatar/${this.player._id}.png?a=${Math.random()}`
+        this.$http.get(urlPath)
+        .then(resp => {
+          this.avatar = resp.url
+        }).catch(reason => {
+        })
         this.getOrganization(this.player.organizationId)
         .then(organization => {
           this.organization = organization
@@ -104,6 +115,11 @@
           console.log(reason)
           this.submited = false
         })
+      },
+      setAvatar () {
+        const url = `${config.media.beneficiary.url}avatar/${this.player._id}.png?a=${Math.random()}`
+        this.avatar = url
+        this.$emit('avatarChanged', url)
       }
     },
     validations: {

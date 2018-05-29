@@ -1,8 +1,8 @@
 <template lang="pug">
 md-list-item(:to="item.to")
-  md-icon(v-if="!item.avatar" class="md-size-2x ca1") account_circle
-  md-avatar.md-large(v-if="item.avatar")
-    img(:src="item.avatar")
+  md-avatar.md-large(v-if="avatar")
+    img(:src="avatar")
+  md-icon(v-else class="md-size-2x ca1") account_circle  
   .md-list-item-text
     div
       span {{ item.title }}
@@ -11,7 +11,7 @@ md-list-item(:to="item.to")
   span.notification-number(v-if="item.notification") {{ item.notification }}
 </template>
 <script>
-// import config from '@/config'
+import config from '@/config'
 
 export default {
   props: {
@@ -20,9 +20,28 @@ export default {
       required: true
     }
   },
-  computed: {
-    avatarUrl: function () {
-      return ''
+  data () {
+    return {
+      avatar: null
+    }
+  },
+  mounted () {
+    this.loadAvatar()
+  },
+  watch: {
+    item () {
+      this.loadAvatar()
+    }
+  },
+  methods: {
+    loadAvatar () {
+      let urlPath = `${config.media.beneficiary.url}avatar/${this.item.id}.png?a=${Math.random()}`
+      console.log(urlPath)
+      this.$http.get(urlPath)
+      .then(resp => {
+        this.avatar = resp.url
+      }).catch(reason => {
+      })
     }
   }
 }

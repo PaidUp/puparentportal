@@ -9,7 +9,7 @@
           </md-avatar>
           <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
         </div>
-        <update-avatar :url="url"></update-avatar>
+        <update-avatar :url="url" @charged="reloadAvatar"></update-avatar>
         <div class="names-box">
           <md-field :class="{'md-invalid': $v.firstName.$error}">
             <label>First Name</label>
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapActions, mapMutations } from 'vuex'
   import { required, email, minLength, sameAs, numeric } from 'vuelidate/lib/validators'
   import UpdateAvatar from '@/components/shared/UpdateAvatar.vue'
   import config from '@/config'
@@ -111,6 +111,9 @@
       }
     },
     methods: {
+      ...mapMutations('userModule', {
+        reloadAvatar: 'reloadAvatar'
+      }),
       ...mapActions('userModule', {
         update: 'update'
       }),

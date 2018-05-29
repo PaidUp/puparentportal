@@ -53,7 +53,7 @@
         this.getBeneficiaries(this.user.email)
         this.$http.get(`${config.media.user.url}avatar/${this.user._id}.png`).then(resp => {
           this.reloadAvatar()
-        })
+        }).catch(reason => reason)
       }
     },
     watch: {
@@ -61,7 +61,7 @@
         this.getBeneficiaries(this.user.email)
         this.$http.get(`${config.media.user.url}avatar/${this.user._id}.png`).then(resp => {
           this.reloadAvatar()
-        })
+        }).catch(reason => reason)
       }
     },
     methods: {

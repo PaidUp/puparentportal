@@ -5,7 +5,6 @@
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
 import Uploader from '@/directives/uploader'
 export default {
   directives: {
@@ -30,9 +29,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('userModule', {
-      reloadAvatar: 'reloadAvatar'
-    }),
     selectFile () {
       this.$refs.file.click()
     },
@@ -47,7 +43,7 @@ export default {
           this.request = request
         }
       }).then(resp => {
-        this.reloadAvatar()
+        this.$emit('charged', resp)
       })
     }
   }
