@@ -50,11 +50,46 @@
         </md-field>
         </div>
       </md-tab>
-      <md-tab v-if="false" md-label="HISTORY">
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam mollitia dolorum dolores quae commodi impedit possimus
-          qui, atque at voluptates cupiditate. Neque quae culpa suscipit praesentium inventore ducimus ipsa aut.</p>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam mollitia dolorum dolores quae commodi impedit possimus
-          qui, atque at voluptates cupiditate. Neque quae culpa suscipit praesentium inventore ducimus ipsa aut.</p>
+      <md-tab md-label="HISTORY">
+        <div class="history-card">
+          <div class="row">
+            <div class="title">Invoice Charge Attempt</div>
+            <div>INV123444</div>
+          </div>
+          <div>Dues - Payment 3 of 5</div>
+          <div>$350 - 11-20-2018</div>
+          <div class="row">
+            <div>FAILED - VISA****1234</div>
+            <div>10-01-2018</div>
+          </div>
+        </div>
+        <div class="history-card">
+          <div class="row">
+            <div class="title">Invoice Charge Attempt</div>
+            <div>INV123444</div>
+          </div>
+          <div>Dues - Payment 3 of 5</div>
+          <div>$350 - 11-20-2018</div>
+          <div class="row">
+            <div>FAILED - VISA****1234</div>
+            <div>10-01-2018</div>
+          </div>
+        </div>
+        <div class="history-card">
+          <div class="row">
+            <div class="title">Invoice Charge Attempt</div>
+            <div>INV123444</div>
+          </div>
+          <div>Dues - Payment 3 of 5</div>
+          <div class="row">
+            <div>$350 - 11-20-2018</div>
+            <div>Felipe Fernandex</div>
+          </div>
+          <div class="row">
+            <div>FAILED - VISA****1234</div>
+            <div>10-01-2018</div>
+          </div>
+        </div>
       </md-tab>
     </md-tabs>
     <md-dialog-actions>
