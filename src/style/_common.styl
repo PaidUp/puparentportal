@@ -95,6 +95,8 @@ a, a:hover, a:visited, a:link, a:active, a > *
 // Light Blue button
 .md-button.md-accent.lblue
   color $clblue
+  .md-button-content .md-icon
+    color $clblue
   &.md-raised
     background-color $clblue !important
   &[disabled]
@@ -116,7 +118,7 @@ a, a:hover, a:visited, a:link, a:active, a > *
   label 
     line-height: 1.2
     text-align: left
-.md-checkbox.md-accent.lblue
+.md-checkbox.lblue
   &.md-checked
     .md-checkbox-container
       background-color: $clblue
@@ -141,6 +143,13 @@ a, a:hover, a:visited, a:link, a:active, a > *
 // MD-AVATAR MD-ICON
 .md-avatar-icon .md-icon
   color: #fff!important
+
+// MD-RADIO
+.md-radio.lblue
+  .md-radio-container
+    border-color: $clblue!important
+    &:after
+      background-color: $clblue!important
 
 // MD-ICONS
 .md-icon
@@ -281,11 +290,28 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 // Details Box - used in programs/players
-.details-title,
-.invoices-title,
-.programs-title
+.pre-cards-title
   color: $cgray2
   margin-bottom: 10px
+  &.with-sort-filter
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-between
+    align-items: center
+    width: 100%
+.md-menu-content.sort-box
+.md-menu-content.filter-box
+  ul.md-list
+    padding: 12px
+    .title
+      color: $cblack
+    .actions
+      margin-top: 10px
+      // border-top: 1px solid #ccc
+      // margin: 10px -12px 0 -12px
+.md-menu-content.filter-box
+  ul.md-list .md-checkbox
+    display: flex
 
 .details-box
   @extends .has-elevation-4;

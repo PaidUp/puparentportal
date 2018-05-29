@@ -1,7 +1,7 @@
 <template>
   <div class="programs-page">
     <div class="details">
-      <div class="details-title">Details</div>
+      <div class="pre-cards-title">Details</div>
       <div class="details-box">
         <div class="details-selects">
           <md-field>
@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class="programs">
-      <div class="programs-title">Programs</div>
+      <div class="pre-cards-title">Programs</div>
       <div class="cards-layout">
 
         <md-card md-with-hover>
