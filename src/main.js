@@ -7,6 +7,8 @@ import store from '@/store'
 import i18n from '@/i18n'
 import FBSignInButton from 'vue-facebook-signin-button'
 import LoadScript from 'vue-plugin-load-script'
+import VueResource from 'vue-resource'
+
 // eslint-disable-next-line
 import fs from '@/vendor/fb'
 import Vuelidate from 'vuelidate'
@@ -22,6 +24,7 @@ Vue.use(VueMaterial)
 Vue.use(LoadScript)
 Vue.use(FBSignInButton)
 Vue.use(Vuelidate)
+Vue.use(VueResource)
 
 Vue.config.productionTip = false
 Vue.material.locale.dateFormat = 'MM-DD-YYYY'

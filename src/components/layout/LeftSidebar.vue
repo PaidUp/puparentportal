@@ -2,10 +2,10 @@
   <div class="left-sidebar">
     <md-list class="top-list">
       <md-list-item class="edit-user-nav-item" to="/profile">
-        <md-avatar v-if="false">
-          <img src="@/assets/avatar.jpg" />
+        <md-avatar v-if="avatar">
+          <img :src="avatar" />
         </md-avatar>
-        <md-icon v-if="true" class="md-size-2x ca1">account_circle</md-icon>
+        <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
         <div class="md-list-item-text bold">
           {{ user.firstName }} {{ user.lastName}}
         </div>
@@ -30,13 +30,13 @@
   import PuPayNewInvoice from './leftSidebar/PuPayNewInvoice.vue'
   import PuPaymentAccounts from './leftSidebar/PuPaymentAccounts.vue'
   import PuBotton from './leftSidebar/PuBotton.vue'
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapActions, mapMutations } from 'vuex'
+  import config from '@/config'
 
   export default {
     components: { PuItem, PuBotton, PuPlayerPaymentHistory, PuPayNewInvoice, PuPaymentAccounts },
     data: function () {
       return {
-        msg: 'THEE MSAGE BIATH'
       }
     },
     computed: {
@@ -44,20 +44,32 @@
         beneficiaries: 'beneficiaries'
       }),
       ...mapState('userModule', {
-        user: 'user'
+        user: 'user',
+        avatar: 'avatar'
       })
     },
     mounted () {
-      if (this.user.email) this.getBeneficiaries(this.user.email)
+      if (this.user.email) {
+        this.getBeneficiaries(this.user.email)
+        this.$http.get(`${config.media.user.url}avatar/${this.user._id}.png`).then(resp => {
+          this.reloadAvatar()
+        })
+      }
     },
     watch: {
       user () {
         this.getBeneficiaries(this.user.email)
+        this.$http.get(`${config.media.user.url}avatar/${this.user._id}.png`).then(resp => {
+          this.reloadAvatar()
+        })
       }
     },
     methods: {
       ...mapActions('playerModule', {
         getBeneficiaries: 'getBeneficiaries'
+      }),
+      ...mapMutations('userModule', {
+        reloadAvatar: 'reloadAvatar'
       }),
       click () {
         console.log('clic')

@@ -23,6 +23,9 @@ const config = {
     },
     organization: {
       url: 'https://s3.amazonaws.com/pu-media-dev/organization/'
+    },
+    user: {
+      url: 'https://s3.amazonaws.com/pu-media-dev/user/'
     }
   }
 }

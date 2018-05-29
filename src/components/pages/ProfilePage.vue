@@ -4,12 +4,12 @@
       <div class="title bold">Profile</div>
       <div class="content-box">
         <div class="centered">
-          <md-icon v-if="true" class="md-size-2x ca1">account_circle</md-icon>
-          <md-avatar v-if="false" class="md-avatar-icon md-large md-elevation-4">
-            <img src="@/assets/avatar.jpg" />
+          <md-avatar v-if="avatar" class="md-avatar-icon md-large md-elevation-4">
+            <img :src="avatar" />
           </md-avatar>
+          <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
         </div>
-        <md-button class="md-accent lblue update-btn">UPDATE PROFILE PICTURE</md-button>
+        <update-avatar :url="url"></update-avatar>
         <div class="names-box">
           <md-field :class="{'md-invalid': $v.firstName.$error}">
             <label>First Name</label>
@@ -70,9 +70,13 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import { required, email, minLength, sameAs, numeric } from 'vuelidate/lib/validators'
+  import UpdateAvatar from '@/components/shared/UpdateAvatar.vue'
+  import config from '@/config'
   export default {
+    components: { UpdateAvatar },
     data: function () {
       return {
+        url: config.api.user + '/avatar',
         firstName: '',
         lastName: '',
         editName: false,
@@ -88,7 +92,8 @@
     },
     computed: {
       ...mapState('userModule', {
-        'user': 'user'
+        user: 'user',
+        avatar: 'avatar'
       }),
       disableSaveButton () {
         return this.$v.$invalid || this.submmited

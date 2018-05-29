@@ -1,4 +1,5 @@
 import { userService } from '@/services'
+import config from '@/config'
 
 function handlerError (err, context, message) {
   if (!message) {
@@ -26,14 +27,13 @@ const module = {
       rememberMe: false
     },
     token: localStorage.token || '',
-    user: {
-      firstName: 'HardcodedFirstName'
-    },
+    user: {},
     fbUser: {
       contacts: {
         phone: ''
       }
-    }
+    },
+    avatar: null
   },
 
   getters: {
@@ -46,6 +46,10 @@ const module = {
   },
 
   mutations: {
+    reloadAvatar (state) {
+      let urlPath = `${config.media.user.url}avatar/${state.user._id}.png?a=${Math.random()}`
+      state.avatar = urlPath
+    },
     setSession (state, data) {
       let arr = data.token.split('.')
       if (arr.length === 3 && data.user) {
@@ -177,6 +181,9 @@ const module = {
           root: true
         })
       })
+    },
+    avatar (context, form) {
+      return userService.avatar(form)
     }
   }
 }
