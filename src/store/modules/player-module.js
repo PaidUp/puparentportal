@@ -63,12 +63,6 @@ const module = {
         context.commit('setAllPreorders', preorders)
       })
     },
-    getNumPreorders (context, beneficiary) {
-      return commerceService.preordersByBeneficiary(beneficiary._id).then(preorders => {
-        console.log('pre: ', preorders)
-        return preorders.length
-      })
-    },
     getCredits (context, beneficiary) {
       return commerceService.creditsByBeneficiary(beneficiary._id).then(credits => {
         context.commit('setAllCredits', credits)
@@ -84,9 +78,17 @@ const module = {
               return beneficiary
             })
           )
+          promises.push(
+            commerceService.invoicesByBeneficiary(beneficiary._id).then(invoices => {
+              beneficiary.numFailInvoices = invoices.reduce((old, curr) => {
+                if (curr.status === 'failed') return old + 1
+                return old
+              }, 0)
+            })
+          )
         })
         Promise.all(promises).then(values => {
-          context.commit('setBeneficiaries', values)
+          context.commit('setBeneficiaries', beneficiaries)
         })
       })
     },

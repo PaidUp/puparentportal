@@ -84,9 +84,7 @@
         this.getOrganization(this.player.organizationId)
         .then(organization => {
           this.organization = organization
-        }).catch(reason => {
-          console.log(reason)
-        })
+        }, reason => {})
       }
     },
     methods: {

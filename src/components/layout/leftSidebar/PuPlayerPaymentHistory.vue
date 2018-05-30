@@ -36,7 +36,7 @@ export default {
           to: '/players/' + ele._id,
           title: `${ele.firstName} ${ele.lastName}`,
           description: ele.organizationName,
-          notification: 0
+          notification: ele.numFailInvoices
         }
       })
     }
