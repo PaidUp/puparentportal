@@ -14,6 +14,7 @@ import ProfilePage from '@/components/pages/ProfilePage.vue'
 import UpgradePage from '@/components/pages/UpgradePage.vue'
 import NewInvoicesPage from '@/components/pages/NewInvoicesPage.vue'
 import ProgramsPage from '@/components/pages/ProgramsPage.vue'
+import PrintInvoice from '@/components/pages/PrintInvoice.vue'
 
 const routes = [
   {
@@ -58,6 +59,13 @@ const routes = [
         component: PaymentsPage
       }
     ]
+  },
+  {
+    path: '/print-invoice',
+    component: PrintInvoice,
+    meta: {
+      isPublic: true
+    }
   },
   {
     path: '/',

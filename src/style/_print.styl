@@ -1,0 +1,58 @@
+.print-page
+  margin: 50px
+  color: @cblack
+  .header
+    .logo-box
+      display: flex
+      flex-flow: row nowrap
+      justify-content: flex-start
+      align-items: center
+      img 
+        width 60px
+      div 
+        font-size: 30px
+        margin-left: 20px
+    .header-data
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      align-items: flex-start
+      margin-top: 40px
+      .club
+        font-size: 22px
+        margin-bottom: 5px
+      .columns
+        display: flex
+        flex-flow: row nowrap
+        justify-content: center
+        align-items: center
+        .first
+          text-align: right
+          margin-right: 7px
+  .body
+    margin-top: 50px
+    .table-header
+    .table-row
+      padding: 7px 10px
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      align-items: center
+      .first-col
+        width 50%
+      .sec-col
+        width 14%
+        text-align: right
+      .third-col
+        width 18%
+        text-align: right
+      .fourth-col
+        width 18%
+        text-align: right
+    .table-header
+      border-bottom: 1px solid @cblack 
+      font-size: 13px
+      margin-bottom: 15px
+    .table-row
+      padding: 10px
+
