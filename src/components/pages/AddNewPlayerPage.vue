@@ -4,9 +4,7 @@
     md-steppers(md-vertical md-linear md-dynamic-height :md-active-step.sync="active")
       md-step(id="step1" md-label="Player Info" :md-description="fullName" :md-done.sync="step1")
         .step-box
-          .update-pic
-            md-icon.md-size-3x.md-primary account_circle
-            md-button.clblue.bold UPDATE PROFILE PICTURE
+          create-avatar(:url="apiUrl" @uploaded="reloadBeneficiares")
           .names-box
             md-field(:class="{'md-invalid': $v.firstName.$error}")
               label First Name
@@ -37,11 +35,14 @@
   import { mapState, mapActions } from 'vuex'
   import { required } from 'vuelidate/lib/validators'
   import config from '@/config'
+  import CreateAvatar from '@/components/shared/CreateAvatar.vue'
 
   export default {
-    components: {},
+    components: { CreateAvatar },
     data: function () {
       return {
+        apiUrl: null,
+        playerId: '',
         active: 'step1',
         step1: false,
         step2: false,
@@ -111,14 +112,18 @@
         this.create(body).then(player => {
           this.setSuccess('done')
           this.processing = false
-          this.$router.push({
-            name: 'history',
-            params: { id: player._id }
-          })
-          this.getBeneficiaries(this.user.email)
+          this.playerId = player._id
+          this.apiUrl = `${config.api.organization}/beneficiary/avatar/${player._id}`
         }).catch(reason => {
           this.setWarning('common.error')
           this.processing = false
+        })
+      },
+      reloadBeneficiares () {
+        this.getBeneficiaries(this.user.email)
+        this.$router.push({
+          name: 'history',
+          params: { id: this.playerId }
         })
       },
       cancel () {

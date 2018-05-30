@@ -36,7 +36,6 @@ export default {
   methods: {
     loadAvatar () {
       let urlPath = `${config.media.beneficiary.url}avatar/${this.item.id}.png?a=${Math.random()}`
-      console.log(urlPath)
       this.$http.get(urlPath)
       .then(resp => {
         this.avatar = resp.url
