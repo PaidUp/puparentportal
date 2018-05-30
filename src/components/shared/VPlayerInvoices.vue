@@ -60,7 +60,7 @@
       nameButton () {
         if (this.invoice.status === 'autopay') return 'Edit'
         else if (this.invoice.status === 'failed') return 'Fix'
-        else return 'VIEW'
+        else return 'View'
       },
       paymetMethod () {
         return this.invoice.paymentDetails.brand + '••••' + this.invoice.paymentDetails.last4
