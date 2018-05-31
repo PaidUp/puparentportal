@@ -180,9 +180,9 @@
           params.values.paymentDetails = {
             externalCustomerId: this.invoice.paymentDetails.externalCustomerId,
             statementDescriptor: this.invoice.paymentDetails.statementDescriptor,
-            paymentMethodtype: this.paymentMethodObj.paymentMethodtype,
-            externalPaymentMethodId: this.paymentMethodObj.externalPaymentMethodId,
-            brand: this.paymentMethodObj.brand,
+            paymentMethodtype: this.paymentMethodObj.object,
+            externalPaymentMethodId: this.paymentMethodObj.id,
+            brand: this.paymentMethodObj.brand || this.paymentMethodObj.bank_name,
             last4: this.paymentMethodObj.last4
           }
         }

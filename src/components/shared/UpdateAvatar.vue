@@ -44,7 +44,7 @@ export default {
         }
       }).then(resp => {
         this.$emit('charged', resp)
-      })
+      }, reason => {})
     }
   }
 

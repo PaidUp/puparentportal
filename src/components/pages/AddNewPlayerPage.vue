@@ -27,8 +27,6 @@
             .location {{ organization.city }}, {{ organization.state }}
         md-button.lblue.md-accent(@click="cancel") CANCEL
         md-button.lblue.md-accent.md-raised(@click="cretePlayer" :disabled="processing || !organizationSelected._id") ADD PLAYER
-
-
 </template>
 
 <script>

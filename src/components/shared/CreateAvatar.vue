@@ -61,7 +61,7 @@ export default {
         }
       }).then(resp => {
         this.$emit('uploaded', resp)
-      })
+      }, reason => {})
     }
   }
 

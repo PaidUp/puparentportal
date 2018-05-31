@@ -45,8 +45,7 @@
         let urlPath = `${config.media.beneficiary.url}avatar/${this.player._id}.png?a=${Math.random()}`
         this.$http.get(urlPath).then(resp => {
           this.avatar = resp.url
-        }).catch(reason => {
-        })
+        }, reason => {})
       }
     },
     methods: {

@@ -39,8 +39,7 @@ export default {
       this.$http.get(urlPath)
       .then(resp => {
         this.avatar = resp.url
-      }).catch(reason => {
-      })
+      }, reason => {})
     }
   }
 }
