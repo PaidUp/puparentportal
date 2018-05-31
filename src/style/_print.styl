@@ -1,7 +1,12 @@
 .print-page
-  margin: 50px
-  color: @cblack
+  color: $cblack
+  display: flex
+  flex-flow: column nowrap
+  justify-content: space-between
+  align-items: stretch
+  height 100vh
   .header
+    padding: 30px 30px 0 30px
     .logo-box
       display: flex
       flex-flow: row nowrap
@@ -30,7 +35,7 @@
           text-align: right
           margin-right: 7px
   .body
-    margin-top: 50px
+    padding: 30px
     .table-header
     .table-row
       padding: 7px 10px
@@ -52,7 +57,80 @@
     .table-header
       border-bottom: 1px solid @cblack 
       font-size: 13px
-      margin-bottom: 15px
+      margin-bottom: 12px
+  .footer
+    background: #F3F2E9
+    -webkit-print-color-adjust: exact
+    padding: 30px
+    .table-header
     .table-row
-      padding: 10px
-
+      padding: 7px 10px
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      align-items: center
+      .first-col
+        width 50%
+        text-align: left
+      .sec-col
+        width 25%
+        text-align: center
+      .third-col
+        width 25%
+        text-align: right
+    .table-header
+      border-bottom: 1px solid @cblack 
+      font-size: 13px
+      margin-bottom: 12px
+    .table-row
+      padding: 5px
+      font-size: 26px
+      .first-col
+        font-size: 13px
+    .table-right-header
+    .table-right-row
+      text-align: right
+      margin: 0 0 0 auto
+      display: flex
+      flex-flow: row nowrap
+      justify-content: flex-end
+      align-items: center
+      width: 50%
+      .first-col
+        width 50%
+        text-align: right
+      .sec-col
+        width 50%
+        text-align: right
+    .table-right-header
+      .first-col
+      .sec-col
+        border-bottom: 1px solid @cblack 
+        font-size: 13px
+        margin-bottom: 12px
+    .table-right-row
+      padding: 5px
+      font-size: 26px
+    .message
+      margin: 20px auto 0 auto
+      text-align: center
+    .thanks-box
+      display: flex
+      flex-flow: row nowrap
+      justify-content: center
+      align-items: center
+      font-size: 20px
+      margin-top: 50px
+      .md-icon 
+        margin: 0 10px 0 0px
+        color: #E25565
+      .logo 
+        margin: 0 10px
+        width 60px
+      .texas 
+        margin-left: 10px
+        width 40px
+    .foot-info
+      font-size: 12px
+      text-align: center
+      margin: 30px auto 0 auto

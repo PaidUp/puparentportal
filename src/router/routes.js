@@ -15,6 +15,8 @@ import UpgradePage from '@/components/pages/UpgradePage.vue'
 import NewInvoicesPage from '@/components/pages/NewInvoicesPage.vue'
 import ProgramsPage from '@/components/pages/ProgramsPage.vue'
 import PrintInvoice from '@/components/pages/PrintInvoice.vue'
+import PrintIneligible from '@/components/pages/PrintIneligible.vue'
+import PrintEligible from '@/components/pages/PrintEligible.vue'
 
 const routes = [
   {
@@ -63,6 +65,20 @@ const routes = [
   {
     path: '/print-invoice',
     component: PrintInvoice,
+    meta: {
+      isPublic: true
+    }
+  },
+  {
+    path: '/print-ineligible',
+    component: PrintIneligible,
+    meta: {
+      isPublic: true
+    }
+  },
+  {
+    path: '/print-eligible',
+    component: PrintEligible,
     meta: {
       isPublic: true
     }
