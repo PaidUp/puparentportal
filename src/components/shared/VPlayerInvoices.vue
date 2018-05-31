@@ -20,7 +20,7 @@
     md-ripple(v-if="invoice.memoId" class="main-card-box")
       md-card-header
         .title {{ invoice.label }}
-        .caption {{ invoice.description }}
+        .caption {{ subtext }}
       md-card-content.card-content
         .status
           md-icon.md-size-c(:class="clazz") {{ icon }}
@@ -40,13 +40,14 @@
   import VCurrency from '@/components/shared/VCurrency.vue'
 
   const opt = {
-    autopay: { key: 'today', class: 'cgray' },
-    paidup: { key: 'check_circle', class: '' },
-    credited: { key: 'check_circle', class: 'cblue' },
-    partially_refunded: { key: 'check_circle', class: 'cblue' },
-    paid: { key: 'check_circle', class: '' },
-    failed: { key: 'check_circle', class: 'cred' },
-    submitted: { key: 'check_circle', class: 'cblue' }
+    autopay: { desc: 'AUTOPAY', key: 'today', class: 'cgray' },
+    paidup: { desc: 'PAIDUP', key: 'check_circle', class: '' },
+    credited: { desc: 'CREDIT APPLIED', subtext: 'Club Credit', key: 'check_circle', class: '' },
+    partially_refunded: { desc: 'PARTIALLY<BR/>REFUNDED', subtext: '', key: 'check_circle', class: 'cblue' },
+    paid: { desc: 'PAID', key: 'check_circle', subtext: 'Paid Directly to Club', class: '' },
+    failed: { desc: 'FAILED', key: 'check_circle', class: 'cred' },
+    submitted: { desc: 'ACH SUBMITTED', key: 'check_circle', subtext: '', class: '' },
+    discount: { desc: 'DISCOUNT', key: 'check_circle', subtext: 'Club Discount', class: 'cblue' }
   }
   
   export default {
@@ -77,7 +78,10 @@
         return opt[this.invoice.status] ? [opt[this.invoice.status].class] : []
       },
       status () {
-        return this.invoice.status.toUpperCase().replace('_', '<br/>')
+        return opt[this.invoice.status].desc
+      },
+      subtext () {
+        return opt[this.invoice.status].subtext
       }
     },
     methods: {

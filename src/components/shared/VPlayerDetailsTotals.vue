@@ -13,8 +13,8 @@
       .concept  Overdue
       v-currency(:amount="overdue" clazz="title-big red")
     div
-      .concept  Credited
-      v-currency(:amount="credited" clazz="title-big blue")
+      .concept  Other
+      v-currency(:amount="other" clazz="title-big blue")
 </template>
 
 <script>
@@ -36,7 +36,7 @@ export default {
     paid () {
       if (!this.invoices) return 0
       return this.invoices.reduce((subTotal, current) => {
-        if (current.status === 'paid' || current.status === 'paidup' || current.status === 'submitted') return subTotal + current.price
+        if (current.status === 'paid' || current.status === 'paidup' || current.status === 'submitted' || current.status === 'credited') return subTotal + current.price
         return subTotal
       }, 0)
     },
@@ -47,13 +47,6 @@ export default {
         return subTotal
       }, 0)
     },
-    due () {
-      if (!this.invoices) return 0
-      return this.invoices.reduce((subTotal, current) => {
-        if (current.status === 'due') return subTotal + current.price
-        return subTotal
-      }, 0)
-    },
     overdue () {
       if (!this.invoices) return 0
       return this.invoices.reduce((subTotal, current) => {
@@ -61,10 +54,10 @@ export default {
         return subTotal
       }, 0)
     },
-    credited () {
+    other () {
       if (!this.invoices) return 0
       return this.invoices.reduce((subTotal, current) => {
-        if (current.status === 'credited' || current.status === 'partially_refunded' || current.status === 'refunded') return subTotal + current.price
+        if (current.status === 'discount' || current.status === 'partially_refunded' || current.status === 'refunded') return subTotal + current.price
         return subTotal
       }, 0)
     }
