@@ -23,6 +23,8 @@ export default {
     url () {
       if (this.url && this.file) {
         this.uploadFile()
+      } else {
+        this.$emit('uploaded', false)
       }
     }
   },

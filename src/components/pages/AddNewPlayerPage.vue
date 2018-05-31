@@ -108,8 +108,7 @@
           description: ''
         }
         this.create(body).then(player => {
-          this.setSuccess('done')
-          this.processing = false
+          this.setSuccess('component.new_player.done')
           this.playerId = player._id
           this.apiUrl = `${config.api.organization}/beneficiary/avatar/${player._id}`
         }).catch(reason => {
@@ -118,10 +117,14 @@
         })
       },
       reloadBeneficiares () {
-        this.getBeneficiaries(this.user.email)
-        this.$router.push({
-          name: 'history',
-          params: { id: this.playerId }
+        console.log('start reloadBeneficiares')
+        this.getBeneficiaries(this.user.email).then(bn => {
+          console.log('push router')
+          this.processing = false
+          this.$router.push({
+            name: 'history',
+            params: { id: this.playerId }
+          })
         })
       },
       cancel () {
