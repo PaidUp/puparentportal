@@ -29,35 +29,59 @@ const routes = [
       {
         path: '/',
         name: 'home',
+        meta: {
+          roles: ['parent']
+        },
         component: Welcome
       },
       {
         path: '/players/new',
+        meta: {
+          roles: ['parent']
+        },
         component: AddNewPlayerPage
       },
       {
         path: '/profile',
+        meta: {
+          roles: ['parent']
+        },
         component: ProfilePage
       },
       {
         path: '/programs',
+        meta: {
+          roles: ['coach']
+        },
         component: ProgramsPage
       },
       {
         path: '/new-invoices',
+        meta: {
+          roles: ['parent']
+        },
         component: NewInvoicesPage
       },
       {
         path: '/upgrade',
+        meta: {
+          roles: ['parent']
+        },
         component: UpgradePage
       },
       {
         path: '/players/:id',
+        meta: {
+          roles: ['parent']
+        },
         component: PlayersPage,
         name: 'history'
       },
       {
         path: '/payments/:id',
+        meta: {
+          roles: ['parent']
+        },
         component: PaymentsPage
       }
     ]
@@ -93,12 +117,18 @@ const routes = [
       {
         path: '/login',
         name: 'login',
-        component: LoginPage
+        component: LoginPage,
+        meta: {
+          isPublic: true
+        }
       },
       {
         path: '/logout',
         name: 'logout',
-        component: Logout
+        component: Logout,
+        meta: {
+          isPublic: true
+        }
       },
       {
         path: '/signup',

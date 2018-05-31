@@ -16,13 +16,25 @@ function isAutenticated () {
   return false
 }
 
+function getUser () {
+  return JSON.parse(window.localStorage.user)
+}
+
 router.beforeEach((to, from, next) => {
   // SKIP LOGIN: comment next if
-  // if (!to.meta.isPublic && !isAutenticated()) {
-  //   return next('login')
-  // }
+  if (!to.meta.isPublic && !isAutenticated()) {
+    return next('login')
+  }
   if (to.name === 'login' && isAutenticated()) {
     return next('/')
+  }
+  if (to.meta.roles && getUser() && getUser().roles) {
+    let cond = getUser().roles.some(role => {
+      return to.meta.roles.includes(role)
+    })
+    if (!cond) {
+      return next('/')
+    }
   }
   next()
 })

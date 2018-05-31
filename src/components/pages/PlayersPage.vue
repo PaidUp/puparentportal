@@ -14,11 +14,11 @@
         .details-box
           v-player-details-selection(:invoices="allInvoices")
           v-player-details-totals(:invoices="invoices")
-      button(class="md-button md-raised" @click="showDuplicateDialog = true") Duplicate Payment Dialog
+      button(v-if="false" class="md-button md-raised" @click="showDuplicateDialog = true") Duplicate Payment Dialog
       .invoices(v-if="invoices")
         .pre-cards-title.with-sort-filter
           div Invoices
-          div.sort-filter-box
+          div.sort-filter-box(v-if="false")
             md-menu(md-direction="bottom-start")
                 md-button(md-menu-trigger class="md-button md-accent lblue")
                   md-icon sort

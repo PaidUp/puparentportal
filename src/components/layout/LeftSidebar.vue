@@ -10,12 +10,12 @@
           {{ user.firstName }} {{ user.lastName}}
         </div>
       </md-list-item>
-      <md-list-item to="/programs">
+      <md-list-item to="/programs" v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Programs</span>
       </md-list-item>
-      <pu-player-payment-history v-if="beneficiaries" :beneficiaries="beneficiaries"/>
-      <pu-pay-new-invoice v-if="beneficiaries" :beneficiaries="beneficiaries"/>
-      <pu-payment-accounts />
+      <pu-player-payment-history v-if="isRole('parent') && beneficiaries" :beneficiaries="beneficiaries"/>
+      <pu-pay-new-invoice v-if="isRole('parent') && beneficiaries" :beneficiaries="beneficiaries"/>
+      <pu-payment-accounts v-if="isRole('parent')" />
 
       
 
@@ -71,8 +71,9 @@
       ...mapMutations('userModule', {
         reloadAvatar: 'reloadAvatar'
       }),
-      click () {
-        console.log('clic')
+      isRole (role) {
+        if (this.user && this.user.roles) return this.user.roles.includes(role)
+        return false
       }
     }
   }
