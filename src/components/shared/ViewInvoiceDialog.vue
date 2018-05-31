@@ -190,6 +190,7 @@
         this.updateInvoice(params).then(res => {
           this.submited = false
           this.setSuccess('component.payment.update')
+          this.$emit('updated', true)
         }).catch(reason => {
           this.paymentMethodObj = null
           this.submited = false
