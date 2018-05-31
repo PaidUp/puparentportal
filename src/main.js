@@ -13,11 +13,15 @@ import VueResource from 'vue-resource'
 import fs from '@/vendor/fb'
 import Vuelidate from 'vuelidate'
 
+// Filters
+import './filters'
+
 // MATERIAL DESIGN COMPONENTS START
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 // import 'vue-material/dist/theme/default.css'
 import '@/style/theme.css'
+
 Vue.use(VueMaterial)
 // MATERIAL DESIGN COMPONENTS END
 
@@ -25,6 +29,7 @@ Vue.use(LoadScript)
 Vue.use(FBSignInButton)
 Vue.use(Vuelidate)
 Vue.use(VueResource)
+// Vue.use(capitalize)
 
 Vue.config.productionTip = false
 Vue.material.locale.dateFormat = 'MM-DD-YYYY'
