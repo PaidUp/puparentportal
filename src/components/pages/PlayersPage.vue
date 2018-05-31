@@ -52,7 +52,7 @@
 
         .cards-layout
           v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id" @select="selectInvoice")
-    view-invoice-dialog(:invoice="viewInvoice" :closeDialog="closeDialog")
+    view-invoice-dialog(:invoice="viewInvoice" :closeDialog="closeDialog" @updated="reloadBeneficiaries")
     duplicate-payment-dialog(:showDialog="showDuplicateDialog" :closeDialog="closeDialog")
 </template>
 
@@ -107,13 +107,13 @@
     },
     mounted () {
       if (this.loaded) {
-        this.getInvoices({ beneficiary: this.beneficiary })
+        this.loadInvoices()
         this.getCredits(this.beneficiary)
       }
     },
     watch: {
       loaded () {
-        this.getInvoices({ beneficiary: this.beneficiary })
+        this.loadInvoices()
         this.getCredits(this.beneficiary)
       }
     },
@@ -123,6 +123,9 @@
         getCredits: 'getCredits',
         getBeneficiaries: 'getBeneficiaries'
       }),
+      loadInvoices () {
+        this.getInvoices({ beneficiary: this.beneficiary })
+      },
       reloadBeneficiaries () {
         this.getBeneficiaries(this.user.email)
       },
