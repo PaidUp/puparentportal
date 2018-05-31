@@ -29,7 +29,6 @@ Vue.use(LoadScript)
 Vue.use(FBSignInButton)
 Vue.use(Vuelidate)
 Vue.use(VueResource)
-// Vue.use(capitalize)
 
 Vue.config.productionTip = false
 Vue.material.locale.dateFormat = 'MM-DD-YYYY'
