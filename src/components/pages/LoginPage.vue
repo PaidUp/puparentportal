@@ -41,7 +41,6 @@
     required,
     email
   } from 'vuelidate/lib/validators'
-  // import capitalize from '@/helpers/capitalize'
 
   export default {
     data () {
@@ -87,7 +86,6 @@
         setWarning: 'setWarning'
       }),
       submit () {
-        // console.log(this.loginParams.email);
         if (this.$v.loginParams.$invalid) {
           return this.setWarning('validations.form')
         }
