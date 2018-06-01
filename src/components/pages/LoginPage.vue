@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page"> 
+  <div class="login-page">
     <md-field :class="{'md-invalid': $v.loginParams.email.$error}">
       <label>{{ $t('component.login.email') }}</label>
       <md-input v-model.trim="loginParams.email" @input="$v.loginParams.email.$touch()"></md-input>
@@ -41,6 +41,7 @@
     required,
     email
   } from 'vuelidate/lib/validators'
+  // import capitalize from '@/helpers/capitalize'
 
   export default {
     data () {
@@ -86,6 +87,7 @@
         setWarning: 'setWarning'
       }),
       submit () {
+        // console.log(this.loginParams.email);
         if (this.$v.loginParams.$invalid) {
           return this.setWarning('validations.form')
         }

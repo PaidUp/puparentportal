@@ -6,7 +6,7 @@
 
     <md-steppers md-vertical md-linear md-dynamic-height :md-active-step.sync="active">
       <md-step id="step1" md-label="Personal Info" :md-editable="false" :md-done.sync="step1">
-        <div class="step-box">
+        <div class="step-box" :md-description="upgradeData">
           <div class="additional-info">
             This information is required for us to verify your identity. This helps to keep everyone payments safe and meet government
             regulations.
@@ -113,6 +113,7 @@
 </template>
 
 <script>
+  import capitalize from '@/helpers/capitalize'
   export default {
     data: function () {
       return {

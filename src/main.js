@@ -13,9 +13,6 @@ import VueResource from 'vue-resource'
 import fs from '@/vendor/fb'
 import Vuelidate from 'vuelidate'
 
-// Filters
-import './filters'
-
 // MATERIAL DESIGN COMPONENTS START
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'

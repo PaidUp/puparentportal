@@ -34,6 +34,7 @@
   import { required } from 'vuelidate/lib/validators'
   import config from '@/config'
   import CreateAvatar from '@/components/shared/CreateAvatar.vue'
+  import capitalize from '@/helpers/capitalize'
 
   export default {
     components: { CreateAvatar },
@@ -63,6 +64,8 @@
         user: 'user'
       }),
       fullName () {
+        this.firstName = capitalize(this.firstName)
+        this.lastName = capitalize(this.lastName)
         return this.firstName + ' ' + this.lastName
       },
       filtered () {
@@ -102,8 +105,8 @@
         let body = {
           organizationId: this.organizationSelected._id,
           organizationName: this.organizationSelected.businessName,
-          firstName: this.firstName,
-          lastName: this.lastName,
+          firstName: capitalize(this.firstName),
+          lastName: capitalize(this.lastName),
           assigneesEmail: this.user.email,
           description: ''
         }
