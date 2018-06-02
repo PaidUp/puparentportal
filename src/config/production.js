@@ -1,9 +1,9 @@
 const config = {
   api: {
-    user: 'https://api.paidup.app/api/v1/user',
-    payment: 'https://api.paidup.app/api/v1/payment',
-    organization: 'https://api.paidup.app/api/v1/organization',
-    commerce: 'https://api.paidup.app/api/v1/commerce'
+    user: 'https://api.getpaidup.com/api/v1/user',
+    payment: 'https://api.getpaidup.com/api/v1/payment',
+    organization: 'https://api.getpaidup.com/api/v1/organization',
+    commerce: 'https://api.getpaidup.com/api/v1/commerce'
   },
   stripe: {
     publicKey: 'pk_live_DSQ3sB20S4wFlOST7eexy8F1'
