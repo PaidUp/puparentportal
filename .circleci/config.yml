@@ -92,6 +92,33 @@ jobs:
       - run:
           name: Clean aws cloudfront cache
           command: aws cloudfront create-invalidation --distribution-id E1KZW0VLN8DNRE --paths /index.html /static
+  
+  deploy-production:
+    docker:
+      - image: circleci/node:8.9
+    environment:
+        - APP_ENV: 'production'
+    working_directory: ~/tmp
+    steps:
+      - run:
+          name: Install python
+          command: sudo apt-get install python-dev python-pip
+      - run:
+          name: Install awscli
+          command: sudo pip install awscli
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Build project
+          command: npm run build-prod
+      - run:
+          name: Deploy files to s3
+          command: aws s3 sync dist/ s3://prd-pp.paidup.app --delete
+      - run:
+          name: Clean aws cloudfront cache
+          command: aws cloudfront create-invalidation --distribution-id E26X2URA1IA03V --paths /index.html /static
 
 
 workflows:
@@ -111,3 +138,9 @@ workflows:
           filters:
             branches:
               only: stage
+      - deploy-production:
+          requires:
+            - build
+          filters:
+            branches:
+              only: production
