@@ -8,7 +8,7 @@ const config = {
   stripe: {
     publicKey: 'pk_live_DSQ3sB20S4wFlOST7eexy8F1'
   },
-  fbId: '521919851516443',
+  fbId: '499580560213861',
   plaid: {
     env: 'production',
     publicKey: 'c104e73c056e34530e2c5774e6fc5f',
