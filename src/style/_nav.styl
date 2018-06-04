@@ -40,6 +40,10 @@
       height 100%
       width 100%
       mixin-placeholder(#fff)
+  .logout-btn-top
+    color: #fff!important
+    @media $small-only
+      display none
  
 
 // LEFT SIDEBAR COMPONENT
@@ -94,6 +98,11 @@
     border-top: 1px solid $cgray4
     height 20%
     padding: 0
+    .md-list-item.logout-btn-nav
+      display none
+      @media $small-only
+        display list-item
+
     .md-list-item
       .md-icon
         color: $cgray2

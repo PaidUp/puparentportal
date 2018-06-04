@@ -8,6 +8,8 @@
   background: #F5F5F5 !important
   border-left: none
   box-shadow:  inset 5px 0 5px -5px $cgray2
+  @media $small-only
+    padding: 0!important
 sup 
   top: -.3em!important
 
@@ -79,6 +81,17 @@ a, a:hover, a:visited, a:link, a:active, a > *
     &.md-active
       .md-stepper-number
         color: #fff !important
+  @media $small-only
+    .md-stepper
+      &:after
+        display none
+      .md-stepper-header
+        .md-ripple
+          padding: 0 24px 0 0px!important
+          .md-button-content
+            padding-left: 0!important
+      .md-stepper-content
+        padding: 0
 
 // MD-CARD
 .common-card
@@ -179,17 +192,29 @@ a, a:hover, a:visited, a:link, a:active, a > *
   flex-flow: row nowrap
   justify-content: space-between
   align-items: center
+  @media $small-only
+    flex-flow: column nowrap
   & > div:nth-child(1)
     width: 49%
+    @media $small-only
+      width: 100%
   & > div:nth-child(2)
     width: 20%
+    @media $small-only
+      width: 100%
   & > div:nth-child(3)
     width: 29%
+    @media $small-only
+      width: 100%
   &.no-zip
     & > div:nth-child(1)
       width: 64%
+      @media $small-only
+        width: 100%
     & > div:nth-child(2)
       width: 35%
+      @media $small-only
+        width: 100%
 
 // SELECT MENU FIX
 .md-select-menu.md-menu-content

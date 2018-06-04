@@ -11,6 +11,8 @@
     flex-flow: row nowrap
     justify-content: center
     align-items: center
+    @media $small-only
+      padding: 20px!important
     .title
       position: absolute
       top: 20px
@@ -18,6 +20,8 @@
       color: $cgray1
     .content-box
       width: 400px
+      @media $small-only
+        width 100%
       .update-btn
         margin: 10px auto 30px auto
         display: block
@@ -27,8 +31,12 @@
         justify-content: space-between
         align-items: center
         width 100%
+        @media $small-only
+          flex-flow: column nowrap
         div:first-child
           margin-right: 10px
+          @media $small-only
+            margin-right: 0px
       .fb-icon
         width 28px
         height 28px

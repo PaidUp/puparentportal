@@ -1,5 +1,8 @@
 <template lang="pug">
 md-list.bottom-list
+  md-list-item.logout-btn-nav
+    md-icon power_settings_new
+    div.md-list-item-text LOGOUT
   md-list-item
     md-icon send
     a.md-list-item-text(href="mailto:support@getpaidup.com")

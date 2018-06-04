@@ -6,16 +6,25 @@
   height 100vh
   .public-logo-box
     width 100px
-    margin-top: 11vh;
+    margin-top: 11vh
+    @media $small-only
+      margin-top: 8vh
   .public-footer
     margin: 20px 0
     font-size: 13px
     color: $cgray2
+    @media $small-only
+      width: 100%
+      padding: 0 20px
+      text-align: center
   .public-content
     height 100%
     width: 400px
     margin-top: 40px
     text-align: center
+    @media $small-only
+      width: 100%
+      padding: 0 20px
     .fb-button
       color: #ffffff
       background: $cfb

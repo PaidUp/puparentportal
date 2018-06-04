@@ -12,7 +12,9 @@
       <md-icon>search</md-icon>
       <input type="text" placeholder="Search">
     </div> -->
-    <div>&nbsp;</div>
+    <div>
+      <md-button class="logout-btn-top">LOGOUT</md-button>
+    </div>
   </div>
 </template>
 
