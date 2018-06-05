@@ -78,10 +78,10 @@
         return this.userForm.password
       },
       fullNames () {
-        if (this.userForm.firstName){
+        if (this.userForm.firstName) {
           this.userForm.firstName = capitalize(this.userForm.firstName)
         }
-        if (this.userForm.lastName){
+        if (this.userForm.lastName) {
           this.userForm.lastName = capitalize(this.userForm.lastName)
         }
         return this.userForm

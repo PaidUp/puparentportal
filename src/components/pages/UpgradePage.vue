@@ -113,7 +113,6 @@
 </template>
 
 <script>
-  import capitalize from '@/helpers/capitalize'
   export default {
     data: function () {
       return {
