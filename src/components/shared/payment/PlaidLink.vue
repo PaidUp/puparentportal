@@ -5,7 +5,7 @@
         .md-list-item-text
           div Add New Bank
     md-button.lblue.md-accent.md-raised(v-if="type === 'button'" @click="handleOnClick") ADD NEW BANK
-    button.plaid-link-button(v-if="false" @click="handleOnClick") 
+    button.plaid-link-button(v-if="false" @click="handleOnClick")
       slot
 </template>
 
@@ -73,6 +73,5 @@ export default {
 }
 </script>
 <style>
-  #plaid-link-iframe-1{height:100vh !important;}
-  #plaid-link-iframe-2{height:100vh !important;}
+  iframe[id^="plaid-link-iframe-"]{height:100vh}
 </style>
