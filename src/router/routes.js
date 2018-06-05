@@ -14,6 +14,8 @@ import ProfilePage from '@/components/pages/ProfilePage.vue'
 import UpgradePage from '@/components/pages/UpgradePage.vue'
 import NewInvoicesPage from '@/components/pages/NewInvoicesPage.vue'
 import ProgramsPage from '@/components/pages/ProgramsPage.vue'
+import SearchResultPage from '@/components/pages/SearchResultPage.vue'
+import ReportsPage from '@/components/pages/ReportsPage.vue'
 import PrintInvoice from '@/components/pages/PrintInvoice.vue'
 import PrintIneligible from '@/components/pages/PrintIneligible.vue'
 import PrintEligible from '@/components/pages/PrintEligible.vue'
@@ -54,6 +56,14 @@ const routes = [
           roles: ['coach']
         },
         component: ProgramsPage
+      },
+      {
+        path: '/search',
+        component: SearchResultPage
+      },
+      {
+        path: '/reports/payments',
+        component: ReportsPage
       },
       {
         path: '/new-invoices',

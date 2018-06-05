@@ -1,8 +1,5 @@
 <template lang="pug">
 md-list.bottom-list
-  md-list-item.logout-btn-nav
-    md-icon power_settings_new
-    div.md-list-item-text LOGOUT
   md-list-item
     md-icon send
     a.md-list-item-text(href="mailto:support@getpaidup.com")
@@ -17,4 +14,7 @@ md-list.bottom-list
     md-icon help
     a.md-list-item-text(href="https://getpaidup.zendesk.com/hc/en-us" target="_blank") Help Articles
     md-icon launch
+  md-list-item.logout-btn-nav
+    md-icon power_settings_new
+    div.md-list-item-text LOGOUT
 </template>
