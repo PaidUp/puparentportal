@@ -1,19 +1,19 @@
 <template>
   <div class="top-toolbar">
-     <md-button class="md-icon-button md-primary menu-icon" @click="toggleNavigation">
-        <md-icon>menu</md-icon>
-      </md-button>
+    <md-button class="md-icon-button md-primary menu-icon" @click="toggleNavigation">
+      <md-icon>menu</md-icon>
+    </md-button>
     <div class="logo">
       <router-link to="/">
         <img src="@/assets/app-logo-white.svg" />
       </router-link>
     </div>
-    <!-- <div class="search-input">
+    <div class="search-input" v-if="isCoach">
       <md-icon>search</md-icon>
       <input type="text" placeholder="Search">
-    </div> -->
+    </div>
     <div>
-      <md-button class="logout-btn-top">LOGOUT</md-button>
+      <md-button class="logout-btn-top" to="/logout">LOGOUT</md-button>
     </div>
   </div>
 </template>
@@ -27,9 +27,18 @@
       }
     },
     computed: {
+      ...mapState('userModule', {
+        user: 'user'
+      }),
       ...mapState('uiModule', {
         showNavigation: 'showNavigation'
-      })
+      }),
+      isCoach () {
+        if (this.user && this.user.roles) {
+          return this.user.roles.includes('coach')
+        }
+        return false
+      }
     },
     methods: {
       ...mapMutations('uiModule', {

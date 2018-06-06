@@ -31,7 +31,24 @@
         pther: false
       }
     },
+    watch: {
+      user () {
+        if (this.user && this.user.roles.includes('coach')) {
+          return this.$router.push('/programs')
+        }
+        this.$router.push('/home')
+      }
+    },
+    mounted () {
+      if (this.user.roles && this.user.roles.includes('coach')) {
+        return this.$router.push('/programs')
+      }
+      this.$router.push('/home')
+    },
     computed: {
+      ...mapState('userModule', {
+        user: 'user'
+      }),
       ...mapState('uiModule', {
         showNavigation: 'showNavigation'
       })

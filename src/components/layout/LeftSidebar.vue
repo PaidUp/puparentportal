@@ -10,9 +10,44 @@
           {{ user.firstName }} {{ user.lastName}}
         </div>
       </md-list-item>
+      
+      <!-- Programs -->
       <md-list-item to="/programs" v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Programs</span>
       </md-list-item>
+
+      <!-- Search Result: maybe move to somewhere else -->
+      <md-list-item to="/search" v-if="isRole('coach')">
+        <span class="md-list-item-text ca1 bold">Search Result</span>
+      </md-list-item>
+      
+      <!-- Reports -->
+      <md-list-item to="/reports/payments" md-expand v-if="isRole('coach')">
+        <span class="md-list-item-text ca1 bold">Reports</span>
+        <md-list slot="md-expand">
+          <md-list-item to="/reports/payments">
+            <div class="md-list-item-text">
+              Payments
+            </div>
+          </md-list-item>
+          <md-list-item to="/reports/deposits">
+            <div class="md-list-item-text">
+              Deposits
+            </div>
+          </md-list-item>
+          <md-list-item to="/reports/cash">
+            <div class="md-list-item-text">
+              Cash Flow
+            </div>
+          </md-list-item>
+          <md-list-item to="/reports/eligibility">
+            <div class="md-list-item-text">
+              Eligibility
+            </div>
+          </md-list-item>
+        </md-list>
+      </md-list-item>
+      
       <pu-player-payment-history v-if="isRole('parent') && beneficiaries" :beneficiaries="beneficiaries"/>
       <pu-pay-new-invoice v-if="isRole('parent') && beneficiaries" :beneficiaries="beneficiaries"/>
       <pu-payment-accounts v-if="isRole('parent')" />
