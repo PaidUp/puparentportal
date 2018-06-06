@@ -10,7 +10,7 @@
           <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
         </div>
         <update-avatar :url="url" @charged="reloadAvatar"></update-avatar>
-        <div class="names-box">
+        <div class="names-box" :md-description="fullName">
           <md-field :class="{'md-invalid': $v.firstName.$error}">
             <label>First Name</label>
             <md-input v-model.trim="firstName" :disabled="!editName" @input="$v.firstName.$touch()"></md-input>
@@ -19,7 +19,7 @@
           <md-field :class="{'md-invalid': $v.lastName.$error}">
             <label>Last Name</label>
             <md-input v-model.trim="lastName" :disabled="!editName" @input="$v.lastName.$touch()"></md-input>
-            <span class="md-error" v-if="!$v.lastName.required">{{ $t('validations.required', { field: 'Last Name' }) }}</span>            
+            <span class="md-error" v-if="!$v.lastName.required">{{ $t('validations.required', { field: 'Last Name' }) }}</span>
             <span @click="editName = true">
               <md-icon v-show="!editName">editable</md-icon>
             </span>
@@ -34,7 +34,7 @@
           <label>Password</label>
           <md-input v-model.trim="password" type="password" :disabled="!editPassword"></md-input>
           <span @click="editPassword = true" v-show="!editPassword">
-            <md-icon>editable</md-icon>            
+            <md-icon>editable</md-icon>
           </span>
         </md-field>
         <md-field v-show="editPassword" :class="{'md-invalid': $v.cpassword.$error}" :md-toggle-password="editPassword">
@@ -72,6 +72,7 @@
   import { required, email, minLength, sameAs, numeric } from 'vuelidate/lib/validators'
   import UpdateAvatar from '@/components/shared/UpdateAvatar.vue'
   import config from '@/config'
+  import capitalize from '@/helpers/capitalize'
   export default {
     components: { UpdateAvatar },
     data: function () {
@@ -95,6 +96,11 @@
         user: 'user',
         avatar: 'avatar'
       }),
+      fullName () {
+        this.firstName = capitalize(this.firstName)
+        this.lastName = capitalize(this.lastName)
+        return this
+      },
       disableSaveButton () {
         return this.$v.$invalid || this.submmited
       },
@@ -177,7 +183,7 @@
         required,
         minLength: minLength(10)
       }
-  
+
     }
   }
 </script>

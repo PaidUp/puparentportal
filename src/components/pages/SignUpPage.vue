@@ -1,6 +1,6 @@
 <template>
   <div class="signup-page">
-    <div class="names-box">
+    <div class="names-box" :md-description="fullNames">
       <md-field :class="{'md-invalid': $v.userForm.firstName.$error}">
         <label>{{ $t('component.signup.first_name') }}</label>
         <md-input v-model.trim="userForm.firstName" @input="$v.userForm.firstName.$touch()"></md-input>
@@ -52,7 +52,7 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import { required, email, minLength, sameAs, numeric } from 'vuelidate/lib/validators'
-
+  import capitalize from '@/helpers/capitalize'
   export default {
     data () {
       return {
@@ -76,6 +76,15 @@
       }),
       password () {
         return this.userForm.password
+      },
+      fullNames () {
+        if (this.userForm.firstName) {
+          this.userForm.firstName = capitalize(this.userForm.firstName)
+        }
+        if (this.userForm.lastName) {
+          this.userForm.lastName = capitalize(this.userForm.lastName)
+        }
+        return this.userForm
       }
     },
     methods: {
