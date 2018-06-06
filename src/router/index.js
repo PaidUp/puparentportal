@@ -22,26 +22,26 @@ function getUser () {
 }
 
 router.beforeEach((to, from, next) => {
-  if (!to.meta || !to.meta.roles) {
-    return next()
-  }
   // SKIP LOGIN: comment next if
   if (!to.meta.roles && !isAutenticated() && to.name !== 'login') {
     return next('login')
   }
-  if ((to.name === 'login') && isAutenticated()) {
-    let dest = '/'
+  if ((to.name === 'login' || to.name === 'layout') && isAutenticated()) {
+    let dest = '/home'
     if (getUser().roles.includes('coach')) dest = '/programs'
     return next(dest)
   }
   if (to.meta.roles && getUser() && getUser().roles) {
+    let dest = '/home'
+    if (getUser().roles.includes('coach')) dest = '/programs'
     let cond = getUser().roles.some(role => {
       return to.meta.roles.includes(role)
     })
     if (!cond) {
-      return next('/')
+      return next(dest)
     }
   }
+  console.log('continue')
   return next()
 })
 
