@@ -13,10 +13,10 @@ import PublicLayout from '@/components/layout/PublicLayout.vue'
 import ProfilePage from '@/components/pages/ProfilePage.vue'
 import UpgradePage from '@/components/pages/UpgradePage.vue'
 import NewInvoicesPage from '@/components/pages/NewInvoicesPage.vue'
-import ProgramsPage from '@/components/pages/ProgramsPage.vue'
-import ProgramPlayersPage from '@/components/pages/ProgramPlayersPage.vue'
-import SearchResultPage from '@/components/pages/SearchResultPage.vue'
-import ReportsPage from '@/components/pages/ReportsPage.vue'
+import ScoreBoardPage from '@/components/board/ScoreBoardPage.vue'
+import ScorePlayersPage from '@/components/board/ScorePlayersPage.vue'
+import SearchResultPage from '@/components/board/SearchResultPage.vue'
+import ReportsPage from '@/components/board/ReportsPage.vue'
 import PrintInvoice from '@/components/pages/PrintInvoice.vue'
 import PrintIneligible from '@/components/pages/PrintIneligible.vue'
 import PrintEligible from '@/components/pages/PrintEligible.vue'
@@ -50,18 +50,18 @@ const routes = [
         component: ProfilePage
       },
       {
-        path: '/programs',
+        path: '/scoreboard',
         meta: {
           roles: ['coach']
         },
-        component: ProgramsPage
+        component: ScoreBoardPage
       },
       {
-        path: '/programplayers',
+        path: '/scoreplayers',
         meta: {
           roles: ['coach']
         },
-        component: ProgramPlayersPage
+        component: ScorePlayersPage
       },
       {
         path: '/search',

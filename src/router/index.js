@@ -23,7 +23,7 @@ function getUser () {
 
 function defaultDestination () {
   let dest = '/home'
-  if (getUser().roles.includes('coach')) dest = '/programs'
+  if (getUser().roles.includes('coach')) dest = '/scoreboard'
   return dest
 }
 
