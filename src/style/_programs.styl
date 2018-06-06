@@ -1,6 +1,123 @@
 .programs-page
+
+  // BREADCRUMBS
+  .breadcrums-box
+    display: flex
+    flex-flow: row nowrap
+    justify-content: flex-start
+    align-items: center
+    color: $clblue
+    font-size: 12px
+    font-weight: bold
+    cursor pointer
+    .md-icon
+      font-weight: normal
+      margin 0 5px
+      color: $clblue
+      &:first-child
+        margin-left: 0
+  
+  // TABS WITH NO BACK
+  .md-tabs
+    .md-tabs-navigation
+    .md-content
+      background: transparent
+    .md-tabs-navigation
+      .md-button
+        color: $clblue
+        &.md-active
+          color: $clblue
+      .md-tabs-indicator
+        background-color: $clblue
+    .md-content 
+      .md-tab
+        padding-left: 2px
+
+  // BARS WITH HOVER
+  .bars-with-hover
+    width: 100%
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-between
+    align-items: center
+    & > div
+      height 25px
+      position relative
+      .hover
+        display none
+        position: absolute
+        top: -45px
+        right 50%
+        margin-right: -45px
+        z-index 10
+        height 35px
+        width: 90px
+        flex-flow: column nowrap
+        justify-content: center
+        align-items: center
+        background: yellow
+        border-radius: 8px
+        &:after
+          content: ''
+          position absolute
+          bottom: -10px
+          width: 0; 
+          height: 0; 
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-top: 10px solid yellow;
+          z-index 12
+        .hover-title
+          color: #ffffff
+          line-height: 1
+          font-size: 11px
+        .hover-number
+          line-height: 1
+          color: #ffffff
+          font-weight: bold
+          font-size: 13px
+    .green
+      width: 10%
+      background: $cgreen
+      &:hover
+        .hover
+          background: $cgreen
+          display flex
+          &:after
+            border-top: 10px solid $cgreen;
+    .gray
+      width: 10%
+      background: $cgray3
+      &:hover
+        .hover
+          display flex
+          background: $cgray3
+          &:after
+            border-top: 10px solid $cgray3;
+    .red
+      width: 50%
+      background: $cred
+      &:hover
+        .hover
+          background: $cred
+          display flex
+          &:after
+            border-top: 10px solid $cred;
+    .blue
+      width: 30%
+      background: $cblue
+      &:hover
+        .hover
+          display flex
+          background: $cblue
+          &:after
+            border-top: 10px solid $cblue;
+  
+  // DETAILS
   .details
     margin-top: 40px
+  
+  // PROGRAMS
   .programs
     margin-top: 20px
     .cards-layout
@@ -34,81 +151,41 @@
               font-size: 13px
             .tot-number
               font-size: 16px
-          .bars
-            width: 100%
-            display: flex
-            flex-flow: row nowrap
-            justify-content: space-between
-            align-items: center
-            & > div
-              height 25px
-              position relative
-              .hover
-                display none
-                position: absolute
-                top: -45px
-                right 50%
-                margin-right: -45px
-                z-index 10
-                height 35px
-                width: 90px
-                flex-flow: column nowrap
-                justify-content: center
-                align-items: center
-                background: yellow
-                border-radius: 8px
-                &:after
-                  content: ''
-                  position absolute
-                  bottom: -10px
-                  width: 0; 
-                  height: 0; 
-                  border-left: 10px solid transparent;
-                  border-right: 10px solid transparent;
-                  border-top: 10px solid yellow;
-                  z-index 12
-                .hover-title
-                  color: #ffffff
-                  line-height: 1
-                  font-size: 11px
-                .hover-number
-                  line-height: 1
-                  color: #ffffff
-                  font-weight: bold
-                  font-size: 13px
-            .green
-              width: 10%
-              background: $cgreen
-              &:hover
-                .hover
-                  background: $cgreen
-                  display flex
-                  &:after
-                    border-top: 10px solid $cgreen;
-            .gray
-              width: 10%
-              background: $cgray3
-              &:hover
-                .hover
-                  display flex
-                  background: $cgray3
-                  &:after
-                    border-top: 10px solid $cgray3;
-            .red
-              width: 50%
-              background: $cred
-              &:hover
-                .hover
-                  background: $cred
-                  display flex
-                  &:after
-                    border-top: 10px solid $cred;
-            .blue
-              width: 30%
-              background: $cblue
-              &:hover
-                .hover
-                  display flex
-                  background: $cblue
-                  &:after
-                    border-top: 10px solid $cblue;
+    // PROGRAMS
+  .program-players
+    margin-top: 20px
+    .cards-layout
+      .md-card
+        display: flex
+        flex-flow: column nowrap
+        justify-content: space-between
+        align-items: flex-start
+        padding: 16px
+        text-align: center 
+        .top-box
+          width 100%
+          margin: 0 auto
+        .md-avatar
+          @extends .has-elevation-4;
+          margin: 0 auto 10px auto
+        .md-icon
+          margin: 0 auto 10px auto
+          color: $ca1
+        .name
+          color: $cc1
+          font-size: 16px
+          line-height: 1.2
+        .eligibility
+          line-height: 1.2
+          font-size: 14px
+          margin-bottom: 5px
+        .total-label
+          font-size: 12px
+          color: $cc1
+        .total-amount
+          line-height: 1.2
+          font-size: 16px
+          color: $cc1
+
+    
+          

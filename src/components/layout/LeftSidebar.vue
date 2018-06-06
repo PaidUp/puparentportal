@@ -12,8 +12,15 @@
       </md-list-item>
       
       <!-- Programs -->
-      <md-list-item to="/programs" v-if="isRole('coach')">
+      <md-list-item to="/programs" md-expand v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Programs</span>
+        <md-list slot="md-expand">
+          <md-list-item to="/programplayers">
+            <div class="md-list-item-text">
+              ProgPlayers
+            </div>
+          </md-list-item>
+        </md-list>
       </md-list-item>
 
       <!-- Search Result: maybe move to somewhere else -->

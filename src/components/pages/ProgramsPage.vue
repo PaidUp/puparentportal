@@ -69,7 +69,7 @@
               <div class="tot-title">Total</div>
               <div class="tot-number">$38,000</div>
             </div>
-            <div class="bars">
+            <div class="bars-with-hover">
               <div class="green">
                 <div class="hover">
                   <div class="hover-title">Paid</div>
@@ -122,7 +122,7 @@
               <div class="tot-title">Total</div>
               <div class="tot-number">$38,000</div>
             </div>
-            <div class="bars">
+            <div class="bars-with-hover">
               <div class="green">
                 <div class="hover">
                   <div class="hover-title">Paid</div>
@@ -175,7 +175,7 @@
               <div class="tot-title">Total</div>
               <div class="tot-number">$38,000</div>
             </div>
-            <div class="bars">
+            <div class="bars-with-hover">
               <div class="green">
                 <div class="hover">
                   <div class="hover-title">Paid</div>
@@ -228,7 +228,7 @@
               <div class="tot-title">Total</div>
               <div class="tot-number">$38,000</div>
             </div>
-            <div class="bars">
+            <div class="bars-with-hover">
               <div class="green">
                 <div class="hover">
                   <div class="hover-title">Paid</div>
@@ -281,7 +281,7 @@
               <div class="tot-title">Total</div>
               <div class="tot-number">$38,000</div>
             </div>
-            <div class="bars">
+            <div class="bars-with-hover">
               <div class="green">
                 <div class="hover">
                   <div class="hover-title">Paid</div>
@@ -334,7 +334,7 @@
               <div class="tot-title">Total</div>
               <div class="tot-number">$38,000</div>
             </div>
-            <div class="bars">
+            <div class="bars-with-hover">
               <div class="green">
                 <div class="hover">
                   <div class="hover-title">Paid</div>
@@ -387,7 +387,7 @@
               <div class="tot-title">Total</div>
               <div class="tot-number">$38,000</div>
             </div>
-            <div class="bars">
+            <div class="bars-with-hover">
               <div class="green">
                 <div class="hover">
                   <div class="hover-title">Paid</div>
@@ -440,7 +440,7 @@
               <div class="tot-title">Total</div>
               <div class="tot-number">$38,000</div>
             </div>
-            <div class="bars">
+            <div class="bars-with-hover">
               <div class="green">
                 <div class="hover">
                   <div class="hover-title">Paid</div>
@@ -493,7 +493,7 @@
               <div class="tot-title">Total</div>
               <div class="tot-number">$38,000</div>
             </div>
-            <div class="bars">
+            <div class="bars-with-hover">
               <div class="green">
                 <div class="hover">
                   <div class="hover-title">Paid</div>
@@ -546,7 +546,7 @@
               <div class="tot-title">Total</div>
               <div class="tot-number">$38,000</div>
             </div>
-            <div class="bars">
+            <div class="bars-with-hover">
               <div class="green">
                 <div class="hover">
                   <div class="hover-title">Paid</div>
@@ -599,7 +599,7 @@
               <div class="tot-title">Total</div>
               <div class="tot-number">$38,000</div>
             </div>
-            <div class="bars">
+            <div class="bars-with-hover">
               <div class="green">
                 <div class="hover">
                   <div class="hover-title">Paid</div>
@@ -652,7 +652,7 @@
               <div class="tot-title">Total</div>
               <div class="tot-number">$38,000</div>
             </div>
-            <div class="bars">
+            <div class="bars-with-hover">
               <div class="green">
                 <div class="hover">
                   <div class="hover-title">Paid</div>
