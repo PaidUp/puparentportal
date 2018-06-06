@@ -22,6 +22,9 @@ function getUser () {
 }
 
 router.beforeEach((to, from, next) => {
+  if (!to.meta || !to.meta.roles) {
+    return next()
+  }
   // SKIP LOGIN: comment next if
   if (!to.meta.roles && !isAutenticated() && to.name !== 'login') {
     return next('login')
@@ -41,7 +44,6 @@ router.beforeEach((to, from, next) => {
       return next(dest)
     }
   }
-  console.log('continue')
   return next()
 })
 
