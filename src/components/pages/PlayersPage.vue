@@ -16,7 +16,7 @@
           v-player-details-totals(:invoices="invoices")
       button(v-if="false" class="md-button md-raised" @click="showDuplicateDialog = true") Duplicate Payment Dialog
       .invoices(v-if="invoices")
-        .pre-cards-title.with-sort-filter
+        .pre-cards-title
           div Invoices
           div.sort-filter-box(v-if="false")
             md-menu(md-direction="bottom-start")
