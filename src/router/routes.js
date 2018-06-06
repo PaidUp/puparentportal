@@ -14,6 +14,7 @@ import ProfilePage from '@/components/pages/ProfilePage.vue'
 import UpgradePage from '@/components/pages/UpgradePage.vue'
 import NewInvoicesPage from '@/components/pages/NewInvoicesPage.vue'
 import ProgramsPage from '@/components/pages/ProgramsPage.vue'
+import ProgramPlayersPage from '@/components/pages/ProgramPlayersPage.vue'
 import SearchResultPage from '@/components/pages/SearchResultPage.vue'
 import ReportsPage from '@/components/pages/ReportsPage.vue'
 import PrintInvoice from '@/components/pages/PrintInvoice.vue'
@@ -53,6 +54,13 @@ const routes = [
           roles: ['coach']
         },
         component: ProgramsPage
+      },
+      {
+        path: '/programplayers',
+        meta: {
+          roles: ['coach']
+        },
+        component: ProgramPlayersPage
       },
       {
         path: '/search',
