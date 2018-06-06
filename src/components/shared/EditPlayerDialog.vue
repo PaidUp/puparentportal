@@ -16,7 +16,7 @@
       </div>
       <update-avatar :url="url" @charged="setAvatar"></update-avatar>
     </div>
-    <div class="names-box">
+    <div class="names-box" :md-description="fullName">
       <md-field :class="{'md-invalid': $v.firstName.$error}">
         <label>First Name</label>
         <md-input v-model.trim="firstName" @input="$v.firstName.$touch()"></md-input>
@@ -45,6 +45,7 @@
   import { required } from 'vuelidate/lib/validators'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
   import UpdateAvatar from '@/components/shared/UpdateAvatar.vue'
+  import capitalize from '@/helpers/capitalize'
   export default {
     components: { VPayAnimation, UpdateAvatar },
     props: {
@@ -55,8 +56,8 @@
     data () {
       return {
         url: `${config.api.organization}/beneficiary/avatar/${this.player._id}`,
-        firstName: this.player.firstName,
-        lastName: this.player.lastName,
+        firstName: capitalize(this.player.firstName),
+        lastName: capitalize(this.player.lastName),
         organization: {},
         submited: false,
         avatar: null
@@ -66,6 +67,11 @@
       ...mapState('userModule', {
         user: 'user'
       }),
+      fullName () {
+        this.firstName = capitalize(this.firstName)
+        this.lastName = capitalize(this.lastName)
+        return this
+      },
       disableDeleteButton () {
         return this.numInvoices > 0
       },
@@ -103,8 +109,8 @@
         this.update({
           id: this.player._id,
           values: {
-            firstName: this.firstName,
-            lastName: this.lastName
+            firstName: capitalize(this.firstName),
+            lastName: capitalize(this.lastName)
           }
         }).then(player => {
           this.submited = false

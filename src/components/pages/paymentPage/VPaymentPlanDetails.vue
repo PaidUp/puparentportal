@@ -1,25 +1,25 @@
 <template>
   <div class="payment-single md-elevation-2">
-            <div>
-              <div class="title cgray bold">{{ due.description }}</div>
-              <div class="caption">{{ accountDescription }}</div>
-            </div>
-            <div class="details">
-              <div class="icon-side">
-                <md-icon :class="style" class="md-size-c">today</md-icon>
-                <div class="caption" :class="style">{{ overdue ? 'OVERDUE' : 'DUE' }}</div>
-              </div>
-              <div class="amount-side">
-                <div v-if="overdue" class="caption cred">CHARGED TODAY</div>
-                <div class="caption">{{ $d(due.dateCharge, 'short') }}</div>
-                <v-currency :amount="due.amount" :clazz="style[0] + ' number-big'" />
-              </div>
-            </div>
-            <div class="actions">
-              <md-button class="lblue md-accent" @click="showEditDialog = true">EDIT</md-button>
-            </div>
-            <view-due-dialog :due="due" :showDialog="showEditDialog" @cancel="showEditDialog = false" @updated="editDue"/>
-          </div>
+    <div>
+      <div class="title cgray bold">{{ due.description }}</div>
+      <div class="caption">{{ accountDescription }}</div>
+    </div>
+    <div class="details">
+      <div class="icon-side">
+        <md-icon :class="style" class="md-size-c">today</md-icon>
+        <div class="caption" :class="style">{{ overdue ? 'OVERDUE' : 'DUE' }}</div>
+      </div>
+      <div class="amount-side">
+        <div v-if="overdue" class="caption cred">CHARGED TODAY</div>
+        <div class="caption">{{ $d(due.dateCharge, 'short') }}</div>
+        <v-currency :amount="due.amount" :clazz="style[0] + ' number-big'" />
+      </div>
+    </div>
+    <div class="actions">
+      <md-button class="lblue md-accent" @click="showEditDialog = true">EDIT</md-button>
+    </div>
+    <view-due-dialog :due="due" :showDialog="showEditDialog" @cancel="showEditDialog = false" @updated="editDue"/>
+  </div>
 </template>
 <script>
 import VCurrency from '@/components/shared/VCurrency.vue'

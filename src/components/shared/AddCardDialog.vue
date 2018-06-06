@@ -3,25 +3,24 @@
     <div class="dialog-header white-dialog-header">
       <div class="title">Add New Card</div>
     </div>
-    <div class="main-box">
+    <div class="main-box" :md-description="dataCard">
       <div class="field-info">Credit or Debit Card*</div>
       <pu-card :class="{'stripe-card':true, complete: complete}" @done="done" @token="animation = false" :details="details"  :submited="submited" />
-   
       <md-field :class="{'md-invalid': $v.details.name.$error}">
         <label>Name on Card</label>
         <md-input v-model.trim="details.name" @input="$v.details.name.$touch()"></md-input>
-        <span class="md-error" v-if="!$v.details.name.required">{{ $t('validations.required', { field: 'Name' }) }}</span>        
+        <span class="md-error" v-if="!$v.details.name.required">{{ $t('validations.required', { field: 'Name' }) }}</span>
       </md-field>
       <md-field :class="{'md-invalid': $v.details.address_line1.$error}">
         <label>Address</label>
         <md-input v-model.trim="details.address_line1" @input="$v.details.address_line1.$touch()"></md-input>
-        <span class="md-error" v-if="!$v.details.address_line1.required">{{ $t('validations.required', { field: 'Address' }) }}</span>        
+        <span class="md-error" v-if="!$v.details.address_line1.required">{{ $t('validations.required', { field: 'Address' }) }}</span>
       </md-field>
       <div class="address-info no-zip">
         <md-field :class="{'md-invalid': $v.details.address_city.$error}">
           <label>City</label>
           <md-input v-model.trim="details.address_city" @input="$v.details.address_city.$touch()"></md-input>
-          <span class="md-error" v-if="!$v.details.address_city.required">{{ $t('validations.required', { field: 'City' }) }}</span>          
+          <span class="md-error" v-if="!$v.details.address_city.required">{{ $t('validations.required', { field: 'City' }) }}</span>
         </md-field>
         <md-autocomplete v-model="details.address_state" @input="$v.details.address_state.$touch()" name="state" id="state" :md-options="['Arizona', 'New York', 'Texas', 'Delware', 'California']" md-dense>
           <label>State</label>
@@ -49,7 +48,8 @@
   import { required } from 'vuelidate/lib/validators'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
   import states from '@/util/states'
-  
+  import capitalize from '@/helpers/capitalize'
+
 export default {
     props: {
       showDialog: Boolean
@@ -100,6 +100,12 @@ export default {
     computed: {
       disabled () {
         return !this.complete || this.$v.details.$invalid || this.submited
+      },
+      dataCard () {
+        this.details.name = capitalize(this.details.name)
+        this.details.address_line1 = capitalize(this.details.address_line1)
+        this.details.address_city = capitalize(this.details.address_city)
+        return this.details
       }
     },
     validations: {
