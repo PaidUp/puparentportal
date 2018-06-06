@@ -17,16 +17,22 @@ function isAutenticated () {
 }
 
 function getUser () {
-  return JSON.parse(window.localStorage.user)
+  if (window.localStorage.user) return JSON.parse(window.localStorage.user)
+  return null
 }
 
 router.beforeEach((to, from, next) => {
+  if (!to.meta || !to.meta.roles) {
+    return next()
+  }
   // SKIP LOGIN: comment next if
-  if (!to.meta.isPublic && !isAutenticated()) {
+  if (!to.meta.roles && !isAutenticated() && to.name !== 'login') {
     return next('login')
   }
-  if (to.name === 'login' && isAutenticated()) {
-    return next('/')
+  if ((to.name === 'login') && isAutenticated()) {
+    let dest = '/'
+    if (getUser().roles.includes('coach')) dest = '/programs'
+    return next(dest)
   }
   if (to.meta.roles && getUser() && getUser().roles) {
     let cond = getUser().roles.some(role => {
@@ -36,7 +42,7 @@ router.beforeEach((to, from, next) => {
       return next('/')
     }
   }
-  next()
+  return next()
 })
 
 export default router

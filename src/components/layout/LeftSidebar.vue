@@ -17,12 +17,12 @@
       </md-list-item>
 
       <!-- Search Result: maybe move to somewhere else -->
-      <md-list-item to="/search">
+      <md-list-item to="/search" v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Search Result</span>
       </md-list-item>
       
       <!-- Reports -->
-      <md-list-item to="/reports/payments" md-expand :md-expanded.sync="expand">
+      <md-list-item to="/reports/payments" md-expand v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Reports</span>
         <md-list slot="md-expand">
           <md-list-item to="/reports/payments">

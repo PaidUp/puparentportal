@@ -24,15 +24,12 @@ const routes = [
   {
     path: '/',
     component: MainLayout,
-    meta: {
-      isPublic: true
-    },
     children: [
       {
-        path: '/',
+        path: '/home',
         name: 'home',
         meta: {
-          roles: ['parent']
+          roles: ['parent', 'coach']
         },
         component: Welcome
       },
@@ -98,79 +95,49 @@ const routes = [
   },
   {
     path: '/print-invoice',
-    component: PrintInvoice,
-    meta: {
-      isPublic: true
-    }
+    component: PrintInvoice
   },
   {
     path: '/print-ineligible',
-    component: PrintIneligible,
-    meta: {
-      isPublic: true
-    }
+    component: PrintIneligible
   },
   {
     path: '/print-eligible',
-    component: PrintEligible,
-    meta: {
-      isPublic: true
-    }
+    component: PrintEligible
   },
   {
     path: '/',
     component: PublicLayout,
-    meta: {
-      isPublic: true
-    },
     children: [
       {
         path: '/login',
         name: 'login',
-        component: LoginPage,
-        meta: {
-          isPublic: true
-        }
+        component: LoginPage
       },
       {
         path: '/logout',
         name: 'logout',
-        component: Logout,
-        meta: {
-          isPublic: true
-        }
+        component: Logout
       },
       {
         path: '/signup',
         name: 'signup',
-        component: SignUpPage,
-        meta: {
-          isPublic: true
-        }
+        component: SignUpPage
       },
       {
         path: '/signup/fb',
         name: 'fbSignup',
-        component: FbSignUpPage,
-        meta: {
-          isPublic: true
-        }
+        component: FbSignUpPage
       },
       {
         path: '/forgot',
         name: 'forgotpass',
-        component: ForgotPassPage,
-        meta: {
-          isPublic: true
-        }
+        component: ForgotPassPage
       },
       {
         path: '/reset',
         name: 'resetpass',
-        component: ResetPassPage,
-        meta: {
-          isPublic: true
-        }
+        component: ResetPassPage
       }
     ]
   }
