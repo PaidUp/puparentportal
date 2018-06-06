@@ -24,13 +24,14 @@ import PrintEligible from '@/components/pages/PrintEligible.vue'
 const routes = [
   {
     path: '/',
+    name: 'layout',
     component: MainLayout,
     children: [
       {
         path: '/home',
         name: 'home',
         meta: {
-          roles: ['parent', 'coach']
+          roles: ['parent']
         },
         component: Welcome
       },
@@ -44,7 +45,7 @@ const routes = [
       {
         path: '/profile',
         meta: {
-          roles: ['parent']
+          roles: ['parent', 'coach']
         },
         component: ProfilePage
       },
