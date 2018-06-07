@@ -1,4 +1,4 @@
-import { organizationService } from '@/services'
+import { organizationService, commerceService } from '@/services'
 const module = {
   namespaced: true,
   state: {
@@ -17,6 +17,9 @@ const module = {
     },
     getOrganization (context, organizationId) {
       return organizationService.getOrganization(organizationId)
+    },
+    getInvoices (context, { organizationId }) {
+      return commerceService.invoicesByOrganization(organizationId)
     }
   }
 }
