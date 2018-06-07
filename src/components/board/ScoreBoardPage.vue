@@ -23,7 +23,7 @@
   import { mapState, mapActions } from 'vuex'
   import PuDetailsSelects from './score_board/PUDetailsSelects.vue'
   import PuDetailsTotals from './score_board/PUDetailsTotals.vue'
-  import PuScoreCard from './score_board/PUScoreCArd.vue'
+  import PuScoreCard from './score_board/PUScoreCard.vue'
   export default {
     components: { PuDetailsSelects, PuDetailsTotals, PuScoreCard },
     data: function () {
