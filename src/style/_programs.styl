@@ -1,5 +1,5 @@
+// ALL INSIDE SCOREBOARD/PROGRAMS
 .programs-page
-
   // BREADCRUMBS
   .breadcrums-box
     display: flex
@@ -10,15 +10,21 @@
     font-size: 12px
     font-weight: bold
     cursor pointer
+    @media $small-only
+      padding: 16px 0 0 16px
     .md-icon
       font-weight: normal
       margin 0 5px
       color: $clblue
+      @media $small-only
+        margin 0 2px
       &:first-child
         margin-left: 0
   
   // TABS WITH NO BACK
   .md-tabs
+    @media $small-only
+      padding: 16px
     .md-tabs-navigation
     .md-content
       background: transparent
@@ -151,7 +157,8 @@
               font-size: 13px
             .tot-number
               font-size: 16px
-    // PROGRAMS
+  
+  // PROGRAM PLAYERS
   .program-players
     margin-top: 20px
     .cards-layout
@@ -186,6 +193,33 @@
           line-height: 1.2
           font-size: 16px
           color: $cc1
+
+  // PROGRAM PLAYERS
+  .program-player-invoices
+    margin-top: 20px
+    .cards-layout
+      .md-card
+        padding: 16px
+        .title
+          color: $cgray2
+        .card-content
+          display: flex
+          flex-flow: row nowrap
+          justify-content: space-between
+          align-items: center
+          margin-top: 20px
+          .status
+            text-align: center
+            width 35%
+          .amount-details
+            margin-top: 5px
+            color: $cgray1
+            text-align: right
+            .detail
+              line-height: 1
+            .total
+              margin-top: 5px
+              font-weight: bold
 
     
           
