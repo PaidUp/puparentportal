@@ -10,7 +10,7 @@
   box-shadow:  inset 5px 0 5px -5px $cgray2
   @media $small-only
     padding: 0!important
-sup 
+sup
   top: -.3em!important
 
 .has-elevation-4
@@ -52,12 +52,12 @@ sup
       margin-right: 10px
     .md-menu
       margin-bottom: 5px;
-      .md-icon 
+      .md-icon
         width: 18px;
         min-width: 18px;
         height: 18px;
         font-size: 18px!important;
-  
+
 
 
 // LINKS
@@ -78,6 +78,9 @@ a, a:hover, a:visited, a:link, a:active, a > *
     .md-stepper-number
       background: $clblue !important
       color: #fff
+    .md-disabled
+      .md-stepper-description
+        display none
     &.md-active
       .md-stepper-number
         color: #fff !important
@@ -128,7 +131,7 @@ a, a:hover, a:visited, a:link, a:active, a > *
 
 // MD-CHECKBOX
 .md-checkbox
-  label 
+  label
     line-height: 1.2
     text-align: left
 .md-checkbox.lblue
@@ -142,7 +145,7 @@ a, a:hover, a:visited, a:link, a:active, a > *
   // .md-prefix
   //   margin-top: 5px
   &.md-disabled
-    input 
+    input
       -webkit-text-fill-color: $cgray2!important
       color: $cgray2!important
     &:after
@@ -248,12 +251,12 @@ mixin-placeholder(c)
   border-bottom: 1px solid rgba(0, 0, 0, 0.42)
   transition all ease 400ms
   margin: 4px 0 24px
-  &.StripeElement--focus 
+  &.StripeElement--focus
     border-bottom: 2px solid $ca1
     border-color: $ca1
-  &.StripeElement--invalid 
+  &.StripeElement--invalid
     border-color: #fa755a
-  &.StripeElement--webkit-autofill 
+  &.StripeElement--webkit-autofill
     background-color: #fefde5 !important
 
 

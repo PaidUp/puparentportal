@@ -163,3 +163,14 @@
     }
   }
 </script>
+<style scoped>
+  /* .programs{
+    color:blueviolet;
+  } */
+  .md-disabled .md-stepper-description {
+    display: none;
+  }
+  /* .md-active .md-stepper-description{
+    display: inline-block;
+  } */
+</style>
