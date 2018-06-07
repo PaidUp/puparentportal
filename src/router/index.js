@@ -17,26 +17,38 @@ function isAutenticated () {
 }
 
 function getUser () {
-  return JSON.parse(window.localStorage.user)
+  if (window.localStorage.user) return JSON.parse(window.localStorage.user)
+  return null
+}
+
+function defaultDestination () {
+  let dest = '/home'
+  if (getUser().roles.includes('coach')) dest = '/scoreboard'
+  return dest
 }
 
 router.beforeEach((to, from, next) => {
   // SKIP LOGIN: comment next if
-  if (!to.meta.isPublic && !isAutenticated()) {
+  if (to.meta.roles && !isAutenticated() && to.name !== 'login') {
     return next('login')
   }
-  if (to.name === 'login' && isAutenticated()) {
-    return next('/')
+  if ((to.name === 'login' || to.name === 'layout' || to.name === 'signup') && isAutenticated()) {
+    let dest = defaultDestination()
+    return next(dest)
+  }
+  if ((!to.meta || !to.meta.roles)) {
+    return next()
   }
   if (to.meta.roles && getUser() && getUser().roles) {
+    let dest = defaultDestination()
     let cond = getUser().roles.some(role => {
       return to.meta.roles.includes(role)
     })
     if (!cond) {
-      return next('/')
+      return next(dest)
     }
   }
-  next()
+  return next()
 })
 
 export default router

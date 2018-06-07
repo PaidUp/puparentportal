@@ -13,7 +13,10 @@ import PublicLayout from '@/components/layout/PublicLayout.vue'
 import ProfilePage from '@/components/pages/ProfilePage.vue'
 import UpgradePage from '@/components/pages/UpgradePage.vue'
 import NewInvoicesPage from '@/components/pages/NewInvoicesPage.vue'
-import ProgramsPage from '@/components/pages/ProgramsPage.vue'
+import ScoreBoardPage from '@/components/board/ScoreBoardPage.vue'
+import ScorePlayersPage from '@/components/board/ScorePlayersPage.vue'
+import SearchResultPage from '@/components/board/SearchResultPage.vue'
+import ReportsPage from '@/components/board/ReportsPage.vue'
 import PrintInvoice from '@/components/pages/PrintInvoice.vue'
 import PrintIneligible from '@/components/pages/PrintIneligible.vue'
 import PrintEligible from '@/components/pages/PrintEligible.vue'
@@ -21,13 +24,11 @@ import PrintEligible from '@/components/pages/PrintEligible.vue'
 const routes = [
   {
     path: '/',
+    name: 'layout',
     component: MainLayout,
-    meta: {
-      isPublic: true
-    },
     children: [
       {
-        path: '/',
+        path: '/home',
         name: 'home',
         meta: {
           roles: ['parent']
@@ -44,16 +45,31 @@ const routes = [
       {
         path: '/profile',
         meta: {
-          roles: ['parent']
+          roles: ['parent', 'coach']
         },
         component: ProfilePage
       },
       {
-        path: '/programs',
+        path: '/scoreboard',
         meta: {
           roles: ['coach']
         },
-        component: ProgramsPage
+        component: ScoreBoardPage
+      },
+      {
+        path: '/scoreplayers',
+        meta: {
+          roles: ['coach']
+        },
+        component: ScorePlayersPage
+      },
+      {
+        path: '/search',
+        component: SearchResultPage
+      },
+      {
+        path: '/reports/payments',
+        component: ReportsPage
       },
       {
         path: '/new-invoices',
@@ -88,79 +104,49 @@ const routes = [
   },
   {
     path: '/print-invoice',
-    component: PrintInvoice,
-    meta: {
-      isPublic: true
-    }
+    component: PrintInvoice
   },
   {
     path: '/print-ineligible',
-    component: PrintIneligible,
-    meta: {
-      isPublic: true
-    }
+    component: PrintIneligible
   },
   {
     path: '/print-eligible',
-    component: PrintEligible,
-    meta: {
-      isPublic: true
-    }
+    component: PrintEligible
   },
   {
     path: '/',
     component: PublicLayout,
-    meta: {
-      isPublic: true
-    },
     children: [
       {
         path: '/login',
         name: 'login',
-        component: LoginPage,
-        meta: {
-          isPublic: true
-        }
+        component: LoginPage
       },
       {
         path: '/logout',
         name: 'logout',
-        component: Logout,
-        meta: {
-          isPublic: true
-        }
+        component: Logout
       },
       {
         path: '/signup',
         name: 'signup',
-        component: SignUpPage,
-        meta: {
-          isPublic: true
-        }
+        component: SignUpPage
       },
       {
         path: '/signup/fb',
         name: 'fbSignup',
-        component: FbSignUpPage,
-        meta: {
-          isPublic: true
-        }
+        component: FbSignUpPage
       },
       {
         path: '/forgot',
         name: 'forgotpass',
-        component: ForgotPassPage,
-        meta: {
-          isPublic: true
-        }
+        component: ForgotPassPage
       },
       {
         path: '/reset',
         name: 'resetpass',
-        component: ResetPassPage,
-        meta: {
-          isPublic: true
-        }
+        component: ResetPassPage
       }
     ]
   }

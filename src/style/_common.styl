@@ -22,6 +22,10 @@ sup
   background: #ffffff
   padding: 16px
   margin-bottom: 16px;
+  @media $small-only
+    margin-bottom: 0px;
+    height auto
+    box-shadow: none
   .title
     color: $cgray1
     font-weight: 500
@@ -48,8 +52,14 @@ sup
     flex-flow: row nowrap
     justify-content: center
     align-items: flex-end
+    @media $small-only
+      flex-flow: column nowrap
+      align-items: center
     .player-info
       margin-right: 10px
+      @media $small-only
+        margin-right: 0px
+        margin-bottom: 10px
     .md-menu
       margin-bottom: 5px;
       .md-icon
@@ -131,6 +141,8 @@ a, a:hover, a:visited, a:link, a:active, a > *
 
 // MD-CHECKBOX
 .md-checkbox
+  .md-checkbox-label
+    height auto!important
   label
     line-height: 1.2
     text-align: left
@@ -156,9 +168,6 @@ a, a:hover, a:visited, a:link, a:active, a > *
       margin-top: 5px
 
 
-// MD-AVATAR MD-ICON
-.md-avatar-icon .md-icon
-  color: #fff!important
 
 // MD-RADIO
 .md-radio.lblue
@@ -166,6 +175,18 @@ a, a:hover, a:visited, a:link, a:active, a > *
     border-color: $clblue!important
     &:after
       background-color: $clblue!important
+
+// MD-AVATAR MD-ICON
+.md-avatar-icon .md-icon
+  color: #fff!important
+
+// MD-AVATAR
+.md-avatar
+  &.md-size-c
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    font-size: 44px!important
 
 // MD-ICONS
 .md-icon
@@ -321,6 +342,8 @@ input[type=number]::-webkit-outer-spin-button {
 .pre-cards-title
   color: $cgray2
   margin-bottom: 10px
+  @media $small-only
+    padding-left: 16px
   &.with-sort-filter
     display: flex
     flex-flow: row nowrap
@@ -349,24 +372,42 @@ input[type=number]::-webkit-outer-spin-button {
   align-items: flex-start
   padding: 10px 12px
   background: #fff
+  @media $small-only
+    flex-flow: column wrap
+    margin: 0 16px;
   .details-selects
     display: flex
     flex-flow: row nowrap
     justify-content: flex-start
     align-items: center
+    @media $small-only
+      flex-flow: column wrap
+      justify-content: center
+      width: 100%
+      margin-bottom: 20px
     .md-field
       width auto
       margin-bottom: 10px
+      @media $small-only
+        width: 100%
       &:not(:last-child)
         margin-right: 20px
+        @media $small-only
+          margin-right: 0
   .details-numbers
     margin-top: 4px
     display: flex
     flex-flow: row nowrap
     justify-content: flex-end
     align-items: center
+    @media $small-only
+      flex-flow: row wrap
+      justify-content: center
+      width: 100%
+      margin-bottom: 10px
     .title-big
       margin-top: 2px
+      margin-bottom: 20px
     & > div:not(:last-child)
       margin-right: 20px
     .concept
@@ -387,6 +428,9 @@ input[type=number]::-webkit-outer-spin-button {
   flex-flow: row wrap
   justify-content: flex-start
   align-items: center
+  @media $small-only
+    justify-content: center
+    width 100%
   @media $xlarge-up
     .md-card
       width: 250px
@@ -394,5 +438,8 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0 15px 15px 0
     width: 220px;
     height 200px
+    @media $small-only
+      margin: 0 0px 20px 0
+      width 70%
     .md-card-actions
       justify-content: center
