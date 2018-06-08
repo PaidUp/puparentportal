@@ -14,7 +14,7 @@
     </div>
     <md-field :class="{'md-invalid': $v.fbUser.email.$error}">
       <label>{{ $t('component.signup.email') }}</label>
-      <md-input v-model.trim="fbUser.email" @input="$v.fbUser.email.$touch()"></md-input>
+      <md-input v-model.trim="fbUser.email" disabled @input="$v.fbUser.email.$touch()"></md-input>
       <span class="md-error" v-if="!$v.fbUser.email.required">{{ $t('validations.required', { field: 'Email' }) }}</span>
       <span class="md-error" v-if="!$v.fbUser.email.email">{{ $t('validations.email') }}</span>
     </md-field>
