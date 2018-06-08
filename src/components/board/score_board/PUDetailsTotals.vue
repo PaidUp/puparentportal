@@ -43,7 +43,6 @@ export default {
         other: 0
       }
       for (let key in this.items) {
-        console.log(this.items[key])
         resp.total = resp.total + this.items[key].total
         resp.paid = resp.paid + this.items[key].paid
         resp.unpaid = resp.unpaid + this.items[key].unpaid
