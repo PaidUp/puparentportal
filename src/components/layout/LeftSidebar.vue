@@ -17,7 +17,12 @@
         <md-list slot="md-expand">
           <md-list-item to="/scoreplayers">
             <div class="md-list-item-text">
-              ProgPlayers
+              ScorePlayers
+            </div>
+          </md-list-item>
+          <md-list-item to="/scoreplayerdetails">
+            <div class="md-list-item-text">
+              ScorePlayerDetails
             </div>
           </md-list-item>
         </md-list>
