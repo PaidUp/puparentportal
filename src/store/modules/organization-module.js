@@ -2,7 +2,8 @@ import { organizationService, commerceService } from '@/services'
 const module = {
   namespaced: true,
   state: {
-    organizations: []
+    organizations: [],
+    plans: {}
   },
   mutations: {
     setOrganizations (state, organizations) {
@@ -20,6 +21,12 @@ const module = {
     },
     getInvoices (context, { organizationId }) {
       return commerceService.invoicesByOrganization(organizationId)
+    },
+    getCredits (context, { organizationId }) {
+      return commerceService.creditsByOrganization(organizationId)
+    },
+    getPreorders (context, { organizationId }) {
+      return commerceService.preordersByOrganization(organizationId)
     }
   }
 }

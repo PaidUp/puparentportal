@@ -34,6 +34,16 @@ class CommerceService {
       .get(`/invoice/organization/${organizationId}`)
   }
 
+  creditsByOrganization (organizationId) {
+    return trae
+      .get(`/credit/organization/${organizationId}`)
+  }
+
+  preordersByOrganization (organizationId) {
+    return trae
+      .get(`/preorder/organization/${organizationId}`)
+  }
+
   preordersByBeneficiary (beneficiaryId) {
     return trae
       .get(`/preorder/beneficiary/${beneficiaryId}`)
