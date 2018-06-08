@@ -1,5 +1,5 @@
 <template lang="pug">
-  md-step(:id="stepId" md-label="Program" :md-description="selected.name" :md-done.sync="step")
+  md-step(:id="stepId" md-label="Program" :md-description="step ? selected.name : pending" :md-done.sync="step")
     .programs
       .program.md-elevation-2.md-body-2(@click="select(product)" v-for="product in productFiltered" :key="product._id") {{ product.name }}
     .step-actions
@@ -19,6 +19,7 @@ export default {
   },
   data () {
     return {
+      pending: 'Choose your program.',
       selected: {}
     }
   },
@@ -55,3 +56,4 @@ export default {
   }
 }
 </script>
+
