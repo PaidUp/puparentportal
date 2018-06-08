@@ -379,7 +379,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0 16px;
   .details-selects
     display: flex
-    flex-flow: row nowrap
+    flex-flow: row wrap
     justify-content: flex-start
     align-items: center
     @media $small-only
@@ -445,6 +445,7 @@ input[type=number]::-webkit-outer-spin-button {
       width 100%
     .md-card-actions
       justify-content: center
+
   // INVOICE TYPE CARD 
   .invoice-card-box
     display: flex
@@ -478,3 +479,42 @@ input[type=number]::-webkit-outer-spin-button {
         .total
           margin-top: 5px
           font-weight: bold
+
+// BREADCRUMBS
+.breadcrums-box
+  display: flex
+  flex-flow: row nowrap
+  justify-content: flex-start
+  align-items: center
+  color: $clblue
+  font-size: 12px
+  font-weight: bold
+  cursor pointer
+  @media $small-only
+    padding: 16px 0 0 16px
+  .md-icon
+    font-weight: normal
+    margin 0 5px
+    color: $clblue!important
+    @media $small-only
+      margin 0 2px
+    &:first-child
+      margin-left: 0
+
+// TABS WITH NO BACK
+.md-tabs.tabs-lblue
+  @media $small-only
+    padding: 16px
+  .md-tabs-navigation
+  .md-content
+    background: transparent
+  .md-tabs-navigation
+    .md-button
+      color: $clblue
+      &.md-active
+        color: $clblue
+    .md-tabs-indicator
+      background-color: $clblue
+  .md-content 
+    .md-tab
+      padding-left: 2px

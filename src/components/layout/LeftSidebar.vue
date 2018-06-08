@@ -11,6 +11,11 @@
         </div>
       </md-list-item>
       
+      <!-- CHAP CLUBS & PROGRAMS -->
+      <md-list-item to="/chapclubprograms" v-if="isRole('coach')">
+        <span class="md-list-item-text ca1 bold">Clubs &amp; Programs</span>
+      </md-list-item>
+
       <!-- Programs -->
       <md-list-item to="/scoreboard" md-expand v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Scoreboard</span>
