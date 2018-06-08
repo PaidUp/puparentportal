@@ -29,13 +29,13 @@
     return invoices.reduce((val, current) => {
       let prd = val[current.productId]
       if (prd) {
-        prd.total = prd.total + current.priceBase
+        prd.total = prd.total + current.price
         prd.players.add(current.beneficiaryId)
       } else {
         prd = {
           id: current.productId,
           name: current.productName,
-          total: current.priceBase,
+          total: current.price,
           paid: 0,
           unpaid: 0,
           overdue: 0,
@@ -47,14 +47,14 @@
         val[current.productId] = prd
       }
       if (current.status === 'paidup' || current.status === 'submitted') {
-        prd.paid = prd.paid + current.priceBase
+        prd.paid = prd.paid + current.price
       } else if (current.status === 'autopay') {
-        prd.unpaid = prd.unpaid + current.priceBase
+        prd.unpaid = prd.unpaid + current.price
       } else if (current.status === 'failed') {
         prd.inelegible.add(current.beneficiaryId)
-        prd.overdue = prd.overdue + current.priceBase
+        prd.overdue = prd.overdue + current.price
       } else if (current.status === 'void' || current.status === 'disabled') {
-        prd.other = prd.other + current.priceBase
+        prd.other = prd.other + current.price
       }
       return val
     }, {})
@@ -137,10 +137,22 @@
     computed: {
       ...mapState('userModule', {
         'user': 'user'
-      })
+      }),
+      ...mapState('organizationModule', {
+        'organization': 'organization'
+      }),
+      seasons () {
+        if (this.organization) {
+          this.organization.seasons.sort((orgA, orgB) => {
+            return new Date(orgA.date).getTime() - new Date(orgA.date).getTime()
+          })
+        }
+        return []
+      }
     },
     methods: {
       ...mapActions('organizationModule', {
+        loadOrganization: 'loadOrganization',
         getInvoices: 'getInvoices',
         getCredits: 'getCredits',
         getPreorders: 'getPreorders'
@@ -161,7 +173,7 @@
       }
     },
     watch: {
-      user () {
+      organization () {
         this.getAll()
       }
     },
