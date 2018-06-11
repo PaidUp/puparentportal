@@ -63,16 +63,97 @@
         </div>
       </div>
     </div>
-    
+
     <!-- TABS -->
     <div class="tabs-section">
       <md-tabs class="tabs-lblue">
+
+        <!-- TAB INVOICES -->
         <md-tab id="tab-invoices" md-label="Invoices">
-          asd
+          <div class="actions-box">
+            <md-button class="lblue md-accent md-raised md-dense">Add row</md-button>
+            <md-button class="md-icon-button md-dense md-accent lblue md-raised">
+              <md-icon>add</md-icon>
+            </md-button>
+          </div>
+          <md-table md-card v-model="tableData" md-sort="name" md-sort-order="asc" class="table-invoices">
+            <md-table-row slot="md-table-row" slot-scope="{ item }">
+              <md-table-cell md-label="Description">
+                <div class="col-with-input">
+                  <input type="text" class="custom-input" v-model="inputModel"> 
+                </div>
+              </md-table-cell>
+              <md-table-cell md-label="Amount" md-numeric>
+                $300
+              </md-table-cell>
+              <md-table-cell md-label="Charge Date" class="centered">
+                05-01-2018
+              </md-table-cell>
+              <md-table-cell md-label="Max Charge Date" class="centered">
+                -
+              </md-table-cell>
+              <md-table-cell md-label="Payment Account" class="centered">
+                <div class="">
+                  Visa ****1234
+                </div>
+              </md-table-cell>
+              <md-table-cell md-label="Parent" class="centered">
+                <div class="col-with-input">
+                  <select name="parent-s" id="parent-s" class="custom-select">
+                    <option value="volvo">Felipe Fernandex</option>
+                    <option value="saab">Savier Commns</option>
+                    <option value="mercedes">Lucas Felix</option>
+                    <option value="audi">Samuel Jaxson Super long input name</option>
+                  </select>
+                </div>
+              </md-table-cell>
+              <md-table-cell md-label="Status">
+                PAID
+              </md-table-cell>
+              <md-table-cell md-label="Invoice Number">
+                INV12345
+              </md-table-cell>
+              <md-table-cell md-label="Tags">
+                <div class="col-chips">
+                  <md-chip class="lblue" md-deletable>Dues</md-chip>
+                  <!-- <md-chip class="lblue add">Add</md-chip> -->
+                   <md-button class="md-icon-button md-dense md-accent lblue">
+                    <md-icon>add_circle_outline</md-icon>
+                  </md-button>
+                </div>
+              </md-table-cell>
+              <md-table-cell md-label="Actions">
+                <div class="col-actions">
+                  <md-button class="md-icon-button md-dense md-accent lblue">
+                    <md-icon>refresh</md-icon>
+                  </md-button>
+                  <md-button class="md-icon-button md-dense md-accent lblue">
+                    <md-icon>file_copy</md-icon>
+                  </md-button>
+                  <md-button class="md-icon-button md-dense md-accent lblue">
+                    <md-icon>delete</md-icon>
+                  </md-button>
+                </div>
+              </md-table-cell>
+            </md-table-row>
+          </md-table>
+
+          <div class="actions-box">
+            <md-button class="lblue md-accent">Cancel</md-button>
+            <md-button class="lblue md-accent md-raised">Save</md-button>
+          </div>
+
+
         </md-tab>
+
+
+        <!-- TAB ASSIGNED PLANS -->
         <md-tab id="tab-assigned-plans" md-label="Assigned Plans">
           Assigned Plans
         </md-tab>
+
+
+        <!-- TAB PARENTS -->
         <md-tab id="tab-parents" md-label="Parents">
           Parents
         </md-tab>
@@ -84,19 +165,26 @@
 </template>
 
 <script>
-  import {
-    mapState
-  } from 'vuex'
   export default {
     data: function () {
       return {
-        movie: 'godfather'
+        movie: 'godfather',
+        tableData: [ {
+          id: 1,
+          name: 'Shawna Dubbin',
+          email: 'sdubbin0@geocities.com',
+          phone: '888-999-8888'
+        },
+        {
+          id: 2,
+          name: 'Odette Demageard',
+          email: 'odemageard1@spotify.com',
+          phone: '888-999-1111'
+        }
+        ],
+        inputModel: 'Dues Payments'
+
       }
-    },
-    computed: {
-      ...mapState('userModule', {
-        'user': 'user'
-      })
     },
     methods: {}
   }

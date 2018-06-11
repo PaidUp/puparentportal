@@ -196,6 +196,25 @@ a, a:hover, a:visited, a:link, a:active, a > *
     height: 34px;
     font-size: 34px!important
 
+// MD-CHIP
+.md-chip.lblue
+  background: #fff
+  border 1px solid $clblue
+  color: $clblue
+  .md-button
+    background: $clblue
+
+  &:hover
+    background-color: #fff!important
+    color: $clblue!important
+    .md-button
+      background: $clblue!important
+      svg 
+        fill: #fff!important
+    &.add
+      cursor pointer
+
+
 // MD-DATEPICKER
 .md-datepicker-dialog
   flex-flow: column nowrap
@@ -518,3 +537,14 @@ input[type=number]::-webkit-outer-spin-button {
   .md-content 
     .md-tab
       padding-left: 2px
+
+.custom-select
+.custom-input
+  width 100%
+  background: transparent 
+  border: none 
+  outline: solid transparent
+  // -webkit-appearance: none
+  // -moz-appearance: none
+  // text-indent: 1px
+  // text-overflow: ''
