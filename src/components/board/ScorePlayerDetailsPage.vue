@@ -56,7 +56,7 @@
       </div>
     </div>
     <div class="program-player-invoices">
-      <md-tabs>
+      <md-tabs class="tabs-lblue">
         <md-tab id="tab-invoices" md-label="Invoices">
           <div class="cards-layout">
             <md-card>

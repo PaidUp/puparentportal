@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="program-players">
-      <md-tabs>
+      <md-tabs class="tabs-lblue">
         <md-tab id="tab-player" md-label="Players">
           <div class="cards-layout">
             <md-card md-with-hover>
