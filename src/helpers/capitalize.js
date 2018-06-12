@@ -1,3 +1,8 @@
 export default function capitalize (value) {
-  return value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
+  return value.replace(
+    /\w\S*/g,
+    function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    }
+  )
 };
