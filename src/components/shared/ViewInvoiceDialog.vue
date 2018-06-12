@@ -112,7 +112,6 @@
   import PaymentAccountsDialog from '@/components/shared/payment/PaymentAccountsDialog.vue'
   import { mapGetters, mapActions } from 'vuex'
   import numeral from 'numeral'
-  import capitalize from '@/helpers/capitalize'
 
   export default {
     components: { VPayAnimation, PaymentAccountsDialog },
@@ -147,7 +146,7 @@
           this.dateChargeDisable = this.$d(this.dateCharge, 'short')
           this.description = this.invoice.label
           this.amount = numeral(this.invoice.price).format('0,0.00')
-          this.status = capitalize(this.invoice.status)
+          this.status = this.invoice.status.toUpperCase()
           this.paymentMethod = `${this.invoice.paymentDetails.brand}••••${this.invoice.paymentDetails.last4}`
         }
       }
