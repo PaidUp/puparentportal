@@ -1,8 +1,8 @@
 <template>
   <div class="details-selects">
-    <md-field>
+    <md-field v-if="season">
       <label>Season</label>
-      <md-select v-if="season" v-model="season" placeholder="Season">
+      <md-select v-model="season" placeholder="Season">
         <md-option v-for="option in seasons" :key="option._id" :value="option._id">{{option.name}}</md-option>
       </md-select>
     </md-field>
@@ -49,6 +49,11 @@ export default {
     seasons () {
       console.log('this.seasons[this.seasons.length - 1]:', this.seasons[this.seasons.length - 1]._id)
       this.season = this.seasons[this.seasons.length - 1]._id
+    }
+  },
+  mounted () {
+    if (this.user) {
+      this.loadOrganization(this.user.organizationId)
     }
   }
 }
