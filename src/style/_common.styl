@@ -10,7 +10,7 @@
   box-shadow:  inset 5px 0 5px -5px $cgray2
   @media $small-only
     padding: 0!important
-sup 
+sup
   top: -.3em!important
 
 .has-elevation-4
@@ -22,6 +22,10 @@ sup
   background: #ffffff
   padding: 16px
   margin-bottom: 16px;
+  @media $small-only
+    margin-bottom: 0px;
+    height auto
+    box-shadow: none
   .title
     color: $cgray1
     font-weight: 500
@@ -48,16 +52,22 @@ sup
     flex-flow: row nowrap
     justify-content: center
     align-items: flex-end
+    @media $small-only
+      flex-flow: column nowrap
+      align-items: center
     .player-info
       margin-right: 10px
+      @media $small-only
+        margin-right: 0px
+        margin-bottom: 10px
     .md-menu
       margin-bottom: 5px;
-      .md-icon 
+      .md-icon
         width: 18px;
         min-width: 18px;
         height: 18px;
         font-size: 18px!important;
-  
+
 
 
 // LINKS
@@ -78,6 +88,9 @@ a, a:hover, a:visited, a:link, a:active, a > *
     .md-stepper-number
       background: $clblue !important
       color: #fff
+    .md-disabled
+      .md-stepper-description
+        display none
     &.md-active
       .md-stepper-number
         color: #fff !important
@@ -128,7 +141,9 @@ a, a:hover, a:visited, a:link, a:active, a > *
 
 // MD-CHECKBOX
 .md-checkbox
-  label 
+  .md-checkbox-label
+    height auto!important
+  label
     line-height: 1.2
     text-align: left
 .md-checkbox.lblue
@@ -142,7 +157,7 @@ a, a:hover, a:visited, a:link, a:active, a > *
   // .md-prefix
   //   margin-top: 5px
   &.md-disabled
-    input 
+    input
       -webkit-text-fill-color: $cgray2!important
       color: $cgray2!important
     &:after
@@ -153,9 +168,6 @@ a, a:hover, a:visited, a:link, a:active, a > *
       margin-top: 5px
 
 
-// MD-AVATAR MD-ICON
-.md-avatar-icon .md-icon
-  color: #fff!important
 
 // MD-RADIO
 .md-radio.lblue
@@ -164,6 +176,18 @@ a, a:hover, a:visited, a:link, a:active, a > *
     &:after
       background-color: $clblue!important
 
+// MD-AVATAR MD-ICON
+.md-avatar-icon .md-icon
+  color: #fff!important
+
+// MD-AVATAR
+.md-avatar
+  &.md-size-c
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    font-size: 44px!important
+
 // MD-ICONS
 .md-icon
   &.md-size-c
@@ -171,6 +195,25 @@ a, a:hover, a:visited, a:link, a:active, a > *
     min-width: 34px;
     height: 34px;
     font-size: 34px!important
+
+// MD-CHIP
+.md-chip.lblue
+  background: #fff
+  border 1px solid $clblue
+  color: $clblue
+  .md-button
+    background: $clblue
+
+  &:hover
+    background-color: #fff!important
+    color: $clblue!important
+    .md-button
+      background: $clblue!important
+      svg 
+        fill: #fff!important
+    &.add
+      cursor pointer
+
 
 // MD-DATEPICKER
 .md-datepicker-dialog
@@ -248,12 +291,12 @@ mixin-placeholder(c)
   border-bottom: 1px solid rgba(0, 0, 0, 0.42)
   transition all ease 400ms
   margin: 4px 0 24px
-  &.StripeElement--focus 
+  &.StripeElement--focus
     border-bottom: 2px solid $ca1
     border-color: $ca1
-  &.StripeElement--invalid 
+  &.StripeElement--invalid
     border-color: #fa755a
-  &.StripeElement--webkit-autofill 
+  &.StripeElement--webkit-autofill
     background-color: #fefde5 !important
 
 
@@ -303,6 +346,8 @@ mixin-placeholder(c)
   color $ca1!important
 .cgray
   color $cgray1!important
+.cyellow
+  color $cyellow!important
 
 // Input type number remove arrows
 input[type='number'] {
@@ -318,6 +363,8 @@ input[type=number]::-webkit-outer-spin-button {
 .pre-cards-title
   color: $cgray2
   margin-bottom: 10px
+  @media $small-only
+    padding-left: 16px
   &.with-sort-filter
     display: flex
     flex-flow: row nowrap
@@ -346,24 +393,42 @@ input[type=number]::-webkit-outer-spin-button {
   align-items: flex-start
   padding: 10px 12px
   background: #fff
+  @media $small-only
+    flex-flow: column wrap
+    margin: 0 16px;
   .details-selects
     display: flex
-    flex-flow: row nowrap
+    flex-flow: row wrap
     justify-content: flex-start
     align-items: center
+    @media $small-only
+      flex-flow: column wrap
+      justify-content: center
+      width: 100%
+      margin-bottom: 20px
     .md-field
       width auto
       margin-bottom: 10px
+      @media $small-only
+        width: 100%
       &:not(:last-child)
         margin-right: 20px
+        @media $small-only
+          margin-right: 0
   .details-numbers
     margin-top: 4px
     display: flex
     flex-flow: row nowrap
     justify-content: flex-end
     align-items: center
+    @media $small-only
+      flex-flow: row wrap
+      justify-content: center
+      width: 100%
+      margin-bottom: 10px
     .title-big
       margin-top: 2px
+      margin-bottom: 20px
     & > div:not(:last-child)
       margin-right: 20px
     .concept
@@ -384,6 +449,9 @@ input[type=number]::-webkit-outer-spin-button {
   flex-flow: row wrap
   justify-content: flex-start
   align-items: center
+  @media $small-only
+    justify-content: center
+    width 100%
   @media $xlarge-up
     .md-card
       width: 250px
@@ -391,5 +459,92 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0 15px 15px 0
     width: 220px;
     height 200px
+    @media $small-only
+      margin: 16px
+      width 100%
     .md-card-actions
       justify-content: center
+
+  // INVOICE TYPE CARD 
+  .invoice-card-box
+    display: flex
+    flex-flow: column nowrap
+    justify-content: space-between
+    align-items: flex-start
+    width 100%
+    .md-card-header
+    .md-card-content
+    .md-card-actions
+      width 100%
+    .md-card-header
+      .title
+        color: $cblack
+        margin-bottom: 5px
+    .md-card-content.card-content
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      align-items: center
+      .status
+        text-align: center
+        .md-icon
+          color: $cgreen
+      .amount-details
+        margin-top: 5px
+        color: $cgray1
+        text-align: right
+        .details
+          line-height: 1
+        .total
+          margin-top: 5px
+          font-weight: bold
+
+// BREADCRUMBS
+.breadcrums-box
+  display: flex
+  flex-flow: row nowrap
+  justify-content: flex-start
+  align-items: center
+  color: $clblue
+  font-size: 12px
+  font-weight: bold
+  cursor pointer
+  @media $small-only
+    padding: 16px 0 0 16px
+  .md-icon
+    font-weight: normal
+    margin 0 5px
+    color: $clblue!important
+    @media $small-only
+      margin 0 2px
+    &:first-child
+      margin-left: 0
+
+// TABS WITH NO BACK
+.md-tabs.tabs-lblue
+  @media $small-only
+    padding: 16px
+  .md-tabs-navigation
+  .md-content
+    background: transparent
+  .md-tabs-navigation
+    .md-button
+      color: $clblue
+      &.md-active
+        color: $clblue
+    .md-tabs-indicator
+      background-color: $clblue
+  .md-content 
+    .md-tab
+      padding-left: 2px
+
+.custom-select
+.custom-input
+  width 100%
+  background: transparent 
+  border: none 
+  outline: solid transparent
+  // -webkit-appearance: none
+  // -moz-appearance: none
+  // text-indent: 1px
+  // text-overflow: ''

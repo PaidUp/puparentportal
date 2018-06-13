@@ -13,9 +13,12 @@ import PublicLayout from '@/components/layout/PublicLayout.vue'
 import ProfilePage from '@/components/pages/ProfilePage.vue'
 import UpgradePage from '@/components/pages/UpgradePage.vue'
 import NewInvoicesPage from '@/components/pages/NewInvoicesPage.vue'
-import ProgramsPage from '@/components/pages/ProgramsPage.vue'
-import SearchResultPage from '@/components/pages/SearchResultPage.vue'
-import ReportsPage from '@/components/pages/ReportsPage.vue'
+import ScoreBoardPage from '@/components/board/ScoreBoardPage.vue'
+import ScorePlayersPage from '@/components/board/ScorePlayersPage.vue'
+import ScorePlayerDetailsPage from '@/components/board/ScorePlayerDetailsPage.vue'
+import ChapClubPrograms from '@/components/chap/ChapClubPrograms.vue'
+import SearchResultPage from '@/components/board/SearchResultPage.vue'
+import ReportsPage from '@/components/board/ReportsPage.vue'
 import PrintInvoice from '@/components/pages/PrintInvoice.vue'
 import PrintIneligible from '@/components/pages/PrintIneligible.vue'
 import PrintEligible from '@/components/pages/PrintEligible.vue'
@@ -23,13 +26,14 @@ import PrintEligible from '@/components/pages/PrintEligible.vue'
 const routes = [
   {
     path: '/',
+    name: 'layout',
     component: MainLayout,
     children: [
       {
         path: '/home',
         name: 'home',
         meta: {
-          roles: ['parent', 'coach']
+          roles: ['parent']
         },
         component: Welcome
       },
@@ -43,16 +47,37 @@ const routes = [
       {
         path: '/profile',
         meta: {
-          roles: ['parent']
+          roles: ['parent', 'coach']
         },
         component: ProfilePage
       },
       {
-        path: '/programs',
+        path: '/scoreboard',
         meta: {
           roles: ['coach']
         },
-        component: ProgramsPage
+        component: ScoreBoardPage
+      },
+      {
+        path: '/chapclubprograms',
+        meta: {
+          roles: ['coach']
+        },
+        component: ChapClubPrograms
+      },
+      {
+        path: '/scoreplayers',
+        meta: {
+          roles: ['coach']
+        },
+        component: ScorePlayersPage
+      },
+      {
+        path: '/scoreplayerdetails',
+        meta: {
+          roles: ['coach']
+        },
+        component: ScorePlayerDetailsPage
       },
       {
         path: '/search',

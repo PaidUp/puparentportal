@@ -37,8 +37,10 @@
           <span class="md-prefix">$</span>
           <md-input :disabled="true" v-model="amount"></md-input>
         </md-field>
-        <md-datepicker v-if="!disabled" v-model="dateCharge" :md-disabled-dates="disabledDates">
-          <label>Charge date</label>
+
+        <label class="date-label">Charge date</label>
+        <md-datepicker v-if="!disabled" class="datepicker-field" v-model="dateCharge" :md-disabled-dates="disabledDates">
+          <span class="md-helper-text">Selecting certain dates may require club approval.</span>
         </md-datepicker>
         <md-field v-if="disabled">
           <label>Charge date</label>
@@ -186,7 +188,7 @@
             last4: this.paymentMethodObj.last4
           }
         }
-  
+
         this.updateInvoice(params).then(res => {
           this.submited = false
           this.setSuccess('component.payment.update')
@@ -215,3 +217,14 @@
     }
   }
 </script>
+<style>
+  .datepicker-field{
+    margin-bottom: 40px;
+  }
+  .date-label{
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 12px;
+    position: absolute;
+  }
+</style>
+
