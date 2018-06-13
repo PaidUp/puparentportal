@@ -72,9 +72,7 @@
         <md-tab id="tab-invoices" md-label="Invoices">
           <div class="actions-box">
             <md-button class="lblue md-accent md-raised md-dense">Add row</md-button>
-            <md-button class="md-icon-button md-dense md-accent lblue md-raised">
-              <md-icon>add</md-icon>
-            </md-button>
+            <md-button class="lblue md-accent md-raised md-dense" @click="showRefundDialog = true">REFUND DIALOG</md-button>
           </div>
           <md-table md-card v-model="tableData" md-sort="name" md-sort-order="asc" class="table-invoices">
             <md-table-row slot="md-table-row" slot-scope="{ item }">
@@ -160,32 +158,38 @@
       </md-tabs>
 
     </div>
+    <refund-invoice-dialog :showDialog="showRefundDialog" :closeDialog="closeDialog"></refund-invoice-dialog>
   </div>
 
 </template>
 
 <script>
-  export default {
-    data: function () {
-      return {
-        movie: 'godfather',
-        tableData: [ {
-          id: 1,
-          name: 'Shawna Dubbin',
-          email: 'sdubbin0@geocities.com',
-          phone: '888-999-8888'
-        },
-        {
-          id: 2,
-          name: 'Odette Demageard',
-          email: 'odemageard1@spotify.com',
-          phone: '888-999-1111'
-        }
-        ],
-        inputModel: 'Dues Payments'
+ import RefundInvoiceDialog from '@/components/shared/RefundInvoiceDialog.vue'
+ export default {
+   components: {
+     RefundInvoiceDialog
+   },
+   data: function () {
+     return {
+       showRefundDialog: false,
+       movie: 'godfather',
+       tableData: [ {
+         id: 1,
+         name: 'Shawna Dubbin',
+         email: 'sdubbin0@geocities.com',
+         phone: '888-999-8888'
+       },
+       {
+         id: 2,
+         name: 'Odette Demageard',
+         email: 'odemageard1@spotify.com',
+         phone: '888-999-1111'
+       }
+       ],
+       inputModel: 'Dues Payments'
 
-      }
-    },
-    methods: {}
-  }
+     }
+   },
+   methods: {}
+ }
 </script>

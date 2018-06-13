@@ -4,6 +4,7 @@
 .md-dialog.accounts-dialog
 .md-dialog.edit-player-dialog
 .md-dialog.duplicate-payment-dialog
+.md-dialog.refund-invoice-dialog
   width: 500px!important
   @media $small-only
     width: 100%!important
@@ -17,6 +18,7 @@
     justify-content: space-between
     align-items: center
     background: $ca1
+    min-height: 52px
     .title
       color: #fff
       font-size: 18px
@@ -127,3 +129,11 @@
     flex-flow: row nowrap
     justify-content: space-between
     align-items: center
+
+// REFUND DIALOG
+.md-dialog.refund-invoice-dialog
+  .dialog-body
+    padding: 16px
+    .title-info
+      margin: 30px 0 10px 0
+  
