@@ -8,8 +8,8 @@
     </md-field>
     <md-field v-if="season">
       <label>Program</label>
-      <md-select v-model="movie1" placeholder="Program">
-        <md-option value="godfather">Example Sel</md-option>
+      <md-select v-model="program" placeholder="Program">
+        <md-option v-for="option in programs" :key="option.id" :value="option.id">{{option.name}}</md-option>
       </md-select>
     </md-field>
   </div>
@@ -18,10 +18,13 @@
 import { mapState, mapActions } from 'vuex'
 
 export default {
+  props: {
+    items: Object
+  },
   data () {
     return {
       season: null,
-      movie1: ''
+      program: null
     }
   },
   computed: {
@@ -33,8 +36,19 @@ export default {
     }),
     seasons () {
       if (this.organization) {
-        return this.organization.seasons
+        return this.organization.seasons.sort((orgA, orgB) => {
+          return new Date(orgA.date).getTime() - new Date(orgB.date).getTime()
+        })
       }
+      return []
+    },
+    programs () {
+      if (!this.items) return []
+      let result = []
+      for (let key in this.items) {
+        result.push(this.items[key])
+      }
+      return result
     }
   },
   methods: {
@@ -44,15 +58,22 @@ export default {
   },
   watch: {
     user () {
-      if (this.user) this.loadOrganization(this.user.organizationId)
+      if (this.user && this.user.organizationId) this.loadOrganization(this.user.organizationId)
     },
-    seasons () {
-      console.log('this.seasons[this.seasons.length - 1]:', this.seasons[this.seasons.length - 1]._id)
+    organization () {
       this.season = this.seasons[this.seasons.length - 1]._id
+      this.$emit('selectSeason', this.season)
+    },
+    season () {
+      this.program = null
+      this.$emit('selectSeason', this.season)
+    },
+    program () {
+      this.$emit('selectProgram', this.program)
     }
   },
   mounted () {
-    if (this.user) {
+    if (this.user && this.user.organizationId) {
       this.loadOrganization(this.user.organizationId)
     }
   }

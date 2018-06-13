@@ -29,14 +29,14 @@ const module = {
         context.commit('setOrganization', organization)
       })
     },
-    getInvoices (context, { organizationId }) {
-      return commerceService.invoicesByOrganization(organizationId)
+    getInvoices (context, { organizationId, seasonId }) {
+      return commerceService.invoicesByOrganization(organizationId, seasonId)
     },
-    getCredits (context, { organizationId }) {
-      return commerceService.creditsByOrganization(organizationId)
+    getCredits (context, { organizationId, seasonId }) {
+      return commerceService.creditsByOrganization(organizationId, seasonId)
     },
-    getPreorders (context, { organizationId }) {
-      return commerceService.preordersByOrganization(organizationId)
+    getPreorders (context, { organizationId, seasonId }) {
+      return commerceService.preordersByOrganization(organizationId, seasonId)
     }
   }
 }

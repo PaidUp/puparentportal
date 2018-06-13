@@ -3,7 +3,7 @@
     <div class="details">
       <div class="pre-cards-title">Details</div>
       <div class="details-box">
-        <pu-details-selects></pu-details-selects>
+        <pu-details-selects @selectSeason="setSeason" @selectProgram="setProgram" :items="items"></pu-details-selects>
         <pu-details-totals :items="items"></pu-details-totals>
       </div>
     </div>
@@ -11,7 +11,7 @@
       <div class="pre-cards-title">Programs</div>
       <div class="cards-layout">
 
-        <pu-score-card v-for="item in items" :key="item.id" :item="item"></pu-score-card>
+        <pu-score-card v-for="item in itemsFiltered" :key="item.id" :item="item"></pu-score-card>
 
       </div>
     </div>
@@ -93,9 +93,9 @@
   function reducePreorders (preorders, items) {
     const today = new Date().getTime()
     return preorders.reduce((val, current) => {
+      let prd = val[current.productId]
       if (current.planId && current.dues) {
         current.dues.forEach(due => {
-          let prd = val[current.productId]
           if (prd) {
             prd.total = prd.total + due.amount
             prd.players.add(current.beneficiaryId)
@@ -131,7 +131,9 @@
     components: { PuDetailsSelects, PuDetailsTotals, PuScoreCard },
     data: function () {
       return {
-        items: null
+        items: null,
+        seasonId: null,
+        programId: null
       }
     },
     computed: {
@@ -141,28 +143,34 @@
       ...mapState('organizationModule', {
         'organization': 'organization'
       }),
-      seasons () {
-        if (this.organization) {
-          this.organization.seasons.sort((orgA, orgB) => {
-            return new Date(orgA.date).getTime() - new Date(orgA.date).getTime()
-          })
+      itemsFiltered () {
+        if (this.programId) {
+          let resp = {}
+          resp[this.programId] = this.items[this.programId]
+          return resp
         }
-        return []
+        return this.items
       }
     },
     methods: {
       ...mapActions('organizationModule', {
-        loadOrganization: 'loadOrganization',
         getInvoices: 'getInvoices',
         getCredits: 'getCredits',
         getPreorders: 'getPreorders'
       }),
+      setSeason (season) {
+        this.programId = null
+        this.seasonId = season
+      },
+      setProgram (program) {
+        this.programId = program
+      },
       getAll () {
-        if (this.user) {
+        if (this.user && this.seasonId) {
           Promise.all([
-            this.getInvoices({organizationId: this.user.organizationId}),
-            this.getCredits({organizationId: this.user.organizationId}),
-            this.getPreorders({organizationId: this.user.organizationId})
+            this.getInvoices({organizationId: this.user.organizationId, seasonId: this.seasonId}),
+            this.getCredits({organizationId: this.user.organizationId, seasonId: this.seasonId}),
+            this.getPreorders({organizationId: this.user.organizationId, seasonId: this.seasonId})
           ]).then(values => {
             let items = reduceInvoices(values[0])
             reduceCredits(values[1], items)
@@ -173,12 +181,9 @@
       }
     },
     watch: {
-      organization () {
+      seasonId () {
         this.getAll()
       }
-    },
-    mounted () {
-      this.getAll()
     }
   }
 </script>
