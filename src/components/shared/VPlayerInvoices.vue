@@ -1,6 +1,6 @@
 <template lang="pug">
   md-card(md-with-hover)
-    md-ripple(v-if="invoice.invoiceId" class="invoice-card-box")
+    md-ripple(v-if="invoice.invoiceId" class="card-invoice")
       md-card-header
         .title {{ invoice.label }}
         .caption {{ paymetMethod }}
@@ -17,7 +17,7 @@
       md-card-actions
         md-button.md-accent(@click="select") {{ nameButton }}
 
-    md-ripple(v-if="invoice.memoId" class="invoice-card-box")
+    md-ripple(v-if="invoice.memoId" class="card-invoice")
       md-card-header
         .title {{ invoice.label }}
         .caption {{ subtext }}

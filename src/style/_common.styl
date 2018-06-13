@@ -106,14 +106,6 @@ a, a:hover, a:visited, a:link, a:active, a > *
       .md-stepper-content
         padding: 0
 
-// MD-CARD
-.common-card
-  padding: 16px 16px 10px 16px
-  .actions
-    text-align: center
-    .md-button
-      margin: 0
-
 // MD-BUTTONS
 .md-button
   .md-ripple
@@ -267,8 +259,12 @@ a, a:hover, a:visited, a:link, a:active, a > *
   .md-list-item-container
     color: $clblue
     text-align: right
+    &.md-list-item-button
+      color: $clblue
     &:hover
-      color: $clblue!important
+      background: $clblue!important
+      color: #fff!important
+      cursor: pointer
 
 // PLACEHOLDER MIXIN
 mixin-placeholder(c)
@@ -356,146 +352,6 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-
-// Details Box - used in programs/players
-.pre-cards-title
-  color: $cgray2
-  margin-bottom: 10px
-  @media $small-only
-    padding-left: 16px
-  &.with-sort-filter
-    display: flex
-    flex-flow: row nowrap
-    justify-content: space-between
-    align-items: center
-    width: 100%
-.md-menu-content.sort-box
-.md-menu-content.filter-box
-  ul.md-list
-    padding: 12px
-    .title
-      color: $cblack
-    .actions
-      margin-top: 10px
-      // border-top: 1px solid #ccc
-      // margin: 10px -12px 0 -12px
-.md-menu-content.filter-box
-  ul.md-list .md-checkbox
-    display: flex
-
-.details-box
-  @extends .has-elevation-4;
-  display: flex
-  flex-flow: row wrap
-  justify-content: space-between
-  align-items: flex-start
-  padding: 10px 12px
-  background: #fff
-  @media $small-only
-    flex-flow: column wrap
-    margin: 0 16px;
-  .details-selects
-    display: flex
-    flex-flow: row wrap
-    justify-content: flex-start
-    align-items: center
-    @media $small-only
-      flex-flow: column wrap
-      justify-content: center
-      width: 100%
-      margin-bottom: 20px
-    .md-field
-      width auto
-      margin-bottom: 10px
-      @media $small-only
-        width: 100%
-      &:not(:last-child)
-        margin-right: 20px
-        @media $small-only
-          margin-right: 0
-  .details-numbers
-    margin-top: 4px
-    display: flex
-    flex-flow: row nowrap
-    justify-content: flex-end
-    align-items: center
-    @media $small-only
-      flex-flow: row wrap
-      justify-content: center
-      width: 100%
-      margin-bottom: 10px
-    .title-big
-      margin-top: 2px
-      margin-bottom: 20px
-    & > div:not(:last-child)
-      margin-right: 20px
-    .concept
-      color: $cgray2
-      font-size: 13px
-    .green
-      color: $cgreen
-    .gray
-      color: $cgray1
-    .red
-      color: $cred
-    .blue
-      color: $cblue
-
-// CARDS layout 1
-.cards-layout
-  display: flex
-  flex-flow: row wrap
-  justify-content: flex-start
-  align-items: center
-  @media $small-only
-    justify-content: center
-    width 100%
-  @media $xlarge-up
-    .md-card
-      width: 250px
-  .md-card
-    margin: 0 15px 15px 0
-    width: 220px;
-    height 200px
-    @media $small-only
-      margin: 16px
-      width 100%
-    .md-card-actions
-      justify-content: center
-
-  // INVOICE TYPE CARD 
-  .invoice-card-box
-    display: flex
-    flex-flow: column nowrap
-    justify-content: space-between
-    align-items: flex-start
-    width 100%
-    .md-card-header
-    .md-card-content
-    .md-card-actions
-      width 100%
-    .md-card-header
-      .title
-        color: $cblack
-        margin-bottom: 5px
-    .md-card-content.card-content
-      display: flex
-      flex-flow: row nowrap
-      justify-content: space-between
-      align-items: center
-      .status
-        text-align: center
-        .md-icon
-          color: $cgreen
-      .amount-details
-        margin-top: 5px
-        color: $cgray1
-        text-align: right
-        .details
-          line-height: 1
-        .total
-          margin-top: 5px
-          font-weight: bold
 
 // BREADCRUMBS
 .breadcrums-box
