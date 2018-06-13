@@ -73,5 +73,5 @@ export default {
 }
 </script>
 <style>
-  iframe[id^="plaid-link-iframe-"]{height:100vh}
+  iframe[id^="plaid-link-iframe-"]{height:100vh !important}
 </style>

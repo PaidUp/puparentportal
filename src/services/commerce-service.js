@@ -29,19 +29,19 @@ class CommerceService {
       .get(`/invoice/beneficiary/${beneficiaryId}`)
   }
 
-  invoicesByOrganization (organizationId) {
+  invoicesByOrganization (organizationId, seasonId) {
     return trae
-      .get(`/invoice/organization/${organizationId}`)
+      .get(`/invoice/organization/${organizationId}?seasonId=${seasonId}`)
   }
 
-  creditsByOrganization (organizationId) {
+  creditsByOrganization (organizationId, seasonId) {
     return trae
-      .get(`/credit/organization/${organizationId}`)
+      .get(`/credit/organization/${organizationId}?seasonId=${seasonId}`)
   }
 
-  preordersByOrganization (organizationId) {
+  preordersByOrganization (organizationId, seasonId) {
     return trae
-      .get(`/preorder/organization/${organizationId}`)
+      .get(`/preorder/organization/${organizationId}?seasonId=${seasonId}`)
   }
 
   preordersByBeneficiary (beneficiaryId) {
