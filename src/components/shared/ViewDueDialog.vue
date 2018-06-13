@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="invoice-dialog small">
+  <md-dialog :md-active.sync="showDialog" class="invoice-dialog">
     <div class="dialog-header">
 
     </div>
