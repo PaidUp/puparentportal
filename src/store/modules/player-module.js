@@ -56,6 +56,7 @@ const module = {
     getInvoices (context, { userEmail, beneficiary }) {
       return commerceService.invoicesByBeneficiary(beneficiary._id).then(invoices => {
         context.commit('setAllInvoices', invoices)
+        return invoices
       })
     },
     getPreorders (context, beneficiaryId) {

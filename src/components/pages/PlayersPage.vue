@@ -2,13 +2,13 @@
   .players-page
     .player
       v-player-info(v-if="beneficiary" :player="beneficiary", :numInvoices="allInvoices.length" @avatarChanged="reloadBeneficiaries")
-    .player-empty(v-if="!allInvoices.length")
+    .player-empty(v-if="!allInvoices.length && loaded")
       div(class="title bold cgray") {{ beneficiary ? beneficiary.firstName : '' }} does not have any payment history yet.
       div(class="cgray") Start by making a payment to {{ beneficiary ? beneficiary.organizationName : '' }}.
       md-button(v-if="beneficiary" class="md-raised md-accent lblue" :to="'/payments/'+beneficiary._id") MAKE A NEW PAYMENT
       div
         img(src="@/assets/shield.svg" alt="pay")
-    .player-with-payments(v-show="allInvoices.length")
+    .player-with-payments(v-show="allInvoices.length && loaded")
       .details
         .pre-cards-title Details
         .details-box
@@ -28,7 +28,7 @@
                   .caption Date:
                   div
                     md-radio(class="lblue" v-model="sortRadio" value="asc") Ascending
-                  div 
+                  div
                     md-radio(class="lblue" v-model="sortRadio" value="desc") Descending
                   div.actions
                     md-button(class="md-button md-accent lblue") Cancel
@@ -78,7 +78,8 @@
         viewInvoice: {},
         showDuplicateDialog: false,
         sortRadio: 'asc',
-        filterChecks: []
+        filterChecks: [],
+        loaded: false
       }
     },
     computed: {
@@ -101,18 +102,18 @@
         }
         return null
       },
-      loaded () {
+      done () {
         return (this.user && this.beneficiary)
       }
     },
     mounted () {
-      if (this.loaded) {
+      if (this.done) {
         this.loadInvoices()
         this.getCredits(this.beneficiary)
       }
     },
     watch: {
-      loaded () {
+      done () {
         this.loadInvoices()
         this.getCredits(this.beneficiary)
       }
@@ -124,7 +125,9 @@
         getBeneficiaries: 'getBeneficiaries'
       }),
       loadInvoices () {
-        this.getInvoices({ beneficiary: this.beneficiary })
+        this.getInvoices({ beneficiary: this.beneficiary }).then(data => {
+          this.loaded = true
+        })
       },
       reloadBeneficiaries () {
         this.getBeneficiaries(this.user.email)
