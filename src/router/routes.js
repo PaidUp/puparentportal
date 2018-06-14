@@ -17,6 +17,7 @@ import ScoreBoardPage from '@/components/board/ScoreBoardPage.vue'
 import ScorePlayersPage from '@/components/board/ScorePlayersPage.vue'
 import ScorePlayerDetailsPage from '@/components/board/ScorePlayerDetailsPage.vue'
 import ChapClubPrograms from '@/components/chap/ChapClubPrograms.vue'
+import AssignPlanToParent from '@/components/chap/AssignPlanToParent.vue'
 import SearchResultPage from '@/components/board/SearchResultPage.vue'
 import ReportsPage from '@/components/board/ReportsPage.vue'
 import PrintInvoice from '@/components/pages/PrintInvoice.vue'
@@ -64,6 +65,13 @@ const routes = [
           roles: ['coach']
         },
         component: ChapClubPrograms
+      },
+      {
+        path: '/chapassignplanparent',
+        meta: {
+          roles: ['coach']
+        },
+        component: AssignPlanToParent
       },
       {
         path: '/scoreplayers',
