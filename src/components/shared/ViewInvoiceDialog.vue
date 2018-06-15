@@ -19,7 +19,7 @@
             <div>
             </div>
             <div>
-              Date: {{ $d(date, 'short') }}
+              Invoice Approval Date
             </div>
           </div>
           <div class="instructions">
