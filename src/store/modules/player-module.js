@@ -1,11 +1,4 @@
-import { commerceService, beneficiaryService } from '@/services'
-
-function sort (a, b) {
-  let dataA = a.dateCharge || a.createOn
-  let dataB = b.dateCharge || b.createOn
-
-  return new Date(dataA).getTime() - new Date(dataB).getTime()
-}
+import { commerceService, beneficiaryService, organizationService } from '@/services'
 
 const module = {
   namespaced: true,
@@ -15,22 +8,9 @@ const module = {
     allInvoices: [],
     allCredits: [],
     allPreorders: [],
-    season: null,
-    program: null
+    organization: null
   },
   getters: {
-    invoices (state) {
-      if (state.season && state.program) {
-        let invs = state.allInvoices.filter(inv => {
-          return state.season === inv.season && state.program.split('|')[0] === inv.productId
-        })
-        let creds = state.allCredits.filter(cred => {
-          return state.season === cred.season && state.program.split('|')[0] === cred.productId
-        })
-        return invs.concat(creds).sort(sort)
-      }
-      return []
-    }
   },
   mutations: {
     setAllInvoices (state, invoices) {
@@ -45,11 +25,8 @@ const module = {
     setBeneficiaries (state, beneficiaries) {
       state.beneficiaries = beneficiaries
     },
-    setSeason (state, season) {
-      state.season = season
-    },
-    setProgram (state, program) {
-      state.program = program
+    setOrganization (state, organization) {
+      state.organization = organization
     }
   },
   actions: {
@@ -97,6 +74,12 @@ const module = {
     },
     update (context, {id, values}) {
       return beneficiaryService.update(id, values)
+    },
+    getOrganization (context, {id}) {
+      return organizationService.getOrganization(id).then(organization => {
+        console.log('organization: ', organization)
+        context.commit('setOrganization', organization)
+      })
     }
   }
 }

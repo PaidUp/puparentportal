@@ -3,70 +3,76 @@
     md-field(v-if="season")
       label(for="season") Season
       md-select(name="season" id="season" v-model="season" @input="inputSaeson"  @click="clickSaeson")
-        md-option(v-for="s in seasons" :value="s" :key="s") {{ s }}
-    md-field(v-if="season")
+        md-option(v-for="s in seasons" :value="s._id" :key="s._id") {{ s.name }}
+    md-field(v-if="program")
       label(for="program") Program
       md-select(name="program" id="program" v-model="program")
         md-option(v-for="p in programs" :value="p" :key="p") {{ p.split('|')[1] }}
 </template>
 <script>
-import { mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   props: {
-    invoices: Array
+    invoices: {
+      type: Array,
+      default: null
+    }
   },
   data () {
     return {
       seasonCurrent: null,
       season: null,
+      seasons: null,
       program: null
     }
   },
   mounted () {
-
   },
   watch: {
     invoices () {
-      if (this.invoices.length && !this.season && !this.program) {
-        let inv = this.invoices[this.invoices.length - 1]
-        this.season = inv.season
-        this.program = inv.productId + '|' + inv.productName
-      }
+      this.getSeasons()
+      this.season = this.seasons[this.seasons.length - 1]._id
     },
     season () {
-      this.setSeason(this.season)
+      if (this.season) {
+        this.$emit('selectSeason', this.season)
+      }
+    },
+    programs () {
+      setTimeout(() => {
+        if (this.programs && this.programs.length) this.program = this.programs[this.programs.length - 1]
+      }, 100)
     },
     program () {
-      this.setProgram(this.program)
+      this.$emit('selectProgram', this.program)
     }
   },
   computed: {
-    seasons () {
+    ...mapState('playerModule', {
+      organization: 'organization'
+    }),
+    programs () {
+      this.program = null
       let set = new Set()
       this.invoices.forEach(inv => {
-        set.add(inv.season)
+        if (this.season === inv.season) {
+          set.add(inv.productId + '|' + inv.productName)
+        }
       })
       return Array.from(set)
-    },
-    programs () {
-      if (this.season) {
-        let set = new Set()
-        this.invoices.forEach(inv => {
-          if (this.season === inv.season) {
-            set.add(inv.productId + '|' + inv.productName)
-          }
-        })
-        return Array.from(set)
-      }
-      return []
     }
   },
   methods: {
-    ...mapMutations('playerModule', {
-      setSeason: 'setSeason',
-      setProgram: 'setProgram'
-    }),
+    getSeasons () {
+      this.seasons = this.organization.seasons.filter(season => {
+        return this.invoices.some(inv => {
+          return inv.season === season._id
+        })
+      }).sort((eleA, eleB) => {
+        return new Date(eleA.date).getTime() - new Date(eleB.date).getTime()
+      })
+    },
     clickSaeson () {
       this.seasonCurrent = this.season
     },

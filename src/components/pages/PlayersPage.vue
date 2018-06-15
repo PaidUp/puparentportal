@@ -12,7 +12,7 @@
       .details
         .pre-cards-title Details
         .details-box
-          v-player-details-selection(:invoices="allInvoices")
+          v-player-details-selection(:invoices="allInvoices" @selectSeason="setSeason" @selectProgram="setProgram")
           v-player-details-totals(:invoices="invoices")
       button(v-if="false" class="md-button md-raised" @click="showDuplicateDialog = true") Duplicate Payment Dialog
       .invoices(v-if="invoices")
@@ -57,13 +57,20 @@
 </template>
 
 <script>
-  import { mapState, mapActions, mapGetters } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import VPlayerInfo from '@/components/shared/VPlayerInfo.vue'
   import VPlayerDetailsTotals from '@/components/shared/VPlayerDetailsTotals.vue'
   import VPlayerDetailsSelection from '@/components/shared/VPlayerDetailsSelection.vue'
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
   import ViewInvoiceDialog from '@/components/shared/ViewInvoiceDialog.vue'
   import DuplicatePaymentDialog from '@/components/shared/DuplicatePaymentDialog.vue'
+  
+  function sort (a, b) {
+    let dataA = a.dateCharge || a.createOn
+    let dataB = b.dateCharge || b.createOn
+    return new Date(dataA).getTime() - new Date(dataB).getTime()
+  }
+  
   export default {
     components: {
       VPlayerInfo,
@@ -75,6 +82,8 @@
     },
     data: function () {
       return {
+        season: null,
+        program: null,
         viewInvoice: {},
         showDuplicateDialog: false,
         sortRadio: 'asc',
@@ -87,11 +96,25 @@
       }),
       ...mapState('playerModule', {
         beneficiaries: 'beneficiaries',
-        allInvoices: 'allInvoices'
+        allInvoices: 'allInvoices',
+        allCredits: 'allCredits',
+        organization: 'organization'
       }),
-      ...mapGetters('playerModule', {
-        invoices: 'invoices'
-      }),
+      invoices () {
+        if (this.beneficiary && this.season && this.program) {
+          let invs = this.allInvoices.filter(inv => {
+            return this.season === inv.season && this.program.split('|')[0] === inv.productId
+          })
+          let creds = this.allCredits.filter(cred => {
+            return this.season === cred.season && this.program.split('|')[0] === cred.productId
+          })
+          return invs.concat(creds).sort(sort)
+        }
+        return []
+      },
+      id () {
+        return this.$route.params.id
+      },
       beneficiary () {
         if (this.beneficiaries) {
           let id = this.$route.params.id
@@ -107,21 +130,29 @@
     },
     mounted () {
       if (this.loaded) {
-        this.loadInvoices()
-        this.getCredits(this.beneficiary)
+        this.getOrganization({ id: this.beneficiary.organizationId }).then(org => {
+          this.loadInvoices()
+          this.getCredits(this.beneficiary)
+        })
       }
     },
     watch: {
       loaded () {
-        this.loadInvoices()
-        this.getCredits(this.beneficiary)
+        this.getOrganization({ id: this.beneficiary.organizationId }).then(org => {
+          this.loadInvoices()
+          this.getCredits(this.beneficiary)
+        })
+      },
+      beneficiary () {
+        this.getOrganization({ id: this.beneficiary.organizationId })
       }
     },
     methods: {
       ...mapActions('playerModule', {
         getInvoices: 'getInvoices',
         getCredits: 'getCredits',
-        getBeneficiaries: 'getBeneficiaries'
+        getBeneficiaries: 'getBeneficiaries',
+        getOrganization: 'getOrganization'
       }),
       loadInvoices () {
         this.getInvoices({ beneficiary: this.beneficiary })
@@ -135,6 +166,13 @@
       },
       selectInvoice (invoice) {
         this.viewInvoice = invoice
+      },
+      setSeason (season) {
+        console.log('season: ', season)
+        this.season = season
+      },
+      setProgram (program) {
+        this.program = program
       }
     }
   }
