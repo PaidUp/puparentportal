@@ -6,7 +6,7 @@ const module = {
   state: {
     cards: [],
     bankAccounts: [],
-    products: [],
+    products: null,
     plans: []
   },
 
@@ -111,8 +111,9 @@ const module = {
       }
     },
     getProducts (context, organizationId) {
-      organizationService.getProducts(organizationId).then(products => {
+      return organizationService.getProducts(organizationId).then(products => {
         context.commit('setProducts', products)
+        return products
       })
     },
     getInvoicesByPaymetMethod (context, paymentMethodId) {

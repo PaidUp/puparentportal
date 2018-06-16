@@ -168,7 +168,6 @@
         this.viewInvoice = invoice
       },
       setSeason (season) {
-        console.log('season: ', season)
         this.season = season
       },
       setProgram (program) {

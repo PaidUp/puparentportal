@@ -38,11 +38,15 @@
         step5: false,
         step6: false,
         step7: false,
+        playerSelected: null,
         processing: false,
         programSelected: null,
         paymentAccountSelected: null,
         paymentPlanSelected: null
       }
+    },
+    mounted () {
+      this.load()
     },
     computed: {
       ...mapState('userModule', {
@@ -51,20 +55,7 @@
       ...mapState('playerModule', {
         beneficiaries: 'beneficiaries',
         allPreorders: 'allPreorders'
-      }),
-      playerSelected () {
-        let ps
-        if (this.beneficiaries) {
-          this.beneficiaries.forEach(beneficiary => {
-            if (beneficiary._id === this.$route.params.id) {
-              ps = beneficiary
-              this.getPreorders(this.$route.params.id)
-              this.getProducts(ps.organizationId)
-            }
-          })
-        }
-        return ps
-      }
+      })
     },
     watch: {
       programSelected () {
@@ -84,8 +75,21 @@
       }),
       ...mapActions('playerModule', {
         getPreorders: 'getPreorders',
-        getBeneficiaries: 'getBeneficiaries'
+        getBeneficiaries: 'getBeneficiaries',
+        getBeneficiary: 'getBeneficiary',
+        getOrganization: 'getOrganization'
       }),
+      load () {
+        this.getBeneficiary(this.$route.params.id).then(ps => {
+          Promise.all([
+            this.getOrganization({id: ps.organizationId}),
+            this.getPreorders(this.$route.params.id),
+            this.getProducts(ps.organizationId)
+          ]).then(values => {
+            this.playerSelected = ps
+          })
+        })
+      },
       setPlayer (player) {
         this.playerSelected = player
         if (player) {

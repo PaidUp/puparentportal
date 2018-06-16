@@ -7,7 +7,7 @@ const module = {
     beneficiaries: [],
     allInvoices: [],
     allCredits: [],
-    allPreorders: [],
+    allPreorders: null,
     organization: null
   },
   getters: {
@@ -38,6 +38,7 @@ const module = {
     getPreorders (context, beneficiaryId) {
       return commerceService.preordersByBeneficiary(beneficiaryId).then(preorders => {
         context.commit('setAllPreorders', preorders)
+        return preorders
       })
     },
     getCredits (context, beneficiary) {
@@ -69,6 +70,9 @@ const module = {
         })
       })
     },
+    getBeneficiary (context, id) {
+      return beneficiaryService.getBeneficiary(id)
+    },
     create (context, body) {
       return beneficiaryService.create(body)
     },
@@ -77,8 +81,8 @@ const module = {
     },
     getOrganization (context, {id}) {
       return organizationService.getOrganization(id).then(organization => {
-        console.log('organization: ', organization)
         context.commit('setOrganization', organization)
+        return organization
       })
     }
   }

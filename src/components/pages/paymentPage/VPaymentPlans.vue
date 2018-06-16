@@ -52,7 +52,7 @@ export default {
       allPreorders: 'allPreorders'
     }),
     plansFiltered () {
-      if (!this.allPreorders.length) {
+      if (!this.allPreorders) {
         return this.plans.filter(plan => {
           return plan.status === 'active'
         })
@@ -69,7 +69,7 @@ export default {
       }
     },
     preorders () {
-      if (!this.allPreorders.length) return []
+      if (!this.allPreorders) return []
       let pps = []
       this.plans.forEach(plan => {
         this.allPreorders.forEach(po => {
