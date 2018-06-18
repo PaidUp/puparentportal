@@ -13,17 +13,40 @@
         </md-button>
       </div>
     </div>
-    <md-table v-model="users" md-sort="name" md-sort-order="asc">
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="">
-          <md-icon class="md-size-2" v-if="item.id ===1">account_circle</md-icon>
-          <md-avatar class="md-small" v-if="item.id ===2">
-            <img src="@/assets/avatar.jpg" alt="img">
-          </md-avatar>
+    <div class="filter-chips">
+      <md-chip class="blue">Add Filter
+        <md-button class="md-icon-button md-input-action">
+          <md-icon>add</md-icon>
+        </md-button>
+      </md-chip>
+      <md-chip class="lblue" md-deletable>Deposit Date: 03/05/2018 - 04/23/2018</md-chip>
+    </div>
+    <md-table v-model="tableData" md-sort="name" md-sort-order="asc" class="custom-table">
+      <md-table-row slot="md-table-row" slot-scope="{ item }" :class="{totals: item.desc === 'TOTALS'}">
+        <md-table-cell md-label="Deposit ID">
+          {{item.desc}}
         </md-table-cell>
-        <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
-        <md-table-cell md-label="Phone Number" md-sort-by="phone">{{ item.phone }}</md-table-cell>
+        <md-table-cell md-label="Deposit Date">
+          {{item.date}}
+        </md-table-cell>
+        <md-table-cell md-label="Processed" md-numeric>
+          {{item.amount}}
+        </md-table-cell>
+        <md-table-cell md-label="Processing Fee" md-numeric>
+          {{item.amount}}
+        </md-table-cell>
+        <md-table-cell md-label="PaidUp Fee" md-numeric>
+          {{item.amount}}
+        </md-table-cell>
+        <md-table-cell md-label="Total Fee" md-numeric>
+          {{item.amount}}
+        </md-table-cell>
+        <md-table-cell md-label="Net Deposit" md-numeric>
+          {{item.amount}}
+        </md-table-cell>
+        <md-table-cell md-label="Account">
+          {{item.account}}
+        </md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -37,17 +60,35 @@
     data: function () {
       return {
         movie: 'godfather',
-        users: [ {
-          id: 1,
-          name: 'Shawna Dubbin',
-          email: 'sdubbin0@geocities.com',
-          phone: '888-999-8888'
+        tableData: [ {
+          desc: 'TOTALS',
+          account: '',
+          date: '',
+          amount: '$99913.50'
         },
         {
-          id: 2,
-          name: 'Odette Demageard',
-          email: 'odemageard1@spotify.com',
-          phone: '888-999-1111'
+          desc: 'DUES installment 4',
+          account: 'Bank of America NA****12344',
+          date: '05-12-2018',
+          amount: '$3913.00'
+        },
+        {
+          desc: 'DUES 33',
+          account: 'Bank of America NA****12344',
+          date: '05-12-2018',
+          amount: '$3913.00'
+        },
+        {
+          desc: 'DUES 44',
+          account: 'Bank of America NA****12344',
+          date: '05-12-2018',
+          amount: '$3913.00'
+        },
+        {
+          desc: 'DUES installment 3',
+          account: 'Bank of America NA****12344',
+          date: '05-12-2018',
+          amount: '$3913.00'
         }
         ]
       }
