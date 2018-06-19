@@ -3,7 +3,9 @@ import store from '@/store'
 import router from '@/router'
 
 trae.before(config => {
+  console.log('gonfigggg', config)
   const token = window.localStorage.token
+  config.cache = 'no-cache'
   config.headers['Access-Control-Allow-Origin'] = '*'
   config.headers['Cache-Control'] = 'no-cache'
   config.headers['Pragma'] = 'no-cache'
