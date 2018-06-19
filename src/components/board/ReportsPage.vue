@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="filter-chips">
-      <md-chip class="blue">Add Filter
+      <md-chip class="blue" @click="showFiltersPanel = true">Add Filter
         <md-button class="md-icon-button md-input-action">
           <md-icon>add</md-icon>
         </md-button>
@@ -49,6 +49,60 @@
         </md-table-cell>
       </md-table-row>
     </md-table>
+    <md-drawer class="md-right filters-sidebar" :md-active.sync="showFiltersPanel">
+      <div class="title-section">
+        <span class="md-title">Edit Filters</span>
+        <md-button class="md-accent lblue md-dense">clear all filters</md-button>
+      </div>
+      <div class="filters-section">
+        <!-- SEASONS -->
+        <div class="filter-title">
+          <div class="bold">
+            Season
+          </div>
+          <md-button class="md-dense md-icon-button md-accent lblue">
+            <md-icon>clear</md-icon>
+          </md-button>
+        </div>
+        <md-checkbox class="lblue" v-model="indeterminateCheck" :indeterminate="checkArray.length">All</md-checkbox>
+        <md-checkbox class="lblue" v-model="checkArray" value="2">2018/2019</md-checkbox>
+        <md-checkbox class="lblue" v-model="checkArray" value="3">2017/2018</md-checkbox>
+
+        <!-- DATES -->
+        <div class="filter-title">
+          <div class="bold">
+            Invoice Date
+          </div>
+          <md-button class="md-dense md-icon-button md-accent lblue">
+            <md-icon>clear</md-icon>
+          </md-button>
+        </div>
+        <div class="range-date">
+          <md-datepicker md-immediately class="no-date-icon">
+            <label>Start</label>
+          </md-datepicker>
+          <md-datepicker md-immediately class="no-date-icon">
+            <label>End</label>
+          </md-datepicker>
+        </div>
+        <div class="filter-title">
+          <div class="bold">
+            Charge Date
+          </div>
+          <md-button class="md-dense md-icon-button md-accent lblue">
+            <md-icon>clear</md-icon>
+          </md-button>
+        </div>
+        <div class="range-date">
+          <md-datepicker md-immediately class="no-date-icon">
+            <label>Start</label>
+          </md-datepicker>
+          <md-datepicker md-immediately class="no-date-icon">
+            <label>End</label>
+          </md-datepicker>
+        </div>
+      </div>
+    </md-drawer>
   </div>
 </template>
 
@@ -60,6 +114,9 @@
     data: function () {
       return {
         movie: 'godfather',
+        showFiltersPanel: true,
+        checkArray: [],
+        indeterminateCheck: false,
         tableData: [ {
           desc: 'TOTALS',
           account: '',
