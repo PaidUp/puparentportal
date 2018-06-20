@@ -77,7 +77,7 @@
           <md-table md-card v-model="tableData" md-sort="name" md-sort-order="asc" class="custom-table">
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="Description">
-                <div class="col-with-input">
+                <div class="col-150">
                   <input type="text" class="custom-input" v-model="inputModel">
                 </div>
               </md-table-cell>
@@ -96,7 +96,7 @@
                 </div>
               </md-table-cell>
               <md-table-cell md-label="Parent" class="centered">
-                <div class="col-with-input">
+                <div class="col-150">
                   <select name="parent-s" id="parent-s" class="custom-select">
                     <option value="volvo">Felipe Fernandex</option>
                     <option value="saab">Savier Commns</option>
@@ -151,7 +151,7 @@
             <md-button class="lblue md-accent md-raised md-dense">Add row</md-button>
             <md-button class="lblue md-accent md-raised md-dense" to="/chapassignplanparent">GO TO PARENTS STEPPERS</md-button>
           </div>
-          <md-table v-model="tableData" md-sort="name" md-sort-order="asc" class="custom-table">
+          <md-table md-card v-model="tableData" md-sort="name" md-sort-order="asc" class="custom-table">
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="Player Name" md-sort-by="playerName" class="col-with-img">
                 <md-icon class="md-size-2" v-if="item.id ===1">account_circle</md-icon>

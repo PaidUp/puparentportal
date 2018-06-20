@@ -9,7 +9,7 @@
       <div>Please try again with a different search query</div>
     </div>
     <div class="table-title">Players (2)</div>
-    <md-table v-model="users" md-sort="name" md-sort-order="asc" class="custom-table">
+    <md-table md-card v-model="users" md-sort="name" md-sort-order="asc" class="custom-table">
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="">
           <md-icon class="md-size-2" v-if="item.id ===1">account_circle</md-icon>
@@ -32,7 +32,7 @@
     </md-table>
 
     <div class="table-title">Parents (2)</div>
-    <md-table v-model="users" md-sort="name" md-sort-order="asc" class="custom-table">
+    <md-table md-card v-model="users" md-sort="name" md-sort-order="asc" class="custom-table">
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="Name" md-sort-by="name" class="col-25">{{ item.name }}</md-table-cell>
         <md-table-cell md-label="Club" md-sort-by="club" class="col-with-img">

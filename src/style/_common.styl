@@ -8,13 +8,22 @@
   background: #F5F5F5 !important
   border-left: none
   box-shadow:  inset 5px 0 5px -5px $cgray2
-  @media $small-only
-    padding: 0!important
+  padding: 0!important
 sup
   top: -.3em!important
 
 .has-elevation-4
   box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+
+.padded-page
+  padding: 16px
+  @media $small-only
+    padding: 0px
+
+.margined-page
+  margin: 16px
+  @media $small-only
+    margin: 0px
 
 // COMMON PAGE WHITE
 .common-page
@@ -206,7 +215,8 @@ a, a:hover, a:visited, a:link, a:active, a > *
   border 1px solid $clblue
   color: #fff
   cursor pointer
-  padding-right: 30px
+  &.with-icon
+    padding-right: 30px
   .md-icon
     color: #fff
     font-weight: bold
@@ -402,7 +412,7 @@ input[type=number]::-webkit-outer-spin-button {
       background-color: $clblue
   .md-content 
     .md-tab
-      padding-left: 2px
+      padding: 16px 2px
 
 .custom-select
 .custom-input

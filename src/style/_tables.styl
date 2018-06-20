@@ -13,6 +13,22 @@
 
 .md-table.custom-table
   background: #fff!important
+  .md-table-row
+    &:hover
+      box-shadow: inset 3px 0 0 $ca1
+      background-color: alpha($cgreenback,.4)
+      .md-table-cell
+          background-color: transparent!important
+        .md-table-cell-container
+          background-color: transparent!important
+    .md-table-cell
+      .md-table-cell-container
+        color: $cgray1
+    &.red-row
+      .md-table-cell
+        .md-table-cell-container
+          color: $cred
+
   .totals
     // background $clblue
     font-weight: 500
@@ -21,7 +37,7 @@
       .md-table-cell-container
         height 55px
         line-height: (55 - 12)px
-  .col-with-input
+  .col-150
     width 150px
   .col-chips
     width 150px

@@ -182,7 +182,7 @@
           </div>
         </md-tab>
         <md-tab id="tab-invoices-approval" md-label="Invoices requiring approval">
-          <md-table v-model="tableData" md-sort="name" md-sort-order="asc" class="custom-table">
+          <md-table md-card v-model="tableData" md-sort="name" md-sort-order="asc" class="custom-table">
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="Description">
                 Dues Installment {{item.id}}

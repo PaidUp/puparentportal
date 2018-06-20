@@ -7,7 +7,7 @@
       <md-app-drawer md-permanent="clipped" :md-active.sync="showNavigation">
         <LeftSidebar />
       </md-app-drawer>
-      <md-app-content>
+      <md-app-content class="custom-cn">
         <router-view :key="$route.fullPath"></router-view>
         <pu-message></pu-message>
       </md-app-content>
