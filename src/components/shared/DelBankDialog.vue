@@ -5,7 +5,7 @@
     </div>
     <div class="main-box">
       <md-field>
-          <label>Credit or Debit Bank*</label>
+          <label>Bank Description*</label>
           <md-input v-model="bankDescription" disabled></md-input>
         </md-field>
       <md-field>
