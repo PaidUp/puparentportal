@@ -217,7 +217,22 @@
           </md-table>
         </md-tab>
         <md-tab id="tab-parents" md-label="Parents">
-          Parents
+          <div class="cards-layout">
+            <md-card class="card-person">
+              <md-avatar class="md-large">
+                <img src="@/assets/avatar.jpg" alt="avatar">
+              </md-avatar>
+              <div class="name">Felipe Fernandez</div>
+              <div class="title-info">Isotopes Club</div>
+              <div class="title-info">(512) 234-1233</div>
+            </md-card>
+            <md-card class="card-person">
+              <md-icon class="md-size-3x">account_circle</md-icon>
+              <div class="name">Felipe Fernandez</div>
+              <div class="title-info">Red Bull Team</div>
+              <div class="title-info">(512) 234-1233</div>
+            </md-card>
+          </div>
         </md-tab>
       </md-tabs>
 
