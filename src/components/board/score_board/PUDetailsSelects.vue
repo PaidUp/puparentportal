@@ -8,7 +8,7 @@
     </md-field>
     <md-field v-if="season">
       <label>Program</label>
-      <md-select v-model="program" placeholder="Program">
+      <md-select v-model="program" @md-selected="programSelected" placeholder="Program">
         <md-option v-for="option in programs" :key="option.id" :value="option.id">{{option.name}}</md-option>
       </md-select>
     </md-field>
@@ -19,7 +19,8 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   props: {
-    items: Object
+    items: Object,
+    programId: String
   },
   data () {
     return {
@@ -54,7 +55,10 @@ export default {
   methods: {
     ...mapActions('organizationModule', {
       loadOrganization: 'loadOrganization'
-    })
+    }),
+    programSelected () {
+      this.$emit('selectProgram', this.program)
+    }
   },
   watch: {
     user () {
@@ -68,8 +72,8 @@ export default {
       this.program = null
       this.$emit('selectSeason', this.season)
     },
-    program () {
-      this.$emit('selectProgram', this.program)
+    programId () {
+      this.program = this.programId
     }
   },
   mounted () {

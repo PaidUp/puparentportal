@@ -2,84 +2,9 @@
   <div class="program-players">
 		<md-tabs class="tabs-lblue">
 			<md-tab id="tab-player" md-label="Players">
-				<div class="cards-layout">
-					<md-card md-with-hover class="card-player-eligibility">
-						<div class="top-box">
-							<md-avatar class="md-size-c">
-								<img src="@/assets/avatar.jpg" alt="avatar">
-							</md-avatar>
-							<div class="name">Mylo Fernandez</div>
-							<div class="eligibility cred">Inelegible</div>
-							<div class="total-label">Total</div>
-							<div class="total-amount">$3,500</div>
-						</div>
-						<div class="bars-with-hover">
-							<div class="green">
-								<div class="hover">
-									<div class="hover-title">Paid</div>
-									<div class="hover-number">$38,000</div>
-								</div>
-							</div>
-							<div class="gray">
-								<div class="hover">
-									<div class="hover-title">Lack</div>
-									<div class="hover-number">$38,000</div>
-								</div>
-							</div>
-							<div class="red">
-								<div class="hover">
-									<div class="hover-title">Overdue</div>
-									<div class="hover-number">$38,000</div>
-								</div>
-							</div>
-							<div class="blue">
-								<div class="hover">
-									<div class="hover-title">Some</div>
-									<div class="hover-number">$38,000</div>
-								</div>
-							</div>
-						</div>
-					</md-card>
-
-					<md-card md-with-hover class="card-player-eligibility">
-						<div class="top-box">
-							<md-icon class="md-size-2x">
-								account_circle
-							</md-icon>
-							<div class="name">Lolo Fernandez</div>
-							<div class="eligibility">&nbsp;</div>
-							<div class="total-label">Total</div>
-							<div class="total-amount">$2,500</div>
-						</div>
-						<div class="bars-with-hover">
-							<div class="green">
-								<div class="hover">
-									<div class="hover-title">Paid</div>
-									<div class="hover-number">$38,000</div>
-								</div>
-							</div>
-							<div class="gray">
-								<div class="hover">
-									<div class="hover-title">Lack</div>
-									<div class="hover-number">$38,000</div>
-								</div>
-							</div>
-							<div class="red">
-								<div class="hover">
-									<div class="hover-title">Overdue</div>
-									<div class="hover-number">$38,000</div>
-								</div>
-							</div>
-							<div class="blue">
-								<div class="hover">
-									<div class="hover-title">Some</div>
-									<div class="hover-number">$38,000</div>
-								</div>
-							</div>
-						</div>
-					</md-card>
-
-				</div>
+        <div class="cards-layout">
+				  <pu-player-card :item="item" v-for="item in items" :key="item.id"></pu-player-card>
+        </div>
 			</md-tab>
 			<md-tab id="tab-plans" md-label="Program Payment Plans">
 				<div class="cards-layout">
@@ -149,6 +74,40 @@
 				</div>
 			</md-tab>
 		</md-tabs>
-
 	</div>
 </template>
+<script>
+import { mapState, mapActions } from 'vuex'
+import PuPlayerCard from './PUplayerCard.vue'
+export default {
+  components: { PuPlayerCard },
+  props: {
+    seasonId: String,
+    productId: String
+  },
+  mounted () {
+    this.getAll()
+  },
+  data () {
+    return {
+      items: null
+    }
+  },
+  computed: {
+    ...mapState('userModule', {
+      'user': 'user'
+    })
+  },
+  methods: {
+    ...mapActions('organizationModule', {
+      getReducePlayers: 'getReducePlayers'
+    }),
+    getAll () {
+      this.getReducePlayers({organizationId: this.user.organizationId, seasonId: this.seasonId, productId: this.productId}).then(items => {
+        this.items = items
+      })
+    }
+  }
+}
+</script>
+

@@ -29,19 +29,28 @@ class CommerceService {
       .get(`/invoice/beneficiary/${beneficiaryId}`)
   }
 
-  invoicesByOrganization (organizationId, seasonId) {
+  invoicesByOrganization (organizationId, seasonId, productId, beneficiaryId) {
+    let params = `seasonId=${seasonId}`
+    if (productId) params = `${params}&productId=${productId}`
+    if (beneficiaryId) params = `${params}&beneficiaryId=${beneficiaryId}`
     return trae
-      .get(`/invoice/organization/${organizationId}?seasonId=${seasonId}`)
+      .get(`/invoice/organization/${organizationId}?${params}`)
   }
 
-  creditsByOrganization (organizationId, seasonId) {
+  creditsByOrganization (organizationId, seasonId, productId, beneficiaryId) {
+    let params = `seasonId=${seasonId}`
+    if (productId) params = `${params}&productId=${productId}`
+    if (beneficiaryId) params = `${params}&beneficiaryId=${beneficiaryId}`
     return trae
-      .get(`/credit/organization/${organizationId}?seasonId=${seasonId}`)
+      .get(`/credit/organization/${organizationId}?${params}`)
   }
 
-  preordersByOrganization (organizationId, seasonId) {
+  preordersByOrganization (organizationId, seasonId, productId, beneficiaryId) {
+    let params = `seasonId=${seasonId}`
+    if (productId) params = `${params}&productId=${productId}`
+    if (beneficiaryId) params = `${params}&beneficiaryId=${beneficiaryId}`
     return trae
-      .get(`/preorder/organization/${organizationId}?seasonId=${seasonId}`)
+      .get(`/preorder/organization/${organizationId}?${params}`)
   }
 
   preordersByBeneficiary (beneficiaryId) {

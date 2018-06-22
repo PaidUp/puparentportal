@@ -3,12 +3,12 @@
     <div class="details">
       <div class="pre-cards-title">Details</div>
       <div class="details-box">
-        <pu-details-selects @selectSeason="setSeason" @selectProgram="setProgram" :items="items"></pu-details-selects>
+        <pu-details-selects :programId="programId" @selectSeason="setSeason" @selectProgram="setProgram" :items="items"></pu-details-selects>
         <pu-details-totals :items="items"></pu-details-totals>
       </div>
     </div>
-    <pu-products v-if="!programSelected" @programSelected="selectProgram" @setItems="setItems" :seasonId="seasonId" :programId="programId"></pu-products>
-    <pu-players v-if="programSelected"></pu-players>
+    <pu-products v-show="!programSelected" @programSelected="selectProgram" @setItems="setItems" :seasonId="seasonId" :programId="programId"></pu-products>
+    <pu-players v-if="programSelected" :seasonId="seasonId" :productId="programId"></pu-players>
   </div>
 
 </template>
@@ -41,8 +41,8 @@
         this.items = items
       },
       selectProgram (program) {
+        this.programId = program.id
         this.programSelected = program
-        console.log('programSelected: ', program)
       }
     }
   }
