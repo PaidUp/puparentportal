@@ -15,6 +15,7 @@
       <md-list-item to="/chapclubprograms" v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Clubs &amp; Programs</span>
       </md-list-item>
+    
 
       <!-- Programs -->
       <md-list-item to="/scoreboard" md-expand v-if="isRole('coach')">
@@ -65,6 +66,11 @@
         </md-list>
       </md-list-item>
       
+      <!-- FEES CALCULATOR -->
+      <md-list-item to="/calculator" v-if="isRole('coach')">
+        <span class="md-list-item-text ca1 bold">Fees Calculator</span>
+      </md-list-item>
+
       <pu-player-payment-history v-if="isRole('parent') && beneficiaries" :beneficiaries="beneficiaries"/>
       <pu-pay-new-invoice v-if="isRole('parent') && beneficiaries" :beneficiaries="beneficiaries"/>
       <pu-payment-accounts v-if="isRole('parent')" />
