@@ -1,11 +1,12 @@
 <template lang="pug">
-  .payment-plan.md-elevation-2(@click="click")
-    .md-subheading {{ plan.description }}
-    div
-      .md-title ${{ total }}
-      .md-caption {{ plan.dues.length }} {{ plan.dues.length === 1 ? 'Installment' : 'Installments' }}
-      .md-caption(v-if="chargeToday") ${{ format(chargeToday) }} PaidUp by Today
-      .md-caption(v-if="chargeRemaining") ${{ format(chargeRemaining) }} PaidUp by {{ $d(lastDateCharge, 'card') }}
+  md-card.md-with-hover
+    .payment-plan(@click="click")
+      .title.cblue {{ plan.description }}
+      div
+        .title.title-total ${{ total }}
+        .md-caption {{ plan.dues.length }} {{ plan.dues.length === 1 ? 'Installment' : 'Installments' }}
+        .md-caption(v-if="chargeToday") ${{ format(chargeToday) }} PaidUp by Today
+        .md-caption(v-if="chargeRemaining") ${{ format(chargeRemaining) }} PaidUp by {{ $d(lastDateCharge, 'card') }}
 
 </template>
 <script>
