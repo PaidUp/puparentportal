@@ -3,16 +3,16 @@
       <div class="pre-cards-title">Programs</div>
       <div class="cards-layout">
 
-        <pu-score-card @programSelected="selectProgram" v-for="item in items" :key="item.id" :item="item"></pu-score-card>
+        <pu-product-card @programSelected="selectProgram" v-for="item in items" :key="item.id" :item="item"></pu-product-card>
 
       </div>  
     </div>
 </template>
 <script>
-  import PuScoreCard from './PUScoreCard.vue'
+  import PuProductCard from './PUProductCard.vue'
 
   export default {
-    components: { PuScoreCard },
+    components: { PuProductCard },
     props: {
       items: Object
     },

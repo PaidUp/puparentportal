@@ -78,7 +78,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
-import PuPlayerCard from './PUplayerCard.vue'
+import PuPlayerCard from './PUPlayerCard.vue'
 export default {
   components: { PuPlayerCard },
   props: {
