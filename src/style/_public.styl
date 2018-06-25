@@ -46,6 +46,10 @@
         align-items: center
         div:first-child
           margin-right: 10px
+        @media $small-only
+          flex-flow: column nowrap
+          div:first-child
+            margin-right: 0px
       .create-account-box
         margin-top: 20px
     .forgot-page

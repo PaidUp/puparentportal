@@ -36,6 +36,10 @@
       width 100%
       div:first-child
         margin-right: 10px
+      @media $small-only
+        flex-flow: column nowrap
+      div:first-child
+        margin-right: 0px
   .club-search-field
     width 300px
   .clubs
