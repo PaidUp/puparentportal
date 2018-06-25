@@ -1,21 +1,23 @@
 <template lang="pug">
   md-step(:id="stepId" md-label="Payment Account" :md-description="description" :md-done.sync="step")
-    .payment-accounts
-      .account.md-elevation-2(@click="select(account)" v-for="account in paymentAccounts" :key="account._id")
-        md-avatar(v-if="account.object==='bank_account'")
-          img(:src="'/static/pm/Bank.svg'")
-        md-avatar(v-if="account.object==='card'")
-          img(:src="'/static/pm/' + account.brand + '.svg'")
-        .name.md-body-2(v-if="account.object==='bank_account'") {{ account.account_holder_name }} 
-        .name.md-body-2(v-if="account.object==='card'") {{ account.name }}
-        .card-details.md-caption(v-if="account.object==='bank_account'") {{ account.bank_name }}
-        .card-details.md-caption(v-if="account.object==='card'") {{ account.brand }}••••{{ account.last4 }}
-        .card-details.md-caption(v-if="account.object==='bank_account'") ••••{{ account.last4 }}
-        .card-details.md-caption(v-if="account.object==='card'") Exp. {{ account.exp_month }}/{{ account.exp_year % 100 }}
+    .payment-accounts.cards-layout
+      md-card.md-with-hover(v-for="account in paymentAccounts" :key="account._id")
+        .account(@click="select(account)")
+          md-avatar.md-large(v-if="account.object==='bank_account'")
+            img(:src="'/static/pm/Bank.svg'")
+          md-avatar.md-large(v-if="account.object==='card'")
+            img(:src="'/static/pm/' + account.brand + '.svg'")
+          .name.md-body-2(v-if="account.object==='bank_account'") {{ account.account_holder_name }} 
+          .name.md-body-2(v-if="account.object==='card'") {{ account.name }}
+          .card-details.md-caption(v-if="account.object==='bank_account'") {{ account.bank_name }}
+          .card-details.md-caption(v-if="account.object==='card'") {{ account.brand }}••••{{ account.last4 }}
+          .card-details.md-caption(v-if="account.object==='bank_account'") ••••{{ account.last4 }}
+          .card-details.md-caption(v-if="account.object==='card'") Exp. {{ account.exp_month }}/{{ account.exp_year % 100 }}
 
-    md-button.lblue.md-accent(@click="cancel") CANCEL
-    md-button.lblue.md-accent.md-raised(@click="showAddCardDialog=true") ADD NEW CARD
-    pu-bank(type="button")
+    .steppers-btns
+      md-button.lblue.md-accent(@click="cancel") CANCEL
+      md-button.lblue.md-accent.md-raised(@click="showAddCardDialog=true") ADD NEW CARD
+      pu-bank(type="button")
     add-card-dialog(:showDialog="showAddCardDialog" @close="showAddCardDialog = false")
 
 </template>

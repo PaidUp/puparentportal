@@ -5,6 +5,7 @@
     margin-top: 20px
   .player-empty
     margin-top: 60px
+    padding: 0 16px
     text-align: center
     .md-button
       margin: 30px auto
@@ -35,6 +36,10 @@
       width 100%
       div:first-child
         margin-right: 10px
+      @media $small-only
+        flex-flow: column nowrap
+      div:first-child
+        margin-right: 0px
   .club-search-field
     width 300px
   .clubs

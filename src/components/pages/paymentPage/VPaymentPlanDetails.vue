@@ -1,5 +1,5 @@
 <template>
-  <div class="payment-single md-elevation-2">
+  <div class="payment-single">
     <div>
       <div class="title cgray bold">{{ due.description }}</div>
       <div class="caption">{{ accountDescription }}</div>
