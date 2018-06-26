@@ -2,9 +2,16 @@ import trae from 'trae'
 import store from '@/store'
 import router from '@/router'
 
+// trae.defaults({
+//   mode: 'no-cors'
+// })
+
 trae.before(config => {
   const token = window.localStorage.token
-  config.headers['Access-Control-Allow-Origin'] = '*'
+  config.mode = 'no-cors'
+  config.cache = 'no-cache'
+  config.mode = 'cors'
+  // config.headers['Access-Control-Allow-Origin'] = '*'
   config.headers['Cache-Control'] = 'no-cache'
   config.headers['Pragma'] = 'no-cache'
   config.headers['Expires'] = 'Sat, 01 Jan 2000 00:00:00 GMT'

@@ -1,7 +1,7 @@
 <template>
-  <div class="program-players">
+  <div class="program-players" v-if="items">
 		<md-tabs class="tabs-lblue">
-			<md-tab id="tab-player" md-label="Players">
+			<md-tab id="tab-player" md-label="Players" >
         <div class="cards-layout">
 				  <pu-player-card :item="item" v-for="item in items" :key="item.id"></pu-player-card>
         </div>

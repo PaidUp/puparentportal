@@ -32,7 +32,7 @@ export default {
   watch: {
     invoices () {
       this.getSeasons()
-      this.season = this.seasons[this.seasons.length - 1]._id
+      if (this.seasons && this.seasons.length) this.season = this.seasons[this.seasons.length - 1]._id
     },
     season () {
       if (this.season) {

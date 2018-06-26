@@ -28,6 +28,15 @@ class BeneficiaryService {
     return trae
       .get(`/${id}`)
   }
+
+  avatar = function (id) {
+    let urlPath = `${config.media.beneficiary.url}avatar/${id}.png`
+    return trae.get(urlPath).then(resp => {
+      return urlPath
+    }).catch(reason => {
+      return null
+    })
+  }
 }
 
 beneficiaryService = new BeneficiaryService()

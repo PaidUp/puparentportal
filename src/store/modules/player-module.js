@@ -84,6 +84,9 @@ const module = {
         context.commit('setOrganization', organization)
         return organization
       })
+    },
+    getAvatar (context, id) {
+      return beneficiaryService.avatar(id)
     }
   }
 }

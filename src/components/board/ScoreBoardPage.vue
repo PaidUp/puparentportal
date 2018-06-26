@@ -64,6 +64,7 @@
       },
       setSeason (season) {
         this.programId = null
+        this.programSelected = null
         this.seasonId = season
       },
       setProgram (program) {
