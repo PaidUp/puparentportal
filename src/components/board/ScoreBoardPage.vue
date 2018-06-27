@@ -39,6 +39,7 @@
         seasonSelected: 'seasonSelected'
       }),
       itemsFiltered () {
+        // console.log('this.programSelected: ', this.programSelected)
         if (this.programSelected) {
           let resp = {}
           resp[this.programSelected] = this.items[this.programSelected]
@@ -53,6 +54,9 @@
           this.setOrganization(organization)
         })
       }
+    },
+    destroyed () {
+      this.reset()
     },
     watch: {
       user () {
@@ -80,7 +84,8 @@
       }),
       ...mapMutations('scoreboardModule', {
         setOrganization: 'setOrganization',
-        setPlayerSelected: 'setPlayerSelected'
+        setPlayerSelected: 'setPlayerSelected',
+        reset: 'reset'
       }),
       getAll () {
         if (this.user && this.seasonSelected) {

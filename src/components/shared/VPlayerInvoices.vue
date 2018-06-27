@@ -82,8 +82,7 @@
         this.$emit('select', this.invoice)
       },
       getInvoiceStatusMapper () {
-        let resp = this.invoiceMapper[this.invoice.status] || { desc: '', key: '', class: [] }
-        return resp
+        return this.invoiceMapper[this.invoice.status] || { desc: '', key: '', class: [] }
       }
     }
   }

@@ -1,128 +1,9 @@
 <template>
   <div class="program-player-invoices">
-      <md-tabs class="tabs-lblue">
+      <md-tabs class="tabs-lblue" v-if="items">
         <md-tab id="tab-invoices" md-label="Invoices">
-          <div class="cards-layout">
-            <md-card>
-              <div class="title">Dues - Payment 2 resiz title long</div>
-              <div class="caption">Paid to club</div>
-              <div class="card-content">
-                <div class="status">
-                  <md-icon class="md-size-c cgreen">check_circle</md-icon>
-                  <div class="md-caption">PAID</div>
-                </div>
-                <div class="amount-details">
-                  <div class="detail">
-                    <span class="md-caption">
-                      INV1001X3
-                    </span>
-                    <br>
-                    <span class="md-caption">
-                      4/1/2018
-                    </span>
-                  </div>
-                  <div class="total md-title">$500.
-                    <sup>00</sup>
-                  </div>
-                </div>
-              </div>
-            </md-card>
-            <md-card>
-              <div class="title">Dues - Payment 1</div>
-              <div class="caption">Paid to club</div>
-              <div class="card-content">
-                <div class="status">
-                  <md-icon class="md-size-c cblue">check_circle</md-icon>
-                  <div class="md-caption">APPLIED CREDIT</div>
-                </div>
-                <div class="amount-details">
-                  <div class="detail">
-                    <span class="md-caption">
-                      INV1001X3
-                    </span>
-                    <br>
-                    <span class="md-caption">
-                      4/1/2018
-                    </span>
-                  </div>
-                  <div class="total md-title">$500.
-                    <sup>00</sup>
-                  </div>
-                </div>
-              </div>
-            </md-card>
-            <md-card>
-              <div class="title">Dues - Payment 1</div>
-              <div class="caption">Paid to club</div>
-              <div class="card-content">
-                <div class="status">
-                  <md-icon class="md-size-c cred">cancel</md-icon>
-                  <div class="md-caption">FAILED</div>
-                </div>
-                <div class="amount-details">
-                  <div class="detail">
-                    <span class="md-caption">
-                      INV1001X3
-                    </span>
-                    <br>
-                    <span class="md-caption">
-                      4/1/2018
-                    </span>
-                  </div>
-                  <div class="total md-title">$500.
-                    <sup>00</sup>
-                  </div>
-                </div>
-              </div>
-            </md-card>
-            <md-card>
-              <div class="title">Dues - Payment 1</div>
-              <div class="caption">Paid to club</div>
-              <div class="card-content">
-                <div class="status">
-                  <md-icon class="md-size-c cred">note_add</md-icon>
-                  <div class="md-caption">OVERDUE NEW INVOICE</div>
-                </div>
-                <div class="amount-details">
-                  <div class="detail">
-                    <span class="md-caption">
-                      INV1001X3
-                    </span>
-                    <br>
-                    <span class="md-caption">
-                      4/1/2018
-                    </span>
-                  </div>
-                  <div class="total md-title">$500.
-                    <sup>00</sup>
-                  </div>
-                </div>
-              </div>
-            </md-card>
-            <md-card>
-              <div class="title">Dues - Payment 1</div>
-              <div class="caption">Paid to club</div>
-              <div class="card-content">
-                <div class="status">
-                  <md-icon class="md-size-c cyellow">today</md-icon>
-                  <div class="md-caption">OVERDUE NEW INVOICE</div>
-                </div>
-                <div class="amount-details">
-                  <div class="detail">
-                    <span class="md-caption">
-                      INV1001X3
-                    </span>
-                    <br>
-                    <span class="md-caption">
-                      4/1/2018
-                    </span>
-                  </div>
-                  <div class="total md-title">$500.
-                    <sup>00</sup>
-                  </div>
-                </div>
-              </div>
-            </md-card>
+          <div class="cards-layout" >
+            <pu-player-invoice-card :item="item" v-for="item in items" :key="item.id"></pu-player-invoice-card>
           </div>
         </md-tab>
         <md-tab id="tab-invoices-approval" md-label="Invoices requiring approval">
@@ -183,9 +64,13 @@
     </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
+import PuPlayerInvoiceCard from './PUPlayerInvoiceCard'
 export default {
+  components: { PuPlayerInvoiceCard },
   data () {
     return {
+      items: null,
       tableData: [ {
         id: 1,
         name: 'Shawna Dubbin',
@@ -204,6 +89,16 @@ export default {
       }
       ]
     }
+  },
+  mounted () {
+    this.getReducePlayerInvoices().then(items => {
+      this.items = items
+    })
+  },
+  methods: {
+    ...mapActions('scoreboardModule', {
+      getReducePlayerInvoices: 'getReducePlayerInvoices'
+    })
   }
 }
 </script>

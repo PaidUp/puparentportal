@@ -218,6 +218,12 @@ const module = {
     },
     setOrganization (state, organization) {
       state.organization = organization
+    },
+    reset (state) {
+      state.playerSelected = null
+      state.programSelected = null
+      state.seasonSelected = null
+      state.organization = null
     }
   },
   actions: {
@@ -253,6 +259,43 @@ const module = {
         reduceCreditPlayers(values[2], items)
         reducePreorderPlayers(values[3], items)
         return items
+      })
+    },
+    getReducePlayerInvoices (context) {
+      let organizationId = context.state.organization._id
+      let seasonId = context.state.seasonSelected
+      let productId = context.state.programSelected
+      let beneficiaryId = context.state.playerSelected
+      return Promise.all([
+        commerceService.invoicesByOrganization(organizationId, seasonId, productId, beneficiaryId),
+        commerceService.creditsByOrganization(organizationId, seasonId, productId, beneficiaryId),
+        commerceService.preordersByOrganization(organizationId, seasonId, productId, beneficiaryId)
+      ]).then(values => {
+        let resp = []
+        values[0].forEach(val => {
+          resp.push({
+            id: val._id,
+            title: val.label,
+            seq: val.invoiceId,
+            date: new Date(val.dateCharge),
+            price: val.price,
+            status: val.status
+          })
+        })
+        values[1].forEach(val => {
+          resp.push({
+            id: val._id,
+            title: val.label,
+            seq: val.memoId,
+            date: new Date(val.createOn),
+            price: val.price,
+            status: val.status
+          })
+        })
+        console.log('values[0]: ', values[0])
+        console.log('values[1]: ', values[1])
+        console.log('values[2]: ', values[2])
+        return resp
       })
     },
     getPlans (context, productId) {
