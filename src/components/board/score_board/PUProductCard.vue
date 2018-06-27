@@ -55,7 +55,8 @@
   </div>
 </template>
 <script>
-import numeral from 'numeral'
+import currency from '@/helpers/currency'
+import { mapMutations } from 'vuex'
 export default {
   props: {
     item: Object
@@ -75,28 +76,28 @@ export default {
       return this.item.players.size - this.item.inelegible.size
     },
     total () {
-      return numeral(this.item.total).format('0,0.00')
+      return currency(this.item.total)
     },
     paid () {
-      return numeral(this.item.paid).format('0,0.00')
+      return currency(this.item.paid)
     },
     paidWidth () {
       return `width: ${(this.item.paid / this.item.total) * 100}%`
     },
     unpaid () {
-      return numeral(this.item.unpaid).format('0,0.00')
+      return currency(this.item.unpaid)
     },
     unpaidWidth () {
       return `width: ${(this.item.unpaid / this.item.total) * 100}%`
     },
     overdue () {
-      return numeral(this.item.overdue).format('0,0.00')
+      return currency(this.item.overdue)
     },
     overdueWidth () {
       return `width: ${(this.item.overdue / this.item.total) * 100}%`
     },
     other () {
-      return numeral(this.item.other).format('0,0.00')
+      return currency(this.item.other)
     },
     otherWidth () {
       return `width: ${(this.item.other / this.item.total) * 100}%`
@@ -104,8 +105,11 @@ export default {
 
   },
   methods: {
+    ...mapMutations('scoreboardModule', {
+      setProgramSelected: 'setProgramSelected'
+    }),
     selectProgram () {
-      this.$emit('programSelected', this.item)
+      this.setProgramSelected(this.item.id)
     }
   }
 }

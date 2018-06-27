@@ -8,19 +8,18 @@
     </md-field>
     <md-field v-if="season">
       <label>Program</label>
-      <md-select v-model="program" @md-selected="programSelected" placeholder="Program">
+      <md-select v-model="program" @md-selected="setProgram" placeholder="Program">
         <md-option v-for="option in programs" :key="option.id" :value="option.id">{{option.name}}</md-option>
       </md-select>
     </md-field>
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   props: {
-    items: Object,
-    programId: String
+    items: Object
   },
   data () {
     return {
@@ -29,11 +28,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('organizationModule', {
-      'organization': 'organization'
-    }),
-    ...mapState('userModule', {
-      'user': 'user'
+    ...mapState('scoreboardModule', {
+      playerSelected: 'playerSelected',
+      programSelected: 'programSelected',
+      organization: 'organization'
     }),
     seasons () {
       if (this.organization) {
@@ -53,32 +51,25 @@ export default {
     }
   },
   methods: {
-    ...mapActions('organizationModule', {
-      loadOrganization: 'loadOrganization'
+    ...mapMutations('scoreboardModule', {
+      setPlayerSelected: 'setPlayerSelected',
+      setProgramSelected: 'setProgramSelected',
+      setSeasonSelected: 'setSeasonSelected'
     }),
-    programSelected () {
-      this.$emit('selectProgram', this.program)
+    setProgram (id) {
+      this.setProgramSelected(id)
     }
   },
   watch: {
-    user () {
-      if (this.user && this.user.organizationId) this.loadOrganization(this.user.organizationId)
-    },
     organization () {
       this.season = this.seasons[this.seasons.length - 1]._id
-      this.$emit('selectSeason', this.season)
     },
     season () {
       this.program = null
-      this.$emit('selectSeason', this.season)
+      this.setSeasonSelected(this.season)
     },
-    programId () {
-      this.program = this.programId
-    }
-  },
-  mounted () {
-    if (this.user && this.user.organizationId) {
-      this.loadOrganization(this.user.organizationId)
+    programSelected () {
+      this.program = this.programSelected
     }
   }
 }

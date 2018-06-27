@@ -3,12 +3,12 @@
     .review-checks(v-if="account && plan")
       md-checkbox(v-if="chargeToday" v-model="check1") I authorize PaidUp to charge me 
         span.cgreen
-          b ${{ format(chargeToday) }} 
+          b ${{ chargeToday }} 
         b today 
         // | on my {{ account.bank_name || account.brand }}••••{{ account.last4 }}
       md-checkbox(v-if="chargeRemaining" v-model="check2") I authorize PaidUp to setup the remaining 
         span.cgreen
-          b ${{ format(chargeRemaining) }} 
+          b ${{ chargeRemaining }} 
         b on autopay 
         | on the dates and amount in the payment plan I selected
       md-checkbox(v-model="check3") I agree that PaidUp cannot modify, cancel or refund any payments without approval from the club
@@ -17,7 +17,7 @@
 
 </template>
 <script>
-import numeral from 'numeral'
+import currency from '@/helpers/currency'
 
 export default {
   props: {
@@ -52,7 +52,7 @@ export default {
         return subTotal
       }, 0)
       if (res) this.check1 = false
-      return res
+      return currency(res)
     },
     chargeRemaining () {
       if (!this.plan) return 0
@@ -61,7 +61,7 @@ export default {
         return subTotal
       }, 0)
       if (res) this.check2 = false
-      return res
+      return currency(res)
     },
     enable () {
       return ((!this.chargeToday || this.check1) && (!this.chargeRemaining || this.check2) && this.check3)
@@ -77,9 +77,6 @@ export default {
   methods: {
     select () {
       this.$emit('select', this.enable)
-    },
-    format (amount) {
-      return numeral(amount).format('0,0.00')
     },
     cancel () {
       this.$router.push({

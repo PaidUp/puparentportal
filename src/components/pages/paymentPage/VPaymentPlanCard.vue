@@ -5,12 +5,12 @@
       div
         .title.title-total ${{ total }}
         .md-caption {{ plan.dues.length }} {{ plan.dues.length === 1 ? 'Installment' : 'Installments' }}
-        .md-caption(v-if="chargeToday") ${{ format(chargeToday) }} PaidUp by Today
-        .md-caption(v-if="chargeRemaining") ${{ format(chargeRemaining) }} PaidUp by {{ $d(lastDateCharge, 'card') }}
+        .md-caption(v-if="chargeToday") ${{ chargeToday }} PaidUp by Today
+        .md-caption(v-if="chargeRemaining") ${{ chargeRemaining }} PaidUp by {{ $d(lastDateCharge, 'card') }}
 
 </template>
 <script>
-import numeral from 'numeral'
+import currency from '@/helpers/currency'
 
 export default {
   props: {
@@ -29,18 +29,18 @@ export default {
       let total = this.plan.dues.reduce((subTotal, due) => {
         return subTotal + due.amount
       }, 0)
-      return numeral(total).format('0,0.00')
+      return currency(total)
     },
     chargeToday () {
       return this.plan.dues.reduce((subTotal, due) => {
         if (this.today > due.dateCharge.getTime()) return subTotal + due.amount
-        return subTotal
+        return currency(subTotal)
       }, 0)
     },
     chargeRemaining () {
       return this.plan.dues.reduce((subTotal, due) => {
         if (this.today <= due.dateCharge.getTime()) return subTotal + due.amount
-        return subTotal
+        return currency(subTotal)
       }, 0)
     },
     lastDateCharge () {
@@ -50,9 +50,6 @@ export default {
   methods: {
     select (param) {
       this.$emit('select', param)
-    },
-    format (amount) {
-      return numeral(amount).format('0,0.00')
     },
     click () {
       this.$emit('click', this.plan)

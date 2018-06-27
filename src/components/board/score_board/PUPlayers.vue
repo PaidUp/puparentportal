@@ -7,71 +7,7 @@
         </div>
 			</md-tab>
 			<md-tab id="tab-plans" md-label="Program Payment Plans">
-				<div class="cards-layout">
-					<md-card md-with-hover class="card-payment-plan">
-						<div class="title">
-							Dues - Installments
-						</div>
-						<div class="body">
-							<div class="number-big cgreen">$3.250.00</div>
-							<div class="title-info">2 Installments</div>
-							<div class="title-info">Nov 15, 2018 - Mar 1, 2019</div>
-						</div>
-						<div class="actions">
-							<md-button class="md-icon-button">
-								<md-icon>visibility</md-icon>
-							</md-button>
-							<md-menu md-size="small" md-direction="top-start">
-								<md-button class="md-icon-button md-accent lblue" md-menu-trigger>
-									<md-icon>more_vert</md-icon>
-								</md-button>
-								<md-menu-content>
-									<md-menu-item @click="cannotDeleteAlert = true">
-										DELETE
-									</md-menu-item>
-									<md-menu-item @click="confirmDeleteAlert = true">
-										DUPLICATE
-									</md-menu-item>
-									<md-menu-item @click="btnData = 'click 1'">
-										EDIT
-									</md-menu-item>
-								</md-menu-content>
-							</md-menu>
-						</div>
-					</md-card>
-					<md-card md-with-hover class="card-payment-plan">
-						<div class="title">
-							Dues - Installments (Salt Lake travel)
-						</div>
-						<div class="body">
-							<div class="number-big cgreen">$3.250.00</div>
-							<div class="title-info">2 Installments</div>
-							<div class="title-info">Nov 15, 2018 - Mar 1, 2019</div>
-						</div>
-						<div class="actions">
-							<md-button class="md-icon-button">
-								<md-icon>visibility_off</md-icon>
-							</md-button>
-							<md-menu md-size="small" md-direction="top-start">
-								<md-button class="md-icon-button md-accent lblue" md-menu-trigger>
-									<md-icon>more_vert</md-icon>
-								</md-button>
-								<md-menu-content>
-									<md-menu-item @click="cannotDeleteAlert = true">
-										DELETE
-									</md-menu-item>
-									<md-menu-item @click="confirmDeleteAlert = true">
-										DUPLICATE
-									</md-menu-item>
-									<md-menu-item @click="btnData = 'click 1'">
-										EDIT
-									</md-menu-item>
-								</md-menu-content>
-							</md-menu>
-
-						</div>
-					</md-card>
-				</div>
+				<pu-product-plans></pu-product-plans>
 			</md-tab>
 		</md-tabs>
 	</div>
@@ -79,12 +15,9 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import PuPlayerCard from './PUPlayerCard.vue'
+import PuProductPlans from './PUProductPlans.vue'
 export default {
-  components: { PuPlayerCard },
-  props: {
-    seasonId: String,
-    productId: String
-  },
+  components: { PuPlayerCard, PuProductPlans },
   mounted () {
     this.getAll()
   },
@@ -94,16 +27,22 @@ export default {
     }
   },
   computed: {
-    ...mapState('userModule', {
-      'user': 'user'
+    ...mapState('scoreboardModule', {
+      programSelected: 'programSelected',
+      seasonSelected: 'seasonSelected'
     })
   },
+  watch: {
+    programSelected () {
+      this.getAll()
+    }
+  },
   methods: {
-    ...mapActions('organizationModule', {
+    ...mapActions('scoreboardModule', {
       getReducePlayers: 'getReducePlayers'
     }),
     getAll () {
-      this.getReducePlayers({organizationId: this.user.organizationId, seasonId: this.seasonId, productId: this.productId}).then(items => {
+      this.getReducePlayers().then(items => {
         this.items = items
       })
     }

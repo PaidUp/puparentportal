@@ -3,7 +3,7 @@
       <div class="pre-cards-title">Programs</div>
       <div class="cards-layout">
 
-        <pu-product-card @programSelected="selectProgram" v-for="item in items" :key="item.id" :item="item"></pu-product-card>
+        <pu-product-card v-for="item in items" :key="item.id" :item="item"></pu-product-card>
 
       </div>  
     </div>
@@ -21,9 +21,6 @@
       }
     },
     methods: {
-      selectProgram (program) {
-        this.$emit('programSelected', program)
-      }
     }
   }
 </script>

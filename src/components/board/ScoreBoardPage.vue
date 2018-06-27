@@ -3,79 +3,94 @@
     <div class="details">
       <div class="pre-cards-title">Details</div>
       <div class="details-box">
-        <pu-details-selects :programId="programId" @selectSeason="setSeason" @selectProgram="setProgram" :items="items"></pu-details-selects>
+        <pu-details-selects :items="items"></pu-details-selects>
         <pu-details-totals :items="itemsFiltered"></pu-details-totals>
       </div>
     </div>
-    <pu-products v-if="!programSelected" @programSelected="selectProgram" :items="itemsFiltered"></pu-products>
-    <pu-players v-if="programSelected" :seasonId="seasonId" :productId="programId"></pu-players>
+    <pu-products v-if="!programSelected" :items="itemsFiltered"></pu-products>
+    <pu-players v-if="programSelected && !playerSelected"></pu-players>
+    <pu-player-invoices v-if="playerSelected"></pu-player-invoices>
   </div>
 
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapMutations, mapActions } from 'vuex'
   import PuDetailsSelects from './score_board/PUDetailsSelects.vue'
   import PuDetailsTotals from './score_board/PUDetailsTotals.vue'
   import PuProducts from './score_board/PUProducts.vue'
   import PuPlayers from './score_board/PUPlayers.vue'
+  import PuPlayerInvoices from './score_board/PUPlayerInvoices.vue'
 
   export default {
-    components: { PuDetailsSelects, PuDetailsTotals, PuProducts, PuPlayers },
+    components: { PuDetailsSelects, PuDetailsTotals, PuProducts, PuPlayers, PuPlayerInvoices },
     data: function () {
       return {
-        items: null,
-        programSelected: null,
-        seasonId: null,
-        programId: null
+        items: null
       }
     },
     computed: {
       ...mapState('userModule', {
         'user': 'user'
       }),
+      ...mapState('scoreboardModule', {
+        playerSelected: 'playerSelected',
+        programSelected: 'programSelected',
+        seasonSelected: 'seasonSelected'
+      }),
       itemsFiltered () {
-        if (this.programId) {
+        if (this.programSelected) {
           let resp = {}
-          resp[this.programId] = this.items[this.programId]
+          resp[this.programSelected] = this.items[this.programSelected]
           return resp
         }
         return this.items
       }
     },
+    mounted () {
+      if (this.user && this.user.organizationId) {
+        this.getOrganization(this.user.organizationId).then(organization => {
+          this.setOrganization(organization)
+        })
+      }
+    },
     watch: {
-      seasonId () {
+      user () {
+        if (this.user && this.user.organizationId) {
+          this.getOrganization(this.user.organizationId).then(organization => {
+            this.setOrganization(organization)
+          })
+        }
+      },
+      seasonSelected () {
         this.getAll()
       },
-      programId () {
+      programSelected () {
         this.getAll()
+        this.setPlayerSelected()
       }
     },
     methods: {
       ...mapActions('organizationModule', {
-        getReducePrograms: 'getReducePrograms'
+        getOrganization: 'getOrganization'
+      }),
+      ...mapActions('scoreboardModule', {
+        getReducePrograms: 'getReducePrograms',
+        setPlayerSelected: 'setPlayerSelected'
+      }),
+      ...mapMutations('scoreboardModule', {
+        setOrganization: 'setOrganization',
+        setPlayerSelected: 'setPlayerSelected'
       }),
       getAll () {
-        if (this.user && this.seasonId) {
-          this.getReducePrograms({organizationId: this.user.organizationId, seasonId: this.seasonId}).then(items => {
+        if (this.user && this.seasonSelected) {
+          this.getReducePrograms().then(items => {
             this.items = items
           })
         }
       },
-      setSeason (season) {
-        this.programId = null
-        this.programSelected = null
-        this.seasonId = season
-      },
-      setProgram (program) {
-        this.programId = program
-      },
       setItems (items) {
         this.items = items
-      },
-      selectProgram (program) {
-        this.programId = program.id
-        this.programSelected = program
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="selectPlayer">
 		<md-card md-with-hover class="card-player-eligibility">
 			<div class="top-box">
 				<md-avatar class="md-size-c">
@@ -41,8 +41,8 @@
 	</div>
 </template>
 <script>
-import { mapActions } from 'vuex'
-import numeral from 'numeral'
+import { mapActions, mapMutations } from 'vuex'
+import currency from '@/helpers/currency'
 export default {
   props: {
     item: Object
@@ -59,28 +59,28 @@ export default {
   },
   computed: {
     total () {
-      return numeral(this.item.total).format('0,0.00')
+      return currency(this.item.total)
     },
     paid () {
-      return numeral(this.item.paid).format('0,0.00')
+      return currency(this.item.paid)
     },
     paidWidth () {
       return `width: ${(this.item.paid / this.item.total) * 100}%`
     },
     unpaid () {
-      return numeral(this.item.unpaid).format('0,0.00')
+      return currency(this.item.unpaid)
     },
     unpaidWidth () {
       return `width: ${(this.item.unpaid / this.item.total) * 100}%`
     },
     overdue () {
-      return numeral(this.item.overdue).format('0,0.00')
+      return currency(this.item.overdue)
     },
     overdueWidth () {
       return `width: ${(this.item.overdue / this.item.total) * 100}%`
     },
     other () {
-      return numeral(this.item.other).format('0,0.00')
+      return currency(this.item.other)
     },
     otherWidth () {
       return `width: ${(this.item.other / this.item.total) * 100}%`
@@ -89,7 +89,13 @@ export default {
   methods: {
     ...mapActions('playerModule', {
       getAvatar: 'getAvatar'
-    })
+    }),
+    ...mapMutations('scoreboardModule', {
+      setPlayerSelected: 'setPlayerSelected'
+    }),
+    selectPlayer () {
+      this.setPlayerSelected(this.item.id)
+    }
   }
 }
 </script>

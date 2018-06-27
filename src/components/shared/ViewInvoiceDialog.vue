@@ -111,7 +111,7 @@
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
   import PaymentAccountsDialog from '@/components/shared/payment/PaymentAccountsDialog.vue'
   import { mapGetters, mapActions } from 'vuex'
-  import numeral from 'numeral'
+  import currency from '@/helpers/currency'
 
   export default {
     components: { VPayAnimation, PaymentAccountsDialog },
@@ -145,7 +145,7 @@
           this.dateCharge = new Date(this.invoice.dateCharge)
           this.dateChargeDisable = this.$d(this.dateCharge, 'short')
           this.description = this.invoice.label
-          this.amount = numeral(this.invoice.price).format('0,0.00')
+          this.amount = currency(this.invoice.price)
           this.status = this.invoice.status.toUpperCase()
           this.paymentMethod = `${this.invoice.paymentDetails.brand}••••${this.invoice.paymentDetails.last4}`
         }

@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import numeral from 'numeral'
+import currency from '@/helpers/currency'
 export default {
   props: {
     items: Object
@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     format (value) {
-      return numeral(value).format('0,0.00')
+      return currency(value)
     }
   }
 }

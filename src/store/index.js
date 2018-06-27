@@ -6,6 +6,8 @@ import paymentModule from './modules/payment-module'
 import messageModule from './modules/message-module'
 import playerModule from './modules/player-module'
 import organizationModule from './modules/organization-module'
+import scoreboardModule from './modules/scoreboard-module'
+import commonModule from './modules/common-module'
 
 Vue.use(Vuex)
 
@@ -16,6 +18,8 @@ const store = new Vuex.Store({
     messageModule,
     playerModule,
     organizationModule,
+    scoreboardModule,
+    commonModule,
     uiModule
   }
 })

@@ -3,7 +3,7 @@
     sup {{value[1]}}
 </template>
 <script>
-import numeral from 'numeral'
+import currency from '@/helpers/currency'
 
 export default {
   props: {
@@ -12,7 +12,7 @@ export default {
   },
   computed: {
     value () {
-      return numeral(this.amount).format('0,0.00').split('.')
+      return currency(this.amount).split('.')
     }
   }
 }
