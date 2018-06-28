@@ -19,13 +19,13 @@ const config = {
   },
   media: {
     beneficiary: {
-      url: 'https://s3.amazonaws.com/pu-media-dev/beneficiary/'
+      url: 'http://pu-media-dev.s3-website-us-east-1.amazonaws.com/beneficiary/'
     },
     organization: {
-      url: 'https://s3.amazonaws.com/pu-media-dev/organization/'
+      url: 'http://pu-media-dev.s3-website-us-east-1.amazonaws.com/organization/'
     },
     user: {
-      url: 'https://s3.amazonaws.com/pu-media-dev/user/'
+      url: 'http://pu-media-dev.s3-website-us-east-1.amazonaws.com/user/'
     }
   }
 }
