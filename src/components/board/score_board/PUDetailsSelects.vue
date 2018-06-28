@@ -9,6 +9,7 @@
     <md-field v-if="season">
       <label>Program</label>
       <md-select v-model="program" @md-selected="setProgram" placeholder="Program">
+        <md-option value=""> All </md-option>
         <md-option v-for="option in programs" :key="option.id" :value="option.id">{{option.name}}</md-option>
       </md-select>
     </md-field>
@@ -24,7 +25,7 @@ export default {
   data () {
     return {
       season: null,
-      program: null
+      program: ''
     }
   },
   computed: {
@@ -70,6 +71,7 @@ export default {
     },
     programSelected () {
       this.program = this.programSelected
+      this.setPlayerSelected()
     }
   }
 }

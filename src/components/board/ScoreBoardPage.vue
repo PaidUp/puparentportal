@@ -4,10 +4,10 @@
       <div class="pre-cards-title">Details</div>
       <div class="details-box">
         <pu-details-selects :items="items"></pu-details-selects>
-        <pu-details-totals :items="itemsFiltered"></pu-details-totals>
+        <pu-details-totals :items="items"></pu-details-totals>
       </div>
     </div>
-    <pu-products v-if="!programSelected" :items="itemsFiltered"></pu-products>
+    <pu-products v-if="!programSelected" :items="items"></pu-products>
     <pu-players v-if="programSelected && !playerSelected"></pu-players>
     <pu-player-invoices v-if="playerSelected"></pu-player-invoices>
   </div>
@@ -37,16 +37,7 @@
         playerSelected: 'playerSelected',
         programSelected: 'programSelected',
         seasonSelected: 'seasonSelected'
-      }),
-      itemsFiltered () {
-        // console.log('this.programSelected: ', this.programSelected)
-        if (this.programSelected) {
-          let resp = {}
-          resp[this.programSelected] = this.items[this.programSelected]
-          return resp
-        }
-        return this.items
-      }
+      })
     },
     mounted () {
       if (this.user && this.user.organizationId) {
@@ -70,8 +61,11 @@
         this.getAll()
       },
       programSelected () {
+        // this.setPlayerSelected()
         this.getAll()
-        this.setPlayerSelected()
+      },
+      playerSelected () {
+        this.getAll()
       }
     },
     methods: {

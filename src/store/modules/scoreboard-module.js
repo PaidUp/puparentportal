@@ -230,10 +230,12 @@ const module = {
     getReducePrograms (context) {
       let organizationId = context.state.organization._id
       let seasonId = context.state.seasonSelected
+      let productId = context.state.programSelected
+      let beneficiaryId = context.state.playerSelected
       return Promise.all([
-        commerceService.invoicesByOrganization(organizationId, seasonId),
-        commerceService.creditsByOrganization(organizationId, seasonId),
-        commerceService.preordersByOrganization(organizationId, seasonId)
+        commerceService.invoicesByOrganization(organizationId, seasonId, productId, beneficiaryId),
+        commerceService.creditsByOrganization(organizationId, seasonId, productId, beneficiaryId),
+        commerceService.preordersByOrganization(organizationId, seasonId, productId, beneficiaryId)
       ]).then(values => {
         let items = reduceInvoices(values[0])
         reduceCredits(values[1], items)
@@ -292,9 +294,25 @@ const module = {
             status: val.status
           })
         })
-        console.log('values[0]: ', values[0])
-        console.log('values[1]: ', values[1])
-        console.log('values[2]: ', values[2])
+        let today = new Date().getTime()
+        values[2].forEach(val => {
+          if (!val.dues) return
+          val.dues.forEach(due => {
+            let dateCharge = new Date(due.dateCharge)
+            let status = 'due'
+            if (today > dateCharge.getTime()) {
+              status = 'overdue'
+            }
+            resp.push({
+              id: due._id,
+              title: due.description,
+              seq: '',
+              date: dateCharge,
+              price: due.amount,
+              status: status
+            })
+          })
+        })
         return resp
       })
     },

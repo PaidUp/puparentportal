@@ -1,7 +1,7 @@
 <template>
   <md-card>
     <div class="title">{{ item.title }}</div>
-    <div class="caption">Paid to club</div>
+    <div class="caption">{{ subtext }}</div>
     <div class="card-content">
       <div class="status">
         <md-icon class="md-size-c" :class="clazz"> {{icon}} </md-icon>
@@ -58,7 +58,6 @@ export default {
   methods: {
     getInvoiceStatusMapper () {
       let resp = this.invoiceMapper[this.item.status] || { desc: '', key: '', class: [] }
-      console.log('resp: ', resp)
       return resp
     }
   }
