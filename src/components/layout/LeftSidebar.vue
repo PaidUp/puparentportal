@@ -18,20 +18,8 @@
     
 
       <!-- Programs -->
-      <md-list-item to="/scoreboard" md-expand v-if="isRole('coach')">
+      <md-list-item to="/scoreboard" v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Scoreboard</span>
-        <md-list slot="md-expand">
-          <md-list-item to="/scoreplayers">
-            <div class="md-list-item-text">
-              ScorePlayers
-            </div>
-          </md-list-item>
-          <md-list-item to="/scoreplayerdetails">
-            <div class="md-list-item-text">
-              ScorePlayerDetails
-            </div>
-          </md-list-item>
-        </md-list>
       </md-list-item>
 
       <!-- Search Result: maybe move to somewhere else -->

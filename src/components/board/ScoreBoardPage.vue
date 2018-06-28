@@ -1,10 +1,11 @@
 <template>
   <div class="programs-page">
+    <pu-breadcrums></pu-breadcrums>
     <div class="details">
       <div class="pre-cards-title">Details</div>
       <div class="details-box">
-        <pu-details-selects :items="items"></pu-details-selects>
-        <pu-details-totals :items="items"></pu-details-totals>
+        <pu-details-selects></pu-details-selects>
+        <pu-details-totals></pu-details-totals>
       </div>
     </div>
     <pu-products v-if="!programSelected" :items="items"></pu-products>
@@ -21,19 +22,16 @@
   import PuProducts from './score_board/PUProducts.vue'
   import PuPlayers from './score_board/PUPlayers.vue'
   import PuPlayerInvoices from './score_board/PUPlayerInvoices.vue'
+  import PuBreadcrums from './score_board/PUBreadcrums.vue'
 
   export default {
-    components: { PuDetailsSelects, PuDetailsTotals, PuProducts, PuPlayers, PuPlayerInvoices },
-    data: function () {
-      return {
-        items: null
-      }
-    },
+    components: { PuDetailsSelects, PuDetailsTotals, PuProducts, PuPlayers, PuPlayerInvoices, PuBreadcrums },
     computed: {
       ...mapState('userModule', {
         'user': 'user'
       }),
       ...mapState('scoreboardModule', {
+        items: 'items',
         playerSelected: 'playerSelected',
         programSelected: 'programSelected',
         seasonSelected: 'seasonSelected'
@@ -61,7 +59,6 @@
         this.getAll()
       },
       programSelected () {
-        // this.setPlayerSelected()
         this.getAll()
       },
       playerSelected () {
@@ -83,13 +80,8 @@
       }),
       getAll () {
         if (this.user && this.seasonSelected) {
-          this.getReducePrograms().then(items => {
-            this.items = items
-          })
+          this.getReducePrograms()
         }
-      },
-      setItems (items) {
-        this.items = items
       }
     }
   }

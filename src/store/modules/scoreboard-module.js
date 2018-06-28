@@ -201,12 +201,49 @@ function reducePreorderPlayers (preorders, items) {
 const module = {
   namespaced: true,
   state: {
+    items: null,
+    programs: null,
     playerSelected: null,
     programSelected: null,
     seasonSelected: null,
     organization: null
   },
+  getters: {
+    seasonSelectedName (state) {
+      let name = ''
+      if (state.organization && state.seasonSelected) {
+        state.organization.seasons.forEach(season => {
+          if (season._id === state.seasonSelected) name = season.name
+        })
+      }
+      return name
+    },
+    programSelectedName (state) {
+      let name = ''
+      if (state.programSelected) {
+        state.programs.forEach(program => {
+          if (program.id === state.programSelected) {
+            name = program.name
+          }
+        })
+      }
+      return name
+    },
+    playerSelectedName (state) {
+      let name = ''
+      if (state.playerSelected) {
+        name = `${beneficiaries[state.playerSelected].firstName} ${beneficiaries[state.playerSelected].lastName}`
+      }
+      return name
+    }
+  },
   mutations: {
+    setItems (state, items) {
+      state.items = items
+    },
+    setPrograms (state, programs) {
+      state.programs = programs
+    },
     setPlayerSelected (state, player) {
       state.playerSelected = player
     },
@@ -240,7 +277,14 @@ const module = {
         let items = reduceInvoices(values[0])
         reduceCredits(values[1], items)
         reducePreorders(values[2], items)
-        return items
+        context.commit('setItems', items)
+        if (!productId && !beneficiaryId) {
+          let programs = []
+          for (let key in items) {
+            programs.push(items[key])
+          }
+          context.commit('setPrograms', programs)
+        }
       })
     },
     getReducePlayers (context) {

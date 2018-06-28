@@ -24,14 +24,17 @@
 </template>
 <script>
 import currency from '@/helpers/currency'
+import { mapState } from 'vuex'
 export default {
-  props: {
-    items: Object
-  },
   data () {
     return {
       totals: {}
     }
+  },
+  computed: {
+    ...mapState('scoreboardModule', {
+      items: 'items'
+    })
   },
   watch: {
     items () {

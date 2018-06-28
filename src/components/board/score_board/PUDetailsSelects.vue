@@ -19,9 +19,6 @@
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  props: {
-    items: Object
-  },
   data () {
     return {
       season: null,
@@ -30,6 +27,8 @@ export default {
   },
   computed: {
     ...mapState('scoreboardModule', {
+      items: 'items',
+      programs: 'programs',
       playerSelected: 'playerSelected',
       programSelected: 'programSelected',
       organization: 'organization'
@@ -41,14 +40,6 @@ export default {
         })
       }
       return []
-    },
-    programs () {
-      if (!this.items) return []
-      let result = []
-      for (let key in this.items) {
-        result.push(this.items[key])
-      }
-      return result
     }
   },
   methods: {
