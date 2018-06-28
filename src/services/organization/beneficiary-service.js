@@ -1,5 +1,6 @@
 import Trae from '@/services/trae-service'
 import config from '@/config'
+import _trae from 'trae'
 
 const trae = new Trae(config.api.organization + '/beneficiary')
 let beneficiaryService
@@ -31,11 +32,12 @@ class BeneficiaryService {
 
   avatar = function (id) {
     let urlPath = `${config.media.beneficiary.url}avatar/${id}.png`
-    return trae.get(urlPath).then(resp => {
-      return urlPath
-    }).catch(reason => {
-      return null
-    })
+    return _trae.get(urlPath, { })
+      .then((response) => {
+        return urlPath
+      }).catch(reason => {
+        return null
+      })
   }
 }
 

@@ -2,25 +2,6 @@ import trae from 'trae'
 import store from '@/store'
 import router from '@/router'
 
-// trae.defaults({
-//   mode: 'no-cors'
-// })
-
-trae.before(config => {
-  const token = window.localStorage.token
-  config.mode = 'no-cors'
-  config.cache = 'no-cache'
-  config.mode = 'cors'
-  // config.headers['Access-Control-Allow-Origin'] = '*'
-  config.headers['Cache-Control'] = 'no-cache'
-  config.headers['Pragma'] = 'no-cache'
-  config.headers['Expires'] = 'Sat, 01 Jan 2000 00:00:00 GMT'
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token
-  }
-  return config
-})
-
 const rejectMiddleware = (err) => {
   if (err.status === 401 || err.status === 403) {
     store.commit('userModule/clean')
@@ -32,13 +13,24 @@ const rejectMiddleware = (err) => {
   return Promise.reject(err)
 }
 
-trae.after(resp => resp.data, rejectMiddleware)
-
 export default class Trae {
   constructor (baseUrl) {
     this.instance = trae.create({
       baseUrl
     })
+    this.instance.before(config => {
+      const token = window.localStorage.token
+      config.cache = 'no-cache'
+      // config.headers['Access-Control-Allow-Origin'] = '*'
+      // config.headers['Cache-Control'] = 'no-cache'
+      // config.headers['Pragma'] = 'no-cache'
+      // config.headers['Expires'] = 'Sat, 01 Jan 2000 00:00:00 GMT'
+      if (token) {
+        config.headers['Authorization'] = 'Bearer ' + token
+      }
+      return config
+    })
+    this.instance.after(resp => resp.data, rejectMiddleware)
   }
 
   get get () {
