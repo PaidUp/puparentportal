@@ -120,9 +120,7 @@
         })
       },
       reloadBeneficiares () {
-        console.log('start reloadBeneficiares')
         this.getBeneficiaries(this.user.email).then(bn => {
-          console.log('push router')
           this.processing = false
           this.$router.push({
             name: 'history',

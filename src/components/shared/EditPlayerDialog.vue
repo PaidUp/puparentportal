@@ -29,7 +29,7 @@
       </md-field>
     </div>
     <div class="actions">
-      <md-button :disabled="disableDeleteButton" class="md-accent lblue delete-btn">DELETE</md-button>
+      <md-button :disabled="disableDeleteButton" @click="remove" class="md-accent lblue delete-btn">DELETE</md-button>
       <div>
         <md-button class="md-accent lblue" @click="close">CANCEL</md-button>
         <md-button class="md-accent lblue md-raised" :disabled="disableSaveButton" @click="save">SAVE</md-button>
@@ -60,6 +60,7 @@
         lastName: capitalize(this.player.lastName),
         organization: {},
         submited: false,
+        deleteAction: false,
         avatar: null
       }
     },
@@ -96,7 +97,8 @@
     methods: {
       ...mapActions('playerModule', {
         update: 'update',
-        getBeneficiaries: 'getBeneficiaries'
+        getBeneficiaries: 'getBeneficiaries',
+        deleteBeneficiary: 'deleteBeneficiary'
       }),
       ...mapActions('organizationModule', {
         getOrganization: 'getOrganization'
@@ -115,6 +117,19 @@
         }).then(player => {
           this.submited = false
           this.getBeneficiaries(this.user.email)
+        }).catch(reason => {
+          console.log(reason)
+          this.submited = false
+        })
+      },
+      remove () {
+        this.submited = true
+        this.deleteBeneficiary(this.player._id)
+        .then(resp => {
+          this.submited = false
+          this.getBeneficiaries(this.user.email).then(resp => {
+            this.$router.push({name: 'home'})
+          })
         }).catch(reason => {
           console.log(reason)
           this.submited = false

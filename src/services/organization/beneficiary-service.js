@@ -30,6 +30,11 @@ class BeneficiaryService {
       .get(`/${id}`)
   }
 
+  deleteBeneficiary = function (id) {
+    return trae
+      .delete(`/${id}`)
+  }
+
   avatar = function (id) {
     let urlPath = `${config.media.beneficiary.url}avatar/${id}.png`
     return _trae.get(urlPath, { })

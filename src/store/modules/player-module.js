@@ -73,6 +73,9 @@ const module = {
     getBeneficiary (context, id) {
       return beneficiaryService.getBeneficiary(id)
     },
+    deleteBeneficiary (context, id) {
+      return beneficiaryService.deleteBeneficiary(id)
+    },
     create (context, body) {
       return beneficiaryService.create(body)
     },
