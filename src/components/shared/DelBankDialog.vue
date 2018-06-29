@@ -74,6 +74,8 @@ export default {
           this.submited = false
           this.listBanks(this.user)
         })
+      }).catch(reason => {
+        this.submited = false
       })
     },
     done () {

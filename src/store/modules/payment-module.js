@@ -110,6 +110,11 @@ const module = {
         return paymentService.removeCard(user.externalCustomerId, cardId)
       }
     },
+    removeBank (context, { user, bankId }) {
+      if (user.externalCustomerId) {
+        return paymentService.removeBank(user.externalCustomerId, bankId)
+      }
+    },
     getProducts (context, organizationId) {
       return organizationService.getProducts(organizationId).then(products => {
         context.commit('setProducts', products)

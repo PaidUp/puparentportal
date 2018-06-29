@@ -53,7 +53,9 @@ const dict = {
     },
     left_side_bar: {
       del_card_success: 'Your card was deleted successfully',
-      del_card_fail: 'Cannot delete card, Change all unpaid invoices to a new payment method and try again'
+      del_bank_success: 'Your bank account was deleted successfully',
+      del_card_fail: 'Cannot delete card, Change all unpaid invoices to a new payment method and try again',
+      del_bank_fail: 'Cannot delete bank account, Change all unpaid invoices to a new payment method and try again'
     },
     new_player: {
       done: 'Player added successfully.'
