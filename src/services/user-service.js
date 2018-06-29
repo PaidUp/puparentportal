@@ -22,7 +22,10 @@ class UserService {
 
   logout () {
     return trae
-      .delete('/logout')
+      .delete('/logout').then(resp => {
+        window.location.reload(true)
+        return resp
+      })
   }
 
   fbLogin (fbResponse) {

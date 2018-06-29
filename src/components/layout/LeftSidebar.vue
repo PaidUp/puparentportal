@@ -2,10 +2,10 @@
   <div class="left-sidebar">
     <md-list class="top-list">
       <md-list-item class="edit-user-nav-item" to="/profile">
-        <md-avatar v-if="avatar">
-          <img :src="avatar" />
+        <md-avatar v-if="showAvatar">
+          <img :src="avatar" @error="showAvatar = false"/>
         </md-avatar>
-        <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
+        <md-icon v-if="!showAvatar" class="md-size-2x ca1">account_circle</md-icon>
         <div class="md-list-item-text bold">
           {{ user.firstName }} {{ user.lastName}}
         </div>
@@ -77,12 +77,12 @@
   import PuPaymentAccounts from './leftSidebar/PuPaymentAccounts.vue'
   import PuBotton from './leftSidebar/PuBotton.vue'
   import { mapState, mapActions, mapMutations } from 'vuex'
-  import config from '@/config'
 
   export default {
     components: { PuItem, PuBotton, PuPlayerPaymentHistory, PuPayNewInvoice, PuPaymentAccounts },
     data: function () {
       return {
+        showAvatar: true
       }
     },
     computed: {
@@ -97,17 +97,13 @@
     mounted () {
       if (this.user.email) {
         this.getBeneficiaries(this.user.email)
-        this.$http.get(`${config.media.user.url}avatar/${this.user._id}.png`).then(resp => {
-          this.reloadAvatar()
-        }, reason => {})
+        this.reloadAvatar()
       }
     },
     watch: {
       user () {
         this.getBeneficiaries(this.user.email)
-        this.$http.get(`${config.media.user.url}avatar/${this.user._id}.png`).then(resp => {
-          this.reloadAvatar()
-        }, reason => {})
+        this.reloadAvatar()
       }
     },
     methods: {
