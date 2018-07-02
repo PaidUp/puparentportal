@@ -4,8 +4,8 @@
       <div class="title">Player Details</div>
     </div>
     <div class="common-player-info">
-      <md-avatar v-if="avatar" class="md-large">
-        <img :src="avatar" alt="avatar">
+      <md-avatar v-if="showAvatar" class="md-large">
+        <img :src="avatar" @error="showAvatar = false" alt="avatar">
       </md-avatar>
       <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
       <div class="name">
@@ -61,7 +61,8 @@
         organization: {},
         submited: false,
         deleteAction: false,
-        avatar: null
+        avatar: null,
+        showAvatar: true
       }
     },
     computed: {
@@ -82,11 +83,8 @@
     },
     mounted () {
       if (this.player) {
-        let urlPath = `${config.media.beneficiary.url}avatar/${this.player._id}.png?a=${Math.random()}`
-        this.$http.get(urlPath)
-        .then(resp => {
-          this.avatar = resp.url
-        }).catch(reason => {
+        this.avatarUrl(this.player._id).then(url => {
+          this.avatar = url
         })
         this.getOrganization(this.player.organizationId)
         .then(organization => {
@@ -98,7 +96,8 @@
       ...mapActions('playerModule', {
         update: 'update',
         getBeneficiaries: 'getBeneficiaries',
-        deleteBeneficiary: 'deleteBeneficiary'
+        deleteBeneficiary: 'deleteBeneficiary',
+        avatarUrl: 'avatarUrl'
       }),
       ...mapActions('organizationModule', {
         getOrganization: 'getOrganization'

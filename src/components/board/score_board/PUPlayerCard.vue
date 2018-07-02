@@ -3,7 +3,7 @@
 		<md-card md-with-hover class="card-player-eligibility">
 			<div class="top-box">
 				<md-avatar class="md-size-c">
-					<img v-if="avatar" :src="avatar" alt="avatar">
+					<img v-if="showAvatar" @error="showAvatar = false" :src="avatar" alt="avatar">
 					<md-icon v-else class="md-size-2x ca1"> account_circle </md-icon>
 				</md-avatar>
 				<div class="name">{{ item.firstName }} {{ item.lastName }}</div>
@@ -48,13 +48,14 @@ export default {
     item: Object
   },
   mounted () {
-    this.getAvatar(this.item.id).then(res => {
+    this.avatarUrl(this.item.id).then(res => {
       this.avatar = res
     })
   },
   data () {
     return {
-      avatar: null
+      avatar: null,
+      showAvatar: true
     }
   },
   computed: {
@@ -88,7 +89,7 @@ export default {
   },
   methods: {
     ...mapActions('playerModule', {
-      getAvatar: 'getAvatar'
+      avatarUrl: 'avatarUrl'
     }),
     ...mapMutations('scoreboardModule', {
       setPlayerSelected: 'setPlayerSelected'

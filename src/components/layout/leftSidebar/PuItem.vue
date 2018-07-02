@@ -1,7 +1,7 @@
 <template lang="pug">
 md-list-item(:to="item.to")
-  md-avatar.md-large(v-if="avatar")
-    img(:src="avatar")
+  md-avatar.md-large(v-if="showAvatar")
+    img(:src="avatar" @error="showAvatar = false")
   md-icon(v-else class="md-size-2x ca1") account_circle  
   .md-list-item-text
     div
@@ -11,7 +11,7 @@ md-list-item(:to="item.to")
   span.notification-number(v-if="item.notification") {{ item.notification }}
 </template>
 <script>
-import config from '@/config'
+import { mapActions } from 'vuex'
 
 export default {
   props: {
@@ -22,7 +22,8 @@ export default {
   },
   data () {
     return {
-      avatar: null
+      avatar: null,
+      showAvatar: true
     }
   },
   mounted () {
@@ -34,12 +35,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions('playerModule', {
+      avatarUrl: 'avatarUrl'
+    }),
     loadAvatar () {
-      let urlPath = `${config.media.beneficiary.url}avatar/${this.item.id}.png?a=${Math.random()}`
-      this.$http.get(urlPath)
-      .then(resp => {
-        this.avatar = resp.url
-      }, reason => {})
+      this.avatarUrl(this.item.id).then(url => {
+        this.avatar = url
+      })
     }
   }
 }

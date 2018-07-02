@@ -2,8 +2,8 @@
   .common-player-info
     .with-menu-box
       div.player-info
-        md-avatar.md-large(v-if="avatar")
-          img(:src="avatar")
+        md-avatar.md-large(v-if="showAvatar")
+          img(:src="avatar" @error="showAvatar = false")
         md-icon(v-else class="md-size-3x ca1") account_circle        
         .name.md-title {{player.firstName}} {{player.lastName}}
         .team.md-subheading {{ player.organizationName }}
@@ -17,9 +17,8 @@
 </template>
 
 <script>
-  // import config from '@/config'
-  import config from '@/config'
   import EditPlayerDialog from '@/components/shared/EditPlayerDialog.vue'
+  import { mapActions } from 'vuex'
   export default {
     components: {
       EditPlayerDialog
@@ -27,7 +26,8 @@
     data () {
       return {
         editPlayerDialog: false,
-        avatar: null
+        avatar: null,
+        showAvatar: true
       }
     },
     props: {
@@ -42,13 +42,15 @@
     },
     mounted () {
       if (this.player) {
-        let urlPath = `${config.media.beneficiary.url}avatar/${this.player._id}.png?a=${Math.random()}`
-        this.$http.get(urlPath).then(resp => {
-          this.avatar = resp.url
-        }, reason => {})
+        this.avatarUrl(this.player._id).then(url => {
+          this.avatar = url
+        })
       }
     },
     methods: {
+      ...mapActions('playerModule', {
+        avatarUrl: 'avatarUrl'
+      }),
       setAvatar (url) {
         this.avatar = url
         this.$emit('avatarChanged', url)

@@ -1,4 +1,5 @@
 import { commerceService, beneficiaryService, organizationService } from '@/services'
+import config from '@/config'
 
 const module = {
   namespaced: true,
@@ -88,8 +89,8 @@ const module = {
         return organization
       })
     },
-    getAvatar (context, id) {
-      return beneficiaryService.avatar(id)
+    avatarUrl (context, id) {
+      return `${config.media.beneficiary.url}avatar/${id}.png?a=${Math.random()}`
     }
   }
 }
