@@ -8,7 +8,7 @@
     </md-field>
     <md-field :class="{'md-invalid': $v.loginParams.password.$error}">
       <label>{{ $t('component.login.password') }}</label>
-      <md-input v-model.trim="loginParams.password" @input="$v.loginParams.password.$touch()" type="password"></md-input>
+      <md-input v-model.trim="loginParams.password" @keyup.enter="submit" @input="$v.loginParams.password.$touch()" type="password"></md-input>
       <span class="md-error" v-if="!$v.loginParams.password.required">{{ $t('validations.required', { field: 'Password' }) }}</span>
     </md-field>
     <div>
