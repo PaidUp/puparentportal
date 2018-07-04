@@ -1,0 +1,382 @@
+import { organizationService, commerceService, productService } from '@/services'
+
+let beneficiaries
+
+function reduceInvoices (invoices) {
+  return invoices.reduce((val, current) => {
+    let prd = val[current.productId]
+    if (prd) {
+      prd.total = prd.total + current.price
+      prd.players.add(current.beneficiaryId)
+    } else {
+      prd = {
+        id: current.productId,
+        name: current.productName,
+        total: current.price,
+        paid: 0,
+        unpaid: 0,
+        overdue: 0,
+        other: 0,
+        players: new Set(),
+        inelegible: new Set()
+      }
+      prd.players.add(current.beneficiaryId)
+      val[current.productId] = prd
+    }
+    if (current.status === 'paidup' || current.status === 'submitted') {
+      prd.paid = prd.paid + current.price
+    } else if (current.status === 'autopay') {
+      prd.unpaid = prd.unpaid + current.price
+    } else if (current.status === 'failed') {
+      prd.inelegible.add(current.beneficiaryId)
+      prd.overdue = prd.overdue + current.price
+    } else if (current.status === 'void' || current.status === 'disabled') {
+      prd.other = prd.other + current.price
+    }
+    return val
+  }, {})
+}
+
+function reduceInvoicePlayers (invoices) {
+  return invoices.reduce((val, current) => {
+    let prd = val[current.beneficiaryId]
+    if (prd) {
+      prd.total = prd.total + current.price
+    } else {
+      const beneficiary = beneficiaries[current.beneficiaryId]
+      prd = {
+        id: current.beneficiaryId,
+        firstName: beneficiary ? beneficiary.firstName : '',
+        lastName: beneficiary ? beneficiary.lastName : '',
+        total: current.price,
+        paid: 0,
+        unpaid: 0,
+        overdue: 0,
+        other: 0
+      }
+      val[current.beneficiaryId] = prd
+    }
+    if (current.status === 'paidup' || current.status === 'submitted') {
+      prd.paid = prd.paid + current.price
+    } else if (current.status === 'autopay') {
+      prd.unpaid = prd.unpaid + current.price
+    } else if (current.status === 'failed') {
+      prd.overdue = prd.overdue + current.price
+    } else if (current.status === 'void' || current.status === 'disabled') {
+      prd.other = prd.other + current.price
+    }
+    return val
+  }, {})
+}
+
+function reduceCredits (credits, items) {
+  return credits.reduce((val, current) => {
+    let prd = val[current.productId]
+    if (prd) {
+      prd.total = prd.total + current.price
+      prd.players.add(current.beneficiaryId)
+    } else {
+      prd = {
+        id: current.productId,
+        name: current.productName,
+        total: current.price,
+        paid: 0,
+        unpaid: 0,
+        overdue: 0,
+        other: 0,
+        players: new Set(),
+        inelegible: new Set()
+      }
+      prd.players.add(current.beneficiaryId)
+      val[current.productId] = prd
+    }
+    if (current.status === 'paid' || current.status === 'credited') {
+      prd.paid = prd.paid + current.price
+    } else if (current.status === 'discount' || current.status === 'refunded') {
+      prd.other = prd.other + current.price
+    }
+    return val
+  }, items)
+}
+
+function reduceCreditPlayers (credits, items) {
+  return credits.reduce((val, current) => {
+    let prd = val[current.beneficiaryId]
+    const beneficiary = beneficiaries[current.beneficiaryId]
+    if (prd) {
+      prd.total = prd.total + current.price
+    } else {
+      prd = {
+        id: current.beneficiaryId,
+        firstName: beneficiary ? beneficiary.firstName : '',
+        lastName: beneficiary ? beneficiary.lastName : '',
+        total: current.price,
+        paid: 0,
+        unpaid: 0,
+        overdue: 0,
+        other: 0
+      }
+      val[current.beneficiaryId] = prd
+    }
+    if (current.status === 'paid' || current.status === 'credited') {
+      prd.paid = prd.paid + current.price
+    } else if (current.status === 'discount' || current.status === 'refunded') {
+      prd.other = prd.other + current.price
+    }
+    return val
+  }, items)
+}
+
+function reducePreorders (preorders, items) {
+  const today = new Date().getTime()
+  return preorders.reduce((val, current) => {
+    let prd = val[current.productId]
+    if (current.planId && current.dues) {
+      current.dues.forEach(due => {
+        if (prd) {
+          prd.total = prd.total + due.amount
+          prd.players.add(current.beneficiaryId)
+        } else {
+          prd = {
+            id: current.productId,
+            name: current.productName,
+            total: due.amount,
+            paid: 0,
+            unpaid: 0,
+            overdue: 0,
+            other: 0,
+            players: new Set(),
+            inelegible: new Set()
+          }
+          prd.players.add(current.beneficiaryId)
+          val[current.productId] = prd
+        }
+        let dateCharge = new Date(due.dateCharge).getTime()
+        if (today < dateCharge) {
+          prd.unpaid = prd.unpaid + due.amount
+        } else {
+          prd.inelegible.add(current.beneficiaryId)
+          prd.overdue = prd.overdue + due.amount
+        }
+      })
+    }
+    return val
+  }, items)
+}
+
+function reducePreorderPlayers (preorders, items) {
+  const today = new Date().getTime()
+  return preorders.reduce((val, current) => {
+    let prd = val[current.beneficiaryId]
+    const beneficiary = beneficiaries[current.beneficiaryId]
+    if (current.planId && current.dues) {
+      current.dues.forEach(due => {
+        if (prd) {
+          prd.total = prd.total + due.amount
+        } else {
+          prd = {
+            id: current.beneficiaryId,
+            firstName: beneficiary ? beneficiary.firstName : '',
+            lastName: beneficiary ? beneficiary.lastName : '',
+            total: due.amount,
+            paid: 0,
+            unpaid: 0,
+            overdue: 0,
+            other: 0
+          }
+          val[current.beneficiaryId] = prd
+        }
+        let dateCharge = new Date(due.dateCharge).getTime()
+        if (today < dateCharge) {
+          prd.unpaid = prd.unpaid + due.amount
+        } else {
+          prd.overdue = prd.overdue + due.amount
+        }
+      })
+    }
+    return val
+  }, items)
+}
+
+const module = {
+  namespaced: true,
+  state: {
+    items: null,
+    programs: null,
+    playerSelected: null,
+    programSelected: null,
+    seasonSelected: null,
+    organization: null
+  },
+  getters: {
+    seasonSelectedName (state) {
+      let name = ''
+      if (state.organization && state.seasonSelected) {
+        state.organization.seasons.forEach(season => {
+          if (season._id === state.seasonSelected) name = season.name
+        })
+      }
+      return name
+    },
+    programSelectedName (state) {
+      let name = ''
+      if (state.programSelected) {
+        state.programs.forEach(program => {
+          if (program.id === state.programSelected) {
+            name = program.name
+          }
+        })
+      }
+      return name
+    },
+    playerSelectedName (state) {
+      let name = ''
+      if (state.playerSelected) {
+        name = `${beneficiaries[state.playerSelected].firstName} ${beneficiaries[state.playerSelected].lastName}`
+      }
+      return name
+    }
+  },
+  mutations: {
+    setItems (state, items) {
+      state.items = items
+    },
+    setPrograms (state, programs) {
+      state.programs = programs
+    },
+    setPlayerSelected (state, player) {
+      state.playerSelected = player
+    },
+    setProgramSelected (state, program) {
+      state.programSelected = program
+    },
+    setSeasonSelected (state, season) {
+      state.seasonSelected = season
+    },
+    setOrganization (state, organization) {
+      state.organization = organization
+    },
+    reset (state) {
+      state.playerSelected = null
+      state.programSelected = null
+      state.seasonSelected = null
+      state.organization = null
+    }
+  },
+  actions: {
+    getReducePrograms (context) {
+      let organizationId = context.state.organization._id
+      let seasonId = context.state.seasonSelected
+      let productId = context.state.programSelected
+      let beneficiaryId = context.state.playerSelected
+      return Promise.all([
+        commerceService.invoicesByOrganization(organizationId, seasonId, productId, beneficiaryId),
+        commerceService.creditsByOrganization(organizationId, seasonId, productId, beneficiaryId),
+        commerceService.preordersByOrganization(organizationId, seasonId, productId, beneficiaryId)
+      ]).then(values => {
+        let items = reduceInvoices(values[0])
+        reduceCredits(values[1], items)
+        reducePreorders(values[2], items)
+        context.commit('setItems', items)
+        if (!productId && !beneficiaryId) {
+          let programs = []
+          for (let key in items) {
+            programs.push(items[key])
+          }
+          context.commit('setPrograms', programs)
+        }
+      })
+    },
+    getReducePlayers (context) {
+      let organizationId = context.state.organization._id
+      let seasonId = context.state.seasonSelected
+      let productId = context.state.programSelected
+      return Promise.all([
+        organizationService.getBeneficiaries(organizationId),
+        commerceService.invoicesByOrganization(organizationId, seasonId, productId),
+        commerceService.creditsByOrganization(organizationId, seasonId, productId),
+        commerceService.preordersByOrganization(organizationId, seasonId, productId)
+      ]).then(values => {
+        beneficiaries = values[0].reduce((val, curr) => {
+          val[curr._id] = curr
+          return val
+        }, {})
+        let items = reduceInvoicePlayers(values[1])
+        reduceCreditPlayers(values[2], items)
+        reducePreorderPlayers(values[3], items)
+        return items
+      })
+    },
+    getReducePlayerInvoices (context) {
+      let organizationId = context.state.organization._id
+      let seasonId = context.state.seasonSelected
+      let productId = context.state.programSelected
+      let beneficiaryId = context.state.playerSelected
+      return Promise.all([
+        commerceService.invoicesByOrganization(organizationId, seasonId, productId, beneficiaryId),
+        commerceService.creditsByOrganization(organizationId, seasonId, productId, beneficiaryId),
+        commerceService.preordersByOrganization(organizationId, seasonId, productId, beneficiaryId)
+      ]).then(values => {
+        let resp = []
+        values[0].forEach(val => {
+          resp.push({
+            id: val._id,
+            title: val.label,
+            seq: val.invoiceId,
+            date: new Date(val.dateCharge),
+            price: val.price,
+            status: val.status
+          })
+        })
+        values[1].forEach(val => {
+          resp.push({
+            id: val._id,
+            title: val.label,
+            seq: val.memoId,
+            date: new Date(val.createOn),
+            price: val.price,
+            status: val.status
+          })
+        })
+        let today = new Date().getTime()
+        values[2].forEach(val => {
+          if (!val.dues) return
+          val.dues.forEach(due => {
+            let dateCharge = new Date(due.dateCharge)
+            let status = 'due'
+            if (today > dateCharge.getTime()) {
+              status = 'overdue'
+            }
+            resp.push({
+              id: due._id,
+              title: due.description,
+              seq: '',
+              date: dateCharge,
+              price: due.amount,
+              status: status
+            })
+          })
+        })
+        return resp
+      })
+    },
+    getPlans (context, productId) {
+      return productService.getPlans(productId).then(values => {
+        return values.reduce((val, curr) => {
+          let amount = 0
+          if (curr.dues) { curr.dues.forEach(due => { amount = amount + due.amount }) }
+          if (curr.credits) { curr.dues.forEach(crd => { amount = amount + crd.amount }) }
+          val.push({
+            id: curr._id,
+            description: curr.description,
+            amount,
+            installments: curr.dues.length
+          })
+          return val
+        }, [])
+      })
+    }
+  }
+}
+
+export default module
