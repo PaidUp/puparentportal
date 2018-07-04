@@ -15,6 +15,15 @@
       <md-list-item to="/chapclubprograms" v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Clubs &amp; Programs</span>
       </md-list-item>
+
+      <!-- CHAP CLUBS CARDS -->
+      <md-list-item to="/chapclubs" v-if="isRole('coach')">
+        <span class="md-list-item-text ca1 bold">Clubs Cards</span>
+      </md-list-item>
+      <!-- CHAP SEASONS CARDS -->
+      <md-list-item to="/chapseasons" v-if="isRole('coach')">
+        <span class="md-list-item-text ca1 bold">Clubs Seasons</span>
+      </md-list-item>
     
 
       <!-- Programs -->

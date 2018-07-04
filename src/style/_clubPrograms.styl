@@ -10,6 +10,33 @@
     .md-table.custom-table
       margin: 5px 0 30px 0
 
+// CLUBS CARDS PAGE
+.clubs-cards-page
+  @extends .padded-page;
+  .search-input
+    width: 300px
+
+// SEASONS CARDS PAGE
+.seasons-cards-page
+  @extends .padded-page;
+  .club-img-box
+    margin: 20px auto
+    text-align: center
+    width: 100px
+  .search-input
+    width: 300px
+  .add-button-card
+    margin: 0 15px 15px 0
+    width: 140px;
+    height 140px
+    display: flex
+    flex-flow: row nowrap
+    justify-content: center
+    align-items: center
+    @media $small-only
+      margin: 16px
+      width 100%
+
 .assign-plan-page
   @extends .margined-page;
   @extend .has-steppers;
