@@ -12,7 +12,7 @@
       </md-list-item>
 
       <!-- CHAP CLUBS CARDS -->
-      <md-list-item to="/clubs" v-if="isRole('coach')">
+      <md-list-item to="/clubs" v-if="isRole('chap')">
         <span class="md-list-item-text ca1 bold">Clubs &amp; Programs</span>
       </md-list-item>
 
@@ -22,7 +22,7 @@
       </md-list-item>
 
       <!-- Search Result: maybe move to somewhere else -->
-      <md-list-item to="/search" v-if="isRole('coach')">
+      <md-list-item to="/search" v-if="isRole('chap')">
         <span class="md-list-item-text ca1 bold">Search Result</span>
       </md-list-item>
       

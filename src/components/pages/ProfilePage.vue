@@ -4,12 +4,12 @@
       <div class="title bold">Profile</div>
       <div class="content-box">
         <div class="centered">
-          <md-avatar v-if="avatar" class="md-avatar-icon md-large md-elevation-4">
-            <img :src="avatar" />
+          <md-avatar v-if="showAvatar" class="md-avatar-icon md-large md-elevation-4">
+            <img :src="avatar" @error="showAvatar = false" />
           </md-avatar>
           <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
         </div>
-        <update-avatar :url="url" @charged="reloadAvatar"></update-avatar>
+        <update-avatar :url="url" @charged="uploadedAvatar"></update-avatar>
         <div class="names-box" :md-description="fullName">
           <md-field :class="{'md-invalid': $v.firstName.$error}">
             <label>First Name</label>
@@ -78,6 +78,7 @@
     data: function () {
       return {
         url: config.api.user + '/avatar',
+        showAvatar: true,
         firstName: '',
         lastName: '',
         editName: false,
@@ -131,6 +132,10 @@
         setSuccess: 'setSuccess',
         setWarning: 'setWarning'
       }),
+      uploadedAvatar () {
+        this.showAvatar = true
+        this.reloadAvatar()
+      },
       reset () {
         this.load()
         this.editName = false

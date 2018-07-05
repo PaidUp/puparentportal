@@ -24,6 +24,7 @@ function getUser () {
 function defaultDestination () {
   let dest = '/home'
   if (getUser().roles.includes('coach')) dest = '/scoreboard'
+  if (getUser().roles.includes('chap')) dest = '/clubs'
   return dest
 }
 

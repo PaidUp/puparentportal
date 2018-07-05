@@ -49,7 +49,7 @@ const routes = [
       {
         path: '/profile',
         meta: {
-          roles: ['parent', 'coach']
+          roles: ['parent', 'coach', 'chap']
         },
         component: ProfilePage
       },
@@ -64,7 +64,7 @@ const routes = [
         path: '/clubs',
         name: 'clubs',
         meta: {
-          roles: ['coach']
+          roles: ['chap']
         },
         component: Clubs
       },
@@ -72,7 +72,7 @@ const routes = [
         path: '/club/:id',
         name: 'seasons',
         meta: {
-          roles: ['coach']
+          roles: ['chap']
         },
         component: Seasons
       },
@@ -80,7 +80,7 @@ const routes = [
         path: '/club/:id/season/:seasonId',
         name: 'clubprograms',
         meta: {
-          roles: ['coach']
+          roles: ['chap']
         },
         component: ClubPrograms
       },
