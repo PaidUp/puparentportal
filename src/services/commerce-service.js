@@ -24,9 +24,11 @@ class CommerceService {
       .get(`/invoice/method/${paymentMethodId}`)
   }
 
-  invoicesByBeneficiary (beneficiaryId) {
+  invoicesByBeneficiary (beneficiaryId, userEmail) {
+    let query = ''
+    if (userEmail) query = encodeURI(`?assegnee=${userEmail}`)
     return trae
-      .get(`/invoice/beneficiary/${beneficiaryId}`)
+      .get(`/invoice/beneficiary/${beneficiaryId}${query}`)
   }
 
   invoicesByOrganization (organizationId, seasonId, productId, beneficiaryId) {
@@ -53,9 +55,11 @@ class CommerceService {
       .get(`/preorder/organization/${organizationId}?${params}`)
   }
 
-  preordersByBeneficiary (beneficiaryId) {
+  preordersByBeneficiary (beneficiaryId, userEmail) {
+    let query = ''
+    if (userEmail) query = encodeURI(`?assegnee=${userEmail}`)
     return trae
-      .get(`/preorder/beneficiary/${beneficiaryId}`)
+      .get(`/preorder/beneficiary/${beneficiaryId}${query}`)
   }
 
   inactivePreorder (id) {
@@ -63,9 +67,11 @@ class CommerceService {
       .put('/preorder', { id, values: { status: 'inactive' } })
   }
 
-  creditsByBeneficiary (beneficiaryId) {
+  creditsByBeneficiary (beneficiaryId, userEmail) {
+    let query = ''
+    if (userEmail) query = encodeURI(`?assegnee=${userEmail}`)
     return trae
-      .get(`/credit/beneficiary/${beneficiaryId}`)
+      .get(`/credit/beneficiary/${beneficiaryId}${query}`)
   }
 }
 

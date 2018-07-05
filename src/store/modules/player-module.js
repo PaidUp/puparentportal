@@ -32,18 +32,18 @@ const module = {
   },
   actions: {
     getInvoices (context, { userEmail, beneficiary }) {
-      return commerceService.invoicesByBeneficiary(beneficiary._id).then(invoices => {
+      return commerceService.invoicesByBeneficiary(beneficiary._id, userEmail).then(invoices => {
         context.commit('setAllInvoices', invoices)
       })
     },
-    getPreorders (context, beneficiaryId) {
-      return commerceService.preordersByBeneficiary(beneficiaryId).then(preorders => {
+    getPreorders (context, { userEmail, beneficiaryId }) {
+      return commerceService.preordersByBeneficiary(beneficiaryId, userEmail).then(preorders => {
         context.commit('setAllPreorders', preorders)
         return preorders
       })
     },
-    getCredits (context, beneficiary) {
-      return commerceService.creditsByBeneficiary(beneficiary._id).then(credits => {
+    getCredits (context, { beneficiary, userEmail }) {
+      return commerceService.creditsByBeneficiary(beneficiary._id, userEmail).then(credits => {
         context.commit('setAllCredits', credits)
       })
     },
@@ -52,13 +52,13 @@ const module = {
       return beneficiaryService.beneficiariesByAssignee(userEmail).then(beneficiaries => {
         beneficiaries.forEach(beneficiary => {
           promises.push(
-            commerceService.preordersByBeneficiary(beneficiary._id).then(preorders => {
+            commerceService.preordersByBeneficiary(beneficiary._id, userEmail).then(preorders => {
               beneficiary.numPreorders = preorders.length
               return beneficiary
             })
           )
           promises.push(
-            commerceService.invoicesByBeneficiary(beneficiary._id).then(invoices => {
+            commerceService.invoicesByBeneficiary(beneficiary._id, userEmail).then(invoices => {
               beneficiary.numFailInvoices = invoices.reduce((old, curr) => {
                 if (curr.status === 'failed') return old + 1
                 return old

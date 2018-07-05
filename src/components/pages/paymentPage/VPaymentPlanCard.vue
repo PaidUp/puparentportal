@@ -32,16 +32,18 @@ export default {
       return currency(total)
     },
     chargeToday () {
-      return this.plan.dues.reduce((subTotal, due) => {
+      let resp = this.plan.dues.reduce((subTotal, due) => {
         if (this.today > due.dateCharge.getTime()) return subTotal + due.amount
-        return currency(subTotal)
+        return subTotal
       }, 0)
+      return currency(resp)
     },
     chargeRemaining () {
-      return this.plan.dues.reduce((subTotal, due) => {
+      let resp = this.plan.dues.reduce((subTotal, due) => {
         if (this.today <= due.dateCharge.getTime()) return subTotal + due.amount
-        return currency(subTotal)
+        return subTotal
       }, 0)
+      return currency(resp)
     },
     lastDateCharge () {
       return this.plan.dues[this.plan.dues.length - 1].dateCharge

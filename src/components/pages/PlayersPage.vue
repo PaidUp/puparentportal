@@ -131,16 +131,16 @@
     mounted () {
       if (this.loaded) {
         this.getOrganization({ id: this.beneficiary.organizationId }).then(org => {
-          this.loadInvoices()
-          this.getCredits(this.beneficiary)
+          this.getInvoices({ beneficiary: this.beneficiary, userEmail: this.user.email })
+          this.getCredits({ beneficiary: this.beneficiary, userEmail: this.user.email })
         })
       }
     },
     watch: {
       loaded () {
         this.getOrganization({ id: this.beneficiary.organizationId }).then(org => {
-          this.loadInvoices()
-          this.getCredits(this.beneficiary)
+          this.getInvoices({ beneficiary: this.beneficiary, userEmail: this.user.email })
+          this.getCredits({ beneficiary: this.beneficiary, userEmail: this.user.email })
         })
       },
       beneficiary () {
@@ -154,15 +154,12 @@
         getBeneficiaries: 'getBeneficiaries',
         getOrganization: 'getOrganization'
       }),
-      loadInvoices () {
-        this.getInvoices({ beneficiary: this.beneficiary })
-      },
       reloadBeneficiaries () {
         this.getBeneficiaries(this.user.email)
       },
       closeDialog: function () {
         this.viewInvoice = {}
-        this.getInvoices({ beneficiary: this.beneficiary })
+        this.getInvoices({ beneficiary: this.beneficiary, userEmail: this.user.email })
       },
       selectInvoice (invoice) {
         this.viewInvoice = invoice

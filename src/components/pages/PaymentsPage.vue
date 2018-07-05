@@ -46,7 +46,9 @@
       }
     },
     mounted () {
-      this.load()
+      if (this.user) {
+        this.load()
+      }
     },
     computed: {
       ...mapState('userModule', {
@@ -58,6 +60,9 @@
       })
     },
     watch: {
+      user () {
+        this.load()
+      },
       programSelected () {
         this.paymentPlanSelected = null
       }
@@ -83,7 +88,7 @@
         this.getBeneficiary(this.$route.params.id).then(ps => {
           Promise.all([
             this.getOrganization({id: ps.organizationId}),
-            this.getPreorders(this.$route.params.id),
+            this.getPreorders({beneficiaryId: this.$route.params.id, userEmail: this.user.email}),
             this.getProducts(ps.organizationId)
           ]).then(values => {
             this.playerSelected = ps
