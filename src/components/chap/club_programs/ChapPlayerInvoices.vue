@@ -9,47 +9,47 @@
             <md-button class="lblue md-accent md-raised md-dense">Add row</md-button>
             <md-button class="lblue md-accent md-raised md-dense" @click="showRefundDialog = true">REFUND DIALOG</md-button>
           </div>
-          <md-table md-card v-model="tableData" md-sort="name" md-sort-order="asc" class="custom-table">
+          <md-table md-card v-model="items" md-sort="date" md-sort-order="asc" class="custom-table">
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="Description">
                 <div class="col-150">
-                  <input type="text" class="custom-input" v-model="inputModel">
+                  <input type="text" class="custom-input" :value="item.title">
                 </div>
               </md-table-cell>
               <md-table-cell md-label="Amount" md-numeric>
-                $300
+                ${{currency(item.price)}}
               </md-table-cell>
               <md-table-cell md-label="Charge Date" class="centered">
-                05-01-2018
+                {{ $d(item.date, 'short') }}
               </md-table-cell>
               <md-table-cell md-label="Max Charge Date" class="centered">
-                -
+                <md-datepicker v-model="item.maxDate">
+                </md-datepicker>
               </md-table-cell>
               <md-table-cell md-label="Payment Account" class="centered">
                 <div class="">
-                  Visa ****1234
+                  {{ item.type === 'invoice' ? `${item.paymentDetails.brand}••••${item.paymentDetails.last4}` : ' - ' }}
                 </div>
               </md-table-cell>
               <md-table-cell md-label="Parent" class="centered">
                 <div class="col-150">
-                  <select name="parent-s" id="parent-s" class="custom-select">
+                  <select v-if="item.user" name="parent-s" class="custom-select" v-model="item.user.userEmail">
                     <option value="volvo">Felipe Fernandex</option>
                     <option value="saab">Savier Commns</option>
-                    <option value="mercedes">Lucas Felix</option>
+                    <option value="ricardo@getpaidup.com">Rdo Lara</option>
                     <option value="audi">Samuel Jaxson Super long input name</option>
                   </select>
                 </div>
               </md-table-cell>
               <md-table-cell md-label="Status">
-                PAID
+                {{ item.status }}
               </md-table-cell>
               <md-table-cell md-label="Invoice Number">
-                INV12345
+                {{ item.seq }}
               </md-table-cell>
               <md-table-cell md-label="Tags">
                 <div class="col-chips">
                   <md-chip class="lblue" md-deletable>Dues</md-chip>
-                  <!-- <md-chip class="lblue add">Add</md-chip> -->
                   <md-button class="md-icon-button md-dense md-accent lblue">
                     <md-icon>add_circle_outline</md-icon>
                   </md-button>
@@ -76,12 +76,6 @@
             <md-button class="lblue md-accent md-raised">Save</md-button>
           </div>
 
-
-
-
-          <div class="cards-layout" >
-            <chap-player-invoice-card :item="item" v-for="item in items" :key="item.id"></chap-player-invoice-card>
-          </div>
         </md-tab>
         
 
@@ -137,10 +131,10 @@
     </div>
 </template>
 <script>
+import currency from '@/helpers/currency'
 import { mapActions } from 'vuex'
-import ChapPlayerInvoiceCard from './ChapPlayerInvoiceCard'
 export default {
-  components: { ChapPlayerInvoiceCard },
+  components: { },
   data () {
     return {
       items: null,
@@ -171,7 +165,10 @@ export default {
   methods: {
     ...mapActions('clubprogramsModule', {
       getReducePlayerInvoices: 'getReducePlayerInvoices'
-    })
+    }),
+    currency (value) {
+      return currency(value)
+    }
   }
 }
 </script>
