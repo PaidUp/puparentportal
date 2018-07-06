@@ -5,8 +5,8 @@
       div
         .title.title-total ${{ total }}
         .md-caption {{ plan.dues.length }} {{ plan.dues.length === 1 ? 'Installment' : 'Installments' }}
-        .md-caption(v-if="chargeToday") ${{ chargeToday }} PaidUp by Today
-        .md-caption(v-if="chargeRemaining") ${{ chargeRemaining }} PaidUp by {{ $d(lastDateCharge, 'card') }}
+        .md-caption(v-if="chargeToday") ${{ currency(chargeToday) }} PaidUp by Today
+        .md-caption(v-if="chargeRemaining") ${{ currency(chargeRemaining) }} PaidUp by {{ $d(lastDateCharge, 'card') }}
 
 </template>
 <script>
@@ -36,14 +36,14 @@ export default {
         if (this.today > due.dateCharge.getTime()) return subTotal + due.amount
         return subTotal
       }, 0)
-      return currency(resp)
+      return resp
     },
     chargeRemaining () {
       let resp = this.plan.dues.reduce((subTotal, due) => {
         if (this.today <= due.dateCharge.getTime()) return subTotal + due.amount
         return subTotal
       }, 0)
-      return currency(resp)
+      return resp
     },
     lastDateCharge () {
       return this.plan.dues[this.plan.dues.length - 1].dateCharge
@@ -55,6 +55,9 @@ export default {
     },
     click () {
       this.$emit('click', this.plan)
+    },
+    currency (value) {
+      return currency(value)
     }
   }
 }
