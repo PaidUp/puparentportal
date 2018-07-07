@@ -15,7 +15,7 @@
             span.md-caption {{ $d(chargeDate, 'short') }}
           v-currency(:amount="invoice.price" clazz="total md-title")
       md-card-actions
-        md-button.md-accent(@click="select") {{ nameButton }}
+        md-button.md-accent.lblue(@click="select") {{ nameButton }}
 
     md-ripple(v-if="invoice.memoId" class="card-invoice")
       md-card-header
@@ -32,7 +32,7 @@
             span.md-caption {{ $d(chargeDate, 'short') }}
           v-currency(:amount="invoice.price" clazz="total md-title")
       md-card-actions
-        md-button.md-accent(v-if=false)
+        md-button.md-accent.lblue(v-if=false)
 
 </template>
 

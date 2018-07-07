@@ -1,17 +1,17 @@
 <template lang="pug">
   md-step(:id="stepId" md-label="Review & Approve" md-description="" :md-done.sync="step")
     .review-checks(v-if="account && plan")
-      md-checkbox(v-if="chargeToday" v-model="check1") I authorize PaidUp to charge me 
+      md-checkbox.lblue(v-if="chargeToday" v-model="check1") I authorize PaidUp to charge me 
         span.cgreen
           b ${{ chargeToday }} 
         b today 
         // | on my {{ account.bank_name || account.brand }}••••{{ account.last4 }}
-      md-checkbox(v-if="chargeRemaining" v-model="check2") I authorize PaidUp to setup the remaining 
+      md-checkbox.lblue(v-if="chargeRemaining" v-model="check2") I authorize PaidUp to setup the remaining 
         span.cgreen
           b ${{ chargeRemaining }} 
         b on autopay 
         | on the dates and amount in the payment plan I selected
-      md-checkbox(v-model="check3") I agree that PaidUp cannot modify, cancel or refund any payments without approval from the club
+      md-checkbox.lblue(v-model="check3") I agree that PaidUp cannot modify, cancel or refund any payments without approval from the club
     md-button.lblue.md-accent(@click="cancel") CANCEL
     md-button.lblue.md-accent.md-raised(:disabled="!enable || processing" @click="select") AUTHORIZE PAYMENTS
 
