@@ -315,11 +315,21 @@ mixin-placeholder(c)
   border-bottom: 1px solid rgba(0, 0, 0, 0.42)
   transition all ease 400ms
   margin: 4px 0 24px
+  position relative
   &.StripeElement--focus
     border-bottom: 2px solid $ca1
     border-color: $ca1
   &.StripeElement--invalid
-    border-color: #fa755a
+    border-color: #ff1744
+    &:after
+      content: 'Invalid card info'
+      position: absolute
+      top: 40px
+      left: 0px
+      color: #ff1744
+      opacity 1
+      font-weight: 400
+      font-size: 12px
   &.StripeElement--webkit-autofill
     background-color: #fefde5 !important
 
