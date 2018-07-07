@@ -4,7 +4,7 @@
       <div class="title cgray bold">{{ due.description }}</div>
       <div class="caption">{{ accountDescription }}</div>
     </div>
-    <div class="details">
+    <div class="single-details">
       <div class="icon-side">
         <md-icon :class="style" class="md-size-c">today</md-icon>
         <div class="caption" :class="style">{{ overdue ? 'OVERDUE' : 'DUE' }}</div>
