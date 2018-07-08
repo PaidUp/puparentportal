@@ -158,7 +158,7 @@
         }
         this.update({id: this.user._id, values}).then(res => {
           this.reset()
-          this.setSuccess('You profile was update succesfylly')
+          this.setSuccess('You profile was updated succesfully')
         }).catch(reason => {
           this.reset()
           this.setWarning('Error, your profile wasn\'t update')

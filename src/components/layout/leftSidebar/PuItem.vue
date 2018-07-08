@@ -1,6 +1,6 @@
 <template lang="pug">
 md-list-item(:to="item.to")
-  md-avatar.md-large(v-if="showAvatar")
+  md-avatar.md-size-c(v-if="showAvatar")
     img(:src="avatar" @error="showAvatar = false")
   md-icon(v-else class="md-size-2x ca1") account_circle  
   .md-list-item-text
