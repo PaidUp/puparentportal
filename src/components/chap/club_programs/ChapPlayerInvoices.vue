@@ -9,6 +9,25 @@
             <md-button class="lblue md-accent md-raised md-dense">Add row</md-button>
             <md-button class="lblue md-accent md-raised md-dense" @click="showRefundDialog = true">REFUND DIALOG</md-button>
           </div>
+          <div class="table-wrapper">
+            <div class="table-scroll">
+              <table class="gridtable">
+                <tr>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Charge Date</th>
+                  <th>Max Charge Date</th>
+                  <th>Payment Account</th>
+                  <th>Parent</th>
+                  <th>Status</th>
+                  <th>Invoice Number</th>
+                  <th>Tags</th>
+                  <th>Actions</th>
+                </tr>
+                <pi-row v-for="item in items" :key="item.id" :item="item"></pi-row>
+              </table>
+            </div>
+          </div>
           <md-table md-card v-model="items" md-sort="date" md-sort-order="asc" class="custom-table">
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="Description">
@@ -20,11 +39,13 @@
                 ${{currency(item.price)}}
               </md-table-cell>
               <md-table-cell md-label="Charge Date" class="centered">
-                {{ $d(item.date, 'short') }}
+                <md-datepicker v-if="item.type === 'invoice'" v-model="item.date"></md-datepicker>
+                <span v-else> {{ $d(item.date, 'short') }} </span>
               </md-table-cell>
               <md-table-cell md-label="Max Charge Date" class="centered">
-                <md-datepicker v-model="item.maxDate">
-                </md-datepicker>
+                <md-datepicker v-if="item.type === 'invoice'" v-model="item.maxDate"></md-datepicker>
+                <span v-else-if="item.type === 'preorder'"> {{ $d(item.date, 'short') }} </span>
+                <span v-else> - </span>
               </md-table-cell>
               <md-table-cell md-label="Payment Account" class="centered">
                 <div class="">
@@ -131,10 +152,11 @@
     </div>
 </template>
 <script>
+import PiRow from './ChapPlayerInvoices/PiRow'
 import currency from '@/helpers/currency'
 import { mapActions } from 'vuex'
 export default {
-  components: { },
+  components: { PiRow },
   data () {
     return {
       items: null,
@@ -172,4 +194,42 @@ export default {
   }
 }
 </script>
+<style>
+.table-wrapper {
+  position:relative;
+}
+.table-scroll {
+  overflow-x: scroll; 
+  margin-top:20px;
+}
+.table-wrapper table {
+  width:100%;
+    
+}
+table.gridtable {
+  overflow: scroll;    
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+table.gridtable td {
+  white-space:nowrap;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+</style>
+
 

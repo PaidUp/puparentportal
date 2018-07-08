@@ -164,7 +164,7 @@ const module = {
               title: due.description,
               seq: '',
               date: dateCharge,
-              maxDate: due.maxDateCharge ? new Date(due.maxDateCharg) : dateCharge,
+              maxDate: due.maxDateCharge ? new Date(due.maxDateCharge) : dateCharge,
               price: due.amount,
               status: status,
               type: 'preorder'
