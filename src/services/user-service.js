@@ -47,6 +47,11 @@ class UserService {
     return trae
       .put('/', { id, values })
   }
+
+  getByEmail (email) {
+    return trae
+      .get('/email/' + email)
+  }
 }
 
 userService = new UserService()

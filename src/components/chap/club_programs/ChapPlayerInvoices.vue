@@ -17,8 +17,8 @@
                   <th>Amount</th>
                   <th>Charge Date</th>
                   <th>Max Charge Date</th>
-                  <th>Payment Account</th>
                   <th>Parent</th>
+                  <th>Payment Account</th>
                   <th>Status</th>
                   <th>Invoice Number</th>
                   <th>Tags</th>
@@ -28,69 +28,6 @@
               </table>
             </div>
           </div>
-          <md-table md-card v-model="items" md-sort="date" md-sort-order="asc" class="custom-table">
-            <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell md-label="Description">
-                <div class="col-150">
-                  <input type="text" class="custom-input" :value="item.title">
-                </div>
-              </md-table-cell>
-              <md-table-cell md-label="Amount" md-numeric>
-                ${{currency(item.price)}}
-              </md-table-cell>
-              <md-table-cell md-label="Charge Date" class="centered">
-                <md-datepicker v-if="item.type === 'invoice'" v-model="item.date"></md-datepicker>
-                <span v-else> {{ $d(item.date, 'short') }} </span>
-              </md-table-cell>
-              <md-table-cell md-label="Max Charge Date" class="centered">
-                <md-datepicker v-if="item.type === 'invoice'" v-model="item.maxDate"></md-datepicker>
-                <span v-else-if="item.type === 'preorder'"> {{ $d(item.date, 'short') }} </span>
-                <span v-else> - </span>
-              </md-table-cell>
-              <md-table-cell md-label="Payment Account" class="centered">
-                <div class="">
-                  {{ item.type === 'invoice' ? `${item.paymentDetails.brand}••••${item.paymentDetails.last4}` : ' - ' }}
-                </div>
-              </md-table-cell>
-              <md-table-cell md-label="Parent" class="centered">
-                <div class="col-150">
-                  <select v-if="item.user" name="parent-s" class="custom-select" v-model="item.user.userEmail">
-                    <option value="volvo">Felipe Fernandex</option>
-                    <option value="saab">Savier Commns</option>
-                    <option value="ricardo@getpaidup.com">Rdo Lara</option>
-                    <option value="audi">Samuel Jaxson Super long input name</option>
-                  </select>
-                </div>
-              </md-table-cell>
-              <md-table-cell md-label="Status">
-                {{ item.status }}
-              </md-table-cell>
-              <md-table-cell md-label="Invoice Number">
-                {{ item.seq }}
-              </md-table-cell>
-              <md-table-cell md-label="Tags">
-                <div class="col-chips">
-                  <md-chip class="lblue" md-deletable>Dues</md-chip>
-                  <md-button class="md-icon-button md-dense md-accent lblue">
-                    <md-icon>add_circle_outline</md-icon>
-                  </md-button>
-                </div>
-              </md-table-cell>
-              <md-table-cell md-label="Actions">
-                <div class="col-actions">
-                  <md-button class="md-icon-button md-dense md-accent lblue">
-                    <md-icon>refresh</md-icon>
-                  </md-button>
-                  <md-button class="md-icon-button md-dense md-accent lblue">
-                    <md-icon>file_copy</md-icon>
-                  </md-button>
-                  <md-button class="md-icon-button md-dense md-accent lblue">
-                    <md-icon>delete</md-icon>
-                  </md-button>
-                </div>
-              </md-table-cell>
-            </md-table-row>
-          </md-table>
 
           <div class="table-actions-box">
             <md-button class="lblue md-accent">Cancel</md-button>
@@ -154,7 +91,7 @@
 <script>
 import PiRow from './ChapPlayerInvoices/PiRow'
 import currency from '@/helpers/currency'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   components: { PiRow },
   data () {
@@ -179,14 +116,27 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapState('playerInvoicesModule', {
+      parents: 'parents'
+    })
+  },
   mounted () {
     this.getReducePlayerInvoices().then(items => {
       this.items = items
     })
   },
+  watch: {
+    parents () {
+      this.loadPaymentMethods()
+    }
+  },
   methods: {
     ...mapActions('clubprogramsModule', {
       getReducePlayerInvoices: 'getReducePlayerInvoices'
+    }),
+    ...mapActions('playerInvoicesModule', {
+      loadPaymentMethods: 'loadPaymentMethods'
     }),
     currency (value) {
       return currency(value)

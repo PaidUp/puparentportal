@@ -4,8 +4,8 @@
     <pi-amount :item="item"></pi-amount>
     <pi-charge-date :item="item"></pi-charge-date>
     <pi-charge-max-date :item="item"></pi-charge-max-date>
-    <pi-payment-account :item="item"></pi-payment-account>
     <pi-parent :item="item"></pi-parent>
+    <pi-payment-account :item="item"></pi-payment-account>
     <pi-status :item="item"></pi-status>
     <pi-invoice-number :item="item"></pi-invoice-number>
     <pi-tags :item="item"></pi-tags>

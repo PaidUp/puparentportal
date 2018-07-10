@@ -1,19 +1,23 @@
 <template>
   <td>
-    <div>
-      <select v-if="item.user" name="parent-s" class="custom-select" v-model="item.user.userEmail">
-        <option value="volvo">Felipe Fernandex</option>
-        <option value="saab">Savier Commns</option>
-        <option value="ricardo@getpaidup.com">Rdo Lara</option>
-        <option value="audi">Samuel Jaxson Super long input name</option>
+    <div v-if="item.user && parents">
+      <select name="parent-s" class="custom-select" v-model="item.user.userEmail">
+        <option v-for="parent in parents" :key="parent._id" :value="parent.email">{{ parent.firstName + ' ' + parent.lastName }}</option>
       </select>
     </div>
   </td>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   props: {
     item: Object
+  },
+  computed: {
+    ...mapState('playerInvoicesModule', {
+      parents: 'parents'
+    })
   }
 }
 </script>

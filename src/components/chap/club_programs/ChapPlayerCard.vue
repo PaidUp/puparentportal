@@ -115,11 +115,19 @@ export default {
     ...mapActions('playerModule', {
       avatarUrl: 'avatarUrl'
     }),
+    ...mapActions('playerInvoicesModule', {
+      loadParents: 'loadParents'
+    }),
     ...mapMutations('clubprogramsModule', {
       setPlayerSelected: 'setPlayerSelected'
     }),
+    ...mapMutations('playerInvoicesModule', {
+      setBeneficiary: 'setBeneficiary'
+    }),
     selectPlayer () {
       this.setPlayerSelected(this.item.id)
+      this.loadParents(this.item)
+      this.setBeneficiary(this.item)
     }
   }
 }
