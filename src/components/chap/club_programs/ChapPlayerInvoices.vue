@@ -13,6 +13,7 @@
             <div class="table-scroll">
               <table class="gridtable">
                 <tr>
+                  <th>#</th>
                   <th>Description</th>
                   <th>Amount</th>
                   <th>Charge Date</th>
@@ -24,7 +25,7 @@
                   <th>Tags</th>
                   <th>Actions</th>
                 </tr>
-                <pi-row v-for="item in items" :key="item.id" :item="item"></pi-row>
+                <pi-row v-for="(item, index) in items" :key="item.id" :item="item" :index="index"></pi-row>
               </table>
             </div>
           </div>

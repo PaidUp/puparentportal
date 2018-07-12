@@ -121,11 +121,15 @@ export default {
     ...mapMutations('clubprogramsModule', {
       setPlayerSelected: 'setPlayerSelected'
     }),
+    ...mapActions('clubprogramsModule', {
+      getReducePrograms: 'getReducePrograms'
+    }),
     ...mapMutations('playerInvoicesModule', {
       setBeneficiary: 'setBeneficiary'
     }),
     selectPlayer () {
       this.setPlayerSelected(this.item.id)
+      this.getReducePrograms()
       this.loadParents(this.item)
       this.setBeneficiary(this.item)
     }

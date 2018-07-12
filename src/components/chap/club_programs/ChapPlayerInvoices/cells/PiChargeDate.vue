@@ -1,5 +1,6 @@
 <template>
-  <td><md-datepicker v-if="item.type === 'invoice'" v-model="value"></md-datepicker>
+  <td>
+    <md-datepicker v-if="isEditable" v-model="value"></md-datepicker>
     <span v-else> {{ $d(item.date, 'short') }} </span>
   </td>
 </template>
@@ -11,6 +12,11 @@ export default {
   data () {
     return {
       value: this.item.date
+    }
+  },
+  computed: {
+    isEditable () {
+      return this.item.type === 'invoice' && (this.item.status === 'failed' || this.item.status === 'autopay')
     }
   },
   watch: {

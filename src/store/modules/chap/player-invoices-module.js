@@ -1,4 +1,4 @@
-import { userService, paymentService } from '@/services'
+import { userService, paymentService, commerceService, productService } from '@/services'
 
 const module = {
   namespaced: true,
@@ -19,6 +19,9 @@ const module = {
     }
   },
   actions: {
+    getProduct (context, id) {
+      return productService.getProduct(id)
+    },
     loadParents (context, beneficiary) {
       let parentsPromise = []
       beneficiary.assigneesEmail.forEach(email => {
@@ -61,6 +64,9 @@ const module = {
           context.commit('setPaymentMethods', resp)
         })
       }
+    },
+    update (context, params) {
+      return commerceService.updateInvoiceCalculations(params)
     }
   }
 }

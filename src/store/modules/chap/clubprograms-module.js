@@ -136,7 +136,9 @@ const module = {
             status: val.status,
             paymentDetails: val.paymentDetails,
             user: val.user,
-            type: 'invoice'
+            productId: val.productId,
+            type: 'invoice',
+            __v: val.__v
           })
         })
         values[1].forEach(val => {
@@ -147,7 +149,8 @@ const module = {
             date: new Date(val.createOn),
             price: val.price,
             status: val.status,
-            type: 'credit'
+            type: 'credit',
+            __v: val.__v
           })
         })
         let today = new Date().getTime()
@@ -167,9 +170,13 @@ const module = {
               maxDate: due.maxDateCharge ? new Date(due.maxDateCharge) : dateCharge,
               price: due.amount,
               status: status,
-              type: 'preorder'
+              type: 'preorder',
+              __v: val.__v
             })
           })
+        })
+        resp.sort((itemA, itemB) => {
+          return itemA.date.getTime() - itemB.date.getTime()
         })
         return resp
       })

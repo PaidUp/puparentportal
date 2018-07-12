@@ -1,9 +1,10 @@
 <template>
   <td>
     <div v-if="paymentMethods && item.type === 'invoice'">
-      <select name="parent-s" class="custom-select" v-model="pmSelected">
-        <option v-for="pm in parentPaymentMethods" :key="pm.id" :value="pm.id">{{ pm.brand || pm.bank_name }} •••• {{ pm.last4 }}</option>
+      <select v-if="isEditable" name="parent-s" class="custom-select" v-model="pmSelected">
+        <option v-for="pm in parentPaymentMethods" :key="pm.id" :value="pm.id">{{ pm.brand || pm.bank_name }}••••{{ pm.last4 }}</option>
       </select>
+      <span v-else-if="item.paymentDetails">{{item.paymentDetails.brand}}••••{{item.paymentDetails.last4}}</span>
     </div>
   </td>
 </template>
@@ -17,16 +18,16 @@ export default {
   },
   data () {
     return {
-      pmSelected: null
+      pmSelected: this.item.type === 'invoice' ? this.item.paymentDetails.externalPaymentMethodId : null
     }
   },
   watch: {
-    parents () {
-      this.loadPaymentMethods()
+    parent () {
+      this.pmSelected = null
     },
     pmSelected () {
-      if (this.paymentMethods[this.parentEmail]) {
-        this.paymentMethods[this.parentEmail].forEach(account => {
+      if (this.parentPaymentMethods && this.parentPaymentMethods.length) {
+        this.parentPaymentMethods.forEach(account => {
           if (this.pmSelected === account.id) {
             this.$emit('change', {
               externalCustomerId: account.customer,
@@ -41,15 +42,13 @@ export default {
       }
     }
   },
-  mounted () {
-    if (this.item.type === 'invoice') {
-      this.pmSelected = this.item.paymentDetails.externalPaymentMethodId
-    }
-  },
   computed: {
     ...mapState('playerInvoicesModule', {
       paymentMethods: 'paymentMethods'
     }),
+    isEditable () {
+      return this.item.type === 'invoice' && (this.item.status === 'failed' || this.item.status === 'autopay')
+    },
     parentPaymentMethods () {
       if (!this.item.user) return []
       if (this.parent) return this.paymentMethods[this.parent.userEmail]
