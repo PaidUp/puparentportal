@@ -7,8 +7,8 @@
       <v-programs step-id="step2" :step="step2" :player="playerSelected" @select="setProgram" />
       <v-payment-accounts step-id="step3" :step="step3" @select="setPaymentAccount" />
       <v-payment-plans step-id="step4" :program="programSelected" :step="step4" @select="setPaymentPlan" :account="paymentAccountSelected" />
-      <v-additional-info step-id="step5" :step="step5" @select="setCustomInfo" />
-      <v-document-signature step-id="step6" :step="step6" @select="setSignature" />
+      <v-additional-info v-if="false" step-id="step5" :step="step5" @select="setCustomInfo" />
+      <v-document-signature v-if="false" step-id="step6" :step="step6" @select="setSignature" />
       <v-review-approve step-id="step7" :processing="processing" :step="step7" :account="paymentAccountSelected" :plan="paymentPlanSelected" @select="approve" />
     </md-steppers>
     <v-pay-animation :animate="processing" @finish="redirect" />
