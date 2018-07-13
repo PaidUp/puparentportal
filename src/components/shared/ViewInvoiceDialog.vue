@@ -2,7 +2,7 @@
   <md-dialog :md-active.sync="showDialog" class="invoice-dialog">
     <div class="dialog-header">
       <div class="title">Invoice: {{ invoice.invoiceId }}</div>
-      <md-menu md-size="small" md-direction="bottom-end">
+      <md-menu v-if="false" md-size="small" md-direction="bottom-end">
         <md-button class="md-icon-button" md-menu-trigger>
           <md-icon>file_download</md-icon>
         </md-button>
@@ -56,7 +56,7 @@
         </md-field>
         </div>
       </md-tab>
-      <md-tab md-label="HISTORY">
+      <md-tab v-if="false" md-label="HISTORY">
         <div class="history-card">
           <div class="row">
             <div class="title">Invoice Charge Attempt</div>
@@ -112,6 +112,7 @@
   import PaymentAccountsDialog from '@/components/shared/payment/PaymentAccountsDialog.vue'
   import { mapGetters, mapActions } from 'vuex'
   import currency from '@/helpers/currency'
+  import capitalize from '@/helpers/capitalize'
 
   export default {
     components: { VPayAnimation, PaymentAccountsDialog },
@@ -146,7 +147,7 @@
           this.dateChargeDisable = this.$d(this.dateCharge, 'short')
           this.description = this.invoice.label
           this.amount = currency(this.invoice.price)
-          this.status = this.invoice.status.toUpperCase()
+          this.status = capitalize(this.invoice.status)
           this.paymentMethod = `${this.invoice.paymentDetails.brand}••••${this.invoice.paymentDetails.last4}`
         }
       }
