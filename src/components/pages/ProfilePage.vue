@@ -56,7 +56,7 @@
           <md-button class="md-accent lblue" @click="reset" >CANCEL</md-button>
           <md-button class="md-accent lblue md-raised" @click="submmit" :disabled="disableSaveButton">SAVE</md-button>
         </div>
-        <div class="upgrade-box" v-if="isParent">
+        <div class="upgrade-box" v-if="false && isParent">
           Upgrade your account if your are a Club Director to receive payments from parents
           and access the Scoreboard (PaidUp approval required).
           <md-button to="/upgrade" class="md-accent md-raised lblue upgrade-btn">UPGRADE TO CLUB DIRECTOR ACCOUNT</md-button>
