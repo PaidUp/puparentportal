@@ -3,12 +3,12 @@
     .review-checks(v-if="account && plan")
       md-checkbox.lblue(v-if="chargeToday" v-model="check1") I authorize PaidUp to charge me 
         span.cgreen
-          b ${{ chargeToday }} 
+          b ${{ currency(chargeToday) }} 
         b today 
         // | on my {{ account.bank_name || account.brand }}••••{{ account.last4 }}
       md-checkbox.lblue(v-if="chargeRemaining" v-model="check2") I authorize PaidUp to setup the remaining 
         span.cgreen
-          b ${{ chargeRemaining }} 
+          b ${{ currency(chargeRemaining) }} 
         b on autopay 
         | on the dates and amount in the payment plan I selected
       md-checkbox.lblue(v-model="check3") I agree that PaidUp cannot modify, cancel or refund any payments without approval from the club
@@ -52,7 +52,7 @@ export default {
         return subTotal
       }, 0)
       if (res) this.check1 = false
-      return currency(res)
+      return res
     },
     chargeRemaining () {
       if (!this.plan) return 0
@@ -61,13 +61,21 @@ export default {
         return subTotal
       }, 0)
       if (res) this.check2 = false
-      return currency(res)
+      return res
     },
     enable () {
       return ((!this.chargeToday || this.check1) && (!this.chargeRemaining || this.check2) && this.check3)
     }
   },
   watch: {
+    // chargeToday () {
+    //   if (this.chargeToday) this.check1 = true
+    //   else this.check1 = false
+    // },
+    // chargeRemaining () {
+    //   if (this.chargeToday) this.check2 = true
+    //   else this.check2 = false
+    // },
     plan () {
       this.check1 = true
       this.check2 = true
@@ -82,6 +90,9 @@ export default {
       this.$router.push({
         name: 'home'
       })
+    },
+    currency (value) {
+      return currency(value)
     }
   }
 }
