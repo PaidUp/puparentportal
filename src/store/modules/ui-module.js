@@ -6,8 +6,8 @@ const module = {
   },
 
   mutations: {
-    toggleNavigation (state) {
-      state.showNavigation = !state.showNavigation
+    toggleNavigation (state, event) {
+      state.showNavigation = event === true
     }
   }
 }

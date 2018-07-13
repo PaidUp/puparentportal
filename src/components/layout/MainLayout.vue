@@ -4,7 +4,7 @@
       <md-app-toolbar class="md-primary">
         <top-toolbar></top-toolbar>
       </md-app-toolbar>
-      <md-app-drawer md-permanent="clipped" :md-active.sync="showNavigation">
+      <md-app-drawer md-permanent="clipped" :md-active.sync="show">
         <LeftSidebar />
       </md-app-drawer>
       <md-app-content class="custom-cn">
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   import TopToolbar from './TopToolbar.vue'
   import LeftSidebar from './LeftSidebar.vue'
   import PuMessage from '@/components/shared/Message.vue'
@@ -28,12 +28,26 @@
     },
     data: function () {
       return {
-        pther: false
+        pther: false,
+        show: false
+      }
+    },
+    watch: {
+      showNavigation () {
+        this.show = this.showNavigation
+      },
+      show () {
+        this.toggleNavigation(this.show)
       }
     },
     computed: {
       ...mapState('uiModule', {
         showNavigation: 'showNavigation'
+      })
+    },
+    methods: {
+      ...mapMutations('uiModule', {
+        toggleNavigation: 'toggleNavigation'
       })
     }
   }

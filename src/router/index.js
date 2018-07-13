@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routes'
+import store from '@/store'
 
 Vue.use(Router)
 
@@ -29,6 +30,7 @@ function defaultDestination () {
 }
 
 router.beforeEach((to, from, next) => {
+  store.commit('uiModule/toggleNavigation', false)
   // SKIP LOGIN: comment next if
   if (to.meta.roles && !isAutenticated() && to.name !== 'login') {
     return next('login')
