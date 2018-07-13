@@ -11,6 +11,8 @@ import VueResource from 'vue-resource'
 
 // eslint-disable-next-line
 import fs from '@/vendor/fb'
+// eslint-disable-next-line
+import zendesk from '@/vendor/zendesk'
 import Vuelidate from 'vuelidate'
 
 // MATERIAL DESIGN COMPONENTS START
