@@ -37,12 +37,13 @@
           <span class="md-prefix">$</span>
           <md-input :disabled="true" v-model="amount"></md-input>
         </md-field>
-
-        <label class="date-label">Charge date</label>
-        <md-datepicker v-if="!disabled" class="datepicker-field" v-model="dateCharge" :md-disabled-dates="disabledDates">
-          <span class="md-helper-text">Selecting certain dates may require club approval.</span>
-        </md-datepicker>
-        <md-field v-if="disabled">
+        <md-field v-if="!disabled">
+          <label class="md-helper-text">Charge date</label>
+          <md-datepicker class="datepicker-field" v-model="dateCharge" :md-disabled-dates="disabledDates">
+            <span class="md-helper-text">Selecting certain dates may require club approval.</span>
+          </md-datepicker>
+        </md-field>
+        <md-field v-else>
           <label>Charge date</label>
           <md-input :disabled="true" v-model="dateChargeDisable"></md-input>
         </md-field>
