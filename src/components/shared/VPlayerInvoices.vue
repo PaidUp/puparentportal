@@ -53,7 +53,7 @@
       }),
       nameButton () {
         if (this.invoice.status === 'autopay') return 'Edit'
-        else if (this.invoice.status === 'failed') return 'Fix'
+        else if (this.invoice.status === 'failed') return 'Retry'
         else return 'View'
       },
       paymetMethod () {
