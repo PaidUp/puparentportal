@@ -1,5 +1,6 @@
 <template lang="pug">
-md-list.bottom-list
+md-list.bottom-list.has-arrow
+  md-icon.down-arrow expand_more
   md-list-item
     md-icon send
     a.md-list-item-text(href="mailto:support@getpaidup.com")

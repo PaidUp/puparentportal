@@ -62,8 +62,6 @@
       <pu-pay-new-invoice v-if="isRole('parent') && beneficiaries" :beneficiaries="beneficiaries"/>
       <pu-payment-accounts v-if="isRole('parent')" />
 
-      
-
     </md-list>
     <pu-botton />
   </div>

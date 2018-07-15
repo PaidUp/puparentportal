@@ -103,12 +103,25 @@
       display none
       @media $small-only
         display list-item
-
     .md-list-item
       .md-icon
         color: $cgray2
       .md-list-item-text
         color: $cgray2
+    .down-arrow
+      display none
+    &.has-arrow
+      position relative
+      .down-arrow
+        position absolute
+        display block
+        z-index: 5
+        width: 15px
+        opacity .8
+        top: -22px
+        left 50%
+        color: $ca1
+        margin-left: -8px
  
 // FILTERS RIGHT SIDEBAR
 .filters-sidebar
