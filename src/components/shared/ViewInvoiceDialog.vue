@@ -57,7 +57,7 @@
         </md-field>
         </div>
       </md-tab>
-      <md-tab v-if="false" md-label="HISTORY">
+      <md-tab md-label="HISTORY">
         <div class="history-card">
           <div class="row">
             <div class="title">Invoice Charge Attempt</div>
@@ -227,6 +227,10 @@
   }
   .datepicker-field button.md-button{
     top:0;
+  }
+  .datepicker-field input.md-input{
+    width: 100%;
+    max-width: 100%;
   }
   .date-label{
     color: rgba(0, 0, 0, 0.54);
