@@ -37,12 +37,12 @@
           <span class="md-prefix">$</span>
           <md-input :disabled="true" v-model="amount"></md-input>
         </md-field>
-        <md-field v-if="!disabled">
+        <div v-if="!disabled">
           <label class="md-helper-text">Charge date</label>
           <md-datepicker class="datepicker-field" v-model="dateCharge" :md-disabled-dates="disabledDates">
             <span class="md-helper-text">Selecting certain dates may require club approval.</span>
           </md-datepicker>
-        </md-field>
+        </div>
         <md-field v-else>
           <label>Charge date</label>
           <md-input :disabled="true" v-model="dateChargeDisable"></md-input>
@@ -222,6 +222,11 @@
 <style>
   .datepicker-field{
     margin-bottom: 40px;
+    padding-top: 0;
+    min-height: 32px;
+  }
+  .datepicker-field button.md-button{
+    top:0;
   }
   .date-label{
     color: rgba(0, 0, 0, 0.54);
