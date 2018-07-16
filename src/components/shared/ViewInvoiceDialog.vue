@@ -37,12 +37,10 @@
           <span class="md-prefix">$</span>
           <md-input :disabled="true" v-model="amount"></md-input>
         </md-field>
-        <div v-if="!disabled">
-          <label class="md-helper-text">Charge date</label>
-          <md-datepicker class="datepicker-field" v-model="dateCharge" :md-disabled-dates="disabledDates">
-            <span class="md-helper-text">Selecting certain dates may require club approval.</span>
-          </md-datepicker>
-        </div>
+        <label v-if="!disabled" class="md-helper-text">Charge date</label>
+        <md-datepicker v-if="!disabled" class="datepicker-field" v-model="dateCharge" :md-disabled-dates="disabledDates">
+          <span class="md-helper-text">Selecting certain dates may require club approval.</span>
+        </md-datepicker>
         <md-field v-else>
           <label>Charge date</label>
           <md-input :disabled="true" v-model="dateChargeDisable"></md-input>
@@ -57,7 +55,7 @@
         </md-field>
         </div>
       </md-tab>
-      <md-tab md-label="HISTORY">
+      <md-tab v-if="false" md-label="HISTORY">
         <div class="history-card">
           <div class="row">
             <div class="title">Invoice Charge Attempt</div>
@@ -101,7 +99,7 @@
     </md-tabs>
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="closeDialog">CANCEL</md-button>
-      <md-button v-if="!disabled" class="md-accent lblue" :disabled="submited" @click="submit">SAVE</md-button>
+      <md-button v-if="!disabled" class="md-accent lblue" :disabled="submited" @click="submit">RETRY</md-button>
     </md-dialog-actions>
     <v-pay-animation :animate="submited" @finish="closeDialog" />
     <payment-accounts-dialog :showDialog="showPaymentAccountDialog" :accounts="paymentAccounts" @selected="selectAccount"/>
