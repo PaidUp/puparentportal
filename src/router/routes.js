@@ -14,9 +14,11 @@ import ProfilePage from '@/components/pages/ProfilePage.vue'
 import UpgradePage from '@/components/pages/UpgradePage.vue'
 import NewInvoicesPage from '@/components/pages/NewInvoicesPage.vue'
 import ScoreBoardPage from '@/components/board/ScoreBoardPage.vue'
-import ScorePlayersPage from '@/components/board/ScorePlayersPage.vue'
-import ScorePlayerDetailsPage from '@/components/board/ScorePlayerDetailsPage.vue'
-import ChapClubPrograms from '@/components/chap/ChapClubPrograms.vue'
+import ClubPrograms from '@/components/chap/ClubPrograms.vue'
+import Clubs from '@/components/chap/Clubs.vue'
+import Seasons from '@/components/chap/Seasons.vue'
+import AssignPlanToParent from '@/components/chap/AssignPlanToParent.vue'
+import FeesCalculator from '@/components/chap/FeesCalculator.vue'
 import SearchResultPage from '@/components/board/SearchResultPage.vue'
 import ReportsPage from '@/components/board/ReportsPage.vue'
 import PrintInvoice from '@/components/pages/PrintInvoice.vue'
@@ -47,7 +49,7 @@ const routes = [
       {
         path: '/profile',
         meta: {
-          roles: ['parent', 'coach']
+          roles: ['parent', 'coach', 'chap']
         },
         component: ProfilePage
       },
@@ -59,25 +61,42 @@ const routes = [
         component: ScoreBoardPage
       },
       {
-        path: '/chapclubprograms',
+        path: '/clubs',
+        name: 'clubs',
         meta: {
-          roles: ['coach']
+          roles: ['chap']
         },
-        component: ChapClubPrograms
+        component: Clubs
       },
       {
-        path: '/scoreplayers',
+        path: '/club/:id',
+        name: 'seasons',
         meta: {
-          roles: ['coach']
+          roles: ['chap']
         },
-        component: ScorePlayersPage
+        component: Seasons
       },
       {
-        path: '/scoreplayerdetails',
+        path: '/club/:id/season/:seasonId',
+        name: 'clubprograms',
+        meta: {
+          roles: ['chap']
+        },
+        component: ClubPrograms
+      },
+      {
+        path: '/calculator',
         meta: {
           roles: ['coach']
         },
-        component: ScorePlayerDetailsPage
+        component: FeesCalculator
+      },
+      {
+        path: '/chapassignplanparent',
+        meta: {
+          roles: ['coach']
+        },
+        component: AssignPlanToParent
       },
       {
         path: '/search',

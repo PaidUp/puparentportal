@@ -1,31 +1,46 @@
 // ALL INSIDE SCOREBOARD/PROGRAMS
 .club-programs-page
+  @extends .padded-page;
   .common-player-info
     margin: 20px auto
   .details
     margin-top: 40px
   .tabs-section
     margin-top: 20px
-    .md-table.table-invoices
-      background: #fff
+    .md-table.custom-table
       margin: 5px 0 30px 0
-      .col-with-input
-        width 150px
-      .col-chips
-        width 150px
-        display: flex
-        flex-flow: row wrap
-        justify-content: flex-start
-        align-items: center
-        .md-chip
-          margin-top: 2px
-          margin-bottom: 2px
-      .col-actions
-        width 135px
 
-    .actions-box
+// CLUBS CARDS PAGE
+.clubs-cards-page
+  @extends .padded-page;
+  .search-input
+    width: 300px
+
+// SEASONS CARDS PAGE
+.seasons-cards-page
+  @extends .padded-page;
+  .club-img-box
+    margin: 20px auto
+    text-align: center
+    width: 100px
+  .search-input
+    width: 300px
+  .add-button-card
+    margin: 0 15px 15px 0
+    width: 140px;
+    height 140px
+    display: flex
+    flex-flow: row nowrap
+    justify-content: center
+    align-items: center
+    @media $small-only
+      margin: 16px
       width 100%
-      display: flex
-      flex-flow: row nowrap
-      justify-content: flex-end
-      align-items: center
+
+.assign-plan-page
+  @extends .margined-page;
+  @extend .has-steppers;
+  .step-box
+    margin-bottom:40px
+    .md-field
+      max-width 220px

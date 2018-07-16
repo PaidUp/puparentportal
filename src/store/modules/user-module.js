@@ -181,9 +181,6 @@ const module = {
           root: true
         })
       })
-    },
-    avatar (context, form) {
-      return userService.avatar(form)
     }
   }
 }

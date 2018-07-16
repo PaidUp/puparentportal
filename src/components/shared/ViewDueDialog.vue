@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="invoice-dialog small">
+  <md-dialog :md-active.sync="showDialog" class="invoice-dialog">
     <div class="dialog-header">
 
     </div>
@@ -49,7 +49,7 @@
 <script>
   import PaymentAccountsDialog from '@/components/shared/payment/PaymentAccountsDialog.vue'
   import { mapGetters } from 'vuex'
-  import numeral from 'numeral'
+  import currency from '@/helpers/currency'
 
   export default {
     components: { PaymentAccountsDialog },
@@ -66,7 +66,7 @@
           today.setHours(0, 0, 0, 0)
           return date.getTime() < today.getTime() || date.getTime() > maxDateCharge
         },
-        amount: numeral(this.due.amount).format('0,0.00'),
+        amount: currency(this.due.amount),
         dateCharge: new Date(this.due.dateCharge),
         description: this.due.description,
         paymentMethod: `${this.due.account.brand || this.due.account.bank_name}••••${this.due.account.last4}`,

@@ -70,17 +70,15 @@
 
         <!-- TAB INVOICES -->
         <md-tab id="tab-invoices" md-label="Invoices">
-          <div class="actions-box">
+          <div class="table-actions-box">
             <md-button class="lblue md-accent md-raised md-dense">Add row</md-button>
-            <md-button class="md-icon-button md-dense md-accent lblue md-raised">
-              <md-icon>add</md-icon>
-            </md-button>
+            <md-button class="lblue md-accent md-raised md-dense" @click="showRefundDialog = true">REFUND DIALOG</md-button>
           </div>
-          <md-table md-card v-model="tableData" md-sort="name" md-sort-order="asc" class="table-invoices">
+          <md-table md-card v-model="tableData" md-sort="name" md-sort-order="asc" class="custom-table">
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="Description">
-                <div class="col-with-input">
-                  <input type="text" class="custom-input" v-model="inputModel"> 
+                <div class="col-150">
+                  <input type="text" class="custom-input" v-model="inputModel">
                 </div>
               </md-table-cell>
               <md-table-cell md-label="Amount" md-numeric>
@@ -98,7 +96,7 @@
                 </div>
               </md-table-cell>
               <md-table-cell md-label="Parent" class="centered">
-                <div class="col-with-input">
+                <div class="col-150">
                   <select name="parent-s" id="parent-s" class="custom-select">
                     <option value="volvo">Felipe Fernandex</option>
                     <option value="saab">Savier Commns</option>
@@ -117,7 +115,7 @@
                 <div class="col-chips">
                   <md-chip class="lblue" md-deletable>Dues</md-chip>
                   <!-- <md-chip class="lblue add">Add</md-chip> -->
-                   <md-button class="md-icon-button md-dense md-accent lblue">
+                  <md-button class="md-icon-button md-dense md-accent lblue">
                     <md-icon>add_circle_outline</md-icon>
                   </md-button>
                 </div>
@@ -138,7 +136,7 @@
             </md-table-row>
           </md-table>
 
-          <div class="actions-box">
+          <div class="table-actions-box">
             <md-button class="lblue md-accent">Cancel</md-button>
             <md-button class="lblue md-accent md-raised">Save</md-button>
           </div>
@@ -147,39 +145,85 @@
         </md-tab>
 
 
-        <!-- TAB ASSIGNED PLANS -->
-        <md-tab id="tab-assigned-plans" md-label="Assigned Plans">
-          Assigned Plans
-        </md-tab>
-
-
         <!-- TAB PARENTS -->
-        <md-tab id="tab-parents" md-label="Parents">
-          Parents
+        <md-tab id="tab-assigned-parents" md-label="PAID/UNPAID PARENTS">
+          <div class="table-actions-box">
+            <md-button class="lblue md-accent md-raised md-dense">Add row</md-button>
+            <md-button class="lblue md-accent md-raised md-dense" to="/chapassignplanparent">GO TO PARENTS STEPPERS</md-button>
+          </div>
+          <md-table md-card v-model="tableData" md-sort="name" md-sort-order="asc" class="custom-table">
+            <md-table-row slot="md-table-row" slot-scope="{ item }">
+              <md-table-cell md-label="Player Name" md-sort-by="playerName" class="col-with-img">
+                <md-icon class="md-size-2" v-if="item.id ===1">account_circle</md-icon>
+                <md-avatar class="md-small" v-if="item.id !==1">
+                  <img src="@/assets/avatar.jpg" alt="img">
+                </md-avatar>
+                <div>
+                  {{ item.playerName }}
+                </div>
+              </md-table-cell>
+              <md-table-cell md-label="Parent Name" md-sort-by="parentName" class="col-with-img">
+                <md-icon class="md-size-2" v-if="item.id ===1">account_circle</md-icon>
+                <md-avatar class="md-small" v-if="item.id !==1">
+                  <img src="@/assets/avatar.jpg" alt="img">
+                </md-avatar>
+                <div>
+                  {{ item.parentName }}
+                </div>
+              </md-table-cell>
+              <md-table-cell md-label="Parent Email" md-sort-by="email">{{ item.email }}</md-table-cell>
+              <md-table-cell md-label="Parent Phone" md-sort-by="phone">{{ item.phone }}</md-table-cell>
+              <md-table-cell md-label="Actions">
+                <div class="">
+                  <md-button class="md-icon-button md-dense md-accent lblue">
+                    <md-icon>delete</md-icon>
+                  </md-button>
+                </div>
+              </md-table-cell>
+            </md-table-row>
+          </md-table>
+
+          <div class="table-actions-box">
+            <md-button class="lblue md-accent">Cancel</md-button>
+            <md-button class="lblue md-accent md-raised">Save</md-button>
+          </div>
+
         </md-tab>
+
+
       </md-tabs>
 
     </div>
+    <refund-invoice-dialog :showDialog="showRefundDialog" :closeDialog="closeDialog"></refund-invoice-dialog>
   </div>
 
 </template>
 
 <script>
+  import RefundInvoiceDialog from '@/components/shared/RefundInvoiceDialog.vue'
   export default {
+    components: {
+      RefundInvoiceDialog
+    },
     data: function () {
       return {
+        showRefundDialog: false,
         movie: 'godfather',
         tableData: [ {
           id: 1,
           name: 'Shawna Dubbin',
           email: 'sdubbin0@geocities.com',
-          phone: '888-999-8888'
+          phone: '888-999-8888',
+          playerName: 'Eliana Fernandez',
+          parentName: 'Fernando Lopex'
         },
         {
           id: 2,
           name: 'Odette Demageard',
           email: 'odemageard1@spotify.com',
-          phone: '888-999-1111'
+          phone: '888-999-1111',
+          playerName: 'Rockefel Eslo',
+          parentName: 'Simano Cigar'
         }
         ],
         inputModel: 'Dues Payments'

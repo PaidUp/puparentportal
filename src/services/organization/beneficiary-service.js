@@ -23,6 +23,16 @@ class BeneficiaryService {
     return trae
       .get(`/assignee/${assigneeEmail}`)
   }
+
+  getBeneficiary = function (id) {
+    return trae
+      .get(`/${id}`)
+  }
+
+  deleteBeneficiary = function (id) {
+    return trae
+      .delete(`/${id}`)
+  }
 }
 
 beneficiaryService = new BeneficiaryService()

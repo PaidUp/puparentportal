@@ -20,11 +20,12 @@
         md-field.club-search-field
           label Club
           md-input(v-model.trim="filter")
-        .clubs
-          .club.md-elevation-2(:class="{ selected: organizationSelected._id === organization._id }" @click="selectOrganization(organization)" v-for="organization in filtered" :key="organization._id")
+        .cards-layout.clubs
+          .md-card.club-card(:class="{ selected: organizationSelected._id === organization._id }" @click="selectOrganization(organization)" v-for="organization in filtered" :key="organization._id")
             img(:src="mediaUrl + organization._id + '.png'" alt="club")
-            .title.cblue.bold {{ organization.businessName }}
-            .location {{ organization.city }}, {{ organization.state }}
+            div.centered
+              .title.cblue.bold {{ organization.businessName }}
+              .location {{ organization.city }}, {{ organization.state }}
         md-button.lblue.md-accent(@click="cancel") CANCEL
         md-button.lblue.md-accent.md-raised(@click="cretePlayer" :disabled="processing || !organizationSelected._id") ADD PLAYER
 </template>
@@ -120,9 +121,7 @@
         })
       },
       reloadBeneficiares () {
-        console.log('start reloadBeneficiares')
         this.getBeneficiaries(this.user.email).then(bn => {
-          console.log('push router')
           this.processing = false
           this.$router.push({
             name: 'history',

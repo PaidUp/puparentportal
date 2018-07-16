@@ -1,6 +1,6 @@
 <template>
-  <div class="top-toolbar">
-    <md-button class="md-icon-button md-primary menu-icon" @click="toggleNavigation">
+  <div class="top-toolbar" >
+    <md-button class="md-icon-button md-primary menu-icon" @click="(toggleNavigation(!showNavigation))">
       <md-icon>menu</md-icon>
     </md-button>
     <div class="logo">

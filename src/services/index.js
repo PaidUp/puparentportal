@@ -5,6 +5,7 @@ import beneficiaryService from './organization/beneficiary-service'
 import organizationService from './organization/organization-service'
 import planService from './organization/plan-service'
 import productService from './organization/product-service'
+import reduceDataCardService from './reduce-data-card-service'
 
 export {
   userService,
@@ -13,5 +14,6 @@ export {
   organizationService,
   planService,
   productService,
-  commerceService
+  commerceService,
+  reduceDataCardService
 }

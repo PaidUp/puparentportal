@@ -4,8 +4,8 @@
       <div class="title">Player Details</div>
     </div>
     <div class="common-player-info">
-      <md-avatar v-if="avatar" class="md-large">
-        <img :src="avatar" alt="avatar">
+      <md-avatar v-if="showAvatar" class="md-large">
+        <img :src="avatar" @error="showAvatar = false" alt="avatar">
       </md-avatar>
       <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
       <div class="name">
@@ -29,7 +29,7 @@
       </md-field>
     </div>
     <div class="actions">
-      <md-button :disabled="disableDeleteButton" class="md-accent lblue delete-btn">DELETE</md-button>
+      <md-button :disabled="disableDeleteButton" @click="remove" class="md-accent lblue delete-btn">DELETE</md-button>
       <div>
         <md-button class="md-accent lblue" @click="close">CANCEL</md-button>
         <md-button class="md-accent lblue md-raised" :disabled="disableSaveButton" @click="save">SAVE</md-button>
@@ -60,7 +60,9 @@
         lastName: capitalize(this.player.lastName),
         organization: {},
         submited: false,
-        avatar: null
+        deleteAction: false,
+        avatar: null,
+        showAvatar: true
       }
     },
     computed: {
@@ -81,11 +83,8 @@
     },
     mounted () {
       if (this.player) {
-        let urlPath = `${config.media.beneficiary.url}avatar/${this.player._id}.png?a=${Math.random()}`
-        this.$http.get(urlPath)
-        .then(resp => {
-          this.avatar = resp.url
-        }).catch(reason => {
+        this.avatarUrl(this.player._id).then(url => {
+          this.avatar = url
         })
         this.getOrganization(this.player.organizationId)
         .then(organization => {
@@ -96,7 +95,9 @@
     methods: {
       ...mapActions('playerModule', {
         update: 'update',
-        getBeneficiaries: 'getBeneficiaries'
+        getBeneficiaries: 'getBeneficiaries',
+        deleteBeneficiary: 'deleteBeneficiary',
+        avatarUrl: 'avatarUrl'
       }),
       ...mapActions('organizationModule', {
         getOrganization: 'getOrganization'
@@ -115,6 +116,19 @@
         }).then(player => {
           this.submited = false
           this.getBeneficiaries(this.user.email)
+        }).catch(reason => {
+          console.log(reason)
+          this.submited = false
+        })
+      },
+      remove () {
+        this.submited = true
+        this.deleteBeneficiary(this.player._id)
+        .then(resp => {
+          this.submited = false
+          this.getBeneficiaries(this.user.email).then(resp => {
+            this.$router.push({name: 'home'})
+          })
         }).catch(reason => {
           console.log(reason)
           this.submited = false

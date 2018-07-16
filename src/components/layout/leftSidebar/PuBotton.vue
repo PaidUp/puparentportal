@@ -1,5 +1,6 @@
 <template lang="pug">
-md-list.bottom-list
+md-list.bottom-list.has-arrow
+  md-icon.down-arrow expand_more
   md-list-item
     md-icon send
     a.md-list-item-text(href="mailto:support@getpaidup.com")
@@ -14,7 +15,19 @@ md-list.bottom-list
     md-icon help
     a.md-list-item-text(href="https://getpaidup.zendesk.com/hc/en-us" target="_blank") Help Articles
     md-icon launch
-  md-list-item.logout-btn-nav
+  md-list-item.logout-btn-nav(@click="logout()")
     md-icon power_settings_new
     div.md-list-item-text LOGOUT
 </template>
+<script>
+import { mapActions } from 'vuex'
+
+export default {
+  methods: {
+    ...mapActions('userModule', {
+      logout: 'logout'
+    })
+  }
+}
+</script>
+

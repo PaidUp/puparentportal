@@ -1,184 +1,88 @@
 <template>
   <div class="programs-page">
+    <pu-breadcrums></pu-breadcrums>
     <div class="details">
       <div class="pre-cards-title">Details</div>
       <div class="details-box">
         <pu-details-selects></pu-details-selects>
-        <pu-details-totals :items="items"></pu-details-totals>
+        <pu-details-totals></pu-details-totals>
       </div>
     </div>
-    <div class="programs">
-      <div class="pre-cards-title">Programs</div>
-      <div class="cards-layout">
-
-        <pu-score-card v-for="item in items" :key="item.id" :item="item"></pu-score-card>
-
-      </div>
-    </div>
+    <pu-products v-if="!programSelected" :items="items"></pu-products>
+    <pu-players v-if="programSelected && !playerSelected"></pu-players>
+    <pu-player-invoices v-if="playerSelected"></pu-player-invoices>
   </div>
 
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapMutations, mapActions } from 'vuex'
   import PuDetailsSelects from './score_board/PUDetailsSelects.vue'
   import PuDetailsTotals from './score_board/PUDetailsTotals.vue'
-  import PuScoreCard from './score_board/PUScoreCard.vue'
-
-  function reduceInvoices (invoices) {
-    return invoices.reduce((val, current) => {
-      let prd = val[current.productId]
-      if (prd) {
-        prd.total = prd.total + current.price
-        prd.players.add(current.beneficiaryId)
-      } else {
-        prd = {
-          id: current.productId,
-          name: current.productName,
-          total: current.price,
-          paid: 0,
-          unpaid: 0,
-          overdue: 0,
-          other: 0,
-          players: new Set(),
-          inelegible: new Set()
-        }
-        prd.players.add(current.beneficiaryId)
-        val[current.productId] = prd
-      }
-      if (current.status === 'paidup' || current.status === 'submitted') {
-        prd.paid = prd.paid + current.price
-      } else if (current.status === 'autopay') {
-        prd.unpaid = prd.unpaid + current.price
-      } else if (current.status === 'failed') {
-        prd.inelegible.add(current.beneficiaryId)
-        prd.overdue = prd.overdue + current.price
-      } else if (current.status === 'void' || current.status === 'disabled') {
-        prd.other = prd.other + current.price
-      }
-      return val
-    }, {})
-  }
-
-  function reduceCredits (credits, items) {
-    return credits.reduce((val, current) => {
-      let prd = val[current.productId]
-      if (prd) {
-        prd.total = prd.total + current.price
-        prd.players.add(current.beneficiaryId)
-      } else {
-        prd = {
-          id: current.productId,
-          name: current.productName,
-          total: current.price,
-          paid: 0,
-          unpaid: 0,
-          overdue: 0,
-          other: 0,
-          players: new Set(),
-          inelegible: new Set()
-        }
-        prd.players.add(current.beneficiaryId)
-        val[current.productId] = prd
-      }
-      if (current.status === 'paid' || current.status === 'credited') {
-        prd.paid = prd.paid + current.price
-      } else if (current.status === 'discount' || current.status === 'refunded') {
-        prd.other = prd.other + current.price
-      }
-      return val
-    }, items)
-  }
-
-  function reducePreorders (preorders, items) {
-    const today = new Date().getTime()
-    return preorders.reduce((val, current) => {
-      if (current.planId && current.dues) {
-        current.dues.forEach(due => {
-          let prd = val[current.productId]
-          if (prd) {
-            prd.total = prd.total + due.amount
-            prd.players.add(current.beneficiaryId)
-          } else {
-            prd = {
-              id: current.productId,
-              name: current.productName,
-              total: due.amount,
-              paid: 0,
-              unpaid: 0,
-              overdue: 0,
-              other: 0,
-              players: new Set(),
-              inelegible: new Set()
-            }
-            prd.players.add(current.beneficiaryId)
-            val[current.productId] = prd
-          }
-          let dateCharge = new Date(due.dateCharge).getTime()
-          if (today < dateCharge) {
-            prd.unpaid = prd.unpaid + due.amount
-          } else {
-            prd.inelegible.add(current.beneficiaryId)
-            prd.overdue = prd.overdue + due.amount
-          }
-        })
-      }
-      return val
-    }, items)
-  }
+  import PuProducts from './score_board/PUProducts.vue'
+  import PuPlayers from './score_board/PUPlayers.vue'
+  import PuPlayerInvoices from './score_board/PUPlayerInvoices.vue'
+  import PuBreadcrums from './score_board/PUBreadcrums.vue'
 
   export default {
-    components: { PuDetailsSelects, PuDetailsTotals, PuScoreCard },
-    data: function () {
-      return {
-        items: null
-      }
-    },
+    components: { PuDetailsSelects, PuDetailsTotals, PuProducts, PuPlayers, PuPlayerInvoices, PuBreadcrums },
     computed: {
       ...mapState('userModule', {
         'user': 'user'
       }),
-      ...mapState('organizationModule', {
-        'organization': 'organization'
-      }),
-      seasons () {
-        if (this.organization) {
-          this.organization.seasons.sort((orgA, orgB) => {
-            return new Date(orgA.date).getTime() - new Date(orgA.date).getTime()
+      ...mapState('scoreboardModule', {
+        items: 'items',
+        playerSelected: 'playerSelected',
+        programSelected: 'programSelected',
+        seasonSelected: 'seasonSelected'
+      })
+    },
+    mounted () {
+      if (this.user && this.user.organizationId) {
+        this.getOrganization(this.user.organizationId).then(organization => {
+          this.setOrganization(organization)
+        })
+      }
+    },
+    destroyed () {
+      this.reset()
+    },
+    watch: {
+      user () {
+        if (this.user && this.user.organizationId) {
+          this.getOrganization(this.user.organizationId).then(organization => {
+            this.setOrganization(organization)
           })
         }
-        return []
+      },
+      seasonSelected () {
+        this.getAll()
+      },
+      programSelected () {
+        this.getAll()
+      },
+      playerSelected () {
+        this.getAll()
       }
     },
     methods: {
       ...mapActions('organizationModule', {
-        loadOrganization: 'loadOrganization',
-        getInvoices: 'getInvoices',
-        getCredits: 'getCredits',
-        getPreorders: 'getPreorders'
+        getOrganization: 'getOrganization'
+      }),
+      ...mapActions('scoreboardModule', {
+        getReducePrograms: 'getReducePrograms',
+        setPlayerSelected: 'setPlayerSelected'
+      }),
+      ...mapMutations('scoreboardModule', {
+        setOrganization: 'setOrganization',
+        setPlayerSelected: 'setPlayerSelected',
+        reset: 'reset'
       }),
       getAll () {
-        if (this.user) {
-          Promise.all([
-            this.getInvoices({organizationId: this.user.organizationId}),
-            this.getCredits({organizationId: this.user.organizationId}),
-            this.getPreorders({organizationId: this.user.organizationId})
-          ]).then(values => {
-            let items = reduceInvoices(values[0])
-            reduceCredits(values[1], items)
-            reducePreorders(values[2], items)
-            this.items = items
-          })
+        if (this.user && this.seasonSelected) {
+          this.getReducePrograms()
         }
       }
-    },
-    watch: {
-      organization () {
-        this.getAll()
-      }
-    },
-    mounted () {
-      this.getAll()
     }
   }
 </script>

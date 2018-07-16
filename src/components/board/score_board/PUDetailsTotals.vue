@@ -23,15 +23,18 @@
   </div>
 </template>
 <script>
-import numeral from 'numeral'
+import currency from '@/helpers/currency'
+import { mapState } from 'vuex'
 export default {
-  props: {
-    items: Object
-  },
   data () {
     return {
       totals: {}
     }
+  },
+  computed: {
+    ...mapState('scoreboardModule', {
+      items: 'items'
+    })
   },
   watch: {
     items () {
@@ -54,7 +57,7 @@ export default {
   },
   methods: {
     format (value) {
-      return numeral(value).format('0,0.00')
+      return currency(value)
     }
   }
 }

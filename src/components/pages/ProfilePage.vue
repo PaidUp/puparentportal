@@ -4,12 +4,12 @@
       <div class="title bold">Profile</div>
       <div class="content-box">
         <div class="centered">
-          <md-avatar v-if="avatar" class="md-avatar-icon md-large md-elevation-4">
-            <img :src="avatar" />
+          <md-avatar v-if="showAvatar" class="md-avatar-icon md-large md-elevation-4">
+            <img :src="avatar" @error="showAvatar = false" />
           </md-avatar>
           <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
         </div>
-        <update-avatar :url="url" @charged="reloadAvatar"></update-avatar>
+        <update-avatar :url="url" @charged="uploadedAvatar"></update-avatar>
         <div class="names-box" :md-description="fullName">
           <md-field :class="{'md-invalid': $v.firstName.$error}">
             <label>First Name</label>
@@ -56,7 +56,7 @@
           <md-button class="md-accent lblue" @click="reset" >CANCEL</md-button>
           <md-button class="md-accent lblue md-raised" @click="submmit" :disabled="disableSaveButton">SAVE</md-button>
         </div>
-        <div class="upgrade-box" v-if="isParent">
+        <div class="upgrade-box" v-if="false && isParent">
           Upgrade your account if your are a Club Director to receive payments from parents
           and access the Scoreboard (PaidUp approval required).
           <md-button to="/upgrade" class="md-accent md-raised lblue upgrade-btn">UPGRADE TO CLUB DIRECTOR ACCOUNT</md-button>
@@ -78,6 +78,7 @@
     data: function () {
       return {
         url: config.api.user + '/avatar',
+        showAvatar: true,
         firstName: '',
         lastName: '',
         editName: false,
@@ -131,6 +132,10 @@
         setSuccess: 'setSuccess',
         setWarning: 'setWarning'
       }),
+      uploadedAvatar () {
+        this.showAvatar = true
+        this.reloadAvatar()
+      },
       reset () {
         this.load()
         this.editName = false
@@ -153,7 +158,7 @@
         }
         this.update({id: this.user._id, values}).then(res => {
           this.reset()
-          this.setSuccess('You profile was update succesfylly')
+          this.setSuccess('You profile was updated succesfully')
         }).catch(reason => {
           this.reset()
           this.setWarning('Error, your profile wasn\'t update')

@@ -2,13 +2,13 @@
   <div class="login-page">
     <md-field :class="{'md-invalid': $v.loginParams.email.$error}">
       <label>{{ $t('component.login.email') }}</label>
-      <md-input v-model.trim="loginParams.email" @input="$v.loginParams.email.$touch()"></md-input>
+      <md-input v-model.trim="loginParams.email" @keyup.enter="focusPassword"></md-input>
       <span class="md-error" v-if="!$v.loginParams.email.required">{{ $t('validations.required', { field: 'Email' }) }}</span>
       <span class="md-error" v-if="!$v.loginParams.email.email">{{ $t('validations.email') }}</span>
     </md-field>
     <md-field :class="{'md-invalid': $v.loginParams.password.$error}">
       <label>{{ $t('component.login.password') }}</label>
-      <md-input v-model.trim="loginParams.password" @input="$v.loginParams.password.$touch()" type="password"></md-input>
+      <md-input id="password" v-model.trim="loginParams.password" @keyup.enter="submit" @input="$v.loginParams.password.$touch()" type="password"></md-input>
       <span class="md-error" v-if="!$v.loginParams.password.required">{{ $t('validations.required', { field: 'Password' }) }}</span>
     </md-field>
     <div>
@@ -90,6 +90,9 @@
           return this.setWarning('validations.form')
         }
         this.login()
+      },
+      focusPassword: function (event) {
+        document.getElementById('password').focus()
       }
     },
     validations: {

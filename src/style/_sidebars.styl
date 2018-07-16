@@ -96,16 +96,63 @@
   .bottom-list
     width: 100%;
     border-top: 1px solid $cgray4
-    height 20%
+    height: auto
     padding: 0
+    display: block
     .md-list-item.logout-btn-nav
       display none
       @media $small-only
         display list-item
-
     .md-list-item
       .md-icon
         color: $cgray2
       .md-list-item-text
         color: $cgray2
+    .down-arrow
+      display none
+    &.has-arrow
+      position relative
+      .down-arrow
+        position absolute
+        display block
+        z-index: 5
+        width: 15px
+        opacity .8
+        top: -22px
+        left 50%
+        color: $ca1
+        margin-left: -8px
  
+// FILTERS RIGHT SIDEBAR
+.filters-sidebar
+  padding: 16px
+  .title-section
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-between
+    align-items: center
+    .md-button
+      margin 0
+  .filters-section
+    margin-top: 20px
+    .tags-box
+      .md-chip
+        margin: 0 4px 8px 0
+        cursor pointer
+    .filter-title
+      display: flex
+      flex-flow: row nowrap
+      justify-content: flex-start
+      align-items: center
+      margin-top: 30px
+    .md-checkbox 
+      display: flex
+    .range-date
+      display: flex
+      flex-flow: row nowrap
+      justify-content: space-between
+      align-items: center
+      .md-field
+        width: 48%
+        margin 0
+  

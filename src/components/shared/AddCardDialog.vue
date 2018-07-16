@@ -22,16 +22,19 @@
           <md-input v-model.trim="details.address_city" @input="$v.details.address_city.$touch()"></md-input>
           <span class="md-error" v-if="!$v.details.address_city.required">{{ $t('validations.required', { field: 'City' }) }}</span>
         </md-field>
-        <md-autocomplete v-model="details.address_state" @input="$v.details.address_state.$touch()" name="state" id="state" :md-options="['Arizona', 'New York', 'Texas', 'Delware', 'California']" md-dense>
+        <!--md-autocomplete v-model="state" @input="$v.details.address_state.$touch()" md-input-placeholder="demo" name="state" id="state" :md-options="states" md-dense>
           <label>State</label>
-        </md-autocomplete>
-        <!-- <md-field :class="{'md-invalid': $v.details.address_state.$error}">
+          <template slot="md-autocomplete-item" slot-scope="{ item }">
+            {{ item.name }}
+          </template>
+        </md-autocomplete-->
+        <md-field :class="{'md-invalid': $v.details.address_state.$error}">
           <label>State</label>
           <md-select v-model="details.address_state" @input="$v.details.address_state.$touch()" name="state" id="state" md-dense>
             <md-option v-for="state in states" :key="state.abbreviation" :value="state.abbreviation">{{ state.name }}</md-option>
           </md-select>
           <span class="md-error" v-if="!$v.details.address_state.required">{{ $t('validations.required', { field: 'State' }) }}</span>
-        </md-field> -->
+        </md-field>
       </div>
     </div>
     <v-pay-animation :animate="animation" @finish="closeDialog" />
@@ -59,6 +62,7 @@ export default {
       return {
         publicKey: config.stripe.publicKey,
         complete: false,
+        state: '',
         details: {
           name: '',
           address_line1: '',
@@ -74,6 +78,9 @@ export default {
     watch: {
       submited () {
         if (this.submited) this.animation = true
+      },
+      state () {
+        this.details.address_state = this.state.abbreviation
       }
     },
     methods: {

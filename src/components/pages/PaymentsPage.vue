@@ -7,8 +7,8 @@
       <v-programs step-id="step2" :step="step2" :player="playerSelected" @select="setProgram" />
       <v-payment-accounts step-id="step3" :step="step3" @select="setPaymentAccount" />
       <v-payment-plans step-id="step4" :program="programSelected" :step="step4" @select="setPaymentPlan" :account="paymentAccountSelected" />
-      <v-additional-info step-id="step5" :step="step5" @select="setCustomInfo" />
-      <v-document-signature step-id="step6" :step="step6" @select="setSignature" />
+      <v-additional-info v-if="false" step-id="step5" :step="step5" @select="setCustomInfo" />
+      <v-document-signature v-if="false" step-id="step6" :step="step6" @select="setSignature" />
       <v-review-approve step-id="step7" :processing="processing" :step="step7" :account="paymentAccountSelected" :plan="paymentPlanSelected" @select="approve" />
     </md-steppers>
     <v-pay-animation :animate="processing" @finish="redirect" />
@@ -38,10 +38,16 @@
         step5: false,
         step6: false,
         step7: false,
+        playerSelected: null,
         processing: false,
         programSelected: null,
         paymentAccountSelected: null,
         paymentPlanSelected: null
+      }
+    },
+    mounted () {
+      if (this.user) {
+        this.load()
       }
     },
     computed: {
@@ -51,22 +57,12 @@
       ...mapState('playerModule', {
         beneficiaries: 'beneficiaries',
         allPreorders: 'allPreorders'
-      }),
-      playerSelected () {
-        let ps
-        if (this.beneficiaries) {
-          this.beneficiaries.forEach(beneficiary => {
-            if (beneficiary._id === this.$route.params.id) {
-              ps = beneficiary
-              this.getPreorders(this.$route.params.id)
-              this.getProducts(ps.organizationId)
-            }
-          })
-        }
-        return ps
-      }
+      })
     },
     watch: {
+      user () {
+        this.load()
+      },
       programSelected () {
         this.paymentPlanSelected = null
       }
@@ -84,8 +80,21 @@
       }),
       ...mapActions('playerModule', {
         getPreorders: 'getPreorders',
-        getBeneficiaries: 'getBeneficiaries'
+        getBeneficiaries: 'getBeneficiaries',
+        getBeneficiary: 'getBeneficiary',
+        getOrganization: 'getOrganization'
       }),
+      load () {
+        this.getBeneficiary(this.$route.params.id).then(ps => {
+          Promise.all([
+            this.getOrganization({id: ps.organizationId}),
+            this.getPreorders({beneficiaryId: this.$route.params.id, userEmail: this.user.email}),
+            this.getProducts(ps.organizationId)
+          ]).then(values => {
+            this.playerSelected = ps
+          })
+        })
+      },
       setPlayer (player) {
         this.playerSelected = player
         if (player) {

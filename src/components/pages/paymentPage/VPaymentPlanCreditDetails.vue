@@ -1,10 +1,10 @@
 <template>
-  <div class="payment-single md-elevation-2">
+  <div class="payment-single">
     <div>
       <div class="title cgray bold">{{ due.description }}</div>
       <div class="caption"></div>
     </div>
-    <div class="details">
+    <div class="single-details">
       <div class="icon-side">
         <md-icon class="md-size-c cgreen">today</md-icon>
         <div class="caption cgreen">{{ due.status.toUpperCase() }}</div>

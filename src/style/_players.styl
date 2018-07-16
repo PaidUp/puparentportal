@@ -1,9 +1,11 @@
 .players-page
+   @extends .padded-page;
   .player
     text-align: center
     margin-top: 20px
   .player-empty
     margin-top: 60px
+    padding: 0 16px
     text-align: center
     .md-button
       margin: 30px auto
@@ -15,6 +17,7 @@
               
 .add-new-player-page
   @extend .has-steppers;
+  @extends .margined-page;
   .step-box
     width 300px
     .update-pic
@@ -33,26 +36,26 @@
       width 100%
       div:first-child
         margin-right: 10px
+      @media $small-only
+        flex-flow: column nowrap
+      div:first-child
+        margin-right: 0px
   .club-search-field
     width 300px
   .clubs
-    display: flex
-    flex-flow: row wrap
-    justify-content: flex-start
-    align-items: center
     margin: 40px 0
-    .club
-      text-align: center
-      width 250px
-      padding: 20px 10px
+    .club-card
       cursor pointer
-      margin: 15px
+      padding: 20px 10px
+      display: flex
+      flex-flow: column nowrap
+      justify-content: space-between
+      align-items: center
       &.selected
         // border: 2px solid $cblue
         background: rgba($ca1,.2)
       img
         width 90px
-        margin-bottom: 10px
       .location
         line-height: 1.2
         color: $cgray2

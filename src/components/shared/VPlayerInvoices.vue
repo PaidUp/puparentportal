@@ -1,6 +1,6 @@
 <template lang="pug">
   md-card(md-with-hover)
-    md-ripple(v-if="invoice.invoiceId" class="invoice-card-box")
+    md-ripple(v-if="invoice.invoiceId" class="card-invoice")
       md-card-header
         .title {{ invoice.label }}
         .caption {{ paymetMethod }}
@@ -15,9 +15,9 @@
             span.md-caption {{ $d(chargeDate, 'short') }}
           v-currency(:amount="invoice.price" clazz="total md-title")
       md-card-actions
-        md-button.md-accent(@click="select") {{ nameButton }}
+        md-button.md-accent.lblue(@click="select") {{ nameButton }}
 
-    md-ripple(v-if="invoice.memoId" class="invoice-card-box")
+    md-ripple(v-if="invoice.memoId" class="card-invoice")
       md-card-header
         .title {{ invoice.label }}
         .caption {{ subtext }}
@@ -32,23 +32,13 @@
             span.md-caption {{ $d(chargeDate, 'short') }}
           v-currency(:amount="invoice.price" clazz="total md-title")
       md-card-actions
-        md-button.md-accent(v-if=false)
+        md-button.md-accent.lblue(v-if=false)
 
 </template>
 
 <script>
   import VCurrency from '@/components/shared/VCurrency.vue'
-
-  const opt = {
-    autopay: { desc: 'AUTOPAY', key: 'today', class: 'cgray' },
-    paidup: { desc: 'PAIDUP', key: 'check_circle', class: '' },
-    credited: { desc: 'CREDIT APPLIED', subtext: 'Club Credit', key: 'check_circle', class: '' },
-    partially_refunded: { desc: 'PARTIALLY<BR/>REFUNDED', subtext: '', key: 'check_circle', class: 'cblue' },
-    paid: { desc: 'PAID', key: 'check_circle', subtext: 'Paid Directly to Club', class: '' },
-    failed: { desc: 'FAILED', key: 'check_circle', class: 'cred' },
-    submitted: { desc: 'ACH SUBMITTED', key: 'check_circle', subtext: '', class: '' },
-    discount: { desc: 'DISCOUNT', key: 'check_circle', subtext: 'Club Discount', class: 'cblue' }
-  }
+  import { mapState } from 'vuex'
   
   export default {
     props: {
@@ -58,6 +48,9 @@
       VCurrency
     },
     computed: {
+      ...mapState('commonModule', {
+        invoiceMapper: 'invoiceMapper'
+      }),
       nameButton () {
         if (this.invoice.status === 'autopay') return 'Edit'
         else if (this.invoice.status === 'failed') return 'Fix'
@@ -72,21 +65,24 @@
         return new Date()
       },
       icon () {
-        return opt[this.invoice.status] ? opt[this.invoice.status].key : ''
+        return this.getInvoiceStatusMapper().key
       },
       clazz () {
-        return opt[this.invoice.status] ? [opt[this.invoice.status].class] : []
+        return this.getInvoiceStatusMapper().class
       },
       status () {
-        return opt[this.invoice.status].desc
+        return this.getInvoiceStatusMapper().desc
       },
       subtext () {
-        return opt[this.invoice.status].subtext
+        return this.getInvoiceStatusMapper().subtext
       }
     },
     methods: {
       select () {
         this.$emit('select', this.invoice)
+      },
+      getInvoiceStatusMapper () {
+        return this.invoiceMapper[this.invoice.status] || { desc: '', key: '', class: [] }
       }
     }
   }

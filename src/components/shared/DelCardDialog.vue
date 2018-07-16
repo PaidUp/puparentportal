@@ -17,20 +17,26 @@
         <md-input v-model="card.address_line1" disabled></md-input>
       </md-field>
       <div class="address-info">
-        <md-field>
-          <label>City</label>
-          <md-input v-model="card.address_city" disabled></md-input>
-        </md-field>
-        <md-field>
-          <label>State</label>
-          <md-select v-model="card.address_state" name="state" id="state" md-dense disabled>
-            <md-option v-for="state in states" :key="state.abbreviation" :value="state.abbreviation">{{ state.name }}</md-option>
-          </md-select>
-        </md-field>
-        <md-field>
-          <label>Zip*</label>
-          <md-input v-model="card.address_zip" disabled></md-input>
-        </md-field>
+        <div>
+          <md-field>
+            <label>City</label>
+            <md-input v-model="card.address_city" disabled></md-input>
+          </md-field>
+        </div>
+        <div>
+          <md-field>
+            <label>State</label>
+            <md-select v-model="card.address_state" name="state" id="state" md-dense disabled>
+              <md-option v-for="state in states" :key="state.abbreviation" :value="state.abbreviation">{{ state.name }}</md-option>
+            </md-select>
+          </md-field>
+        </div>
+        <div>
+          <md-field>
+            <label>Zip*</label>
+            <md-input v-model="card.address_zip" disabled></md-input>
+          </md-field>
+        </div>
       </div>
     </div>
     <v-pay-animation :animate="submited" @finish="done" />

@@ -51,8 +51,10 @@ class PaymentService {
   }
 
   removeBank (customerId, bankId) {
+    console.log('customerId: ', customerId)
+    console.log('bankId: ', bankId)
     return trae
-      .delete('/customer/bank', { customerId, bankId })
+      .put('/customer/bank', { customerId, bankId })
   }
 }
 

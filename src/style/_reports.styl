@@ -1,10 +1,24 @@
 .reports-page
+  @extends .padded-page;
+  overflow hidden
+  position relative
+  height 100%
   .top-bar
     display: flex
     flex-flow: row nowrap
     justify-content: space-between
     align-items: center
     width: 100%
+  .filter-chips
+    margin: 15px 0
+  .report-info
+    font-size: 12px
+    padding: 5px 0px
+    color: $cgray1
+    border-top: 1px solid $cgray3
+    border-bottom: 1px solid $cgray3
+    margin: 15px 0
+
   .table-title
     color: $cgray2
     margin-bottom: 5px

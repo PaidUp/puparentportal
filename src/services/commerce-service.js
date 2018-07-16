@@ -19,34 +19,52 @@ class CommerceService {
       .put('/invoice', { id, values })
   }
 
+  updateInvoiceCalculations ({ id, values, product }) {
+    return trae
+      .put('/invoice/calculations', { id, values, product })
+  }
+
   invoicesByPayentMethod (paymentMethodId) {
     return trae
       .get(`/invoice/method/${paymentMethodId}`)
   }
 
-  invoicesByBeneficiary (beneficiaryId) {
+  invoicesByBeneficiary (beneficiaryId, userEmail) {
+    let query = ''
+    if (userEmail) query = encodeURI(`?assegnee=${userEmail}`)
     return trae
-      .get(`/invoice/beneficiary/${beneficiaryId}`)
+      .get(`/invoice/beneficiary/${beneficiaryId}${query}`)
   }
 
-  invoicesByOrganization (organizationId) {
+  invoicesByOrganization (organizationId, seasonId, productId, beneficiaryId) {
+    let params = `seasonId=${seasonId}`
+    if (productId) params = `${params}&productId=${productId}`
+    if (beneficiaryId) params = `${params}&beneficiaryId=${beneficiaryId}`
     return trae
-      .get(`/invoice/organization/${organizationId}`)
+      .get(`/invoice/organization/${organizationId}?${params}`)
   }
 
-  creditsByOrganization (organizationId) {
+  creditsByOrganization (organizationId, seasonId, productId, beneficiaryId) {
+    let params = `seasonId=${seasonId}`
+    if (productId) params = `${params}&productId=${productId}`
+    if (beneficiaryId) params = `${params}&beneficiaryId=${beneficiaryId}`
     return trae
-      .get(`/credit/organization/${organizationId}`)
+      .get(`/credit/organization/${organizationId}?${params}`)
   }
 
-  preordersByOrganization (organizationId) {
+  preordersByOrganization (organizationId, seasonId, productId, beneficiaryId) {
+    let params = `seasonId=${seasonId}`
+    if (productId) params = `${params}&productId=${productId}`
+    if (beneficiaryId) params = `${params}&beneficiaryId=${beneficiaryId}`
     return trae
-      .get(`/preorder/organization/${organizationId}`)
+      .get(`/preorder/organization/${organizationId}?${params}`)
   }
 
-  preordersByBeneficiary (beneficiaryId) {
+  preordersByBeneficiary (beneficiaryId, userEmail) {
+    let query = ''
+    if (userEmail) query = encodeURI(`?assegnee=${userEmail}`)
     return trae
-      .get(`/preorder/beneficiary/${beneficiaryId}`)
+      .get(`/preorder/beneficiary/${beneficiaryId}${query}`)
   }
 
   inactivePreorder (id) {
@@ -54,9 +72,11 @@ class CommerceService {
       .put('/preorder', { id, values: { status: 'inactive' } })
   }
 
-  creditsByBeneficiary (beneficiaryId) {
+  creditsByBeneficiary (beneficiaryId, userEmail) {
+    let query = ''
+    if (userEmail) query = encodeURI(`?assegnee=${userEmail}`)
     return trae
-      .get(`/credit/beneficiary/${beneficiaryId}`)
+      .get(`/credit/beneficiary/${beneficiaryId}${query}`)
   }
 }
 

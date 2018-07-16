@@ -8,13 +8,22 @@
   background: #F5F5F5 !important
   border-left: none
   box-shadow:  inset 5px 0 5px -5px $cgray2
-  @media $small-only
-    padding: 0!important
+  padding: 0!important
 sup
   top: -.3em!important
 
 .has-elevation-4
   box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+
+.padded-page
+  padding: 16px
+  @media $small-only
+    padding: 0px
+
+.margined-page
+  margin: 16px
+  @media $small-only
+    margin: 0px
 
 // COMMON PAGE WHITE
 .common-page
@@ -105,14 +114,14 @@ a, a:hover, a:visited, a:link, a:active, a > *
             padding-left: 0!important
       .md-stepper-content
         padding: 0
-
-// MD-CARD
-.common-card
-  padding: 16px 16px 10px 16px
-  .actions
-    text-align: center
-    .md-button
-      margin: 0
+      .steppers-btns
+        width: 100%
+        display: flex
+        flex-flow: column nowrap
+        justify-content: center
+        align-items: center
+        .md-button
+          margin: 8px 0
 
 // MD-BUTTONS
 .md-button
@@ -154,8 +163,6 @@ a, a:hover, a:visited, a:link, a:active, a > *
 
 // MD-INPUT
 .md-field
-  // .md-prefix
-  //   margin-top: 5px
   &.md-disabled
     input
       -webkit-text-fill-color: $cgray2!important
@@ -165,7 +172,6 @@ a, a:hover, a:visited, a:link, a:active, a > *
       background-image: none!important
     .md-prefix
       color: $cgray2!important
-      margin-top: 5px
 
 
 
@@ -203,7 +209,6 @@ a, a:hover, a:visited, a:link, a:active, a > *
   color: $clblue
   .md-button
     background: $clblue
-
   &:hover
     background-color: #fff!important
     color: $clblue!important
@@ -213,6 +218,16 @@ a, a:hover, a:visited, a:link, a:active, a > *
         fill: #fff!important
     &.add
       cursor pointer
+.md-chip.blue
+  background: $clblue
+  border 1px solid $clblue
+  color: #fff
+  cursor pointer
+  &.with-icon
+    padding-right: 30px
+  .md-icon
+    color: #fff
+    font-weight: bold
 
 
 // MD-DATEPICKER
@@ -228,25 +243,30 @@ a, a:hover, a:visited, a:link, a:active, a > *
     .md-dialog-actions.md-datepicker-body-footer
       .md-button
         color: $clblue
-
+.md-datepicker.no-date-icon
+  i.md-date-icon
+    display none
+  label
+    left 12px
 // City-State-ZIP in one row
 .address-info
   display: flex
   flex-flow: row nowrap
   justify-content: space-between
   align-items: center
+  max-width: 100%
   @media $small-only
     flex-flow: column nowrap
   & > div:nth-child(1)
-    width: 49%
+    width: 200px
     @media $small-only
       width: 100%
   & > div:nth-child(2)
-    width: 20%
+    width: 110px
     @media $small-only
       width: 100%
   & > div:nth-child(3)
-    width: 29%
+    width: 110px
     @media $small-only
       width: 100%
   &.no-zip
@@ -269,8 +289,12 @@ a, a:hover, a:visited, a:link, a:active, a > *
   .md-list-item-container
     color: $clblue
     text-align: right
+    &.md-list-item-button
+      color: $clblue
     &:hover
-      color: $clblue!important
+      background: $clblue!important
+      color: #fff!important
+      cursor: pointer
 
 // PLACEHOLDER MIXIN
 mixin-placeholder(c)
@@ -291,11 +315,21 @@ mixin-placeholder(c)
   border-bottom: 1px solid rgba(0, 0, 0, 0.42)
   transition all ease 400ms
   margin: 4px 0 24px
+  position relative
   &.StripeElement--focus
     border-bottom: 2px solid $ca1
     border-color: $ca1
   &.StripeElement--invalid
-    border-color: #fa755a
+    border-color: #ff1744
+    &:after
+      content: 'Invalid card info'
+      position: absolute
+      top: 40px
+      left: 0px
+      color: #ff1744
+      opacity 1
+      font-weight: 400
+      font-size: 12px
   &.StripeElement--webkit-autofill
     background-color: #fefde5 !important
 
@@ -359,146 +393,6 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
 }
 
-// Details Box - used in programs/players
-.pre-cards-title
-  color: $cgray2
-  margin-bottom: 10px
-  @media $small-only
-    padding-left: 16px
-  &.with-sort-filter
-    display: flex
-    flex-flow: row nowrap
-    justify-content: space-between
-    align-items: center
-    width: 100%
-.md-menu-content.sort-box
-.md-menu-content.filter-box
-  ul.md-list
-    padding: 12px
-    .title
-      color: $cblack
-    .actions
-      margin-top: 10px
-      // border-top: 1px solid #ccc
-      // margin: 10px -12px 0 -12px
-.md-menu-content.filter-box
-  ul.md-list .md-checkbox
-    display: flex
-
-.details-box
-  @extends .has-elevation-4;
-  display: flex
-  flex-flow: row wrap
-  justify-content: space-between
-  align-items: flex-start
-  padding: 10px 12px
-  background: #fff
-  @media $small-only
-    flex-flow: column wrap
-    margin: 0 16px;
-  .details-selects
-    display: flex
-    flex-flow: row wrap
-    justify-content: flex-start
-    align-items: center
-    @media $small-only
-      flex-flow: column wrap
-      justify-content: center
-      width: 100%
-      margin-bottom: 20px
-    .md-field
-      width auto
-      margin-bottom: 10px
-      @media $small-only
-        width: 100%
-      &:not(:last-child)
-        margin-right: 20px
-        @media $small-only
-          margin-right: 0
-  .details-numbers
-    margin-top: 4px
-    display: flex
-    flex-flow: row nowrap
-    justify-content: flex-end
-    align-items: center
-    @media $small-only
-      flex-flow: row wrap
-      justify-content: center
-      width: 100%
-      margin-bottom: 10px
-    .title-big
-      margin-top: 2px
-      margin-bottom: 20px
-    & > div:not(:last-child)
-      margin-right: 20px
-    .concept
-      color: $cgray2
-      font-size: 13px
-    .green
-      color: $cgreen
-    .gray
-      color: $cgray1
-    .red
-      color: $cred
-    .blue
-      color: $cblue
-
-// CARDS layout 1
-.cards-layout
-  display: flex
-  flex-flow: row wrap
-  justify-content: flex-start
-  align-items: center
-  @media $small-only
-    justify-content: center
-    width 100%
-  @media $xlarge-up
-    .md-card
-      width: 250px
-  .md-card
-    margin: 0 15px 15px 0
-    width: 220px;
-    height 200px
-    @media $small-only
-      margin: 16px
-      width 100%
-    .md-card-actions
-      justify-content: center
-
-  // INVOICE TYPE CARD 
-  .invoice-card-box
-    display: flex
-    flex-flow: column nowrap
-    justify-content: space-between
-    align-items: flex-start
-    width 100%
-    .md-card-header
-    .md-card-content
-    .md-card-actions
-      width 100%
-    .md-card-header
-      .title
-        color: $cblack
-        margin-bottom: 5px
-    .md-card-content.card-content
-      display: flex
-      flex-flow: row nowrap
-      justify-content: space-between
-      align-items: center
-      .status
-        text-align: center
-        .md-icon
-          color: $cgreen
-      .amount-details
-        margin-top: 5px
-        color: $cgray1
-        text-align: right
-        .details
-          line-height: 1
-        .total
-          margin-top: 5px
-          font-weight: bold
-
 // BREADCRUMBS
 .breadcrums-box
   display: flex
@@ -536,7 +430,7 @@ input[type=number]::-webkit-outer-spin-button {
       background-color: $clblue
   .md-content 
     .md-tab
-      padding-left: 2px
+      padding: 16px 2px
 
 .custom-select
 .custom-input
@@ -548,3 +442,11 @@ input[type=number]::-webkit-outer-spin-button {
   // -moz-appearance: none
   // text-indent: 1px
   // text-overflow: ''
+
+// SNACKBAR
+.md-snackbar
+  .md-snackbar-content
+    display: flex
+    flex-flow: column nowrap
+    justify-content: space-around
+    align-items: flex-start

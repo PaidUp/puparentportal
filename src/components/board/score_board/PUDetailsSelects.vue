@@ -8,52 +8,61 @@
     </md-field>
     <md-field v-if="season">
       <label>Program</label>
-      <md-select v-model="movie1" placeholder="Program">
-        <md-option value="godfather">Example Sel</md-option>
+      <md-select v-model="program" @md-selected="setProgram" placeholder="Program">
+        <md-option value=""> All </md-option>
+        <md-option v-for="option in programs" :key="option.id" :value="option.id">{{option.name}}</md-option>
       </md-select>
     </md-field>
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   data () {
     return {
       season: null,
-      movie1: ''
+      program: ''
     }
   },
   computed: {
-    ...mapState('organizationModule', {
-      'organization': 'organization'
-    }),
-    ...mapState('userModule', {
-      'user': 'user'
+    ...mapState('scoreboardModule', {
+      items: 'items',
+      programs: 'programs',
+      playerSelected: 'playerSelected',
+      programSelected: 'programSelected',
+      organization: 'organization'
     }),
     seasons () {
       if (this.organization) {
-        return this.organization.seasons
+        return this.organization.seasons.sort((orgA, orgB) => {
+          return new Date(orgA.date).getTime() - new Date(orgB.date).getTime()
+        })
       }
+      return []
     }
   },
   methods: {
-    ...mapActions('organizationModule', {
-      loadOrganization: 'loadOrganization'
-    })
-  },
-  watch: {
-    user () {
-      if (this.user) this.loadOrganization(this.user.organizationId)
-    },
-    seasons () {
-      console.log('this.seasons[this.seasons.length - 1]:', this.seasons[this.seasons.length - 1]._id)
-      this.season = this.seasons[this.seasons.length - 1]._id
+    ...mapMutations('scoreboardModule', {
+      setPlayerSelected: 'setPlayerSelected',
+      setProgramSelected: 'setProgramSelected',
+      setSeasonSelected: 'setSeasonSelected'
+    }),
+    setProgram (id) {
+      this.setProgramSelected(id)
     }
   },
-  mounted () {
-    if (this.user) {
-      this.loadOrganization(this.user.organizationId)
+  watch: {
+    organization () {
+      this.season = this.seasons[this.seasons.length - 1]._id
+    },
+    season () {
+      this.program = null
+      this.setSeasonSelected(this.season)
+    },
+    programSelected () {
+      this.program = this.programSelected
+      this.setPlayerSelected()
     }
   }
 }

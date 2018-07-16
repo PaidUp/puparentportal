@@ -2,17 +2,17 @@
   .players-page
     .player
       v-player-info(v-if="beneficiary" :player="beneficiary", :numInvoices="allInvoices.length" @avatarChanged="reloadBeneficiaries")
-    .player-empty(v-if="!allInvoices.length && loaded")
+    .player-empty(v-if="!allInvoices.length")
       div(class="title bold cgray") {{ beneficiary ? beneficiary.firstName : '' }} does not have any payment history yet.
       div(class="cgray") Start by making a payment to {{ beneficiary ? beneficiary.organizationName : '' }}.
       md-button(v-if="beneficiary" class="md-raised md-accent lblue" :to="'/payments/'+beneficiary._id") MAKE A NEW PAYMENT
       div
         img(src="@/assets/shield.svg" alt="pay")
-    .player-with-payments(v-show="allInvoices.length && loaded")
+    .player-with-payments(v-show="allInvoices.length")
       .details
         .pre-cards-title Details
         .details-box
-          v-player-details-selection(:invoices="allInvoices")
+          v-player-details-selection(:invoices="allInvoices" @selectSeason="setSeason" @selectProgram="setProgram")
           v-player-details-totals(:invoices="invoices")
       button(v-if="false" class="md-button md-raised" @click="showDuplicateDialog = true") Duplicate Payment Dialog
       .invoices(v-if="invoices")
@@ -28,7 +28,7 @@
                   .caption Date:
                   div
                     md-radio(class="lblue" v-model="sortRadio" value="asc") Ascending
-                  div
+                  div 
                     md-radio(class="lblue" v-model="sortRadio" value="desc") Descending
                   div.actions
                     md-button(class="md-button md-accent lblue") Cancel
@@ -57,13 +57,20 @@
 </template>
 
 <script>
-  import { mapState, mapActions, mapGetters } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import VPlayerInfo from '@/components/shared/VPlayerInfo.vue'
   import VPlayerDetailsTotals from '@/components/shared/VPlayerDetailsTotals.vue'
   import VPlayerDetailsSelection from '@/components/shared/VPlayerDetailsSelection.vue'
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
   import ViewInvoiceDialog from '@/components/shared/ViewInvoiceDialog.vue'
   import DuplicatePaymentDialog from '@/components/shared/DuplicatePaymentDialog.vue'
+  
+  function sort (a, b) {
+    let dataA = a.dateCharge || a.createOn
+    let dataB = b.dateCharge || b.createOn
+    return new Date(dataA).getTime() - new Date(dataB).getTime()
+  }
+  
   export default {
     components: {
       VPlayerInfo,
@@ -75,11 +82,12 @@
     },
     data: function () {
       return {
+        season: null,
+        program: null,
         viewInvoice: {},
         showDuplicateDialog: false,
         sortRadio: 'asc',
-        filterChecks: [],
-        loaded: false
+        filterChecks: []
       }
     },
     computed: {
@@ -88,11 +96,25 @@
       }),
       ...mapState('playerModule', {
         beneficiaries: 'beneficiaries',
-        allInvoices: 'allInvoices'
+        allInvoices: 'allInvoices',
+        allCredits: 'allCredits',
+        organization: 'organization'
       }),
-      ...mapGetters('playerModule', {
-        invoices: 'invoices'
-      }),
+      invoices () {
+        if (this.beneficiary && this.season && this.program) {
+          let invs = this.allInvoices.filter(inv => {
+            return this.season === inv.season && this.program.split('|')[0] === inv.productId
+          })
+          let creds = this.allCredits.filter(cred => {
+            return this.season === cred.season && this.program.split('|')[0] === cred.productId
+          })
+          return invs.concat(creds).sort(sort)
+        }
+        return []
+      },
+      id () {
+        return this.$route.params.id
+      },
       beneficiary () {
         if (this.beneficiaries) {
           let id = this.$route.params.id
@@ -102,42 +124,51 @@
         }
         return null
       },
-      done () {
+      loaded () {
         return (this.user && this.beneficiary)
       }
     },
     mounted () {
-      if (this.done) {
-        this.loadInvoices()
-        this.getCredits(this.beneficiary)
+      if (this.loaded) {
+        this.getOrganization({ id: this.beneficiary.organizationId }).then(org => {
+          this.getInvoices({ beneficiary: this.beneficiary, userEmail: this.user.email })
+          this.getCredits({ beneficiary: this.beneficiary, userEmail: this.user.email })
+        })
       }
     },
     watch: {
-      done () {
-        this.loadInvoices()
-        this.getCredits(this.beneficiary)
+      loaded () {
+        this.getOrganization({ id: this.beneficiary.organizationId }).then(org => {
+          this.getInvoices({ beneficiary: this.beneficiary, userEmail: this.user.email })
+          this.getCredits({ beneficiary: this.beneficiary, userEmail: this.user.email })
+        })
+      },
+      beneficiary () {
+        this.getOrganization({ id: this.beneficiary.organizationId })
       }
     },
     methods: {
       ...mapActions('playerModule', {
         getInvoices: 'getInvoices',
         getCredits: 'getCredits',
-        getBeneficiaries: 'getBeneficiaries'
+        getBeneficiaries: 'getBeneficiaries',
+        getOrganization: 'getOrganization'
       }),
-      loadInvoices () {
-        this.getInvoices({ beneficiary: this.beneficiary }).then(data => {
-          this.loaded = true
-        })
-      },
       reloadBeneficiaries () {
         this.getBeneficiaries(this.user.email)
       },
       closeDialog: function () {
         this.viewInvoice = {}
-        this.getInvoices({ beneficiary: this.beneficiary })
+        this.getInvoices({ beneficiary: this.beneficiary, userEmail: this.user.email })
       },
       selectInvoice (invoice) {
         this.viewInvoice = invoice
+      },
+      setSeason (season) {
+        this.season = season
+      },
+      setProgram (program) {
+        this.program = program
       }
     }
   }

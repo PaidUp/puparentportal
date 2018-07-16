@@ -2,12 +2,17 @@ import crypto from 'crypto'
 
 function addMessage (state, content) {
   let newMessage = JSON.parse(JSON.stringify(state.messages))
-  newMessage[content.id] = {
-    type: content.type,
-    content: content.payload
+  let contentArray = Object.values(state.messages).map(a => a.content)
+  let duplicated = contentArray.find(word => word === content.payload)
+
+  if (!duplicated) {
+    newMessage[content.id] = {
+      type: content.type,
+      content: content.payload
+    }
+    state.showSnackbar = true
+    state.messages = newMessage
   }
-  state.showSnackbar = true
-  state.messages = newMessage
 }
 
 function setMessage (context, payload, type) {

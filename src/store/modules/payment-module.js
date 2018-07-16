@@ -6,7 +6,7 @@ const module = {
   state: {
     cards: [],
     bankAccounts: [],
-    products: [],
+    products: null,
     plans: []
   },
 
@@ -110,9 +110,15 @@ const module = {
         return paymentService.removeCard(user.externalCustomerId, cardId)
       }
     },
+    removeBank (context, { user, bankId }) {
+      if (user.externalCustomerId) {
+        return paymentService.removeBank(user.externalCustomerId, bankId)
+      }
+    },
     getProducts (context, organizationId) {
-      organizationService.getProducts(organizationId).then(products => {
+      return organizationService.getProducts(organizationId).then(products => {
         context.commit('setProducts', products)
+        return products
       })
     },
     getInvoicesByPaymetMethod (context, paymentMethodId) {
