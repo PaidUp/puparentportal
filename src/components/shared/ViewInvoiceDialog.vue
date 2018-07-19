@@ -99,7 +99,7 @@
     </md-tabs>
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="closeDialog">CANCEL</md-button>
-      <md-button v-if="!disabled" class="md-accent lblue" :disabled="submited" @click="submit">RETRY</md-button>
+      <md-button v-if="!disabled" class="md-accent lblue" :disabled="submited" @click="submit">SAVE</md-button>
     </md-dialog-actions>
     <v-pay-animation :animate="submited" @finish="closeDialog" />
     <payment-accounts-dialog :showDialog="showPaymentAccountDialog" :accounts="paymentAccounts" @selected="selectAccount"/>
