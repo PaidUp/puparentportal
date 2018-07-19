@@ -1,7 +1,20 @@
 <template>
-  <div class="program-player-invoices">
+  <div>
       <md-tabs class="tabs-lblue" v-if="items">
         <md-tab id="tab-invoices" md-label="Invoices">
+          <div class="players-page">
+            <div class="player-with-payments">
+              <div class="invoices">
+                <div class="cards-layout">
+                  <chap-card v-for="item in items" :key="item.id" :item="item"></chap-card>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          
+          
 
 
 
@@ -92,9 +105,10 @@
 <script>
 import PiRow from './ChapPlayerInvoices/PiRow'
 import currency from '@/helpers/currency'
+import ChapCard from './ChapPlayerInvoices/ChapCard.vue'
 import { mapActions, mapState } from 'vuex'
 export default {
-  components: { PiRow },
+  components: { PiRow, ChapCard },
   data () {
     return {
       items: null,
