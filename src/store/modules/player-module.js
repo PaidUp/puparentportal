@@ -54,7 +54,9 @@ const module = {
         beneficiaries.forEach(beneficiary => {
           promises.push(
             commerceService.preordersByBeneficiary(beneficiary._id, userEmail).then(preorders => {
-              beneficiary.numPreorders = preorders.length
+              beneficiary.numPreorders = preorders.filter(po => {
+                return po.status === 'active'
+              }).length
               return beneficiary
             })
           )

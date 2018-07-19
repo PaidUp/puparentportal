@@ -64,7 +64,7 @@ export default {
           this.allPreorders.forEach(po => {
             if (plan._id === po.planId) exist = true
           })
-          if (!exist && plan.status === 'active') pps.push(plan)
+          if (!exist && plan.status === 'active' && plan.visible) pps.push(plan)
         })
         return pps
       }
@@ -74,7 +74,7 @@ export default {
       let pps = []
       this.plans.forEach(plan => {
         this.allPreorders.forEach(po => {
-          if (plan._id === po.planId) {
+          if (plan._id === po.planId && po.status === 'active') {
             plan.preorderId = po._id
             pps.push(plan)
           }
