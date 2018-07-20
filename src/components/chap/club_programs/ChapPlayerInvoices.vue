@@ -6,7 +6,11 @@
             <div class="player-with-payments">
               <div class="invoices">
                 <div class="cards-layout">
-                  <chap-card v-for="item in items" :key="item.id" :item="item"></chap-card>
+                  <div v-for="item in items" :key="item.id">
+                    <chap-invoice-card v-if="item.type ==='invoice'"  :item="item"></chap-invoice-card>
+                    <chap-credit-card v-if="item.type ==='credit'" :item="item"></chap-credit-card>
+                    <chap-preorder-card v-if="item.type ==='preorder'" :key="item.id" :item="item"></chap-preorder-card>
+                  </div>
                 </div>
               </div>
 
@@ -105,10 +109,12 @@
 <script>
 import PiRow from './ChapPlayerInvoices/PiRow'
 import currency from '@/helpers/currency'
-import ChapCard from './ChapPlayerInvoices/ChapCard.vue'
+import ChapInvoiceCard from './ChapPlayerInvoices/ChapInvoiceCard.vue'
+import ChapCreditCard from './ChapPlayerInvoices/ChapCreditCard.vue'
+import ChapPreorderCard from './ChapPlayerInvoices/ChapPreorderCard.vue'
 import { mapActions, mapState } from 'vuex'
 export default {
-  components: { PiRow, ChapCard },
+  components: { PiRow, ChapInvoiceCard, ChapCreditCard, ChapPreorderCard },
   data () {
     return {
       items: null,
@@ -138,6 +144,7 @@ export default {
   },
   mounted () {
     this.getReducePlayerInvoices().then(items => {
+      console.log(items)
       this.items = items
     })
   },

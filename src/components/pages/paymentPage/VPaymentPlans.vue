@@ -12,7 +12,7 @@
     .steppers-btns
       md-button.lblue.md-accent(@click="cancel") CANCEL
       md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK    
-      md-button.lblue.md-accent.md-raised(v-if="planSelected" @click="acept") ACEPT PAYMENT PLAN
+      md-button.lblue.md-accent.md-raised(v-if="planSelected" @click="accept") ACCEPT PAYMENT PLAN
 
 </template>
 <script>
@@ -115,7 +115,7 @@ export default {
     select (param) {
       this.planSelected = param
     },
-    acept () {
+    accept () {
       this.$emit('select', this.planSelected)
     },
     cancel () {
