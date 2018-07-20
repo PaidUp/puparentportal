@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="invoice-dialog">
+  <md-dialog :md-active.sync="show" class="invoice-dialog">
     <div class="dialog-header">
       <div class="title">Invoice: {{ invoice.invoiceId }}</div>
       <md-menu v-if="false" md-size="small" md-direction="bottom-end">
@@ -98,7 +98,7 @@
       </md-tab>
     </md-tabs>
     <md-dialog-actions>
-      <md-button class="md-accent lblue" @click="closeDialog">CANCEL</md-button>
+      <md-button class="md-accent lblue" >CANCEL</md-button>
       <md-button v-if="!disabled" class="md-accent lblue" :disabled="submited" @click="submit">SAVE</md-button>
     </md-dialog-actions>
     <v-pay-animation :animate="submited" @finish="closeDialog" />
@@ -117,7 +117,7 @@
     components: { VPayAnimation, PaymentAccountsDialog },
     props: {
       invoice: Object,
-      closeDialog: Function
+      show: Boolean
     },
     data: function () {
       return {
@@ -159,6 +159,9 @@
         setSuccess: 'setSuccess',
         setWarning: 'setWarning'
       }),
+      closeDialog () {
+        console.log('close')
+      },
       selectAccount (account) {
         if (account && account.id) {
           this.paymentMethod = `${account.brand || account.bank_name}••••${account.last4}`

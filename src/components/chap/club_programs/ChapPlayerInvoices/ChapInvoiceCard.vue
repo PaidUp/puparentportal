@@ -18,8 +18,9 @@
         md-icon money_off
         md-icon file_copy
         md-icon delete
-        md-icon create
-    chap-invoice-card-dialog()
+        span(@click="showEditDialog = true")
+          md-icon create
+    chap-invoice-dialog(:invoice="item", :show="showEditDialog")
 
 </template>
 
@@ -34,6 +35,11 @@
     },
     components: {
       VCurrency, ChapInvoiceDialog
+    },
+    data () {
+      return {
+        showEditDialog: false
+      }
     },
     computed: {
       ...mapState('commonModule', {
