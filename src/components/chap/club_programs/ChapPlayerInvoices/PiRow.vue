@@ -29,7 +29,8 @@ export default {
       updInvoice: {
         paymentDetails: this.item.paymentDetails
       },
-      parent: null
+      parent: null,
+      paymentMethod: null
     }
   },
   methods: {

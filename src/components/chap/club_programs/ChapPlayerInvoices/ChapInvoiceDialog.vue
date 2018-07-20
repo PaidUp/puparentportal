@@ -1,8 +1,8 @@
 <template>
-  <md-dialog :md-active.sync="show" class="invoice-dialog">
+  <md-dialog :md-active.sync="showDialog" class="invoice-dialog">
     <div class="dialog-header">
       <div class="title">Invoice: {{ invoice.invoiceId }}</div>
-      <md-menu v-if="false" md-size="small" md-direction="bottom-end">
+      <md-menu md-size="small" md-direction="bottom-end">
         <md-button class="md-icon-button" md-menu-trigger>
           <md-icon>file_download</md-icon>
         </md-button>
@@ -18,44 +18,31 @@
           <div class="order-numbers">
             <div>
             </div>
-            <div>
-              Invoice Approval Date: {{ $d(date, 'short') }}
-            </div>
           </div>
-          <div class="instructions">
-          If you have problems making changes to your invoice, please contact PaidUp Support M-F 9am-5pm CST.
-          <a href="mailto:support@getpaidup.com">support@getpaidup.com</a>
-          -
-          <a href="tel:855-764-3232">855-764-3232</a>
-        </div>
         <md-field>
           <label>Description</label>
-          <md-input disabled v-model="invoice.label"></md-input>
+          <md-input disabled v-model="updInvoice.label"></md-input>
         </md-field>
         <md-field>
           <label>Amount</label>
           <span class="md-prefix">$</span>
-          <md-input :disabled="true" v-model="amount"></md-input>
+          <md-input v-model="updInvoice.price"></md-input>
         </md-field>
-        <label v-if="!disabled" class="md-helper-text">Charge date</label>
-        <md-datepicker v-if="!disabled" class="datepicker-field" v-model="dateCharge" :md-disabled-dates="disabledDates">
+        <label class="md-helper-text">Charge date</label>
+        <md-datepicker class="datepicker-field" v-model="updInvoice.dateCharge">
           <span class="md-helper-text">Selecting certain dates may require club approval.</span>
         </md-datepicker>
-        <md-field v-else>
-          <label>Charge date</label>
-          <md-input :disabled="true" v-model="dateChargeDisable"></md-input>
-        </md-field>
         <md-field>
           <label for="payment">Payment Account</label>
-          <md-input :readonly="true" :disabled="disabled" v-model="paymentMethod" @click="showPaymentAccountDialog = true"></md-input>
+          <md-input :readonly="true" :disabled="disabled" ></md-input>
         </md-field>
         <md-field>
           <label>Status</label>
-          <md-input :disabled="true" v-model="status"></md-input>
+          <md-input :disabled="true" ></md-input>
         </md-field>
         </div>
       </md-tab>
-      <md-tab v-if="false" md-label="HISTORY">
+      <md-tab md-label="HISTORY">
         <div class="history-card">
           <div class="row">
             <div class="title">Invoice Charge Attempt</div>
@@ -98,62 +85,55 @@
       </md-tab>
     </md-tabs>
     <md-dialog-actions>
-      <md-button class="md-accent lblue" >CANCEL</md-button>
-      <md-button v-if="!disabled" class="md-accent lblue" :disabled="submited" @click="submit">SAVE</md-button>
+      <md-button class="md-accent lblue" @click="showDialog = false">CANCEL</md-button>
+      <md-button v-if="!disabled" class="md-accent lblue" >SAVE</md-button>
     </md-dialog-actions>
-    <v-pay-animation :animate="submited" @finish="closeDialog" />
-    <payment-accounts-dialog :showDialog="showPaymentAccountDialog" :accounts="paymentAccounts" @selected="selectAccount"/>
+    <v-pay-animation  @finish="closeDialog" />
   </md-dialog>
 </template>
 
 <script>
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
-  import PaymentAccountsDialog from '@/components/shared/payment/PaymentAccountsDialog.vue'
   import { mapGetters, mapActions } from 'vuex'
-  import currency from '@/helpers/currency'
-  import capitalize from '@/helpers/capitalize'
+  // import currency from '@/helpers/currency'
+  // import capitalize from '@/helpers/capitalize'
 
   export default {
-    components: { VPayAnimation, PaymentAccountsDialog },
+    components: { VPayAnimation },
     props: {
       invoice: Object,
       show: Boolean
     },
-    data: function () {
+    data () {
       return {
-        disabledDates: date => {
-          if (!this.invoice.maxDateCharge) return true
-          const maxDateCharge = new Date(this.invoice.maxDateCharge).getTime()
-          const today = new Date()
-          today.setHours(0, 0, 0, 0)
-          return date.getTime() < today.getTime() || date.getTime() > maxDateCharge
+        showDialog: false,
+        updInvoice: {
+          label: this.invoice.title,
+          price: this.invoice.price,
+          dateCharge: this.invoice.date,
+          maxDateCharge: this.invoice.maxDate,
+          paymentDetails: this.invoice.paymentDetails
         },
-        dateCharge: new Date(),
-        description: '',
-        amount: 0,
-        status: '',
-        paymentMethod: '',
-        paymentMethodObj: null,
-        submited: false,
-        showPaymentAccountDialog: false,
-        dateChargeDisable: ''
+        parent: null,
+        submited: false
       }
     },
     watch: {
-      invoice () {
-        if (this.invoice._id) {
-          this.dateCharge = new Date(this.invoice.dateCharge)
-          this.dateChargeDisable = this.$d(this.dateCharge, 'short')
-          this.description = this.invoice.label
-          this.amount = currency(this.invoice.price)
-          this.status = capitalize(this.invoice.status)
-          this.paymentMethod = `${this.invoice.paymentDetails.brand}••••${this.invoice.paymentDetails.last4}`
-        }
+      show () {
+        this.showDialog = this.show
+      },
+      showDialog () {
+        this.$emit('changeStatus', this.showDialog)
       }
     },
     methods: {
-      ...mapActions('paymentModule', {
-        updateInvoice: 'updateInvoice'
+      ...mapActions('playerInvoicesModule', {
+        update: 'update',
+        getProduct: 'getProduct'
+      }),
+      ...mapActions('clubprogramsModule', {
+        getReducePlayerInvoices: 'getReducePlayerInvoices',
+        getReducePrograms: 'getReducePrograms'
       }),
       ...mapActions('messageModule', {
         setSuccess: 'setSuccess',
@@ -162,44 +142,21 @@
       closeDialog () {
         console.log('close')
       },
-      selectAccount (account) {
-        if (account && account.id) {
-          this.paymentMethod = `${account.brand || account.bank_name}••••${account.last4}`
-          this.paymentMethodObj = account
-        } else {
-          this.paymentMethodObj = null
-          this.paymentMethod = `${this.invoice.paymentDetails.brand}••••${this.invoice.paymentDetails.last4}`
-        }
-        this.showPaymentAccountDialog = false
-      },
-      submit () {
-        this.submited = true
-        let params = {
-          id: this.invoice._id,
-          values: {
-            dateCharge: this.dateCharge,
-            status: 'autopay'
+      save () {
+        this.getProduct(this.invoice.productId).then(product => {
+          this.updInvoice.updateOn = new Date()
+          let params = {
+            id: this.invoice.id,
+            product,
+            values: this.updInvoice
           }
-        }
-        if (this.paymentMethodObj) {
-          params.values.paymentDetails = {
-            externalCustomerId: this.invoice.paymentDetails.externalCustomerId,
-            statementDescriptor: this.invoice.paymentDetails.statementDescriptor,
-            paymentMethodtype: this.paymentMethodObj.object,
-            externalPaymentMethodId: this.paymentMethodObj.id,
-            brand: this.paymentMethodObj.brand || this.paymentMethodObj.bank_name,
-            last4: this.paymentMethodObj.last4
-          }
-        }
-
-        this.updateInvoice(params).then(res => {
-          this.submited = false
-          this.setSuccess('component.payment.update')
-          this.$emit('updated', true)
-        }).catch(reason => {
-          this.paymentMethodObj = null
-          this.submited = false
-          this.setWarning('common.error')
+          this.update(params).then(resp => {
+            this.setSuccess('Invoice was updated succeeded')
+            this.getReducePlayerInvoices()
+            this.getReducePrograms()
+          }).catch(reason => {
+            this.setDanger('Invoice was not updated')
+          })
         })
       }
     },
@@ -210,9 +167,6 @@
       ...mapGetters('paymentModule', {
         paymentAccounts: 'paymentAccounts'
       }),
-      showDialog () {
-        return typeof this.invoice._id === 'string'
-      },
       date () {
         if (this.invoice.createOn) return new Date(this.invoice.createOn)
         return new Date()

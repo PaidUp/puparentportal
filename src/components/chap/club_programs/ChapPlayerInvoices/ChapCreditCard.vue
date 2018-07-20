@@ -22,7 +22,6 @@
 </template>
 
 <script>
-  import ChapInvoiceDialog from './ChapInvoiceDialog.vue'
   import VCurrency from '@/components/shared/VCurrency.vue'
   import { mapState } from 'vuex'
   
@@ -31,7 +30,7 @@
       item: Object
     },
     components: {
-      VCurrency, ChapInvoiceDialog
+      VCurrency
     },
     computed: {
       ...mapState('commonModule', {

@@ -20,7 +20,7 @@
         md-icon delete
         span(@click="showEditDialog = true")
           md-icon create
-    chap-invoice-dialog(:invoice="item", :show="showEditDialog")
+    chap-invoice-dialog(:invoice="item", :show="showEditDialog" @changeStatus="changeInvoceDialogStatus")
 
 </template>
 
@@ -73,6 +73,9 @@
       },
       getInvoiceStatusMapper () {
         return this.invoiceMapper[this.item.status] || { desc: '', key: '', class: [] }
+      },
+      changeInvoceDialogStatus (value) {
+        this.showEditDialog = value
       }
     }
   }
