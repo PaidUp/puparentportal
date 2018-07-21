@@ -139,6 +139,16 @@ a, a:hover, a:visited, a:link, a:active, a > *
     // color: $cgray4
     color: rgba(0,0,0,.26)!important
     background-color: rgba(0,0,0,.12)!important
+// Light Blue FAB button
+.md-button.md-fab.lblue
+  color $clblue
+  .md-button-content .md-icon
+    color #fff!important
+  &:not([disabled])
+    background-color: $clblue!important
+  &[disabled]
+    color: rgba(0,0,0,.26)!important
+    background-color: rgba(0,0,0,.12)!important
 
 // MD-SWITCH
 .md-switch.md-accent.lblue
@@ -334,55 +344,6 @@ mixin-placeholder(c)
     background-color: #fefde5 !important
 
 
-// TEXT
-.centered
-  text-align: center
-.title
-  color: $cgray1
-  font-weight: 500
-  font-size: 18px
-.title-big
-  color: $cgray1
-  font-weight: 500
-  font-size: 20px
-.title-info
-  color: $cgray2
-  font-size: 13px
-  line-height: 1.4
-.bold
-  font-weight: 500
-.bolder
-  font-weight: 600
-.caption
-  color: $cgray2
-  font-size: 11px
-  line-height: 1.4
-  &.red
-    color: $cred
-.field-caption
-  @extends .caption;
-  margin-top: -18px
-  margin-bottom: 15px
-.number-big
-  font-size: 22px
-  font-weight: 600
-
-// COLORS
-.cred
-  color $cred!important
-.cblue
-  color $cblue!important
-.clblue
-  color $clblue!important
-.cgreen
-  color $cgreen!important
-.ca1
-  color $ca1!important
-.cgray
-  color $cgray1!important
-.cyellow
-  color $cyellow!important
-
 // Input type number remove arrows
 input[type='number'] {
     -moz-appearance:textfield;
@@ -450,3 +411,54 @@ input[type=number]::-webkit-outer-spin-button {
     flex-flow: column nowrap
     justify-content: space-around
     align-items: flex-start
+
+// TEXT
+.centered
+  text-align: center
+.title
+  color: $cgray1
+  font-weight: 500
+  font-size: 18px
+.title-big
+  color: $cgray1
+  font-weight: 500
+  font-size: 20px
+.title-info
+  color: $cgray2
+  font-size: 13px
+  line-height: 1.4
+.bold
+  font-weight: 500
+.bolder
+  font-weight: 600
+.caption
+  color: $cgray2
+  font-size: 11px
+  line-height: 1.4
+  &.red
+    color: $cred
+.field-caption
+  @extends .caption;
+  margin-top: -18px
+  margin-bottom: 15px
+.number-big
+  font-size: 22px
+  font-weight: 600
+
+// COLORS
+.cred
+  color $cred!important
+.cblue
+  color $cblue!important
+.clblue
+  color $clblue!important
+.cgreen
+  color $cgreen!important
+.ca1
+  color $ca1!important
+.cgray
+  color $cgray1!important
+.cgray2
+  color $cgray2!important
+.cyellow
+  color $cyellow!important

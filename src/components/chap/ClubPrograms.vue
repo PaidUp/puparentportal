@@ -1,7 +1,7 @@
 <template>
   <div class="programs-page">
     <chap-breadcrums></chap-breadcrums>
-    <div class="details">
+    <div class="details-prog">
       <div class="pre-cards-title">Details</div>
       <div class="details-box">
         <chap-details-selects></chap-details-selects>

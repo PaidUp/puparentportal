@@ -1,7 +1,7 @@
 <template>
   <div class="programs-page">
     <pu-breadcrums></pu-breadcrums>
-    <div class="details">
+    <div class="details-prog">
       <div class="pre-cards-title">Details</div>
       <div class="details-box">
         <pu-details-selects></pu-details-selects>

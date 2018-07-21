@@ -24,6 +24,7 @@ import ReportsPage from '@/components/board/ReportsPage.vue'
 import PrintInvoice from '@/components/pages/PrintInvoice.vue'
 import PrintIneligible from '@/components/pages/PrintIneligible.vue'
 import PrintEligible from '@/components/pages/PrintEligible.vue'
+import ChapDesigns from '@/components/chap/ChapDesigns.vue'
 
 const routes = [
   {
@@ -83,6 +84,14 @@ const routes = [
           roles: ['chap']
         },
         component: ClubPrograms
+      },
+      {
+        path: '/chapdesigns',
+        name: 'chapdesigns',
+        meta: {
+          roles: ['chap']
+        },
+        component: ChapDesigns
       },
       {
         path: '/calculator',
