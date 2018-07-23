@@ -152,13 +152,12 @@
         }).then(res => {
           if (this.paymentPlanSelected.preorderId) {
             this.inactivePreorder(this.paymentPlanSelected.preorderId).then(res => {
-              console.log('res: ', res)
-              this.getBeneficiaries(this.user.email).then(res => {
-                this.setSuccess('component.payment.done')
-                this.processing = false
-              })
             })
           }
+          this.getBeneficiaries(this.user.email).then(res => {
+            this.setSuccess('component.payment.done')
+            this.processing = false
+          })
         }).catch(reason => {
           console.log('reason: ', reason)
           this.setWarning('common.error')
