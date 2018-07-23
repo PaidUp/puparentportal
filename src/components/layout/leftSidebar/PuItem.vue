@@ -11,7 +11,7 @@ md-list-item(:to="item.to")
   span.notification-number(v-if="item.notification") {{ item.notification }}
 </template>
 <script>
-import { mapActions } from 'vuex'
+import config from '@/config'
 
 export default {
   props: {
@@ -22,26 +22,17 @@ export default {
   },
   data () {
     return {
-      avatar: null,
       showAvatar: true
     }
   },
-  mounted () {
-    this.loadAvatar()
+  computed: {
+    avatar () {
+      return `${config.media.beneficiary.url}avatar/${this.item.id}.png?a=${Math.random()}`
+    }
   },
   watch: {
     item () {
-      this.loadAvatar()
-    }
-  },
-  methods: {
-    ...mapActions('playerModule', {
-      avatarUrl: 'avatarUrl'
-    }),
-    loadAvatar () {
-      this.avatarUrl(this.item.id).then(url => {
-        this.avatar = url
-      })
+      this.showAvatar = true
     }
   }
 }

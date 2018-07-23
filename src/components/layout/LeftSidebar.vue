@@ -106,6 +106,9 @@
       user () {
         this.getBeneficiaries(this.user.email)
         this.reloadAvatar()
+      },
+      avatar () {
+        this.showAvatar = true
       }
     },
     methods: {

@@ -137,6 +137,7 @@
       setAvatar () {
         const url = `${config.media.beneficiary.url}avatar/${this.player._id}.png?a=${Math.random()}`
         this.avatar = url
+        this.showAvatar = true
         this.$emit('avatarChanged', url)
       }
     },

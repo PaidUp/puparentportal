@@ -53,6 +53,7 @@
       }),
       setAvatar (url) {
         this.avatar = url
+        this.showAvatar = true
         this.$emit('avatarChanged', url)
       }
     },
