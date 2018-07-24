@@ -117,9 +117,7 @@ const module = {
         let items = reduceDataCardService.reduceInvoicePlayers(values[1], beneficiaries)
         reduceDataCardService.reduceCreditPlayers(values[2], items, beneficiaries)
         reduceDataCardService.reducePreorderPlayers(values[3], items, beneficiaries)
-        let tmpItems = reduceDataCardService.sortObj(items, 'id', 'firstName')
-
-        return tmpItems
+        return items
       })
     },
     getReducePlayerInvoices (context) {
@@ -185,6 +183,9 @@ const module = {
               })
             })
           }
+        })
+        resp.sort((itemA, itemB) => {
+          return itemA.date.getTime() - itemB.date.getTime()
         })
         return resp
       })
