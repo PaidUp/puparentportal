@@ -83,7 +83,8 @@ const module = {
         let items = reduceDataCardService.reduceInvoices(values[0])
         reduceDataCardService.reduceCredits(values[1], items)
         reduceDataCardService.reducePreorders(values[2], items)
-        context.commit('setItems', items)
+        let tmpItems = reduceDataCardService.sortObj(items, 'id', 'name')
+        context.commit('setItems', tmpItems)
         if (!productId && !beneficiaryId) {
           let programs = []
           for (let key in items) {
@@ -111,7 +112,8 @@ const module = {
         let items = reduceDataCardService.reduceInvoicePlayers(values[1], beneficiaries)
         reduceDataCardService.reduceCreditPlayers(values[2], items, beneficiaries)
         reduceDataCardService.reducePreorderPlayers(values[3], items, beneficiaries)
-        return items
+        let tmpItems = reduceDataCardService.sortObj(items, 'id', 'firstName')
+        return tmpItems
       })
     },
     getReducePlayerInvoices (context) {

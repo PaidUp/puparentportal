@@ -197,6 +197,21 @@ class ReduceCardService {
       return val
     }, items)
   }
+
+  sortObj (items, fieldKey, fieldSortName) {
+    let tmpArr = []
+    let tmpItems = {}
+    for (let key in items) {
+      tmpArr.push(items[key])
+    }
+    tmpArr.sort((progA, progB) => {
+      return progA[fieldSortName] < progB[fieldSortName] ? -1 : 1
+    })
+    tmpArr.forEach(ele => {
+      tmpItems[ele[fieldKey]] = ele
+    })
+    return tmpItems
+  }
 }
 
 reduceCardService = new ReduceCardService()

@@ -250,7 +250,6 @@
         let resp = null
         if (this.parent) {
           this.parents.forEach(parent => {
-            console.log('par: ', parent)
             if (parent._id === this.parent) {
               resp = {
                 userId: parent._id,
