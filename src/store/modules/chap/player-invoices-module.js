@@ -24,12 +24,14 @@ const module = {
     },
     loadParents (context, beneficiary) {
       let parentsPromise = []
-      beneficiary.assigneesEmail.forEach(email => {
-        parentsPromise.push(userService.getByEmail(email))
-      })
-      Promise.all(parentsPromise).then(values => {
-        context.commit('setParents', values)
-      })
+      if (beneficiary.assigneesEmail) {
+        beneficiary.assigneesEmail.forEach(email => {
+          parentsPromise.push(userService.getByEmail(email))
+        })
+        Promise.all(parentsPromise).then(values => {
+          context.commit('setParents', values)
+        })
+      }
     },
     loadPaymentMethods (context) {
       if (context.state.parents) {

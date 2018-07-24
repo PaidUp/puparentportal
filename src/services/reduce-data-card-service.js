@@ -160,6 +160,29 @@ class ReduceCardService {
           }
         })
       }
+      if (current.planId && current.credits) {
+        current.credits.forEach(due => {
+          if (prd) {
+            prd.total = prd.total + due.amount
+            prd.paid = prd.paid + due.amount
+            prd.players.add(current.beneficiaryId)
+          } else {
+            prd = {
+              id: current.productId,
+              name: current.productName,
+              total: due.amount,
+              paid: due.amount,
+              unpaid: 0,
+              overdue: 0,
+              other: 0,
+              players: new Set(),
+              inelegible: new Set()
+            }
+            prd.players.add(current.beneficiaryId)
+            val[current.productId] = prd
+          }
+        })
+      }
       return val
     }, items)
   }
@@ -191,6 +214,26 @@ class ReduceCardService {
             prd.unpaid = prd.unpaid + due.amount
           } else {
             prd.overdue = prd.overdue + due.amount
+          }
+        })
+      }
+      if (current.planId && current.credits) {
+        current.credits.forEach(due => {
+          if (prd) {
+            prd.total = prd.total + due.amount
+            prd.paid = prd.paid + due.amount
+          } else {
+            prd = {
+              id: current.beneficiaryId,
+              firstName: beneficiary ? beneficiary.firstName : '',
+              lastName: beneficiary ? beneficiary.lastName : '',
+              total: due.amount,
+              paid: due.amount,
+              unpaid: 0,
+              overdue: 0,
+              other: 0
+            }
+            val[current.beneficiaryId] = prd
           }
         })
       }

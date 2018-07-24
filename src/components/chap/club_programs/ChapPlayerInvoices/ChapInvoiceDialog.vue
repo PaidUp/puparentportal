@@ -149,9 +149,6 @@
         submited: false
       }
     },
-    mounted () {
-      console.log('this: ', this.invoice)
-    },
     watch: {
       show () {
         this.showDialog = this.show

@@ -157,25 +157,41 @@ const module = {
         })
         let today = new Date().getTime()
         values[2].forEach(val => {
-          if (!val.dues) return
-          val.dues.forEach(due => {
-            let dateCharge = new Date(due.dateCharge)
-            let status = 'due'
-            if (today > dateCharge.getTime()) {
-              status = 'overdue'
-            }
-            resp.push({
-              id: due._id,
-              title: due.description,
-              seq: '',
-              date: dateCharge,
-              maxDate: due.maxDateCharge ? new Date(due.maxDateCharge) : dateCharge,
-              price: due.amount,
-              status: status,
-              type: 'preorder',
-              __v: val.__v
+          if (val.dues) {
+            val.dues.forEach(due => {
+              let dateCharge = new Date(due.dateCharge)
+              let status = 'due'
+              if (today > dateCharge.getTime()) {
+                status = 'overdue'
+              }
+              resp.push({
+                id: due._id,
+                title: due.description,
+                seq: '',
+                date: dateCharge,
+                maxDate: due.maxDateCharge ? new Date(due.maxDateCharge) : dateCharge,
+                price: due.amount,
+                status: status,
+                type: 'preorder',
+                __v: val.__v
+              })
             })
-          })
+          }
+          if (val.credits) {
+            val.credits.forEach(due => {
+              let dateCharge = new Date(due.dateCharge)
+              resp.push({
+                id: due._id,
+                title: due.description,
+                seq: '',
+                date: dateCharge,
+                price: due.amount,
+                status: due.status,
+                type: 'preorder',
+                __v: val.__v
+              })
+            })
+          }
         })
         resp.sort((itemA, itemB) => {
           return itemA.date.getTime() - itemB.date.getTime()
