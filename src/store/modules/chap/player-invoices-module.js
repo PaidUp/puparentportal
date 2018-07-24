@@ -48,7 +48,7 @@ const module = {
                 Promise.all(accountsPromise).then(accs => {
                   let concat = accs[0].concat(accs[1])
                   resolve({
-                    email: parent.email,
+                    id: parent._id,
                     accounts: concat
                   })
                 })
@@ -59,7 +59,7 @@ const module = {
         Promise.all(parentsAccPromises).then(values => {
           let resp = {}
           values.forEach(val => {
-            resp[val.email] = val.accounts
+            resp[val.id] = val.accounts
           })
           context.commit('setPaymentMethods', resp)
         })

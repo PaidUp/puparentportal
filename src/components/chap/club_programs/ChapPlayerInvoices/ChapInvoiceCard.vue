@@ -1,26 +1,41 @@
-<template lang="pug">
-  md-card(md-with-hover)
-    md-ripple(class="card-invoice")
-      md-card-header
-        .title {{ item.title }}
-        .caption {{ paymetMethod }}
-      md-card-content.card-content
-        .status
-          md-icon.md-size-c(:class="clazz") {{ icon }}
-          .md-caption(v-html="status")
-        .amount-details
-          .details
-            span.md-caption {{ item.seq }}
-            br
-            span.md-caption {{ $d(item.date, 'short') }}
-          v-currency(:amount="item.price" clazz="total md-title")
-      .actions(v-if="item.type === 'invoice'")
-        md-icon money_off
-        md-icon file_copy
-        md-icon delete
-        span(@click="showEditDialog = true")
-          md-icon create
-    chap-invoice-dialog(:invoice="item", :show="showEditDialog" @changeStatus="changeInvoceDialogStatus")
+<template>
+  <md-card md-with-hover class="card-invoice2">
+    <md-card-header>
+      <div class="title cgray">{{ item.title }}</div>
+      <div class="caption">{{ paymetMethod }}</div>
+    </md-card-header>
+    <md-card-content>
+      <div class="status">
+        <md-icon class="md-size-c" :class="clazz">{{ icon }}</md-icon>
+        <div class="md-caption" v-html="status"></div>
+      </div>
+      <div class="amount-details">
+        <div class="details">
+          <span class="md-caption">{{ item.seq }}</span>
+          <br/>
+          <span class="md-caption">{{ $d(item.date, 'short') }}</span>
+        </div>
+        <v-currency :amount="item.price" clazz="total md-title"></v-currency>
+      </div>
+    </md-card-content>
+    <md-card-actions>
+      <md-button class="md-icon-button md-dense md-accent lblue">
+        <md-icon>replay</md-icon>
+      </md-button>
+      <md-button class="md-icon-button md-dense md-accent lblue">
+        <md-icon>file_copy</md-icon>
+      </md-button>
+      <md-button class="md-icon-button md-dense md-accent lblue" @click="showEditDialog = true">
+        <md-icon>edit</md-icon>
+      </md-button>
+      <md-button class="md-icon-button md-dense md-accent lblue">
+        <md-icon>delete</md-icon>
+      </md-button>
+    </md-card-actions>
+    <chap-invoice-dialog :invoice="item" :show="showEditDialog" @updated="$emit('updated', true)" @changeStatus="changeInvoceDialogStatus"></chap-invoice-dialog>
+  </md-card>
+  
+   
 
 </template>
 

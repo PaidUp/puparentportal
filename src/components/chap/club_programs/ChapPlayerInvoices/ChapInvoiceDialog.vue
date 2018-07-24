@@ -21,25 +21,54 @@
           </div>
         <md-field>
           <label>Description</label>
-          <md-input disabled v-model="updInvoice.label"></md-input>
+          <md-input v-model="updInvoice.label"></md-input>
         </md-field>
         <md-field>
           <label>Amount</label>
           <span class="md-prefix">$</span>
-          <md-input v-model="updInvoice.price"></md-input>
+          <md-input v-model="updInvoice.price" :disabled="disabled"></md-input>
         </md-field>
-        <label class="md-helper-text">Charge date</label>
-        <md-datepicker class="datepicker-field" v-model="updInvoice.dateCharge">
-          <span class="md-helper-text">Selecting certain dates may require club approval.</span>
-        </md-datepicker>
-        <md-field>
-          <label for="payment">Payment Account</label>
-          <md-input :readonly="true" :disabled="disabled" ></md-input>
+        <md-field v-if="disabled">
+          <label>Charge date</label>
+          <md-input :value="$d(updInvoice.dateCharge, 'short')" :disabled="disabled"></md-input>
         </md-field>
+        <div v-else>
+          <label>Charge date</label>
+          <md-datepicker class="datepicker-field" v-model="updInvoice.dateCharge"></md-datepicker>
+        </div>
+        <md-field v-if="disabled">
+          <label>Max Charge Date</label>
+          <md-input :value="$d(updInvoice.maxDateCharge, 'short')" :disabled="disabled"></md-input>
+        </md-field>
+        <div v-else>
+          <label>Max Charge Date</label>
+          <md-datepicker class="datepicker-field" v-model="updInvoice.maxDateCharge"></md-datepicker>
+        </div>
         <md-field>
           <label>Status</label>
-          <md-input :disabled="true" ></md-input>
+          <md-select disabled v-if="invoice.status !== 'failed'" class="custom-select" v-model="updInvoice.status">
+            <md-option value="paidup">Paidup</md-option>
+            <md-option value="autopay">Autopay</md-option>
+            <md-option value="refunded">Refunded</md-option>
+          </md-select>
+          <md-select v-else class="custom-select" v-model="updInvoice.status">
+            <md-option value="failed">Failed</md-option>
+            <md-option value="autopay">Autopay</md-option>
+          </md-select>
         </md-field>
+        <md-field>
+          <label for="payment">Parent</label>
+          <md-select class="custom-select" v-model="parent" :disabled="disabled">
+            <md-option v-for="parent in parents" :key="parent._id" :value="parent._id">{{ parent.firstName + ' ' + parent.lastName }}</md-option>
+          </md-select>
+        </md-field>
+        <md-field>
+          <label for="payment">Payment Account</label>
+          <md-select class="custom-select" v-model="pmSelected" :disabled="disabled">
+            <md-option v-for="pm in parentPaymentMethods" :key="pm.id" :value="pm.id">{{ pm.brand || pm.bank_name }}••••{{ pm.last4 }}</md-option>
+          </md-select>
+        </md-field>
+        
         </div>
       </md-tab>
       <md-tab md-label="HISTORY">
@@ -86,17 +115,16 @@
     </md-tabs>
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="showDialog = false">CANCEL</md-button>
-      <md-button v-if="!disabled" class="md-accent lblue" >SAVE</md-button>
+      <md-button :disabled="submited" class="md-accent lblue" @click="save" >SAVE</md-button>
     </md-dialog-actions>
-    <v-pay-animation  @finish="closeDialog" />
+    <v-pay-animation :animate="submited"  @finish="showDialog = false" />
   </md-dialog>
 </template>
 
 <script>
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   // import currency from '@/helpers/currency'
-  // import capitalize from '@/helpers/capitalize'
 
   export default {
     components: { VPayAnimation },
@@ -106,24 +134,54 @@
     },
     data () {
       return {
-        showDialog: false,
         updInvoice: {
           label: this.invoice.title,
           price: this.invoice.price,
           dateCharge: this.invoice.date,
           maxDateCharge: this.invoice.maxDate,
-          paymentDetails: this.invoice.paymentDetails
+          status: this.invoice.status,
+          paymentDetails: this.invoice.paymentDetails,
+          user: this.invoice.user
         },
-        parent: null,
+        pmSelected: this.invoice.paymentDetails.externalPaymentMethodId,
+        showDialog: false,
+        parent: this.invoice.user.userId,
         submited: false
       }
+    },
+    mounted () {
+      console.log('this: ', this.invoice)
     },
     watch: {
       show () {
         this.showDialog = this.show
+        if (this.show) {
+          this.reset()
+        }
       },
       showDialog () {
         this.$emit('changeStatus', this.showDialog)
+      },
+      parent () {
+        this.pmSelected = null
+        this.updInvoice['user'] = this.parentObj
+        delete this.updInvoice.paymentDetails
+      },
+      pmSelected () {
+        if (this.parentPaymentMethods && this.parentPaymentMethods.length) {
+          this.parentPaymentMethods.forEach(account => {
+            if (this.pmSelected === account.id) {
+              this.updInvoice.paymentDetails = {
+                externalCustomerId: account.customer,
+                statementDescriptor: this.invoice.paymentDetails.statementDescriptor,
+                paymentMethodtype: account.object,
+                externalPaymentMethodId: account.id,
+                brand: account.brand || account.bank_name,
+                last4: account.last4
+              }
+            }
+          })
+        }
       }
     },
     methods: {
@@ -131,18 +189,29 @@
         update: 'update',
         getProduct: 'getProduct'
       }),
-      ...mapActions('clubprogramsModule', {
-        getReducePlayerInvoices: 'getReducePlayerInvoices',
-        getReducePrograms: 'getReducePrograms'
-      }),
       ...mapActions('messageModule', {
         setSuccess: 'setSuccess',
         setWarning: 'setWarning'
       }),
-      closeDialog () {
-        console.log('close')
+      reset () {
+        this.updInvoice = {
+          label: this.invoice.title,
+          price: this.invoice.price,
+          dateCharge: this.invoice.date,
+          maxDateCharge: this.invoice.maxDate,
+          status: this.invoice.status,
+          paymentDetails: this.invoice.paymentDetails,
+          user: this.invoice.user
+        }
+        this.pmSelected = this.invoice.paymentDetails.externalPaymentMethodId
+        this.parent = this.invoice.user.userId
+        this.submited = false
       },
       save () {
+        this.submited = true
+        if (this.updInvoice.user && !this.updInvoice.paymentDetails) {
+          return this.setWarning('Payment account is required')
+        }
         this.getProduct(this.invoice.productId).then(product => {
           this.updInvoice.updateOn = new Date()
           let params = {
@@ -152,8 +221,8 @@
           }
           this.update(params).then(resp => {
             this.setSuccess('Invoice was updated succeeded')
-            this.getReducePlayerInvoices()
-            this.getReducePrograms()
+            this.$emit('updated', true)
+            this.submited = false
           }).catch(reason => {
             this.setDanger('Invoice was not updated')
           })
@@ -162,35 +231,39 @@
     },
     computed: {
       disabled () {
-        return !(this.invoice.status === 'autopay' || this.invoice.status === 'failed')
+        return this.invoice.status !== 'autopay' && this.invoice.status !== 'failed'
       },
-      ...mapGetters('paymentModule', {
-        paymentAccounts: 'paymentAccounts'
+      ...mapState('playerInvoicesModule', {
+        paymentMethods: 'paymentMethods',
+        parents: 'parents'
       }),
+      parentPaymentMethods () {
+        if (!this.invoice.user) return []
+        if (this.parent) return this.paymentMethods[this.parent]
+        return this.paymentMethods[this.invoice.user.userId] || []
+      },
       date () {
         if (this.invoice.createOn) return new Date(this.invoice.createOn)
         return new Date()
+      },
+      parentObj () {
+        let resp = null
+        if (this.parent) {
+          this.parents.forEach(parent => {
+            console.log('par: ', parent)
+            if (parent._id === this.parent) {
+              resp = {
+                userId: parent._id,
+                userFirstName: parent.firstName,
+                userLastName: parent.lastName,
+                userEmail: parent.email
+              }
+            }
+          })
+        }
+        return resp
       }
     }
   }
 </script>
-<style>
-  .datepicker-field{
-    margin-bottom: 40px;
-    padding-top: 0;
-    min-height: 32px;
-  }
-  .datepicker-field button.md-button{
-    top:0;
-  }
-  .datepicker-field input.md-input{
-    width: 100%;
-    max-width: 100%;
-  }
-  .date-label{
-    color: rgba(0, 0, 0, 0.54);
-    font-size: 12px;
-    position: absolute;
-  }
-</style>
 
