@@ -6,7 +6,7 @@ const module = {
       paidup: { desc: 'PAIDUP', key: 'check_circle', class: 'cgreen' },
       credited: { desc: 'CREDIT APPLIED', subtext: 'Club Credit', key: 'check_circle', class: 'cgreen' },
       partially_refunded: { desc: 'PARTIALLY<BR/>REFUNDED', subtext: '', key: 'check_circle', class: 'cblue' },
-      paid: { desc: 'PAID', key: 'check_circle', subtext: 'Paid Directly to Club', class: 'cgreen' },
+      paid: { desc: 'PAID TO CLUB', key: 'check_circle', subtext: 'Paid Directly to Club', class: 'cgreen' },
       failed: { desc: 'FAILED', key: 'check_circle', class: 'cred' },
       submitted: { desc: 'ACH SUBMITTED', key: 'check_circle', subtext: '', class: 'cgreen' },
       discount: { desc: 'DISCOUNT', key: 'check_circle', subtext: 'Club Discount', class: 'cblue' },
