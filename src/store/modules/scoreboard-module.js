@@ -84,7 +84,7 @@ const module = {
         reduceDataCardService.reduceCredits(values[1], items)
         reduceDataCardService.reducePreorders(values[2], items)
 
-        let tmpItems = reduceDataCardService.sortObj(items, 'id', 'name')
+        let tmpItems = reduceDataCardService.sortObj(items, 'id', item => item.name)
 
         context.commit('setItems', tmpItems)
         if (!productId && !beneficiaryId) {
@@ -117,7 +117,9 @@ const module = {
         let items = reduceDataCardService.reduceInvoicePlayers(values[1], beneficiaries)
         reduceDataCardService.reduceCreditPlayers(values[2], items, beneficiaries)
         reduceDataCardService.reducePreorderPlayers(values[3], items, beneficiaries)
-        return items
+        return reduceDataCardService.sortObj(items, 'id', item => {
+          return item.lastName + ' ' + item.firstName
+        })
       })
     },
     getReducePlayerInvoices (context) {

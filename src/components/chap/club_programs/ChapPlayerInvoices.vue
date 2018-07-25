@@ -71,14 +71,13 @@
     </div>
 </template>
 <script>
-import PiRow from './ChapPlayerInvoices/PiRow'
 import currency from '@/helpers/currency'
 import ChapInvoiceCard from './ChapPlayerInvoices/ChapInvoiceCard.vue'
 import ChapCreditCard from './ChapPlayerInvoices/ChapCreditCard.vue'
 import ChapPreorderCard from './ChapPlayerInvoices/ChapPreorderCard.vue'
 import { mapActions, mapState } from 'vuex'
 export default {
-  components: { PiRow, ChapInvoiceCard, ChapCreditCard, ChapPreorderCard },
+  components: { ChapInvoiceCard, ChapCreditCard, ChapPreorderCard },
   data () {
     return {
       items: null,

@@ -241,14 +241,16 @@ class ReduceCardService {
     }, items)
   }
 
-  sortObj (items, fieldKey, fieldSortName) {
+  sortObj (items, fieldKey, criteria) {
     let tmpArr = []
     let tmpItems = {}
     for (let key in items) {
       tmpArr.push(items[key])
     }
     tmpArr.sort((progA, progB) => {
-      return progA[fieldSortName] < progB[fieldSortName] ? -1 : 1
+      let nameA = criteria(progA)
+      let nameB = criteria(progB)
+      return nameA < nameB ? -1 : 1
     })
     tmpArr.forEach(ele => {
       tmpItems[ele[fieldKey]] = ele
