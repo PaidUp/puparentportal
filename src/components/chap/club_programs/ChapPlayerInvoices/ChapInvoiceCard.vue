@@ -22,17 +22,17 @@
       <md-button class="md-icon-button md-dense md-accent lblue">
         <md-icon>replay</md-icon>
       </md-button>
-      <md-button class="md-icon-button md-dense md-accent lblue">
+      <md-button class="md-icon-button md-dense md-accent lblue" @click="openDialog(true)">
         <md-icon>file_copy</md-icon>
       </md-button>
-      <md-button class="md-icon-button md-dense md-accent lblue" @click="showEditDialog = true">
+      <md-button class="md-icon-button md-dense md-accent lblue" @click="openDialog(false)">
         <md-icon>edit</md-icon>
       </md-button>
       <md-button class="md-icon-button md-dense md-accent lblue">
         <md-icon>delete</md-icon>
       </md-button>
     </md-card-actions>
-    <chap-invoice-dialog :invoice="item" :show="showEditDialog" @updated="$emit('updated', true)" @changeStatus="changeInvoceDialogStatus"></chap-invoice-dialog>
+    <chap-invoice-dialog :invoice="item" :isClone="isClone" :show="showEditDialog" @updated="$emit('updated', true)" @changeStatus="changeInvoceDialogStatus"></chap-invoice-dialog>
   </md-card>
   
    
@@ -53,7 +53,8 @@
     },
     data () {
       return {
-        showEditDialog: false
+        showEditDialog: false,
+        isClone: false
       }
     },
     computed: {
@@ -85,6 +86,10 @@
     methods: {
       select () {
         this.$emit('select', this.item)
+      },
+      openDialog (isClone) {
+        this.isClone = isClone
+        this.showEditDialog = true
       },
       getInvoiceStatusMapper () {
         return this.invoiceMapper[this.item.status] || { desc: '', key: '', class: [] }

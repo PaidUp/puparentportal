@@ -1,6 +1,6 @@
 <template>
   <md-dialog :md-active.sync="showDialog" class="invoice-dialog">
-    <div class="dialog-header">
+    <div class="dialog-header" v-if="!isClone">
       <div class="title">Invoice: {{ invoice.invoiceId }}</div>
       <md-menu md-size="small" md-direction="bottom-end">
         <md-button class="md-icon-button" md-menu-trigger>
@@ -71,7 +71,7 @@
         
         </div>
       </md-tab>
-      <md-tab md-label="HISTORY">
+      <md-tab md-label="HISTORY" v-if="!isClone">
         <div class="history-card">
           <div class="row">
             <div class="title">Invoice Charge Attempt</div>
@@ -115,7 +115,8 @@
     </md-tabs>
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="showDialog = false">CANCEL</md-button>
-      <md-button :disabled="submited" class="md-accent lblue" @click="save" >SAVE</md-button>
+      <md-button v-if='isClone' :disabled="submited" class="md-accent lblue" @click="clone" >CLONE</md-button>
+      <md-button v-else :disabled="submited" class="md-accent lblue" @click="save" >SAVE</md-button>
     </md-dialog-actions>
     <v-pay-animation :animate="submited"  @finish="showDialog = false" />
   </md-dialog>
@@ -124,13 +125,13 @@
 <script>
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
   import { mapState, mapActions } from 'vuex'
-  // import currency from '@/helpers/currency'
 
   export default {
     components: { VPayAnimation },
     props: {
       invoice: Object,
-      show: Boolean
+      show: Boolean,
+      isClone: Boolean
     },
     data () {
       return {
@@ -143,9 +144,9 @@
           paymentDetails: this.invoice.paymentDetails,
           user: this.invoice.user
         },
-        pmSelected: this.invoice.paymentDetails.externalPaymentMethodId,
+        pmSelected: null,
         showDialog: false,
-        parent: this.invoice.user.userId,
+        parent: null,
         submited: false
       }
     },
@@ -181,9 +182,15 @@
         }
       }
     },
+    mounted () {
+      if (this.invoice) {
+        this.reset()
+      }
+    },
     methods: {
       ...mapActions('playerInvoicesModule', {
         update: 'update',
+        new: 'new',
         getProduct: 'getProduct'
       }),
       ...mapActions('messageModule', {
@@ -196,7 +203,7 @@
           price: this.invoice.price,
           dateCharge: this.invoice.date,
           maxDateCharge: this.invoice.maxDate,
-          status: this.invoice.status,
+          status: this.isClone ? 'autopay' : this.invoice.status,
           paymentDetails: this.invoice.paymentDetails,
           user: this.invoice.user
         }
@@ -207,9 +214,11 @@
       save () {
         this.submited = true
         if (this.updInvoice.user && !this.updInvoice.paymentDetails) {
-          return this.setWarning('Payment account is required')
+          this.setWarning('Payment account is required')
+          this.submited = false
+          return false
         }
-        this.getProduct(this.invoice.productId).then(product => {
+        this.getProduct(this.programSelected).then(product => {
           this.updInvoice.updateOn = new Date()
           let params = {
             id: this.invoice.id,
@@ -221,18 +230,55 @@
             this.$emit('updated', true)
             this.submited = false
           }).catch(reason => {
-            this.setDanger('Invoice was not updated')
+            this.setWarning('Invoice was not updated')
+          })
+        })
+      },
+      clone () {
+        this.submited = true
+        if (this.updInvoice.user && !this.updInvoice.paymentDetails) {
+          return this.setWarning('Payment account is required')
+        }
+        this.getProduct(this.programSelected).then(product => {
+          this.updInvoice['organizationId'] = this.organization._id
+          this.updInvoice['organizationName'] = this.organization.businessName
+          this.updInvoice['connectAccount'] = this.organization.connectAccount
+          this.updInvoice['productId'] = product._id
+          this.updInvoice['productName'] = product.name
+          this.updInvoice['beneficiaryId'] = this.beneficiary.id
+          this.updInvoice['beneficiaryFirstName'] = this.beneficiary.firstName
+          this.updInvoice['beneficiaryLastName'] = this.beneficiary.lastName
+          this.updInvoice['season'] = this.seasonSelected
+          this.updInvoice['status'] = 'autopay'
+          let params = {
+            id: this.invoice.id,
+            product,
+            values: this.updInvoice
+          }
+          this.new(params).then(resp => {
+            this.setSuccess('Invoice was cloned succeeded')
+            this.$emit('updated', true)
+            this.submited = false
+          }).catch(reason => {
+            this.submited = false
+            this.setWarning('Invoice was not cloned')
           })
         })
       }
     },
     computed: {
       disabled () {
-        return this.invoice.status !== 'autopay' && this.invoice.status !== 'failed'
+        return !this.isClone && this.invoice.status !== 'autopay' && this.invoice.status !== 'failed'
       },
       ...mapState('playerInvoicesModule', {
+        beneficiary: 'beneficiary',
         paymentMethods: 'paymentMethods',
         parents: 'parents'
+      }),
+      ...mapState('clubprogramsModule', {
+        programSelected: 'programSelected',
+        seasonSelected: 'seasonSelected',
+        organization: 'organization'
       }),
       parentPaymentMethods () {
         if (!this.invoice.user) return []
