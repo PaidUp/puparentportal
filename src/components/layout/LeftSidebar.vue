@@ -119,7 +119,7 @@
         reloadAvatar: 'reloadAvatar'
       }),
       isRole (role) {
-        if (this.user && this.user.roles) return this.user.roles.includes(role)
+        if (this.user && this.user.roles) return this.user.roles.indexOf(role) > -1
         return false
       }
     }

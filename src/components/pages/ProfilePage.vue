@@ -109,7 +109,7 @@
         return this.editName || this.editEmail || this.editPassword || this.editPhone
       },
       isParent () {
-        if (this.user && this.user.roles) return this.user.roles.includes('parent')
+        if (this.user && this.user.roles) return this.user.roles.indexOf('parent') > -1
         return false
       }
     },

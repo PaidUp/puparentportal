@@ -35,7 +35,7 @@
       }),
       isCoach () {
         if (this.user && this.user.roles) {
-          return this.user.roles.includes('coach')
+          return this.user.roles.indexOf('coach') > -1
         }
         return false
       }

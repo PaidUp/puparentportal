@@ -101,6 +101,7 @@ const module = {
           return res
         })
         .catch(err => {
+          console.log('err: ', JSON.stringify(err))
           handlerError(err, context)
         })
     },
@@ -147,7 +148,7 @@ const module = {
           context.commit('setSession', data)
         })
         .catch(err => {
-          const message = (err.data.message && err.data.message.includes('The specified email address is already in use')) ? 'module.user.email_address_in_use' : null
+          const message = (err.data.message && err.data.message.indexOf('The specified email address is already in use') > -1) ? 'module.user.email_address_in_use' : null
           handlerError(err, context, message)
         })
     },

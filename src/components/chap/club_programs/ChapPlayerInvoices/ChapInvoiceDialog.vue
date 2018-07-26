@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="invoice-dialog">
+  <md-dialog :md-active.sync="showDialog" class="invoice-dialog" v-if="invoice">
     <div class="dialog-header" v-if="!isClone">
       <div class="title">Invoice: {{ invoice.invoiceId }}</div>
       <md-menu md-size="small" md-direction="bottom-end">
@@ -135,15 +135,7 @@
     },
     data () {
       return {
-        updInvoice: {
-          label: this.invoice.title,
-          price: this.invoice.price,
-          dateCharge: this.invoice.date,
-          maxDateCharge: this.invoice.maxDate,
-          status: this.invoice.status,
-          paymentDetails: this.invoice.paymentDetails,
-          user: this.invoice.user
-        },
+        updInvoice: {},
         pmSelected: null,
         showDialog: false,
         parent: null,
@@ -151,10 +143,12 @@
       }
     },
     watch: {
-      show () {
-        this.showDialog = this.show
-        if (this.show) {
+      invoice () {
+        if (this.invoice) {
+          this.showDialog = true
           this.reset()
+        } else {
+          this.showDialog = false
         }
       },
       showDialog () {
@@ -251,7 +245,6 @@
           this.updInvoice['season'] = this.seasonSelected
           this.updInvoice['status'] = 'autopay'
           let params = {
-            id: this.invoice.id,
             product,
             values: this.updInvoice
           }

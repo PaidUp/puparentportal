@@ -58,7 +58,7 @@
       filtered () {
         if (!this.filter) return this.organizations
         return this.organizations.filter(org => {
-          return org.businessName.toUpperCase().includes(this.filter.toUpperCase())
+          return org.businessName.toUpperCase().indexOf(this.filter.toUpperCase()) > -1
         })
       }
     },

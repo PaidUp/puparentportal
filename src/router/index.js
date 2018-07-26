@@ -24,8 +24,8 @@ function getUser () {
 
 function defaultDestination () {
   let dest = '/home'
-  if (getUser().roles.includes('coach')) dest = '/scoreboard'
-  if (getUser().roles.includes('chap')) dest = '/clubs'
+  if (getUser().roles.indexOf('coach') > -1) dest = '/scoreboard'
+  if (getUser().roles.indexOf('chap') > -1) dest = '/clubs'
   return dest
 }
 
@@ -45,7 +45,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.roles && getUser() && getUser().roles) {
     let dest = defaultDestination()
     let cond = getUser().roles.some(role => {
-      return to.meta.roles.includes(role)
+      return to.meta.roles.indexOf(role) > -1
     })
     if (!cond) {
       return next(dest)

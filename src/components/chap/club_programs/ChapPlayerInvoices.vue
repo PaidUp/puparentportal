@@ -7,9 +7,14 @@
               <div class="invoices">
                 <div class="cards-layout">
                   <div v-for="item in items" :key="item.id">
-                    <chap-invoice-card v-if="item.type ==='invoice'" @updated="reloadItems" :item="item"></chap-invoice-card>
+                    <chap-invoice-card v-if="item.type ==='invoice'" @select="setItem" :item="item"></chap-invoice-card>
                     <chap-credit-card v-if="item.type ==='credit'" :item="item"></chap-credit-card>
                     <chap-preorder-card v-if="item.type ==='preorder'" :key="item.id" :item="item"></chap-preorder-card>
+                  </div>
+                  <div class="md-card-add-circle">
+                    <md-button @click="showNewInvoiceDialog = true" class="md-fab lblue">
+                      <md-icon>add</md-icon>
+                    </md-button>
                   </div>
                 </div>
               </div>
@@ -67,7 +72,8 @@
 
 
       </md-tabs>
-
+      <chap-invoice-dialog :invoice="item" :isClone="isClone" @updated="reloadItems" @changeStatus="changeInvoceDialogStatus"></chap-invoice-dialog>
+      <chap-new-invoice-dialog :show="showNewInvoiceDialog" @created="reloadItems" @changeStatus="changeNewInvoceDialogStatus"></chap-new-invoice-dialog>
     </div>
 </template>
 <script>
@@ -75,12 +81,17 @@ import currency from '@/helpers/currency'
 import ChapInvoiceCard from './ChapPlayerInvoices/ChapInvoiceCard.vue'
 import ChapCreditCard from './ChapPlayerInvoices/ChapCreditCard.vue'
 import ChapPreorderCard from './ChapPlayerInvoices/ChapPreorderCard.vue'
+import ChapInvoiceDialog from './ChapPlayerInvoices/ChapInvoiceDialog.vue'
+import ChapNewInvoiceDialog from './ChapPlayerInvoices/ChapNewInvoiceDialog.vue'
 import { mapActions, mapState } from 'vuex'
 export default {
-  components: { ChapInvoiceCard, ChapCreditCard, ChapPreorderCard },
+  components: { ChapInvoiceCard, ChapCreditCard, ChapPreorderCard, ChapInvoiceDialog, ChapNewInvoiceDialog },
   data () {
     return {
       items: null,
+      item: null,
+      isClone: false,
+      showNewInvoiceDialog: false,
       tableData: [ {
         id: 1,
         name: 'Shawna Dubbin',
@@ -121,6 +132,14 @@ export default {
       loadPaymentMethods: 'loadPaymentMethods',
       loadParents: 'loadParents'
     }),
+    changeInvoceDialogStatus (status) {
+      if (!status) {
+        this.item = null
+      }
+    },
+    changeNewInvoceDialogStatus (status) {
+      this.showNewInvoiceDialog = status
+    },
     reloadItems () {
       this.getReducePlayerInvoices().then(items => {
         this.items = items
@@ -128,6 +147,10 @@ export default {
     },
     currency (value) {
       return currency(value)
+    },
+    setItem (value) {
+      this.isClone = value.isClone
+      this.item = value.item
     }
   }
 }

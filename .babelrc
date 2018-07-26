@@ -4,7 +4,12 @@
       "modules": false,
       "targets": {
         "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
-      }
+      },
+      "useBuiltIns": true,
+      "polyfills": [
+        "es6.promise",
+        "es6.symbol"
+      ]
     }],
     "stage-2"
   ],

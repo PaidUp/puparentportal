@@ -19,6 +19,8 @@
     "build-prod": "export APP_ENV=production && cp src/config/production.js src/config/index.js && npm run build"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "fetch": "^1.1.0",
     "numeral": "^2.0.6",
     "trae": "^1.4.2",
     "vue": "^2.5.16",

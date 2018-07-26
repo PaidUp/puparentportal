@@ -32,7 +32,6 @@
         <md-icon>delete</md-icon>
       </md-button>
     </md-card-actions>
-    <chap-invoice-dialog :invoice="item" :isClone="isClone" :show="showEditDialog" @updated="$emit('updated', true)" @changeStatus="changeInvoceDialogStatus"></chap-invoice-dialog>
   </md-card>
   
    
@@ -40,7 +39,6 @@
 </template>
 
 <script>
-  import ChapInvoiceDialog from './ChapInvoiceDialog.vue'
   import VCurrency from '@/components/shared/VCurrency.vue'
   import { mapState } from 'vuex'
   
@@ -49,7 +47,7 @@
       item: Object
     },
     components: {
-      VCurrency, ChapInvoiceDialog
+      VCurrency
     },
     data () {
       return {
@@ -88,8 +86,10 @@
         this.$emit('select', this.item)
       },
       openDialog (isClone) {
-        this.isClone = isClone
-        this.showEditDialog = true
+        this.$emit('select', {
+          item: this.item,
+          isClone
+        })
       },
       getInvoiceStatusMapper () {
         return this.invoiceMapper[this.item.status] || { desc: '', key: '', class: [] }

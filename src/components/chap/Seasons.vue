@@ -62,7 +62,7 @@
         if (!this.organization || !this.organization.seasons) return []
         else if (!this.filter) return this.organization.seasons
         return this.organization.seasons.filter(season => {
-          return season.name.toUpperCase().includes(this.filter.toUpperCase())
+          return season.name.toUpperCase().indexOf(this.filter.toUpperCase()) > -1
         })
       }
     },
