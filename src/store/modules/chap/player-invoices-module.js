@@ -72,6 +72,9 @@ const module = {
     },
     new (context, params) {
       return commerceService.newInvoice(params)
+    },
+    newCredit (context, params) {
+      return commerceService.newCredit(params)
     }
   }
 }

@@ -29,6 +29,11 @@ class CommerceService {
       .put('/invoice/new', { id, values, product })
   }
 
+  newCredit ({ label, description, price, beneficiaryId, assigneeEmail, productId, productName, organizationId, season, status }) {
+    return trae
+      .post('/credit', { label, description, price, beneficiaryId, assigneeEmail, productId, productName, organizationId, season, status })
+  }
+
   invoicesByPayentMethod (paymentMethodId) {
     return trae
       .get(`/invoice/method/${paymentMethodId}`)

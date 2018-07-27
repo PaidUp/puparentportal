@@ -49,6 +49,8 @@ export default {
       this.productFiltered = this.products.filter(prd => {
         if (!this.season) return true
         return prd.season === this.season._id
+      }).sort((prodA, prodB) => {
+        return prodA.name > prodB.name ? 1 : -1
       })
     }
   },

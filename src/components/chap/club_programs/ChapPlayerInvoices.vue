@@ -126,7 +126,8 @@ export default {
   },
   methods: {
     ...mapActions('clubprogramsModule', {
-      getReducePlayerInvoices: 'getReducePlayerInvoices'
+      getReducePlayerInvoices: 'getReducePlayerInvoices',
+      getReducePrograms: 'getReducePrograms'
     }),
     ...mapActions('playerInvoicesModule', {
       loadPaymentMethods: 'loadPaymentMethods',
@@ -144,6 +145,7 @@ export default {
       this.getReducePlayerInvoices().then(items => {
         this.items = items
       })
+      this.getReducePrograms()
     },
     currency (value) {
       return currency(value)

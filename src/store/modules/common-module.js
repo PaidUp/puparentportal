@@ -5,7 +5,7 @@ const module = {
       autopay: { desc: 'AUTOPAY', key: 'today', class: 'cgray' },
       paidup: { desc: 'PAIDUP', key: 'check_circle', class: 'cgreen' },
       credited: { desc: 'CREDIT APPLIED', subtext: 'Club Credit', key: 'check_circle', class: 'cgreen' },
-      partially_refunded: { desc: 'PARTIALLY<BR/>REFUNDED', subtext: '', key: 'check_circle', class: 'cblue' },
+      refunded: { desc: 'REFUNDED', subtext: '', key: 'check_circle', class: 'cblue' },
       paid: { desc: 'PAID TO CLUB', key: 'check_circle', subtext: 'Paid Directly to Club', class: 'cgreen' },
       failed: { desc: 'FAILED', key: 'check_circle', class: 'cred' },
       submitted: { desc: 'ACH SUBMITTED', key: 'check_circle', subtext: '', class: 'cgreen' },

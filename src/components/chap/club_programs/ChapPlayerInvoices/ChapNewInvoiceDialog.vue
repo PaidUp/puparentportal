@@ -36,6 +36,10 @@
           <label>Status</label>
           <md-select class="custom-select" v-model="status" @input="$v.status.$touch()">
             <md-option value="autopay">Autopay</md-option>
+            <md-option value="paid">Paid</md-option>
+            <md-option value="credited">Credited</md-option>
+            <md-option value="refunded">Refunded</md-option>
+            <md-option value="discount">Discount</md-option>
           </md-select>
           <span class="md-error" v-if="!$v.status.required">{{ $t('validations.required', { field: 'Status' }) }}</span>
         </md-field>
@@ -60,7 +64,7 @@
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="showDialog = false">CANCEL</md-button>
       <md-button v-if="!status || status === 'autopay'" :disabled="disableSaveButton" class="md-accent lblue" @click="newInvoice" >SAVE</md-button>
-      <md-button v-else :disabled="submited" class="md-accent lblue" >SAVE OTHER</md-button>
+      <md-button v-else :disabled="disableSaveButton" class="md-accent lblue" @click="addCredit">SAVE OTHER</md-button>
     </md-dialog-actions>
     <v-pay-animation :animate="submited"  @finish="showDialog = false" />
   </md-dialog>
@@ -130,6 +134,7 @@
     methods: {
       ...mapActions('playerInvoicesModule', {
         new: 'new',
+        newCredit: 'newCredit',
         getProduct: 'getProduct'
       }),
       ...mapActions('messageModule', {
@@ -186,6 +191,32 @@
             this.setWarning('Invoice was not created')
           })
         })
+      },
+      addCredit () {
+        this.submited = true
+        this.getProduct(this.programSelected).then(product => {
+          let params = {
+            label: this.label,
+            description: this.label,
+            price: this.price,
+            beneficiaryId: this.beneficiary.id,
+            assigneeEmail: this.user.userEmail,
+            productId: product._id,
+            productName: product.name,
+            organizationId: this.organization._id,
+            season: this.seasonSelected,
+            status: this.status,
+            dateCharge: this.dateCharge
+          }
+          this.newCredit(params).then(resp => {
+            this.setSuccess('Credit was created succeeded')
+            this.$emit('created', true)
+            this.submited = false
+          }).catch(reason => {
+            this.submited = false
+            this.setWarning('Credit was not created')
+          })
+        })
       }
     },
     computed: {
@@ -224,27 +255,48 @@
         return resp
       }
     },
-    validations: {
-      label: {
-        required
-      },
-      price: {
-        required, numeric
-      },
-      dateCharge: {
-        required
-      },
-      maxDateCharge: {
-        required
-      },
-      status: {
-        required
-      },
-      pmSelected: {
-        required
-      },
-      parent: {
-        required
+    validations () {
+      if (this.status === 'autopay') {
+        return {
+          label: {
+            required
+          },
+          price: {
+            required, numeric
+          },
+          dateCharge: {
+            required
+          },
+          maxDateCharge: {
+            required
+          },
+          status: {
+            required
+          },
+          pmSelected: {
+            required
+          },
+          parent: {
+            required
+          }
+        }
+      }
+      return {
+        label: {
+          required
+        },
+        price: {
+          required, numeric
+        },
+        dateCharge: {
+          required
+        },
+        status: {
+          required
+        },
+        parent: {
+          required
+        }
       }
     }
   }
