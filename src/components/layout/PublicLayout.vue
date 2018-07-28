@@ -1,5 +1,6 @@
 <template>
   <div class="public-layout">
+    <v-banner-ie></v-banner-ie>
     <div class="public-logo-box">
       <img src="@/assets/app-logo.svg" alt="logo" />
     </div>
@@ -22,8 +23,9 @@
 
 <script>
   import PuMessage from '@/components/shared/Message.vue'
+  import VBannerIe from '@/components/shared/VBannerIe.vue'
   export default {
-    components: { PuMessage },
+    components: { PuMessage, VBannerIe },
     data: function () {
       return {
         msg: 'THEE MSAGE BIATH'
@@ -31,3 +33,4 @@
     }
   }
 </script>
+

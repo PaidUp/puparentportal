@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-banner-ie></v-banner-ie>
     <md-app>
       <md-app-toolbar class="md-primary">
         <top-toolbar></top-toolbar>
@@ -20,12 +21,9 @@
   import TopToolbar from './TopToolbar.vue'
   import LeftSidebar from './LeftSidebar.vue'
   import PuMessage from '@/components/shared/Message.vue'
+  import VBannerIe from '@/components/shared/VBannerIe.vue'
   export default {
-    components: {
-      TopToolbar,
-      PuMessage,
-      LeftSidebar
-    },
+    components: { TopToolbar, PuMessage, LeftSidebar, VBannerIe },
     data: function () {
       return {
         pther: false,

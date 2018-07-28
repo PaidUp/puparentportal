@@ -20,7 +20,7 @@
           <span class="md-prefix">$</span>
           <md-input v-model="price" @input="$v.price.$touch()"></md-input>
           <span class="md-error" v-if="!$v.price.required">{{ $t('validations.required', { field: 'Amount' }) }}</span>
-          <span class="md-error" v-if="!$v.price.numeric">{{ $t('validations.numeric', { field: 'Amount' }) }} </span>
+          <span class="md-error" v-if="!$v.price.decimal">{{ $t('validations.numeric', { field: 'Amount' }) }} </span>
         </md-field>
         <div :class="{'md-invalid': $v.dateCharge.$error}">
           <label>Charge Date</label>
@@ -73,7 +73,7 @@
 <script>
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
   import { mapState, mapActions } from 'vuex'
-  import { required, numeric } from 'vuelidate/lib/validators'
+  import { required, decimal } from 'vuelidate/lib/validators'
 
   export default {
     components: { VPayAnimation },
@@ -262,7 +262,7 @@
             required
           },
           price: {
-            required, numeric
+            required, decimal
           },
           dateCharge: {
             required
@@ -286,7 +286,7 @@
           required
         },
         price: {
-          required, numeric
+          required, decimal
         },
         dateCharge: {
           required
