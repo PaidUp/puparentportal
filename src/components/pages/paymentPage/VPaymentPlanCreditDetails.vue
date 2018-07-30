@@ -2,12 +2,12 @@
   <div class="payment-single">
     <div>
       <div class="title cgray bold">{{ due.description }}</div>
-      <div class="caption"></div>
+      <div class="caption">{{ mapper.subtext }}</div>
     </div>
     <div class="single-details">
       <div class="icon-side">
         <md-icon class="md-size-c cgreen">today</md-icon>
-        <div class="caption cgreen">{{ due.status.toUpperCase() }}</div>
+        <div class="caption cgreen">{{ mapper.desc }}</div>
       </div>
       <div class="amount-side">
         <div class="caption">{{ $d(due.dateCharge, 'short') }}</div>
@@ -20,6 +20,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 import VCurrency from '@/components/shared/VCurrency.vue'
 
 export default {
@@ -32,6 +33,12 @@ export default {
     }
   },
   computed: {
+    ...mapState('commonModule', {
+      invoiceMapper: 'invoiceMapper'
+    }),
+    mapper () {
+      return this.invoiceMapper[this.due.status]
+    }
   },
   methods: {
   }

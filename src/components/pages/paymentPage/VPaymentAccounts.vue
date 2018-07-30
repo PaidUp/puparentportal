@@ -46,7 +46,7 @@ export default {
       paymentAccounts: 'paymentAccounts'
     }),
     description () {
-      if (!this.selected) return ''
+      if (!this.selected) return 'Choose your payment account or add a new one.'
       return `${this.selected.bank_name || this.selected.brand}••••${this.selected.last4}`
     }
   },
