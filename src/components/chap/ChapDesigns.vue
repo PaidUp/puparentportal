@@ -1,7 +1,10 @@
 <template>
   <div style="padding: 16px;">
-    <div style="margin: 40px;">
-      Cards should be placed inside cards-layout DIV wrapper in any page and they should work fine
+    <div style="margin: 0 30px 30px 30px;">
+      <h5>CHAP/SCOREBOARD new designs and instructions</h5>
+      Cards should be placed inside cards-layout DIV wrapper in any page and they should work fine. 
+      <br>Read the Code Comments before each card to identify.
+      <br>After the plus icon are the COACH cards
     </div>
     <div class="cards-layout">
       <!-- NORMAL INVOICE -->
@@ -155,6 +158,145 @@
           <md-icon>add</md-icon>
         </md-button>
       </div>
+
+      <!-- SCOREBOARD: 2040A EXAMPLE 1 RED -->
+      <md-card md-with-hover class="card-invoice2">
+        <md-card-header>
+          <div class="title cgray">JVA World Championship - Gro</div>
+          <div class="caption clblue">Felipe Fernandez</div>
+        </md-card-header>
+        <md-card-content>
+          <div class="status">
+            <md-icon class="md-size-c cred">note_add</md-icon>
+            <div class="md-caption">OVERDUE
+              <br> NEW INVOICE</div>
+          </div>
+          <div class="amount-details">
+            <div class="details">
+              <span class="md-caption">11-01-2018</span>
+            </div>
+            <v-currency :amount="595.50" clazz="total md-title cred"></v-currency>
+          </div>
+        </md-card-content>
+        <md-card-actions>
+          <!-- Important do not delete this tag -->
+          &nbsp;
+        </md-card-actions>
+      </md-card>
+      <!-- SCOREBOARD: 2040A EXAMPLE 2 YELLOW -->
+      <md-card md-with-hover class="card-invoice2">
+        <md-card-header>
+          <div class="title cgray">JVA World - Airfare</div>
+          <div class="caption clblue">Felipe Fernandez</div>
+        </md-card-header>
+        <md-card-content>
+          <div class="status">
+            <md-icon class="md-size-c cyellow">note_add</md-icon>
+            <div class="md-caption">DUE
+              <br> NEW INVOICE</div>
+          </div>
+          <div class="amount-details">
+            <div class="details">
+              <span class="md-caption">11-01-2018</span>
+            </div>
+            <v-currency :amount="433.00" clazz="total md-title"></v-currency>
+          </div>
+        </md-card-content>
+        <md-card-actions>
+          <!-- Important do not delete this tag -->
+          &nbsp;
+        </md-card-actions>
+      </md-card>
+    
+      <!-- SCOREBOARD: 2022A EXAMPLE 1-->
+      <md-card md-with-hover class="card-invoice2">
+        <md-card-header>
+          <div class="title cgray">Dues Payment 2 May Funds</div>
+        </md-card-header>
+        <md-card-content>
+          <div class="status">
+            <md-icon class="md-size-c">check_circle</md-icon>
+            <div class="md-caption">PAID</div>
+          </div>
+          <div class="amount-details">
+            <div class="details">
+              <span class="md-caption">11-01-2018</span>
+            </div>
+            <v-currency :amount="433.00" clazz="total md-title"></v-currency>
+          </div>
+        </md-card-content>
+        <md-card-actions>
+          <!-- Important do not delete this tag -->
+          &nbsp;
+        </md-card-actions>
+      </md-card>
+      <!-- SCOREBOARD: 2022A EXAMPLE2 YELLOW -->
+      <md-card md-with-hover class="card-invoice2">
+        <md-card-header>
+          <div class="title cgray">Dues Payment 2 May Funds</div>
+        </md-card-header>
+        <md-card-content>
+          <div class="status">
+            <md-icon class="md-size-c cyellow">note_add</md-icon>
+            <div class="md-caption">DUE</div>
+          </div>
+          <div class="amount-details">
+            <div class="details">
+              <span class="md-caption">11-01-2018</span>
+            </div>
+            <v-currency :amount="433.00" clazz="total md-title"></v-currency>
+          </div>
+        </md-card-content>
+        <md-card-actions>
+          <!-- Important do not delete this tag -->
+          &nbsp;
+        </md-card-actions>
+      </md-card>
+
+      <!-- 2023A SB - Program View > Program Payment Plans > Unpaid Parents -->
+      <md-card class="card-person2">
+        <div class="top">
+          <md-avatar>
+            <img src="@/assets/avatar.jpg" alt="avatar">
+          </md-avatar>
+          <div class="name">Monica Fernandez</div>
+          <div class="title-info">monica@monigmal.com</div>
+          <div class="title-info">(512) 234-1233</div>
+        </div>
+        <div class="bottom">
+          <md-avatar class="md-small">
+            <img src="@/assets/avatar.jpg" alt="img">
+          </md-avatar>
+          <div class="cblue bold">Robert Nestla Marley</div>
+        </div>
+      </md-card>
+
+      <!-- 2111A. SB - Search (Invoice) -->
+      <md-card md-with-hover class="card-invoice2">
+        <md-card-header>
+          <div class="title cgray">Dues Payment 5</div>
+          <div class="caption">Visa****1321</div>
+        </md-card-header>
+        <md-card-content>
+          <div class="status">
+            <md-icon class="md-size-c cblue">event</md-icon>
+            <div class="md-caption">AUTOPAY</div>
+          </div>
+          <div class="amount-details">
+            <div class="details">
+              <span class="md-caption">INV1234567</span> 
+              <br>
+              <span class="md-caption">11-01-2018</span>
+            </div>
+            <v-currency :amount="595.50" clazz="total md-title"></v-currency>
+          </div>
+        </md-card-content>
+        <md-card-actions>
+          <!-- Important do not delete this tag -->
+          &nbsp;
+        </md-card-actions>
+      </md-card>
+
     </div>
   </div>
 </template>
