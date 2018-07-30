@@ -289,9 +289,13 @@ a, a:hover, a:visited, a:link, a:active, a > *
       @media $small-only
         width: 100%
 
-// SELECT MENU FIX
+// MD-SELECT 
 .md-select-menu.md-menu-content
   z-index 12
+  .md-list
+    .md-list-item.md-selected
+      .md-list-item-content:hover
+        color white
 
 // MD-MENU
 .md-menu-content
