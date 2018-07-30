@@ -62,7 +62,7 @@
       <pu-pay-new-invoice v-if="isRole('parent') && beneficiaries" :beneficiaries="beneficiaries"/>
       <pu-payment-accounts v-if="isRole('parent')" />
 
-       <!-- TO DELETE: CHAP DESIGNS -->
+      <!-- TO DELETE: CHAP/SCORE DESIGNS -->
       <md-list-item to="/chapdesigns" v-if="isRole('chap')">
         <span class="md-list-item-text ca1 bold">Chap Designs</span>
       </md-list-item>
