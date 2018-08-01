@@ -54,7 +54,6 @@
           <md-select disabled v-if="invoice.status !== 'failed'" class="custom-select" v-model="updInvoice.status">
             <md-option value="paidup">Paidup</md-option>
             <md-option value="autopay">Autopay</md-option>
-            <md-option value="refunded">Refunded</md-option>
           </md-select>
           <md-select v-else @input="$v.updInvoice.status.$touch()" class="custom-select" v-model="updInvoice.status">
             <md-option value="failed">Failed</md-option>
@@ -64,7 +63,7 @@
         </md-field>
         <md-field :class="{'md-invalid': $v.parent.$error}">
           <label for="payment">Parent</label>
-          <md-select class="custom-select" v-model="parent" @input="$v.parent.$touch()" :disabled="disabled">
+          <md-select class="custom-select" md-selected="changeParent" v-model="parent" @input="$v.parent.$touch()" :disabled="disabled">
             <md-option v-for="parent in parents" :key="parent._id" :value="parent._id">{{ parent.firstName + ' ' + parent.lastName }}</md-option>
           </md-select>
           <span class="md-error" v-if="!$v.parent.required">{{ $t('validations.required', { field: 'Parent' }) }}</span>
@@ -163,11 +162,6 @@
       showDialog () {
         this.$emit('changeStatus', this.showDialog)
       },
-      parent () {
-        this.pmSelected = null
-        this.updInvoice['user'] = this.parentObj
-        delete this.updInvoice.paymentDetails
-      },
       pmSelected () {
         if (this.parentPaymentMethods && this.parentPaymentMethods.length) {
           this.parentPaymentMethods.forEach(account => {
@@ -185,11 +179,6 @@
         }
       }
     },
-    mounted () {
-      if (this.invoice) {
-        this.reset()
-      }
-    },
     methods: {
       ...mapActions('playerInvoicesModule', {
         update: 'update',
@@ -200,6 +189,11 @@
         setSuccess: 'setSuccess',
         setWarning: 'setWarning'
       }),
+      changeParent () {
+        this.pmSelected = null
+        this.updInvoice['user'] = this.parentObj
+        delete this.updInvoice.paymentDetails
+      },
       reset () {
         this.updInvoice = {
           label: this.invoice.title,

@@ -19,6 +19,21 @@ class CommerceService {
       .put('/invoice', { id, values })
   }
 
+  deleteInvoice (id) {
+    return trae
+      .delete(`/invoice/${id}`)
+  }
+
+  updateCredit ({ id, values }) {
+    return trae
+      .put('/credit', { id, values })
+  }
+
+  deleteCredit (id) {
+    return trae
+      .delete(`/credit/${id}`)
+  }
+
   updateInvoiceCalculations ({ id, values, product }) {
     return trae
       .put('/invoice/calculations', { id, values, product })
@@ -29,9 +44,9 @@ class CommerceService {
       .put('/invoice/new', { id, values, product })
   }
 
-  newCredit ({ label, description, price, beneficiaryId, assigneeEmail, productId, productName, organizationId, season, status }) {
+  newCredit (params) {
     return trae
-      .post('/credit', { label, description, price, beneficiaryId, assigneeEmail, productId, productName, organizationId, season, status })
+      .post('/credit', params)
   }
 
   invoicesByPayentMethod (paymentMethodId) {

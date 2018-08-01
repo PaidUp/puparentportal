@@ -64,7 +64,7 @@
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="showDialog = false">CANCEL</md-button>
       <md-button v-if="!status || status === 'autopay'" :disabled="disableSaveButton" class="md-accent lblue" @click="newInvoice" >SAVE</md-button>
-      <md-button v-else :disabled="disableSaveButton" class="md-accent lblue" @click="addCredit">SAVE OTHER</md-button>
+      <md-button v-else :disabled="disableSaveButton" class="md-accent lblue" @click="addCredit">SAVE CREDIT</md-button>
     </md-dialog-actions>
     <v-pay-animation :animate="submited"  @finish="showDialog = false" />
   </md-dialog>

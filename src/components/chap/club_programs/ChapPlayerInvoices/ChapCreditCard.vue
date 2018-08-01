@@ -1,50 +1,56 @@
 <template lang="pug">
-  md-card(md-with-hover)
-    md-ripple(class="card-invoice")
-      md-card-header
-        .title {{ item.title }}
-        .caption {{ paymetMethod }}
-      md-card-content.card-content
-        .status
-          md-icon.md-size-c(:class="clazz") {{ icon }}
-          .md-caption(v-html="status")
-        .amount-details
-          .details
-            span.md-caption {{ item.seq }}
-            br
-            span.md-caption {{ $d(item.date, 'short') }}
-          v-currency(:amount="item.price" clazz="total md-title")
-      .actions(v-if="item.type === 'credit'")
-        md-icon file_copy
-        md-icon delete
-        md-icon create
-    
+  <md-card md-with-hover class="card-invoice2">
+    <md-card-header>
+      <div class="title cgray">{{ item.title }}</div>
+      <div class="caption">{{ subtext }}</div>
+    </md-card-header>
+    <md-card-content>
+      <div class="status">
+        <md-icon class="md-size-c" :class="clazz">{{ icon }}</md-icon>
+        <div class="md-caption" v-html="status"></div>
+      </div>
+      <div class="amount-details">
+        <div class="details">
+          <span class="md-caption">{{ item.seq }}</span>
+          <br/>
+          <span class="md-caption">{{ $d(item.date, 'short') }}</span>
+        </div>
+        <v-currency :amount="item.price" clazz="total md-title"></v-currency>
+      </div>
+    </md-card-content>
+    <md-card-actions>
+      <md-button class="md-icon-button md-dense md-accent lblue" @click="openDialog(true)">
+        <md-icon>file_copy</md-icon>
+      </md-button>
+      <md-button class="md-icon-button md-dense md-accent lblue" @click="openDialog(false)">
+        <md-icon>edit</md-icon>
+      </md-button>
+      <md-button class="md-icon-button md-dense md-accent lblue" @click="confirm = true">
+        <md-icon>delete</md-icon>
+      </md-button>
+    </md-card-actions>
+    <md-dialog-confirm :md-active.sync="confirm" md-title="Delete Credit" md-content="Are you sure." md-confirm-text="Yes" md-cancel-text="No" @md-cancel="confirm = false" @md-confirm="remove" />
+  </md-card>
 </template>
 
 <script>
   import VCurrency from '@/components/shared/VCurrency.vue'
-  import { mapState } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   
   export default {
     props: {
       item: Object
     },
-    components: {
-      VCurrency
+    data () {
+      return {
+        confirm: false
+      }
     },
+    components: { VCurrency },
     computed: {
       ...mapState('commonModule', {
         invoiceMapper: 'invoiceMapper'
       }),
-      nameButton () {
-        if (this.item.status === 'autopay') return 'Edit'
-        else if (this.item.status === 'failed') return 'Fix'
-        else return 'View'
-      },
-      paymetMethod () {
-        if (this.item.paymentDetails) return this.item.paymentDetails.brand + '••••' + this.item.paymentDetails.last4
-        return ''
-      },
       icon () {
         return this.getInvoiceStatusMapper().key
       },
@@ -59,8 +65,26 @@
       }
     },
     methods: {
-      select () {
-        this.$emit('select', this.item)
+      ...mapActions('playerInvoicesModule', {
+        deleteCredit: 'deleteCredit'
+      }),
+      ...mapActions('messageModule', {
+        setSuccess: 'setSuccess',
+        setWarning: 'setWarning'
+      }),
+      openDialog (isClone) {
+        this.$emit('select', {
+          item: this.item,
+          isClone
+        })
+      },
+      remove () {
+        this.deleteCredit(this.item.id).then(result => {
+          this.setSuccess('Credit was cloned succeeded')
+          this.$emit('deleted', true)
+        }).catch(reason => {
+          this.setSuccess(`Credit don't was cloned`)
+        })
       },
       getInvoiceStatusMapper () {
         return this.invoiceMapper[this.item.status] || { desc: '', key: '', class: [] }

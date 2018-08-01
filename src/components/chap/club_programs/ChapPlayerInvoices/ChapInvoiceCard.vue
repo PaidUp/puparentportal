@@ -19,7 +19,7 @@
       </div>
     </md-card-content>
     <md-card-actions>
-      <md-button class="md-icon-button md-dense md-accent lblue">
+      <md-button v-if="item.status === 'paidup'" class="md-icon-button md-dense md-accent lblue">
         <md-icon>replay</md-icon>
       </md-button>
       <md-button class="md-icon-button md-dense md-accent lblue" @click="openDialog(true)">
@@ -28,19 +28,17 @@
       <md-button class="md-icon-button md-dense md-accent lblue" @click="openDialog(false)">
         <md-icon>edit</md-icon>
       </md-button>
-      <md-button class="md-icon-button md-dense md-accent lblue">
+      <md-button v-if="item.status === 'failed' || item.status === 'autopay'" @click="confirm = true" class="md-icon-button md-dense md-accent lblue">
         <md-icon>delete</md-icon>
       </md-button>
     </md-card-actions>
+    <md-dialog-confirm :md-active.sync="confirm" md-title="Delete Credit" md-content="Are you sure." md-confirm-text="Yes" md-cancel-text="No" @md-cancel="confirm = false" @md-confirm="remove" />
   </md-card>
-  
-   
-
 </template>
 
 <script>
   import VCurrency from '@/components/shared/VCurrency.vue'
-  import { mapState } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   
   export default {
     props: {
@@ -51,6 +49,7 @@
     },
     data () {
       return {
+        confirm: false,
         showEditDialog: false,
         isClone: false
       }
@@ -59,11 +58,6 @@
       ...mapState('commonModule', {
         invoiceMapper: 'invoiceMapper'
       }),
-      nameButton () {
-        if (this.item.status === 'autopay') return 'Edit'
-        else if (this.item.status === 'failed') return 'Fix'
-        else return 'View'
-      },
       paymetMethod () {
         if (this.item.paymentDetails) return this.item.paymentDetails.brand + '••••' + this.item.paymentDetails.last4
         return ''
@@ -82,9 +76,13 @@
       }
     },
     methods: {
-      select () {
-        this.$emit('select', this.item)
-      },
+      ...mapActions('playerInvoicesModule', {
+        deleteInvoice: 'deleteInvoice'
+      }),
+      ...mapActions('messageModule', {
+        setSuccess: 'setSuccess',
+        setWarning: 'setWarning'
+      }),
       openDialog (isClone) {
         this.$emit('select', {
           item: this.item,
@@ -93,6 +91,14 @@
       },
       getInvoiceStatusMapper () {
         return this.invoiceMapper[this.item.status] || { desc: '', key: '', class: [] }
+      },
+      remove () {
+        this.deleteInvoice(this.item.id).then(result => {
+          this.setSuccess('Invoce was removed succeeded')
+          this.$emit('deleted', true)
+        }).catch(reason => {
+          this.setSuccess(`Invoice don't was removed`)
+        })
       },
       changeInvoceDialogStatus (value) {
         this.showEditDialog = value

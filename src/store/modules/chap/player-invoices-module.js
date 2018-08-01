@@ -73,8 +73,17 @@ const module = {
     new (context, params) {
       return commerceService.newInvoice(params)
     },
+    deleteInvoice (context, id) {
+      return commerceService.deleteInvoice(id)
+    },
     newCredit (context, params) {
       return commerceService.newCredit(params)
+    },
+    updateCredit (context, params) {
+      return commerceService.updateCredit(params)
+    },
+    deleteCredit (context, id) {
+      return commerceService.deleteCredit(id)
     }
   }
 }

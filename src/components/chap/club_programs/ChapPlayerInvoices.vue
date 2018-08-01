@@ -7,8 +7,8 @@
               <div class="invoices">
                 <div class="cards-layout">
                   <div v-for="item in items" :key="item.id">
-                    <chap-invoice-card v-if="item.type ==='invoice'" @select="setItem" :item="item"></chap-invoice-card>
-                    <chap-credit-card v-if="item.type ==='credit'" :item="item"></chap-credit-card>
+                    <chap-invoice-card v-if="item.type ==='invoice'" @deleted="reloadItems" @select="setItem" :item="item"></chap-invoice-card>
+                    <chap-credit-card v-if="item.type ==='credit'" @deleted="reloadItems" :item="item" @select="setCreditItem"></chap-credit-card>
                     <chap-preorder-card v-if="item.type ==='preorder'" :key="item.id" :item="item"></chap-preorder-card>
                   </div>
                   <div class="md-card-add-circle">
@@ -61,18 +61,14 @@
               </md-table-cell>
             </md-table-row>
           </md-table>
-
           <div class="table-actions-box">
             <md-button class="lblue md-accent">Cancel</md-button>
             <md-button class="lblue md-accent md-raised">Save</md-button>
           </div>
-
         </md-tab>
-
-
-
       </md-tabs>
       <chap-invoice-dialog :invoice="item" :isClone="isClone" @updated="reloadItems" @changeStatus="changeInvoceDialogStatus"></chap-invoice-dialog>
+      <chap-credit-dialog :invoice="creditItem" :isClone="isCreditClone" @updated="reloadItems" @changeStatus="changeCreditDialogStatus"></chap-credit-dialog>
       <chap-new-invoice-dialog :show="showNewInvoiceDialog" @created="reloadItems" @changeStatus="changeNewInvoceDialogStatus"></chap-new-invoice-dialog>
     </div>
 </template>
@@ -82,15 +78,18 @@ import ChapInvoiceCard from './ChapPlayerInvoices/ChapInvoiceCard.vue'
 import ChapCreditCard from './ChapPlayerInvoices/ChapCreditCard.vue'
 import ChapPreorderCard from './ChapPlayerInvoices/ChapPreorderCard.vue'
 import ChapInvoiceDialog from './ChapPlayerInvoices/ChapInvoiceDialog.vue'
+import ChapCreditDialog from './ChapPlayerInvoices/ChapCreditDialog.vue'
 import ChapNewInvoiceDialog from './ChapPlayerInvoices/ChapNewInvoiceDialog.vue'
 import { mapActions, mapState } from 'vuex'
 export default {
-  components: { ChapInvoiceCard, ChapCreditCard, ChapPreorderCard, ChapInvoiceDialog, ChapNewInvoiceDialog },
+  components: { ChapInvoiceCard, ChapCreditCard, ChapPreorderCard, ChapInvoiceDialog, ChapNewInvoiceDialog, ChapCreditDialog },
   data () {
     return {
       items: null,
       item: null,
+      creditItem: null,
       isClone: false,
+      isCreditClone: false,
       showNewInvoiceDialog: false,
       tableData: [ {
         id: 1,
@@ -138,6 +137,11 @@ export default {
         this.item = null
       }
     },
+    changeCreditDialogStatus (status) {
+      if (!status) {
+        this.creditItem = null
+      }
+    },
     changeNewInvoceDialogStatus (status) {
       this.showNewInvoiceDialog = status
     },
@@ -153,6 +157,10 @@ export default {
     setItem (value) {
       this.isClone = value.isClone
       this.item = value.item
+    },
+    setCreditItem (value) {
+      this.isCreditClone = value.isClone
+      this.creditItem = value.item
     }
   }
 }

@@ -148,6 +148,7 @@ const module = {
           resp.push({
             id: val._id,
             title: val.label,
+            assigneeEmail: val.assigneeEmail,
             seq: val.memoId,
             date: new Date(val.createOn),
             price: val.price,
