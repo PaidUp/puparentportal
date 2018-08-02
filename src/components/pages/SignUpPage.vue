@@ -31,6 +31,7 @@
     <md-field :class="{'md-invalid': $v.userForm.phone.$error}">
       <label>{{ $t('component.signup.phone') }}</label>
       <md-input v-model="userForm.phone" type="number" @input="$v.userForm.phone.$touch()"></md-input>
+      <span class="md-error" v-if="!$v.userForm.phone.required">{{ $t('validations.required', { field: 'Phone' }) }}</span>      
       <span class="md-error" v-if="!$v.userForm.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: $v.userForm.phone.$params.minLength.min }) }}</span>
       <span class="md-error" v-if="!$v.userForm.phone.numeric">{{ $t('validations.numeric', { field: 'Phone' }) }} </span>
     </md-field>
@@ -127,6 +128,7 @@
         },
         phone: {
           numeric,
+          required,
           minLength: minLength(10)
         }
       }

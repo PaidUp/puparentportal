@@ -78,6 +78,7 @@ const dict = {
   validations: {
     agree: 'Please agree to the Terms of Service and Privacy Policy.',
     form: 'Please enter valid login credentials.',
+    phone: 'Phone number is required.',
     email: 'Must be a valid email',
     required: '{field} is required',
     numeric: '{field} is numeric',

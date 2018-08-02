@@ -21,6 +21,7 @@
     <md-field :class="{'md-invalid': $v.fbUser.contacts.phone.$error}">
       <label>{{ $t('component.signup.phone') }}</label>
       <md-input v-model="fbUser.contacts.phone" type="number" @input="$v.fbUser.contacts.phone.$touch()"></md-input>
+      <span class="md-error" v-if="!$v.fbUser.contacts.phone.required">{{ $t('validations.required', { field: 'Phone' }) }}</span>
       <span class="md-error" v-if="!$v.fbUser.contacts.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: $v.fbUser.contacts.phone.$params.minLength.min }) }} </span>
       <span class="md-error" v-if="!$v.fbUser.contacts.phone.numeric">{{ $t('validations.numeric', { field: 'Phone' }) }} </span>
     </md-field>
@@ -31,14 +32,13 @@
       <a href="https://getpaidup.com/privacy-policy/" target="_blank" class="clblue">{{ $t('component.signup.terms.pp') }}</a>.
     </md-checkbox>
     <div class="create-account-box">
-      <fb-signin-button :params="fbSignInParams" @success="submit" @error="onFbLoginError" class="fb-button md-elevation-4">{{ $t('component.signup.create') }}</fb-signin-button>
+      <fb-signin-button disable :params="fbSignInParams" @success="submit" @error="onFbLoginError" class="fb-button md-elevation-4">{{ $t('component.signup.create') }}</fb-signin-button>
     </div>
     <div class="last-info-box">
       {{ $t('component.signup.already_have_account') }}
       <router-link to="../login" class="clblue">{{ $t('component.signup.login') }}</router-link>
     </div>
   </div>
-
 </template>
 <script>
   import {
@@ -72,11 +72,6 @@
         }
       }
     },
-    mounted () {
-      // if (!this.fbUser.email) {
-      //   this.$router.push({ name: 'login' })
-      // }
-    },
     computed: {
       ...mapState('userModule', {
         fbUser: 'fbUser'
@@ -94,6 +89,9 @@
         setWarning: 'setWarning'
       }),
       submit (fbResponse) {
+        if (this.$v.fbUser.contacts.phone.$invalid) {
+          return this.setWarning('validations.phone')
+        }
         if (this.$v.fbUser.$invalid) {
           return this.setWarning('validations.form')
         }
@@ -117,6 +115,7 @@
         },
         contacts: {
           phone: {
+            required,
             numeric,
             minLength: minLength(10)
           }
