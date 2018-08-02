@@ -44,6 +44,11 @@ class CommerceService {
       .put('/invoice/new', { id, values, product })
   }
 
+  getInvoice (id) {
+    return trae
+      .get(`/invoice/${id}`)
+  }
+
   newCredit (params) {
     return trae
       .post('/credit', params)

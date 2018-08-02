@@ -124,14 +124,12 @@
         this.submited = false
       },
       save () {
-        console.log('save')
         this.submited = true
         this.updInvoice.updateOn = new Date()
         let params = {
           id: this.invoice.id,
           values: this.updInvoice
         }
-        console.log('params: ', params)
         this.updateCredit(params).then(resp => {
           this.setSuccess('Credit was updated succeeded')
           this.$emit('updated', true)

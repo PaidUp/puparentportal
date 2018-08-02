@@ -129,8 +129,7 @@ export default {
       getReducePrograms: 'getReducePrograms'
     }),
     ...mapActions('playerInvoicesModule', {
-      loadPaymentMethods: 'loadPaymentMethods',
-      loadParents: 'loadParents'
+      loadPaymentMethods: 'loadPaymentMethods'
     }),
     changeInvoceDialogStatus (status) {
       if (!status) {

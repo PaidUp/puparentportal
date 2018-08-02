@@ -31,6 +31,8 @@ const module = {
         Promise.all(parentsPromise).then(values => {
           context.commit('setParents', values)
         })
+      } else {
+        context.commit('setParents', null)
       }
     },
     loadPaymentMethods (context) {
@@ -72,6 +74,9 @@ const module = {
     },
     new (context, params) {
       return commerceService.newInvoice(params)
+    },
+    getInvoiceById (context, id) {
+      return commerceService.getInvoice(id)
     },
     deleteInvoice (context, id) {
       return commerceService.deleteInvoice(id)
