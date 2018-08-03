@@ -19,7 +19,7 @@
       </div>
     </md-card-content>
     <md-card-actions>
-      <md-button v-if="item.status === 'paidup'" class="md-icon-button md-dense md-accent lblue">
+      <md-button v-if="item.status === 'paidup'" @click="openRefundDialog" class="md-icon-button md-dense md-accent lblue">
         <md-icon>replay</md-icon>
       </md-button>
       <md-button class="md-icon-button md-dense md-accent lblue" @click="openDialog(true)">
@@ -88,6 +88,9 @@
           item: this.item,
           isClone
         })
+      },
+      openRefundDialog () {
+        this.$emit('selectRefund', this.item)
       },
       getInvoiceStatusMapper () {
         return this.invoiceMapper[this.item.status] || { desc: '', key: '', class: [] }

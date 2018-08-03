@@ -51,10 +51,13 @@ class PaymentService {
   }
 
   removeBank (customerId, bankId) {
-    console.log('customerId: ', customerId)
-    console.log('bankId: ', bankId)
     return trae
       .put('/customer/bank', { customerId, bankId })
+  }
+
+  refundInvoice (chargeId, reason, amount) {
+    return trae
+      .put('/customer/refund', { chargeId, reason, amount })
   }
 }
 

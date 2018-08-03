@@ -72,6 +72,9 @@ const module = {
     update (context, params) {
       return commerceService.updateInvoiceCalculations(params)
     },
+    updateSimple (context, params) {
+      return commerceService.updateInvoice(params)
+    },
     new (context, params) {
       return commerceService.newInvoice(params)
     },
@@ -89,6 +92,9 @@ const module = {
     },
     deleteCredit (context, id) {
       return commerceService.deleteCredit(id)
+    },
+    refundInvoice (context, { chargeId, reason, amount }) {
+      return paymentService.refundInvoice(chargeId, reason, amount)
     }
   }
 }

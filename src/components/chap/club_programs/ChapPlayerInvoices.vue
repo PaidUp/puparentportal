@@ -7,7 +7,7 @@
               <div class="invoices">
                 <div class="cards-layout">
                   <div v-for="item in items" :key="item.id">
-                    <chap-invoice-card v-if="item.type ==='invoice'" @deleted="reloadItems" @select="setItem" :item="item"></chap-invoice-card>
+                    <chap-invoice-card v-if="item.type ==='invoice'" @deleted="reloadItems" @selectRefund="setRefundItem" @select="setItem" :item="item"></chap-invoice-card>
                     <chap-credit-card v-if="item.type ==='credit'" @deleted="reloadItems" :item="item" @select="setCreditItem"></chap-credit-card>
                     <chap-preorder-card v-if="item.type ==='preorder'" :key="item.id" :item="item"></chap-preorder-card>
                   </div>
@@ -69,6 +69,7 @@
       </md-tabs>
       <chap-invoice-dialog :invoice="item" :isClone="isClone" @updated="reloadItems" @changeStatus="changeInvoceDialogStatus"></chap-invoice-dialog>
       <chap-credit-dialog :invoice="creditItem" :isClone="isCreditClone" @updated="reloadItems" @changeStatus="changeCreditDialogStatus"></chap-credit-dialog>
+      <chap-refund-dialog :invoice="refundItem" @updated="reloadItems" @changeStatus="changeRefundDialogStatus"></chap-refund-dialog>
       <chap-new-invoice-dialog :show="showNewInvoiceDialog" @created="reloadItems" @changeStatus="changeNewInvoceDialogStatus"></chap-new-invoice-dialog>
     </div>
 </template>
@@ -79,15 +80,17 @@ import ChapCreditCard from './ChapPlayerInvoices/ChapCreditCard.vue'
 import ChapPreorderCard from './ChapPlayerInvoices/ChapPreorderCard.vue'
 import ChapInvoiceDialog from './ChapPlayerInvoices/ChapInvoiceDialog.vue'
 import ChapCreditDialog from './ChapPlayerInvoices/ChapCreditDialog.vue'
+import ChapRefundDialog from './ChapPlayerInvoices/ChapRefundDialog.vue'
 import ChapNewInvoiceDialog from './ChapPlayerInvoices/ChapNewInvoiceDialog.vue'
 import { mapActions, mapState } from 'vuex'
 export default {
-  components: { ChapInvoiceCard, ChapCreditCard, ChapPreorderCard, ChapInvoiceDialog, ChapNewInvoiceDialog, ChapCreditDialog },
+  components: { ChapInvoiceCard, ChapCreditCard, ChapPreorderCard, ChapInvoiceDialog, ChapNewInvoiceDialog, ChapCreditDialog, ChapRefundDialog },
   data () {
     return {
       items: null,
       item: null,
       creditItem: null,
+      refundItem: null,
       isClone: false,
       isCreditClone: false,
       showNewInvoiceDialog: false,
@@ -141,6 +144,11 @@ export default {
         this.creditItem = null
       }
     },
+    changeRefundDialogStatus (status) {
+      if (!status) {
+        this.refundItem = null
+      }
+    },
     changeNewInvoceDialogStatus (status) {
       this.showNewInvoiceDialog = status
     },
@@ -156,6 +164,9 @@ export default {
     setItem (value) {
       this.isClone = value.isClone
       this.item = value.item
+    },
+    setRefundItem (value) {
+      this.refundItem = value
     },
     setCreditItem (value) {
       this.isCreditClone = value.isClone
