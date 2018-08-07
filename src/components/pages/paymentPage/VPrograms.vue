@@ -34,7 +34,7 @@ export default {
     player () {
       if (this.allPreorders && this.allPreorders[0] && this.products) {
         this.products.filter(prod => {
-          if (prod._id === this.allPreorders[0].productId) {
+          if (prod._id === this.allPreorders[0].productId && this.allPreorders[0].status === 'active') {
             this.showBack = false
             this.select(prod)
             this.season = prod.season
