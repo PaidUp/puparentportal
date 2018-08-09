@@ -15,18 +15,17 @@
     },
     watch: {
       isAutenticated () {
+        console.log('watch: ', this.$router.history)
         if (!this.isAutenticated) {
           this.$router.push({ name: 'login' })
         }
       }
     },
-    mounted () {
+    created () {
       if (this.isAutenticated) {
         this.getUser().then(user => {
           this.setUser(user)
         })
-      } else {
-        this.$router.push({ name: 'login' })
       }
     },
     methods: {

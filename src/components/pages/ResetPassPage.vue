@@ -5,7 +5,7 @@
     </div>
     <md-field :class="{'md-invalid': $v.password.$error}">
       <label>{{ $t('component.signup.password') }}</label>
-      <md-input v-model.trim="userForm.password" type="password" @input="$v.password.$touch()"></md-input>
+      <md-input v-model.trim="password" type="password" @input="$v.password.$touch()"></md-input>
       <span class="md-error" v-if="!$v.password.required">{{ $t('validations.required', { field: 'Password' }) }} </span>
     </md-field>
     <md-field :class="{'md-invalid': $v.confirmPassword.$error}">
@@ -14,56 +14,62 @@
       <span class="md-error" v-if="!$v.confirmPassword.sameAsPassword">{{ $t('validations.identical', { field: 'Password' }) }}</span>
     </md-field>
     <div class="action-box">
-      <md-button class="md-raised md-accent lblue" @click="submit">RESET PASSWORD</md-button>
+      <md-button :disabled='disabled' class="md-raised md-accent lblue" @click="submit">RESET PASSWORD</md-button>
     </div>
   </div>
 </template>
 <script>
-  import {
-    mapActions,
-    mapGetters
-  } from 'vuex'
-  import {
-    required,
-    sameAs
-  } from 'vuelidate/lib/validators'
+  import { mapActions } from 'vuex'
+  import { required, sameAs } from 'vuelidate/lib/validators'
 
   export default {
     data () {
       return {
+        email: '',
         confirmPassword: '',
-        userForm: {}
+        password: '',
+        submited: false
       }
     },
     watch: {
-      isAutenticated () {
-        if (this.isAutenticated) {
-          this.$router.push({
-            name: 'home'
-          })
-        }
-      }
     },
     computed: {
-      ...mapGetters('userModule', {
-        isAutenticated: 'isAutenticated'
-      }),
-      password () {
-        return this.userForm.password
+      disabled () {
+        return this.$v.$invalid || this.submited
       }
+    },
+    mounted () {
+      this.verifyResetToken(this.$route.params.token).then(resp => {
+        if (!resp) {
+          this.setWarning('Invalid link')
+          this.$router.push({name: 'login'})
+        } else {
+          this.email = resp
+        }
+      })
     },
     methods: {
       ...mapActions('userModule', {
-        signup: 'signup'
+        verifyResetToken: 'verifyResetToken',
+        recovery: 'recovery'
       }),
       ...mapActions('messageModule', {
-        setWarning: 'setWarning'
+        setWarning: 'setWarning',
+        setInfo: 'setInfo'
       }),
       submit () {
-        if (this.$v.userForm.$invalid) {
-          return this.setWarning('validations.form')
-        }
-        // LOGIN HERE?
+        this.submited = true
+        this.recovery({email: this.email,
+          token: this.$route.params.token,
+          password: this.password
+        }).then(resp => {
+          if (resp) {
+            this.setInfo('Your password was updated successfully')
+            this.$router.push({name: 'login'})
+          }
+        }).catch(reason => {
+          this.setWarning(`Password don't updated, please contact us`)
+        })
       }
     },
     validations: {
@@ -72,11 +78,6 @@
       },
       password: {
         required
-      },
-      userForm: {
-        password: {
-          required
-        }
       }
     }
   }

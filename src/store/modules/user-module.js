@@ -182,6 +182,42 @@ const module = {
           root: true
         })
       })
+    },
+    recovery (context, { email, token, password }) {
+      return userService.recovery(email, token, password)
+      .then(user => {
+        return user
+      })
+      .catch(reason => {
+        let message = reason.message
+        context.dispatch('messageModule/setDanger', message, {
+          root: true
+        })
+      })
+    },
+    reset (context, email) {
+      return userService.reset(email)
+      .then(user => {
+        return user
+      })
+      .catch(reason => {
+        let message = reason.message
+        context.dispatch('messageModule/setDanger', message, {
+          root: true
+        })
+      })
+    },
+    verifyResetToken (context, token) {
+      return userService.verifyResetToken(token)
+      .then(resp => {
+        return resp
+      })
+      .catch(reason => {
+        let message = reason.message
+        context.dispatch('messageModule/setDanger', message, {
+          root: true
+        })
+      })
     }
   }
 }

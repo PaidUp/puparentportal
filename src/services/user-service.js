@@ -48,9 +48,24 @@ class UserService {
       .put('/', { id, values })
   }
 
+  recovery (email, token, password) {
+    return trae
+      .put('/recovery', { email, token, password })
+  }
+
   getByEmail (email) {
     return trae
       .get('/email/' + email)
+  }
+
+  reset (email) {
+    return trae
+      .put('/reset', { email })
+  }
+
+  verifyResetToken (token) {
+    return trae
+      .get(`/reset/${token}`)
   }
 }
 
