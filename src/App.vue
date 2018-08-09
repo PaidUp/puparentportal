@@ -15,7 +15,6 @@
     },
     watch: {
       isAutenticated () {
-        console.log('watch: ', this.$router.history)
         if (!this.isAutenticated) {
           this.$router.push({ name: 'login' })
         }

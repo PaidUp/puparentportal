@@ -52,7 +52,7 @@
             this.setInfo('A reset link was send to your email, please check it')
             this.$router.push({name: 'login'})
           } else {
-            this.setWarning('Please verify if you sign up with a Facebook account')
+            this.setWarning('This email is registered with Facebook. Please click Facebook Login.')
           }
         })
         // RESET LOGIC HERE?
