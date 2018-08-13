@@ -53,7 +53,13 @@
           </md-select>
           <span class="md-error" v-if="!$v.updInvoice.assigneeEmail.required">{{ $t('validations.required', { field: 'Parent' }) }}</span>
         </md-field>
-        
+        <div>
+          <label>Tags</label>
+          <p>
+            <md-chip class="md-accent" @md-delete="removeTag(chip)" v-for="chip in updInvoice.tags" :key="chip" md-deletable>{{ chip }}</md-chip>
+            <md-chip class="" @click="selectTag(chip)" v-for="chip in tagsAvailable" :key="chip" md-clickable>{{ chip }}</md-chip>
+          </p>
+        </div>
         </div>
       </md-tab>
     </md-tabs>
@@ -82,7 +88,8 @@
       return {
         updInvoice: {},
         showDialog: false,
-        submited: false
+        submited: false,
+        tagsAvailable: []
       }
     },
     watch: {
@@ -119,9 +126,22 @@
           price: this.invoice.price,
           dateCharge: this.invoice.date,
           status: this.invoice.status,
+          tags: this.invoice.tags,
           assigneeEmail: this.invoice.assigneeEmail
         }
+        this.tagsAvailable = this.organization.tags.filter(tag => {
+          if (!this.invoice.tags || !this.invoice.tags.length) return true
+          return this.invoice.tags.indexOf(tag) === -1
+        })
         this.submited = false
+      },
+      selectTag (value) {
+        this.updInvoice.tags.push(value)
+        this.tagsAvailable.splice(this.tagsAvailable.indexOf(value), 1)
+      },
+      removeTag (value) {
+        this.tagsAvailable.push(value)
+        this.updInvoice.tags.splice(this.updInvoice.tags.indexOf(value), 1)
       },
       save () {
         this.submited = true

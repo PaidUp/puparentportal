@@ -57,7 +57,13 @@
           </md-select>
           <span class="md-error" v-if="!$v.pmSelected.required">{{ $t('validations.required', { field: 'Payment Account' }) }}</span>
         </md-field>
-        
+        <div>
+          <label>Tags</label>
+          <p>
+            <md-chip class="md-accent" @md-delete="removeTag(chip)" v-for="chip in tags" :key="chip" md-deletable>{{ chip }}</md-chip>
+            <md-chip class="" @click="selectTag(chip)" v-for="chip in tagsAvailable" :key="chip" md-clickable>{{ chip }}</md-chip>
+          </p>
+        </div>
         </div>
       </md-tab>
     </md-tabs>
@@ -92,7 +98,9 @@
         pmSelected: null,
         showDialog: false,
         parent: null,
-        submited: false
+        submited: false,
+        tagsAvailable: [],
+        tags: []
       }
     },
     watch: {
@@ -141,6 +149,14 @@
         setSuccess: 'setSuccess',
         setWarning: 'setWarning'
       }),
+      selectTag (value) {
+        this.tags.push(value)
+        this.tagsAvailable.splice(this.tagsAvailable.indexOf(value), 1)
+      },
+      removeTag (value) {
+        this.tagsAvailable.push(value)
+        this.tags.splice(this.tags.indexOf(value), 1)
+      },
       reset () {
         this.label = null
         this.price = null
@@ -152,6 +168,8 @@
         this.pmSelected = null
         this.parent = null
         this.submited = false
+        this.tags = []
+        this.tagsAvailable = this.organization.tags.concat([])
       },
       newInvoice () {
         this.submited = true
@@ -176,7 +194,8 @@
             beneficiaryId: this.beneficiary.id,
             beneficiaryFirstName: this.beneficiary.firstName,
             beneficiaryLastName: this.beneficiary.lastName,
-            season: this.seasonSelected
+            season: this.seasonSelected,
+            tags: this.tags
           }
           let params = {
             product,
@@ -206,7 +225,8 @@
             organizationId: this.organization._id,
             season: this.seasonSelected,
             status: this.status,
-            dateCharge: this.dateCharge
+            dateCharge: this.dateCharge,
+            tags: this.tags
           }
           this.newCredit(params).then(resp => {
             this.setSuccess('Credit was created succeeded')

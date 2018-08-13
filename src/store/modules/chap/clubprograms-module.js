@@ -140,6 +140,7 @@ const module = {
             paymentDetails: val.paymentDetails,
             user: val.user,
             productId: val.productId,
+            tags: val.tags || [],
             type: 'invoice',
             __v: val.__v
           })
@@ -153,6 +154,7 @@ const module = {
             date: new Date(val.createOn),
             price: val.price,
             status: val.status,
+            tags: val.tags || [],
             type: 'credit',
             __v: val.__v
           })

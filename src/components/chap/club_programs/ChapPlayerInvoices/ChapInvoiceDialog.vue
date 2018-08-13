@@ -75,7 +75,13 @@
           </md-select>
           <span class="md-error" v-if="!$v.pmSelected.required">{{ $t('validations.required', { field: 'Payment Account' }) }}</span>
         </md-field>
-        
+        <div>
+          <label>Tags</label>
+          <p>
+            <md-chip class="md-accent" @md-delete="removeTag(chip)" v-for="chip in updInvoice.tags" :key="chip" md-deletable>{{ chip }}</md-chip>
+            <md-chip class="" @click="selectTag(chip)" v-for="chip in tagsAvailable" :key="chip" md-clickable>{{ chip }}</md-chip>
+          </p>
+        </div>
         </div>
       </md-tab>
       <md-tab md-label="HISTORY" v-if="!isClone">
@@ -122,7 +128,7 @@
     </md-tabs>
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="showDialog = false">CANCEL</md-button>
-      <md-button v-if='isClone' :disabled="disableSaveButton" class="md-accent lblue" @click="clone" >CLONE</md-button>
+      <md-button v-if='isClone' md-check-duplicated :disabled="disableSaveButton" class="md-accent lblue" @click="clone" >CLONE</md-button>
       <md-button v-else :disabled="disableSaveButton" class="md-accent lblue" @click="save" >SAVE</md-button>
     </md-dialog-actions>
     <v-pay-animation :animate="submited"  @finish="showDialog = false" />
@@ -147,7 +153,8 @@
         pmSelected: null,
         showDialog: false,
         parent: null,
-        submited: false
+        submited: false,
+        tagsAvailable: []
       }
     },
     watch: {
@@ -189,6 +196,14 @@
         setSuccess: 'setSuccess',
         setWarning: 'setWarning'
       }),
+      selectTag (value) {
+        this.updInvoice.tags.push(value)
+        this.tagsAvailable.splice(this.tagsAvailable.indexOf(value), 1)
+      },
+      removeTag (value) {
+        this.tagsAvailable.push(value)
+        this.updInvoice.tags.splice(this.updInvoice.tags.indexOf(value), 1)
+      },
       changeParent () {
         this.pmSelected = null
         this.updInvoice['user'] = this.parentObj
@@ -202,8 +217,13 @@
           maxDateCharge: this.invoice.maxDate,
           status: this.isClone ? 'autopay' : this.invoice.status,
           paymentDetails: this.invoice.paymentDetails,
+          tags: this.invoice.tags,
           user: this.invoice.user
         }
+        this.tagsAvailable = this.organization.tags.filter(tag => {
+          if (!this.invoice.tags || !this.invoice.tags.length) return true
+          return this.invoice.tags.indexOf(tag) === -1
+        })
         this.pmSelected = this.invoice.paymentDetails.externalPaymentMethodId
         this.parent = this.invoice.user.userId
         this.submited = false
