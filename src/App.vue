@@ -20,8 +20,8 @@
         }
       }
     },
-    created () {
-      if (this.$router.history.current.meta && this.$router.history.current.roles) {
+    mounted () {
+      if (this.$router.history.current.path === '/' || (this.$router.history.current.meta && this.$router.history.current.meta.roles)) {
         this.getUser().then(user => {
           this.setUser(user)
         })
