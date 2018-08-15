@@ -21,7 +21,7 @@
       }
     },
     created () {
-      if (this.isAutenticated) {
+      if (this.$router.history.current.meta && this.$router.history.current.roles) {
         this.getUser().then(user => {
           this.setUser(user)
         })
