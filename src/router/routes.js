@@ -113,7 +113,10 @@ const routes = [
       },
       {
         path: '/reports/payments',
-        component: ReportsPage
+        component: ReportsPage,
+        meta: {
+          roles: ['coach']
+        }
       },
       {
         path: '/new-invoices',

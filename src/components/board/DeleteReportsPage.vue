@@ -24,50 +24,40 @@
       <md-chip class="lblue" md-deletable>Deposit Date: 03/05/2018 - 04/23/2018</md-chip>
     </div>
 
+    <!-- INFO -->
+    <div class="report-info">
+      <span class="bold">ESTIMATES ONLY.</span> Cash Flow report assumes PaidUp will process 100% of payments successfully on the original chanrge
+      date.
+    </div>
+
     <!-- TABLE -->
-    <md-table v-model="payments" class="custom-table" md-card md-fixed-header>
-      <md-table-row slot="md-table-row" slot-scope="{ item }" :class="{totals: (item.status === 'failed' || item.status === 'overdue'), 'red-row': item.id === 3}">
+    <md-table v-model="tableData" md-sort="name" md-sort-order="asc" class="custom-table">
+      <md-table-row slot="md-table-row" slot-scope="{ item }" :class="{totals: item.desc === 'TOTALS', 'red-row': item.id === 3}">
         <md-table-cell md-label="Deposit ID">
-            {{item.receiptId}}
+          <div class="col-150">
+            {{item.desc}}
+          </div>
         </md-table-cell>
-        <md-table-cell md-label="Charge Date">
-          {{item.chargeDate}}
+        <md-table-cell md-label="Deposit Date">
+          {{item.date}}
         </md-table-cell>
-        <md-table-cell md-label="Receipt Date">
-          {{item.receiptDate}}
-        </md-table-cell>
-        <md-table-cell md-label="Description">
-          {{item.description}}
-        </md-table-cell>
-        <md-table-cell md-label="Program">
-          {{item.program}}
-        </md-table-cell>
-        <md-table-cell md-label="Status">
-          {{item.status}}
-        </md-table-cell>
-        <md-table-cell md-label="Parent Name">
-          {{item.parentName}}
-        </md-table-cell>
-        <md-table-cell md-label="Parent Email">
-          {{item.parentEmail}}
-        </md-table-cell>
-        <md-table-cell md-label="Player Name">
-          {{item.playerName}}
-        </md-table-cell>
-        <md-table-cell md-label="Amount" md-numeric>
+        <md-table-cell md-label="Processed" md-numeric>
           {{item.amount}}
         </md-table-cell>
-        <md-table-cell md-label="Refund" md-numeric>
-          {{item.refund}}
-        </md-table-cell>
         <md-table-cell md-label="Processing Fee" md-numeric>
-          {{item.processingFee}}
+          {{item.amount}}
         </md-table-cell>
         <md-table-cell md-label="PaidUp Fee" md-numeric>
-          {{item.paidupFee}}
+          {{item.amount}}
         </md-table-cell>
         <md-table-cell md-label="Total Fee" md-numeric>
-          {{item.totalFee}}
+          {{item.amount}}
+        </md-table-cell>
+        <md-table-cell md-label="Net Deposit" md-numeric>
+          {{item.amount}}
+        </md-table-cell>
+        <md-table-cell md-label="Account">
+          {{item.account}}
         </md-table-cell>
       </md-table-row>
     </md-table>
@@ -88,7 +78,7 @@
             <md-icon>clear</md-icon>
           </md-button>
         </div>
-        <md-checkbox class="lblue" v-model="indeterminateCheck" :indeterminate="checkArray.length === 0">All</md-checkbox>
+        <md-checkbox class="lblue" v-model="indeterminateCheck" :indeterminate="checkArray.length">All</md-checkbox>
         <md-checkbox class="lblue" v-model="checkArray" value="2">2018/2019</md-checkbox>
         <md-checkbox class="lblue" v-model="checkArray" value="3">2017/2018</md-checkbox>
 
@@ -135,7 +125,7 @@
             <md-icon>clear</md-icon>
           </md-button>
         </div>
-        <md-checkbox class="lblue" v-model="indeterminateCheck" :indeterminate="checkArray.length === 0">All</md-checkbox>
+        <md-checkbox class="lblue" v-model="indeterminateCheck" :indeterminate="checkArray.length">All</md-checkbox>
         <md-checkbox class="lblue" v-model="checkArray" value="2">12U Red</md-checkbox>
         <md-checkbox class="lblue" v-model="checkArray" value="3">Isotopes Volleybal</md-checkbox>
         <md-checkbox class="lblue" v-model="checkArray" value="3">17U Regional</md-checkbox>
@@ -167,7 +157,7 @@
             <md-icon>clear</md-icon>
           </md-button>
         </div>
-        <md-checkbox class="lblue" v-model="indeterminateCheck" :indeterminate="checkArray.length === 0">All</md-checkbox>
+        <md-checkbox class="lblue" v-model="indeterminateCheck" :indeterminate="checkArray.length">All</md-checkbox>
         <md-checkbox class="lblue" v-model="checkArray" value="2">Autopay</md-checkbox>
         <md-checkbox class="lblue" v-model="checkArray" value="3">Due</md-checkbox>
         <md-checkbox class="lblue" v-model="checkArray" value="3">Failed</md-checkbox>
@@ -198,85 +188,59 @@
 </template>
 
 <script>
-  import gql from 'graphql-tag'
-  import { mapActions } from 'vuex'
+  import {
+    mapState
+  } from 'vuex'
   export default {
     data: function () {
       return {
+        movie: 'godfather',
         showFiltersPanel: false,
         checkArray: [],
         indeterminateCheck: false,
-        organization: null,
-        payments: [],
-        user: null,
-        seasonSelected: null
-      }
-    },
-    apollo: {
-  // Query with parameters
-      payments: {
-    // gql query
-        query: gql`query APayments($organizationId: String!, $seasonId: String!) {
-      payments(organizationId: $organizationId, seasonId: $seasonId) {
-        receiptId
-        type
-        chargeDate
-        receiptDate
-        description
-        program
-        status
-        parentName
-        parentEmail
-        playerName
-        amount
-        refund
-        processingFee
-        paidupFee
-        totalFee,
-        tags
-      }
-    }`,
-    // Static parameters
-        variables () {
-          return {
-            organizationId: this.organization._id,
-            seasonId: this.seasonSelected._id
-          }
+        tableData: [ {
+          id: 1,
+          desc: 'TOTALS',
+          account: '',
+          date: '',
+          amount: '$99913.50'
         },
-        skip () {
-          return !this.organization && !this.seasonSelected
+        {
+          id: 2,
+          desc: 'DUES installment 4',
+          account: 'Bank of America NA****12344',
+          date: '05-12-2018',
+          amount: '$3913.00'
         },
-        pollInterval: 1000
+        {
+          id: 3,
+          desc: 'DUES 33',
+          account: 'Bank of America NA****12344',
+          date: '05-12-2018',
+          amount: '$3913.00'
+        },
+        {
+          id: 4,
+          desc: 'DUES 44',
+          account: 'Bank of America NA****12344',
+          date: '05-12-2018',
+          amount: '$3913.00'
+        },
+        {
+          id: 5,
+          desc: 'DUES installment 3',
+          account: 'Bank of America NA****12344',
+          date: '05-12-2018',
+          amount: '$3913.00'
+        }
+        ]
       }
     },
     computed: {
-      seasons () {
-  
-      }
-    },
-    mounted () {
-      this.getUser().then(user => {
-        this.user = user
+      ...mapState('userModule', {
+        'user': 'user'
       })
     },
-    watch: {
-      user () {
-        this.loadOrganiztion(this.user.organizationId)
-      }
-    },
-    methods: {
-      ...mapActions('organizationModule', {
-        getOrganization: 'getOrganization'
-      }),
-      ...mapActions('userModule', {
-        getUser: 'getUser'
-      }),
-      loadOrganiztion (organizationId) {
-        this.getOrganization(organizationId).then(organization => {
-          this.organization = organization
-          this.seasonSelected = organization.seasons[organization.seasons.length - 1]
-        })
-      }
-    }
+    methods: {}
   }
 </script>
