@@ -14,6 +14,7 @@ import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
 import config from '@/config'
+import JsonExcel from 'vue-json-excel'
 
 // eslint-disable-next-line
 import fs from '@/vendor/fb'
@@ -64,6 +65,8 @@ Vue.use(Vuelidate)
 Vue.use(VueResource)
 // Install the vue plugin
 Vue.use(VueApollo)
+
+Vue.component('downloadExcel', JsonExcel)
 
 Vue.config.productionTip = false
 Vue.material.locale.dateFormat = 'MM-DD-YYYY'

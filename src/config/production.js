@@ -3,7 +3,8 @@ const config = {
     user: 'https://api.getpaidup.com/api/v1/user',
     payment: 'https://api.getpaidup.com/api/v1/payment',
     organization: 'https://api.getpaidup.com/api/v1/organization',
-    commerce: 'https://api.getpaidup.com/api/v1/commerce'
+    commerce: 'https://api.getpaidup.com/api/v1/commerce',
+    broker: 'https://api.getpaidup.com'
   },
   stripe: {
     publicKey: 'pk_live_DSQ3sB20S4wFlOST7eexy8F1'

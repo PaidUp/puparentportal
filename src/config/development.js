@@ -3,7 +3,8 @@ const config = {
     user: 'https://devapi.getpaidup.com/api/v1/user',
     payment: 'https://devapi.getpaidup.com/api/v1/payment',
     organization: 'https://devapi.getpaidup.com/api/v1/organization',
-    commerce: 'https://devapi.getpaidup.com/api/v1/commerce'
+    commerce: 'https://devapi.getpaidup.com/api/v1/commerce',
+    broker: 'https://devapi.getpaidup.com'
   },
   stripe: {
     publicKey: 'pk_test_9WTTkvwiNjZ9IMJVls1iF0fv'

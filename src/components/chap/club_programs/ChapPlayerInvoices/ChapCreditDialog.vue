@@ -56,7 +56,7 @@
         <div>
           <label>Tags</label>
           <p>
-            <md-chip class="md-accent" @md-delete="removeTag(chip)" v-for="chip in updInvoice.tags" :key="chip" md-deletable>{{ chip }}</md-chip>
+            <md-chip class="lblue" @md-delete="removeTag(chip)" v-for="chip in updInvoice.tags" :key="chip" md-deletable>{{ chip }}</md-chip>
             <md-chip class="" @click="selectTag(chip)" v-for="chip in tagsAvailable" :key="chip" md-clickable>{{ chip }}</md-chip>
           </p>
         </div>

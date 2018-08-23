@@ -3,7 +3,8 @@ const config = {
     user: 'https://stgapi.getpaidup.com/api/v1/user',
     payment: 'https://stgapi.getpaidup.com/api/v1/payment',
     organization: 'https://stgapi.getpaidup.com/api/v1/organization',
-    commerce: 'https://stgapi.getpaidup.com/api/v1/commerce'
+    commerce: 'https://stgapi.getpaidup.com/api/v1/commerce',
+    broker: 'https://stgapi.getpaidup.com'
   },
   stripe: {
     publicKey: 'pk_test_jQmpXGw5GUbXSyDi0TN5gx9R'

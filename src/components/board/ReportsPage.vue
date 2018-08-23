@@ -5,12 +5,16 @@
         Payments
       </div>
       <div>
-        <md-button class="md-button md-accent lblue">
+        <md-button v-if="false" class="md-button md-accent lblue">
           <md-icon>print</md-icon> Print
         </md-button>
-        <md-button class="md-button md-accent lblue">
-          <md-icon>get_app</md-icon> Export
-        </md-button>
+        
+
+        <download-excel :data= "paymentsFiltered" type= "csv" name= "payments.csv">
+          <md-button class="md-button md-accent lblue">
+            <md-icon>get_app</md-icon> Export
+          </md-button>
+        </download-excel>
       </div>
     </div>
 
@@ -22,28 +26,43 @@
         </md-button>
       </md-chip>
       <md-chip v-if="seasonSelectedObj" class="lblue">Season: {{seasonSelectedObj.name}}</md-chip>
-      <md-chip v-if="invoiceDateStart" class="lblue" md-clickable @click="invoiceDateStart = null">Receipt date start: {{$d(invoiceDateStart, 'short')}}</md-chip>
-      <md-chip v-if="invoiceDateEnd" class="lblue" md-clickable @click="invoiceDateEnd = null">Receipt date end: {{$d(invoiceDateEnd, 'short')}}</md-chip>
-      <md-chip v-if="chargeDateStart" class="lblue" md-clickable @click="chargeDateStart = null">Charge date start: {{$d(chargeDateStart, 'short')}}</md-chip>
-      <md-chip v-if="chargeDateEnd" class="lblue" md-clickable @click="chargeDateEnd = null">Charge date end: {{$d(chargeDateEnd, 'short')}}</md-chip>
+      <md-chip v-if="invoiceDateStart" class="lblue" md-deletable @md-delete="invoiceDateStart = null">Receipt date start: {{$d(invoiceDateStart, 'short')}}</md-chip>
+      <md-chip v-if="invoiceDateEnd" class="lblue" md-deletable @md-delete="invoiceDateEnd = null">Receipt date end: {{$d(invoiceDateEnd, 'short')}}</md-chip>
+      <md-chip v-if="chargeDateStart" class="lblue" md-deletable @md-delete="chargeDateStart = null">Charge date start: {{$d(chargeDateStart, 'short')}}</md-chip>
+      <md-chip v-if="chargeDateEnd" class="lblue" md-deletable @md-delete="chargeDateEnd = null">Charge date end: {{$d(chargeDateEnd, 'short')}}</md-chip>
+      <md-chip class="lblue" @md-delete="removeProgram(chip)" v-for="chip in programFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
+      <md-chip class="lblue" @md-delete="removeStatus(chip)" v-for="chip in statusFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
+      <md-chip class="lblue" @md-delete="removeTag(chip)" v-for="chip in tagsFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
+
     </div>
 
     <!-- TABLE -->
-    <md-table v-model="paymentsFiltered" class="custom-table" md-card md-fixed-header>
+    <div class="table-container">
+    <md-table v-model="paymentsFiltered" class="md-table custom-table" >
+      <md-table-toolbar>
+        <div class="md-toolbar-section-start">
+          <h1 class="md-title"></h1>
+        </div>
+
+        <md-field md-clearable class="md-toolbar-section-end">
+          <md-input placeholder="Search..." v-model="search" />
+        </md-field>
+      </md-table-toolbar>
+
       <md-table-row slot="md-table-row" slot-scope="{ item }" :class="{totals: (item.status === 'failed' || item.status === 'overdue'), 'red-row': item.id === 3}">
-        <md-table-cell md-label="Deposit ID">
-            {{item.receiptId}}
+        <md-table-cell md-sort-by="receiptId" md-label="Invoice ID">
+          {{item.receiptId}}
         </md-table-cell>
-        <md-table-cell md-label="Charge Date">
+        <md-table-cell  md-label="Charge Date">
           {{item.chargeDate}}
         </md-table-cell>
-        <md-table-cell md-label="Receipt Date">
+        <md-table-cell md-label="Invoice Date">
           {{item.receiptDate}}
         </md-table-cell>
-        <md-table-cell md-label="Description">
+        <md-table-cell md-sort-by="description" md-label="Description">
           {{item.description}}
         </md-table-cell>
-        <md-table-cell md-label="Program">
+        <md-table-cell md-sort-by="program" md-label="Program">
           {{item.program}}
         </md-table-cell>
         <md-table-cell md-label="Status">
@@ -55,27 +74,27 @@
         <md-table-cell md-label="Parent Email">
           {{item.parentEmail}}
         </md-table-cell>
+        <md-table-cell md-label="Parent Phone">
+          {{item.parentPhone}}
+        </md-table-cell>
         <md-table-cell md-label="Player Name">
           {{item.playerName}}
         </md-table-cell>
         <md-table-cell md-label="Amount" md-numeric>
-          ${{currency(item.amount)}}
-        </md-table-cell>
-        <md-table-cell md-label="Refund" md-numeric>
-          ${{currency(item.refund)}}
+          ${{item.amount}}
         </md-table-cell>
         <md-table-cell md-label="Processing Fee" md-numeric>
-          ${{currency(item.processingFee)}}
+          ${{item.processingFee}}
         </md-table-cell>
         <md-table-cell md-label="PaidUp Fee" md-numeric>
-          ${{currency(item.paidupFee)}}
+          ${{item.paidupFee}}
         </md-table-cell>
         <md-table-cell md-label="Total Fee" md-numeric>
-          ${{currency(item.totalFee)}}
+          ${{item.totalFee}}
         </md-table-cell>
       </md-table-row>
     </md-table>
-    
+    </div>
      <!-- FILTERS SIDEBAR -->
     <md-drawer class="md-right filters-sidebar" :md-active.sync="showFiltersPanel">
       <div class="title-section">
@@ -159,7 +178,7 @@
           <div class="bold">
             Status
           </div>
-          <md-button class="md-dense md-icon-button md-accent lblue">
+          <md-button @click="statusFilter = []" class="md-dense md-icon-button md-accent lblue">
             <md-icon>clear</md-icon>
           </md-button>
         </div>
@@ -170,12 +189,12 @@
           <div class="bold">
             Tags
           </div>
-          <md-button class="md-dense md-icon-button md-accent lblue">
+          <md-button @click="removeAllTags" class="md-dense md-icon-button md-accent lblue">
             <md-icon>clear</md-icon>
           </md-button>
         </div>
         <div class="tags-box">
-          <md-chip class="md-accent" @md-delete="removeTag(chip)" v-for="chip in tagsFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
+          <md-chip class="lblue" @md-delete="removeTag(chip)" v-for="chip in tagsFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
           <md-chip class="" @click="selectTag(chip)" v-for="chip in tags" :key="chip" md-clickable>{{ chip }}</md-chip>
         </div>
       </div>
@@ -211,7 +230,8 @@
         chargeDateStart: null,
         chargeDateEnd: null,
         status: [],
-        programs: []
+        programs: [],
+        search: ''
       }
     },
     apollo: {
@@ -229,13 +249,14 @@
         status
         parentName
         parentEmail
+        parentPhone
         playerName
         amount
-        refund
         processingFee
         paidupFee
         totalFee,
-        tags
+        tags,
+        index
       }
     }`,
     // Static parameters
@@ -273,8 +294,9 @@
       paymentsFiltered () {
         return this.payments.reduce((curr, receipt) => {
           let receiptDate = receipt.receiptDate ? new Date(receipt.receiptDate) : ''
-          // let chargeDate = receipt.chargeDate ? new Date(receipt.chargeDate) : ''
+          let chargeDate = receipt.chargeDate ? new Date(receipt.chargeDate) : ''
           let resp = true
+          // invoice date filter
           if (this.invoiceDateStart) {
             if (!receiptDate) resp = false
             else {
@@ -287,8 +309,44 @@
               resp = (this.invoiceDateEnd.getTime() >= receiptDate.getTime()) && resp
             }
           }
+          // charge date filter
+          if (this.chargeDateStart) {
+            if (!chargeDate) resp = false
+            else {
+              resp = (this.chargeDateStart.getTime() <= chargeDate.getTime()) && resp
+            }
+          }
+          if (this.chargeDateEnd) {
+            if (!chargeDate) resp = false
+            else {
+              resp = (this.chargeDateEnd.getTime() >= chargeDate.getTime()) && resp
+            }
+          }
+          if (this.programFilter.length) {
+            resp = (this.programFilter.indexOf(receipt.program) > -1) && resp
+          }
+          if (this.statusFilter.length) {
+            resp = (this.statusFilter.indexOf(receipt.status) > -1) && resp
+          }
+          if (this.tagsFilter.length) {
+            if (!receipt.tags) resp = false
+            else {
+              resp = receipt.tags.some(r => this.tagsFilter.indexOf(r) >= 0) && resp
+            }
+          }
+          if (this.search) {
+            resp = receipt.index.toLowerCase().includes(this.search.toLowerCase()) && resp
+          }
+          let tmp = JSON.parse(JSON.stringify(receipt))
 
-          if (resp) curr.push(receipt)
+          tmp.chargeDate = tmp.chargeDate ? this.$d(new Date(tmp.chargeDate), 'short') : ''
+          tmp.receiptDate = tmp.receiptDate ? this.$d(new Date(tmp.receiptDate), 'short') : ''
+          tmp.status = this.capitalize(tmp.status)
+          tmp.amount = this.currency(tmp.amount)
+          tmp.processingFee = this.currency(tmp.processingFee)
+          tmp.paidupFee = this.currency(tmp.paidupFee)
+          tmp.totalFee = this.currency(tmp.totalFee)
+          if (resp) curr.push(tmp)
           return curr
         }, [])
       }
@@ -317,9 +375,13 @@
             })
           }
         })
-        this.programs = Array.from(programs)
-        this.status = Array.from(status)
-        this.tags = Array.from(tags)
+        this.programs = Array.from(programs).sort()
+        this.status = Array.from(status).sort()
+        this.tags = Array.from(tags).sort()
+      },
+      seasonSelected () {
+        this.programFilter = []
+        this.statusFilter = []
       }
     },
     methods: {
@@ -339,6 +401,16 @@
       removeTag (value) {
         this.tags.push(value)
         this.tagsFilter.splice(this.tagsFilter.indexOf(value), 1)
+      },
+      removeProgram (value) {
+        this.programFilter.splice(this.programFilter.indexOf(value), 1)
+      },
+      removeStatus (value) {
+        this.statusFilter.splice(this.statusFilter.indexOf(value), 1)
+      },
+      removeAllTags () {
+        this.tags = this.tags.concat(this.tagsFilter)
+        this.tagsFilter = []
       },
       loadOrganiztion (organizationId) {
         this.getOrganization(organizationId).then(organization => {
