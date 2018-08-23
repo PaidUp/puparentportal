@@ -13,6 +13,7 @@ import { ApolloLink } from 'apollo-link'
 import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
+import config from '@/config'
 
 // eslint-disable-next-line
 import fs from '@/vendor/fb'
@@ -28,7 +29,7 @@ import '@/style/theme.css'
 
 const httpLink = new HttpLink({
   // You should use an absolute URL here
-  uri: 'http://localhost:9005/graphql'
+  uri: config.api.broker + '/graphql'
 })
 
 const authMiddleware = new ApolloLink((operation, forward) => {
