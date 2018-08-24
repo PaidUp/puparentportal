@@ -81,7 +81,7 @@
           {{item.playerName}}
         </md-table-cell>
         <md-table-cell md-label="Payment Account">
-          {{item.paymentMethod}}
+          {{item.paymentMethodBrand}}••••{{item.paymentMethodLast4}}
         </md-table-cell>
         <md-table-cell md-label="Amount" md-numeric>
           ${{item.amount}}
@@ -251,7 +251,8 @@
           'PaidUp Fee': 'paidupFee',
           'Total Fee': 'totalFee',
           'Tags': 'tags',
-          'Payment Account': 'paymentMethod'
+          'Payment Account Brand': 'paymentMethodBrand',
+          'Payment Account Last4': 'paymentMethodLast4'
         }
       }
     },
@@ -277,7 +278,8 @@
         paidupFee
         totalFee,
         tags,
-        paymentMethod,
+        paymentMethodBrand,
+        paymentMethodLast4,
         index
       }
     }`,
