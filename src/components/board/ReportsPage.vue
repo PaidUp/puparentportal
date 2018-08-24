@@ -10,7 +10,7 @@
         </md-button>
         
 
-        <download-excel :data= "paymentsFiltered" type= "csv" name= "payments.csv">
+        <download-excel :data= "paymentsFiltered" :fields="reportFields" type= "csv" name= "payments.csv">
           <md-button class="md-button md-accent lblue">
             <md-icon>get_app</md-icon> Export
           </md-button>
@@ -79,6 +79,9 @@
         </md-table-cell>
         <md-table-cell md-label="Player Name">
           {{item.playerName}}
+        </md-table-cell>
+        <md-table-cell md-label="Payment Account">
+          {{item.paymentMethod}}
         </md-table-cell>
         <md-table-cell md-label="Amount" md-numeric>
           ${{item.amount}}
@@ -231,7 +234,25 @@
         chargeDateEnd: null,
         status: [],
         programs: [],
-        search: ''
+        search: '',
+        reportFields: {
+          'Invoice ID': 'receiptId',
+          'Charge Date': 'chargeDate',
+          'Invoice Date': 'receiptDate',
+          'Description': 'description',
+          'Program': 'program',
+          'Status': 'status',
+          'Parent Name': 'parentName',
+          'Parent Email': 'parentEmail',
+          'Parent Phone': 'parentPhone',
+          'Player Name': 'playerName',
+          'Amount': 'amount',
+          'Processing Fee': 'processingFee',
+          'PaidUp Fee': 'paidupFee',
+          'Total Fee': 'totalFee',
+          'Tags': 'tags',
+          'Payment Account': 'paymentMethod'
+        }
       }
     },
     apollo: {
@@ -256,6 +277,7 @@
         paidupFee
         totalFee,
         tags,
+        paymentMethod,
         index
       }
     }`,
