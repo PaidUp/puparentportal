@@ -81,7 +81,7 @@
           {{item.playerName}}
         </md-table-cell>
         <md-table-cell md-label="Payment Account">
-          {{item.paymentMethodBrand}}••••{{item.paymentMethodLast4}}
+          {{item.paymentMethodBrand ? item.paymentMethodBrand + '••••' : ''}}{{item.paymentMethodLast4}}
         </md-table-cell>
         <md-table-cell md-label="Amount" md-numeric>
           ${{item.amount}}
