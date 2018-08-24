@@ -205,7 +205,7 @@
       <br/>
     </md-drawer>
 
-
+    <v-pay-animation :animate="$apollo.loading" />
   </div>
 </template>
 
@@ -214,8 +214,10 @@
   import { mapState, mapActions } from 'vuex'
   import currency from '@/helpers/currency'
   import capitalize from '@/helpers/capitalize'
+  import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 
   export default {
+    components: { VPayAnimation },
     data: function () {
       return {
         showFiltersPanel: false,
