@@ -35,17 +35,17 @@
               Payments
             </div>
           </md-list-item>
-          <md-list-item to="/reports/deposits">
+          <md-list-item v-if="false" to="/reports/deposits">
             <div class="md-list-item-text">
               Deposits
             </div>
           </md-list-item>
-          <md-list-item to="/reports/cash">
+          <md-list-item v-if="false" to="/reports/cash">
             <div class="md-list-item-text">
               Cash Flow
             </div>
           </md-list-item>
-          <md-list-item to="/reports/eligibility">
+          <md-list-item v-if="false" to="/reports/eligibility">
             <div class="md-list-item-text">
               Eligibility
             </div>
@@ -54,7 +54,7 @@
       </md-list-item>
       
       <!-- FEES CALCULATOR -->
-      <md-list-item to="/calculator" v-if="isRole('coach')">
+      <md-list-item  to="/calculator" v-if="isRole('coach1')">
         <span class="md-list-item-text ca1 bold">Fees Calculator</span>
       </md-list-item>
 
