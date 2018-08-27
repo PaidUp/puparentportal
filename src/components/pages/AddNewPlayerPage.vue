@@ -72,7 +72,7 @@
       filtered () {
         if (!this.filter || this.filter.length < 3) return []
         return this.organizations.filter(org => {
-          return org.businessName.toUpperCase().indexOf(this.filter.toUpperCase()) > -1
+          return (org.businessName.toUpperCase().indexOf(this.filter.toUpperCase()) > -1) && (org.status === 'active')
         })
       },
       nextStep1 () {
