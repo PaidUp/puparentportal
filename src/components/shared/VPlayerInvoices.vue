@@ -60,7 +60,12 @@
         return this.invoice.paymentDetails.brand + '••••' + this.invoice.paymentDetails.last4
       },
       chargeDate () {
-        if (this.invoice.invoiceId) return new Date(this.invoice.dateCharge)
+        if (this.invoice.invoiceId) {
+          return this.invoice.attempts.reduce((curr, att) => {
+            if (att.object === 'charge') curr = new Date(att.created)
+            return curr
+          }, new Date(this.invoice.dateCharge))
+        }
         if (this.invoice.memoId) return new Date(this.invoice.createOn)
         return new Date()
       },

@@ -1,5 +1,12 @@
 import { organizationService, commerceService, productService, reduceDataCardService } from '@/services'
 
+function getChargeDate (invoice) {
+  return invoice.attempts.reduce((curr, att) => {
+    if (att.object === 'charge') curr = new Date(att.created)
+    return curr
+  }, new Date(invoice.dateCharge))
+}
+
 const module = {
   namespaced: true,
   state: {
@@ -135,6 +142,7 @@ const module = {
             seq: val.invoiceId,
             date: new Date(val.dateCharge),
             maxDate: val.maxDateCharge ? new Date(val.maxDateCharge) : new Date(val.dateCharge),
+            chargeDate: getChargeDate(val),
             price: val.price,
             status: val.status,
             paymentDetails: val.paymentDetails,

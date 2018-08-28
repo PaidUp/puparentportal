@@ -32,8 +32,12 @@
           <span class="md-error" v-if="!$v.updInvoice.price.decimal">{{ $t('validations.numeric', { field: 'Amount' }) }} </span>
         </md-field>
         <md-field v-if="disabled">
-          <label>Charge Date</label>
+          <label>Invoice Date</label>
           <md-input :value="$d(updInvoice.dateCharge, 'short')" :disabled="disabled"></md-input>
+        </md-field>
+        <md-field v-if="disabled">
+          <label>Charge Date</label>
+          <md-input :value="$d(invoice.chargeDate, 'short')" :disabled="disabled"></md-input>
         </md-field>
         <div v-else :class="{'md-invalid': $v.updInvoice.dateCharge.$error}">
           <label>Charge Date</label>
@@ -160,6 +164,7 @@
     watch: {
       invoice () {
         if (this.invoice) {
+          console.log(this.invoice)
           this.showDialog = true
           this.reset()
         } else {

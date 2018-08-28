@@ -13,7 +13,7 @@
         <div class="details">
           <span class="md-caption">{{ item.seq }}</span>
           <br/>
-          <span class="md-caption">{{ $d(item.date, 'short') }}</span>
+          <span class="md-caption">{{ $d(item.chargeDate || item.date, 'short') }}</span>
         </div>
         <v-currency :amount="item.price" clazz="total md-title"></v-currency>
       </div>
