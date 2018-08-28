@@ -205,7 +205,7 @@
       <br/>
     </md-drawer>
 
-    <v-pay-animation :animate="$apollo.loading" />
+    <v-pay-animation :animate="$apollo.loading || loading" />
   </div>
 </template>
 
@@ -255,7 +255,9 @@
           'Tags': 'tags',
           'Payment Account Brand': 'paymentMethodBrand',
           'Payment Account Last4': 'paymentMethodLast4'
-        }
+        },
+        loading: false,
+        paymentsFiltered: []
       }
     },
     apollo: {
@@ -316,65 +318,6 @@
           }
         })
         return ssn
-      },
-      paymentsFiltered () {
-        return this.payments.reduce((curr, receipt) => {
-          let receiptDate = receipt.receiptDate ? new Date(receipt.receiptDate) : ''
-          let chargeDate = receipt.chargeDate ? new Date(receipt.chargeDate) : ''
-          let resp = true
-          // invoice date filter
-          if (this.invoiceDateStart) {
-            if (!receiptDate) resp = false
-            else {
-              resp = (this.invoiceDateStart.getTime() <= receiptDate.getTime()) && resp
-            }
-          }
-          if (this.invoiceDateEnd) {
-            if (!receiptDate) resp = false
-            else {
-              resp = (this.invoiceDateEnd.getTime() >= receiptDate.getTime()) && resp
-            }
-          }
-          // charge date filter
-          if (this.chargeDateStart) {
-            if (!chargeDate) resp = false
-            else {
-              resp = (this.chargeDateStart.getTime() <= chargeDate.getTime()) && resp
-            }
-          }
-          if (this.chargeDateEnd) {
-            if (!chargeDate) resp = false
-            else {
-              resp = (this.chargeDateEnd.getTime() >= chargeDate.getTime()) && resp
-            }
-          }
-          if (this.programFilter.length) {
-            resp = (this.programFilter.indexOf(receipt.program) > -1) && resp
-          }
-          if (this.statusFilter.length) {
-            resp = (this.statusFilter.indexOf(receipt.status) > -1) && resp
-          }
-          if (this.tagsFilter.length) {
-            if (!receipt.tags) resp = false
-            else {
-              resp = receipt.tags.some(r => this.tagsFilter.indexOf(r) >= 0) && resp
-            }
-          }
-          if (this.search) {
-            resp = receipt.index.toLowerCase().includes(this.search.toLowerCase()) && resp
-          }
-          let tmp = JSON.parse(JSON.stringify(receipt))
-
-          tmp.chargeDate = tmp.chargeDate ? this.$d(new Date(tmp.chargeDate), 'short') : ''
-          tmp.receiptDate = tmp.receiptDate ? this.$d(new Date(tmp.receiptDate), 'short') : ''
-          tmp.status = this.capitalize(tmp.status)
-          tmp.amount = this.currency(tmp.amount)
-          tmp.processingFee = this.currency(tmp.processingFee)
-          tmp.paidupFee = this.currency(tmp.paidupFee)
-          tmp.totalFee = this.currency(tmp.totalFee)
-          if (resp) curr.push(tmp)
-          return curr
-        }, [])
       }
     },
     mounted () {
@@ -404,10 +347,29 @@
         this.programs = Array.from(programs).sort()
         this.status = Array.from(status).sort()
         this.tags = Array.from(tags).sort()
+        this.getPaymentsFiltered()
       },
       seasonSelected () {
         this.programFilter = []
         this.statusFilter = []
+      },
+      showFiltersPanel () {
+        if (!this.showFiltersPanel) this.getPaymentsFiltered()
+      },
+      invoiceDateStart () {
+        if (!this.invoiceDateStart) this.getPaymentsFiltered()
+      },
+      invoiceDateEnd () {
+        if (!this.invoiceDateEnd) this.getPaymentsFiltered()
+      },
+      chargeDateStart () {
+        if (!this.chargeDateStart) this.getPaymentsFiltered()
+      },
+      chargeDateEnd () {
+        if (!this.chargeDateEnd) this.getPaymentsFiltered()
+      },
+      search () {
+        this.getPaymentsFiltered()
       }
     },
     methods: {
@@ -427,12 +389,15 @@
       removeTag (value) {
         this.tags.push(value)
         this.tagsFilter.splice(this.tagsFilter.indexOf(value), 1)
+        this.getPaymentsFiltered()
       },
       removeProgram (value) {
         this.programFilter.splice(this.programFilter.indexOf(value), 1)
+        this.getPaymentsFiltered()
       },
       removeStatus (value) {
         this.statusFilter.splice(this.statusFilter.indexOf(value), 1)
+        this.getPaymentsFiltered()
       },
       removeAllTags () {
         this.tags = this.tags.concat(this.tagsFilter)
@@ -443,6 +408,69 @@
           this.organization = organization
           this.seasonSelected = organization.seasons[organization.seasons.length - 1]._id
         })
+      },
+      getPaymentsFiltered () {
+        this.loading = true
+        let response = this.payments.reduce((curr, receipt) => {
+          let receiptDate = receipt.receiptDate ? new Date(receipt.receiptDate) : ''
+          let chargeDate = receipt.chargeDate ? new Date(receipt.chargeDate) : ''
+          let resp = true
+          // invoice date filter
+          if (this.invoiceDateStart && resp) {
+            if (!receiptDate) resp = false
+            else {
+              resp = (this.invoiceDateStart.getTime() <= receiptDate.getTime()) && resp
+            }
+          }
+          if (this.invoiceDateEnd && resp) {
+            if (!receiptDate) resp = false
+            else {
+              resp = (this.invoiceDateEnd.getTime() >= receiptDate.getTime()) && resp
+            }
+          }
+          // charge date filter
+          if (this.chargeDateStart && resp) {
+            if (!chargeDate) resp = false
+            else {
+              resp = (this.chargeDateStart.getTime() <= chargeDate.getTime()) && resp
+            }
+          }
+          if (this.chargeDateEnd && resp) {
+            if (!chargeDate) resp = false
+            else {
+              resp = (this.chargeDateEnd.getTime() >= chargeDate.getTime()) && resp
+            }
+          }
+          if (this.programFilter.length && resp) {
+            resp = (this.programFilter.indexOf(receipt.program) > -1) && resp
+          }
+          if (this.statusFilter.length && resp) {
+            resp = (this.statusFilter.indexOf(receipt.status) > -1) && resp
+          }
+          if (this.tagsFilter.length && resp) {
+            if (!receipt.tags) resp = false
+            else {
+              resp = receipt.tags.some(r => this.tagsFilter.indexOf(r) >= 0) && resp
+            }
+          }
+          if (this.search && resp) {
+            resp = receipt.index.toLowerCase().includes(this.search.toLowerCase()) && resp
+          }
+          if (resp) {
+            let tmp = JSON.parse(JSON.stringify(receipt))
+            tmp.chargeDate = tmp.chargeDate ? this.$d(new Date(tmp.chargeDate), 'short') : ''
+            tmp.receiptDate = tmp.receiptDate ? this.$d(new Date(tmp.receiptDate), 'short') : ''
+            tmp.status = this.capitalize(tmp.status)
+            tmp.amount = this.currency(tmp.amount)
+            tmp.processingFee = this.currency(tmp.processingFee)
+            tmp.paidupFee = this.currency(tmp.paidupFee)
+            tmp.totalFee = this.currency(tmp.totalFee)
+            curr.push(tmp)
+          }
+          return curr
+        }, [])
+        this.loading = false
+        this.paymentsFiltered = response
       }
     }
   }
