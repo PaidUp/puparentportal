@@ -38,7 +38,7 @@
 
     <!-- TABLE -->
     <div class="table-container">
-    <md-table v-model="paymentsFiltered" class="md-table custom-table" >
+    <md-table v-model="paymentsFilteredPag" class="md-table custom-table" >
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
           <h1 class="md-title"></h1>
@@ -97,6 +97,10 @@
         </md-table-cell>
       </md-table-row>
     </md-table>
+      <div class="pagination">
+        <a href="#" @click="paginationStart = paginationStart - pag">❮</a>
+        <a href="#" @click="paginationStart = paginationStart + pag">❯</a>
+      </div>
     </div>
      <!-- FILTERS SIDEBAR -->
     <md-drawer class="md-right filters-sidebar" :md-active.sync="showFiltersPanel">
@@ -205,7 +209,7 @@
       <br/>
     </md-drawer>
 
-    <v-pay-animation :animate="$apollo.loading || loading" />
+    <v-pay-animation :animate="loading" />
   </div>
 </template>
 
@@ -257,7 +261,9 @@
           'Payment Account Last4': 'paymentMethodLast4'
         },
         loading: false,
-        paymentsFiltered: []
+        paymentsFiltered: [],
+        paginationStart: 0,
+        pag: 2
       }
     },
     apollo: {
@@ -296,6 +302,9 @@
         },
         skip () {
           return !this.organization && !this.seasonSelected
+        },
+        update: result => {
+          return result.payments
         }  // ,
         // pollInterval: 1000
       }
@@ -318,9 +327,18 @@
           }
         })
         return ssn
+      },
+      paymentsFilteredPag () {
+        return this.paymentsFiltered.reduce((curr, pf, idx) => {
+          if (idx >= this.paginationStart && idx <= (this.paginationStart + this.pag)) {
+            curr.push(pf)
+          }
+          return curr
+        }, [])
       }
     },
     mounted () {
+      this.loading = true
       if (this.user && this.user.organizationId) {
         this.loadOrganiztion(this.user.organizationId)
       }
@@ -350,11 +368,15 @@
         this.getPaymentsFiltered()
       },
       seasonSelected () {
+        this.loading = true
         this.programFilter = []
         this.statusFilter = []
       },
       showFiltersPanel () {
-        if (!this.showFiltersPanel) this.getPaymentsFiltered()
+        if (!this.showFiltersPanel) {
+          this.loading = true
+          this.getPaymentsFiltered()
+        }
       },
       invoiceDateStart () {
         if (!this.invoiceDateStart) this.getPaymentsFiltered()
@@ -411,7 +433,7 @@
       },
       getPaymentsFiltered () {
         this.loading = true
-        let response = this.payments.reduce((curr, receipt) => {
+        let response = this.payments.reduce((curr, receipt, idx) => {
           let receiptDate = receipt.receiptDate ? new Date(receipt.receiptDate) : ''
           let chargeDate = receipt.chargeDate ? new Date(receipt.chargeDate) : ''
           let resp = true
@@ -475,3 +497,26 @@
     }
   }
 </script>
+<style>
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
+
