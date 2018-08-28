@@ -1,6 +1,6 @@
 <template lang="pug">
 md-list-item(md-expand :md-expanded.sync="expand")
-  span.md-list-item-text.ca1.bold Pay New Invoice
+  span.md-list-item-text.ca1.bold Make/Authorize Payments For
   md-list(slot="md-expand")
     pu-item(:item="item" :to="item.to" v-for="item in items" :key="item.id")
     md-list-item(to="/players/new")

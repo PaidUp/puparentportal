@@ -1,6 +1,6 @@
 <template lang="pug">
 md-list-item(md-expand, :md-expanded.sync="expand")
-  span.md-list-item-text.ca1.bold Player Payment History
+  span.md-list-item-text.ca1.bold Payment History For
   md-list(slot="md-expand" v-if="beneficiaries")
     pu-item(:item="item" v-for="item in items" :key="item.id")
     md-list-item(v-if="false" to="/players/new")
