@@ -448,7 +448,9 @@
           if (this.invoiceDateEnd && resp) {
             if (!receiptDate) resp = false
             else {
-              resp = (this.invoiceDateEnd.getTime() >= receiptDate.getTime()) && resp
+              let tmpDate = new Date(this.invoiceDateEnd.getTime())
+              tmpDate.setHours(24, 59, 59)
+              resp = (tmpDate >= receiptDate.getTime()) && resp
             }
           }
           // charge date filter
@@ -461,7 +463,9 @@
           if (this.chargeDateEnd && resp) {
             if (!chargeDate) resp = false
             else {
-              resp = (this.chargeDateEnd.getTime() >= chargeDate.getTime()) && resp
+              let tmpDate = new Date(this.chargeDateEnd.getTime())
+              tmpDate.setHours(24, 59, 59)
+              resp = (this.chargeDateEnd.getTime() >= tmpDate) && resp
             }
           }
           if (this.programFilter.length && resp) {
