@@ -98,8 +98,8 @@
       </md-table-row>
     </md-table>
       <div class="pagination">
-        <a href="#" @click="paginationStart = paginationStart - pag">❮</a>
-        <a href="#" @click="paginationStart = paginationStart + pag">❯</a>
+        <a href="#" :class="{disabled: paginationStart <= 0}" @click="previous">❮ previous</a>
+        <a href="#" :class="{disabled: paginationStart >= paymentsFiltered.length - 1}" @click="next">next❯</a>
       </div>
     </div>
      <!-- FILTERS SIDEBAR -->
@@ -263,7 +263,7 @@
         loading: false,
         paymentsFiltered: [],
         paginationStart: 0,
-        pag: 2
+        pag: 100
       }
     },
     apollo: {
@@ -432,6 +432,7 @@
         })
       },
       getPaymentsFiltered () {
+        this.paginationStart = 0
         this.loading = true
         let response = this.payments.reduce((curr, receipt, idx) => {
           let receiptDate = receipt.receiptDate ? new Date(receipt.receiptDate) : ''
@@ -493,6 +494,14 @@
         }, [])
         this.loading = false
         this.paymentsFiltered = response
+      },
+      previous (event) {
+        if (this.paginationStart <= 0) return false
+        this.paginationStart = this.paginationStart - this.pag
+      },
+      next (event) {
+        if (this.paginationStart >= this.paymentsFiltered.length - 1) return false
+        this.paginationStart = this.paginationStart + this.pag
       }
     }
   }
@@ -500,6 +509,11 @@
 <style>
 .pagination {
     display: inline-block;
+}
+
+.disabled {
+  background-color: #ddd;
+  color: white !important;
 }
 
 .pagination a {
