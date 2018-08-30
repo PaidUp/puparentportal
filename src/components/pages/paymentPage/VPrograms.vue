@@ -2,8 +2,11 @@
   md-step(:id="stepId" md-label="Program" :md-description="step ? selected.name : pending" :md-done.sync="step")
     .programs(v-show="!season")
       .program.md-elevation-2.md-body-2(v-for="sns in seasons" @click="season = sns" :key="sns._id") {{ sns.name }}
-    .programs(v-show="season")
-      .program.md-elevation-2.md-body-2(@click="select(product)" v-for="product in productFiltered" :key="product._id") {{ product.name }}
+    .div(v-show="season")
+      md-field(md-clearable)
+        md-input(placeholder="Search..." v-model="search")
+      .programs
+        .program.md-elevation-2.md-body-2(@click="select(product)" v-for="product in productFiltered" :key="product._id") {{ product.name }}
     .step-actions
       md-button.lblue.md-accent(@click="cancel") CANCEL
       md-button.lblue.md-accent(v-show="season" @click="back") BACK
@@ -25,7 +28,8 @@ export default {
       season: null,
       productFiltered: [],
       pending: 'Choose your program.',
-      selected: {}
+      selected: {},
+      search: ''
     }
   },
   mounted () {
@@ -46,12 +50,10 @@ export default {
       }
     },
     season () {
-      this.productFiltered = this.products.filter(prd => {
-        if (!this.season) return true
-        return (prd.season === this.season._id) && (prd.status === 'active')
-      }).sort((prodA, prodB) => {
-        return prodA.name > prodB.name ? 1 : -1
-      })
+      this.applyFilter()
+    },
+    search () {
+      this.applyFilter()
     }
   },
   computed: {
@@ -70,11 +72,20 @@ export default {
     }
   },
   methods: {
+    applyFilter () {
+      this.productFiltered = this.products.filter(prd => {
+        if (!this.season) return true
+        return (prd.season === this.season._id) && (prd.status === 'active') && prd.name.toLowerCase().includes(this.search.toLowerCase())
+      }).sort((prodA, prodB) => {
+        return prodA.name > prodB.name ? 1 : -1
+      })
+    },
     select (param) {
       this.selected = param
       this.$emit('select', param)
     },
     back () {
+      this.search = ''
       this.season = null
     },
     cancel () {
