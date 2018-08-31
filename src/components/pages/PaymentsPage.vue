@@ -5,11 +5,11 @@
     </div>
     <md-steppers md-vertical md-linear md-dynamic-height :md-active-step.sync="active">
       <v-programs step-id="step2" :step="step2" :player="playerSelected" @select="setProgram" />
-      <v-payment-accounts step-id="step3" :step="step3" @select="setPaymentAccount" />
-      <v-payment-plans step-id="step4" :program="programSelected" :step="step4" @select="setPaymentPlan" :account="paymentAccountSelected" />
+      <!-- v-payment-accounts step-id="step3" :step="step3" @select="setPaymentAccount" / -->
+      <v-payment-plans step-id="step4" :program="programSelected" :step="step4" @selectAccount="setPaymentAccount" @select="setPaymentPlan" />
       <v-additional-info v-if="false" step-id="step5" :step="step5" @select="setCustomInfo" />
       <v-document-signature v-if="false" step-id="step6" :step="step6" @select="setSignature" />
-      <v-review-approve step-id="step7" :processing="processing" :step="step7" :account="paymentAccountSelected" :plan="paymentPlanSelected" @select="approve" />
+      <v-review-approve step-id="step7" :processing="processing" :step="step7" :plan="paymentPlanSelected" @select="approve" />
     </md-steppers>
     <v-pay-animation :animate="processing" @finish="redirect" />
   </div>
@@ -41,7 +41,6 @@
         playerSelected: null,
         processing: false,
         programSelected: null,
-        paymentAccountSelected: null,
         paymentPlanSelected: null
       }
     },
@@ -107,7 +106,7 @@
         if (program._id) {
           this.getPlans(this.programSelected._id)
           this.step2 = true
-          this.active = 'step3'
+          this.active = 'step4'
         } else {
           this.step2 = false
           this.active = 'step2'
@@ -115,10 +114,10 @@
       },
       setPaymentAccount (paymetAccount) {
         this.paymentAccountSelected = paymetAccount
-        if (paymetAccount) {
-          this.step3 = true
-          this.active = 'step4'
-        }
+        // if (paymetAccount) {
+        //   this.step3 = true
+        //   this.active = 'step4'
+        // }
       },
       setPaymentPlan (paymentPlan) {
         this.paymentPlanSelected = paymentPlan
@@ -146,7 +145,6 @@
         this.checkout({
           playerSelected: this.playerSelected,
           programSelected: this.programSelected,
-          paymentAccountSelected: this.paymentAccountSelected,
           paymentPlanSelected: this.paymentPlanSelected,
           user: this.user
         }).then(res => {

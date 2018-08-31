@@ -1,11 +1,10 @@
 <template lang="pug">
   md-step(:id="stepId" md-label="Review & Approve" md-description="" :md-done.sync="step")
-    .review-checks(v-if="account && plan")
+    .review-checks(v-if="plan")
       md-checkbox.lblue(v-if="chargeToday" v-model="check1") I authorize PaidUp to charge me 
         span.cgreen
           b ${{ currency(chargeToday) }} 
         b today 
-        // | on my {{ account.bank_name || account.brand }}••••{{ account.last4 }}
       md-checkbox.lblue(v-if="chargeRemaining" v-model="check2") I authorize PaidUp to setup the remaining 
         span.cgreen
           b ${{ currency(chargeRemaining) }} 
@@ -33,7 +32,6 @@ export default {
       type: Boolean,
       required: true
     },
-    account: Object,
     plan: Object
   },
   data () {
@@ -68,14 +66,6 @@ export default {
     }
   },
   watch: {
-    // chargeToday () {
-    //   if (this.chargeToday) this.check1 = true
-    //   else this.check1 = false
-    // },
-    // chargeRemaining () {
-    //   if (this.chargeToday) this.check2 = true
-    //   else this.check2 = false
-    // },
     plan () {
       this.check1 = true
       this.check2 = true

@@ -140,7 +140,7 @@ const module = {
     inactivePreorder (context, id) {
       return commerceService.inactivePreorder(id)
     },
-    checkout (context, { playerSelected, programSelected, paymentAccountSelected, paymentPlanSelected }) {
+    checkout (context, { playerSelected, programSelected, paymentPlanSelected }) {
       let order = {
         organizationId: playerSelected.organizationId,
         organizationName: playerSelected.organizationName,
