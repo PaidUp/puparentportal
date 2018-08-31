@@ -27,7 +27,7 @@ export default {
     return {
       season: null,
       productFiltered: [],
-      pending: 'Choose your program.',
+      pending: 'Click on your program below or search to filter the list.',
       selected: {},
       search: ''
     }

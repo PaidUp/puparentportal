@@ -1,16 +1,16 @@
 <template lang="pug">
   md-step(:id="stepId" md-label="Payment Plan" :md-description="description" :md-done.sync="step")
     div(v-if="preorders.length && !planSelected") Your payment plans
-    md-field(v-if="planSelected || !paymentAccount")
-      md-input(:readonly="true" placeholder="Payment Account" v-model="paymentAccountDesc" @click="showPaymentAccountDialog = true")
+    md-field(v-if="planSelected")
+      md-input(:readonly="true" :placeholder="placeholderSelectAccount" v-model="paymentAccountDesc" @click="showPaymentAccountDialog = true")
 
     .payment-plans.cards-layout
       v-payment-plan-card(v-if="!planSelected && paymentAccount" @click="select" v-for="plan in preorders" :key="plan._id" :plan="plan")
     div(v-if="preorders.length && !planSelected") All Payments Plan
     .payment-plans.cards-layout
-      v-payment-plan-card(v-if="!planSelected && paymentAccount" @click="select" v-for="plan in plansFiltered" :key="plan._id" :plan="plan")
+      v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in plansFiltered" :key="plan._id" :plan="plan")
       md-card(v-if="planSelected" v-for="due in dues" :key="due._id")
-        v-payment-plan-details(v-if="due.account" :due="due" @updated="editDue")
+        v-payment-plan-details(v-if="due.type === 'invoice'" :due="due" @updated="editDue")
         v-payment-plan-credit-details(v-if="!due.account" :due="due" @updated="editDue")
     .steppers-btns
       md-button.lblue.md-accent(@click="cancel") CANCEL
@@ -93,6 +93,9 @@ export default {
         })
       })
       return pps
+    },
+    placeholderSelectAccount () {
+      return this.paymentAccount ? 'Click to Select Payment Account' : 'Click to Add New Payment Accoun'
     }
   },
   watch: {
@@ -152,6 +155,7 @@ export default {
         this.description = this.planSelected.description
         this.planSelected.dues.forEach(due => {
           due.account = this.paymentAccount
+          due.type = 'invoice'
         })
         let items = this.planSelected.dues.concat(this.planSelected.credits)
         items.sort((itemA, itemB) => {

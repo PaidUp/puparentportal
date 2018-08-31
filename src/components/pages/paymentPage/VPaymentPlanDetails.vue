@@ -42,8 +42,8 @@ export default {
       return ['cblue']
     },
     accountDescription () {
-      if (this.due.account.object === 'card') return `${this.due.account.brand}••••${this.due.account.last4}`
-      else if (this.due.account.object === 'bank_account') return `${this.due.account.bank_name}••••${this.due.account.last4}`
+      if (this.due.account && this.due.account.object === 'card') return `${this.due.account.brand}••••${this.due.account.last4}`
+      else if (this.due.account && this.due.account.object === 'bank_account') return `${this.due.account.bank_name}••••${this.due.account.last4}`
       else return ''
     }
   },

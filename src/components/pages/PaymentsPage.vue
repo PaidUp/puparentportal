@@ -60,7 +60,7 @@
     },
     watch: {
       user () {
-        this.load()
+        // this.load()
       },
       programSelected () {
         this.paymentPlanSelected = null
