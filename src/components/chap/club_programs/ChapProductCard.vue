@@ -1,6 +1,6 @@
 <template>
-  <div @click="selectProgram">
-    <md-card md-with-hover>
+  <md-card md-with-hover>
+    <div @click="selectProgram" class="click-card-box">
       <div>
         <div class="title">{{item.name}}</div>
         <div class="caption">{{this.players}}</div>
@@ -24,60 +24,59 @@
           <div class="tot-title">Total</div>
           <div class="tot-number">${{total}}</div>
         </div>
+      </div>
 
-
-        <div class="actions">
-          <md-button class="md-icon-button">
-            <md-icon>visibility_off</md-icon>
+      <div class="actions">
+        <md-button class="md-icon-button action-trigger">
+          <md-icon class="action-trigger">visibility_off</md-icon>
+        </md-button>
+        <md-menu md-size="small" md-direction="top-start">
+          <md-button class="md-icon-button md-accent lblue" md-menu-trigger>
+            <md-icon class="action-trigger">more_vert</md-icon>
           </md-button>
-          <md-menu md-size="small" md-direction="top-start">
-            <md-button class="md-icon-button md-accent lblue" md-menu-trigger>
-              <md-icon>more_vert</md-icon>
-            </md-button>
-            <md-menu-content>
-              <md-menu-item>
-                DELETE
-              </md-menu-item>
-              <md-menu-item>
-                DUPLICATE
-              </md-menu-item>
-              <md-menu-item>
-                EDIT
-              </md-menu-item>
-            </md-menu-content>
-          </md-menu>
+          <md-menu-content>
+            <md-menu-item>
+              DELETE
+            </md-menu-item>
+            <md-menu-item>
+              DUPLICATE
+            </md-menu-item>
+            <md-menu-item>
+              EDIT
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+
+
+      <div v-if="false" class="bars-with-hover">
+        <div class="green" :style="paidWidth">
+          <div class="hover">
+            <div class="hover-title">Paid</div>
+            <div class="hover-number">${{paid}}</div>
+          </div>
         </div>
-
-
-        <div v-if="false" class="bars-with-hover">
-          <div class="green" :style="paidWidth">
-            <div class="hover">
-              <div class="hover-title">Paid</div>
-              <div class="hover-number">${{paid}}</div>
-            </div>
+        <div class="gray" :style="unpaidWidth">
+          <div class="hover">
+            <div class="hover-title">Unpaid</div>
+            <div class="hover-number">${{unpaid}}</div>
           </div>
-          <div class="gray" :style="unpaidWidth">
-            <div class="hover">
-              <div class="hover-title">Unpaid</div>
-              <div class="hover-number">${{unpaid}}</div>
-            </div>
+        </div>
+        <div class="red" :style="overdueWidth">
+          <div class="hover">
+            <div class="hover-title">Overdue</div>
+            <div class="hover-number">${{overdue}}</div>
           </div>
-          <div class="red" :style="overdueWidth">
-            <div class="hover">
-              <div class="hover-title">Overdue</div>
-              <div class="hover-number">${{overdue}}</div>
-            </div>
-          </div>
-          <div class="blue" :style="otherWidth">
-            <div class="hover">
-              <div class="hover-title">Other</div>
-              <div class="hover-number">${{other}}</div>
-            </div>
+        </div>
+        <div class="blue" :style="otherWidth">
+          <div class="hover">
+            <div class="hover-title">Other</div>
+            <div class="hover-number">${{other}}</div>
           </div>
         </div>
       </div>
-    </md-card>
-  </div>
+    </div>
+  </md-card>
 </template>
 <script>
 import currency from '@/helpers/currency'
@@ -133,7 +132,10 @@ export default {
     ...mapMutations('clubprogramsModule', {
       setProgramSelected: 'setProgramSelected'
     }),
-    selectProgram () {
+    selectProgram (e) {
+      if (e.target.className.includes('action-trigger')) {
+        return false
+      }
       this.setProgramSelected(this.item.id)
     }
   }

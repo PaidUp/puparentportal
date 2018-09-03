@@ -1,5 +1,4 @@
 <template>
-  <div>
 		<md-card md-with-hover class="card-player-eligibility">
 			<div class="top-box" @click="selectPlayer">
 				<md-avatar class="md-size-c">
@@ -62,7 +61,6 @@
 				</div>
 			</div>
 		</md-card>
-	</div>
 </template>
 <script>
 import { mapActions, mapMutations } from 'vuex'

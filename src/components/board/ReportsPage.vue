@@ -98,9 +98,17 @@
       </md-table-row>
     </md-table>
       <div class="pagination">
-        <a href="#" :class="{disabled: paginationStart <= 0}" @click="previous">❮ previous</a>
-        <a href="#" :class="{disabled: paginationStart >= paymentsFiltered.length - 1}" @click="next">next❯</a>
+      <md-button class="md-icon-button md-primary" :disabled="paginationStart <= 0" @click="previous">
+        <md-icon>chevron_left</md-icon>
+      </md-button>
+      <md-button class="md-icon-button md-primary" :disabled="paginationStart >= paymentsFiltered.length - 1" @click="next">
+        <md-icon>chevron_right</md-icon>
+      </md-button>
       </div>
+      <!-- <div class="pagination">
+        <a href="#" :class="{disabled: paginationStart <= 0}" @click="previous"><md-icon>chevron_left</md-icon> Previous</a>
+        <a href="#" :class="{disabled: paginationStart >= paymentsFiltered.length - 1}" @click="next">Next <md-icon class="md-primary">chevron_right</md-icon></a>
+      </div> -->
     </div>
      <!-- FILTERS SIDEBAR -->
     <md-drawer class="md-right filters-sidebar" :md-active.sync="showFiltersPanel">
@@ -513,28 +521,40 @@
 <style>
 .pagination {
     display: inline-block;
+    margin-top: 10px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .disabled {
   background-color: #ddd;
   color: white !important;
+  border: 1px solid #ddd;
 }
 
 .pagination a {
     color: black;
-    float: left;
     padding: 8px 16px;
     text-decoration: none;
     transition: background-color .3s;
-    border: 1px solid #ddd;
+    border: 1px solid #00B29F;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px
 }
 
 .pagination a.active {
-    background-color: #4CAF50;
+    background-color: #00B29F;
     color: white;
-    border: 1px solid #4CAF50;
+    border: 1px solid #00B29F;
 }
 
-.pagination a:hover:not(.active) {background-color: #ddd;}
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+}
 </style>
 

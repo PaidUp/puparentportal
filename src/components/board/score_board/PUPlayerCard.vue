@@ -1,44 +1,44 @@
 <template>
-  <div @click="selectPlayer">
-		<md-card md-with-hover class="card-player-eligibility">
-			<div class="top-box">
-				<md-avatar class="md-size-c">
-					<img v-if="showAvatar" @error="showAvatar = false" :src="avatar" alt="avatar">
-					<md-icon v-else class="md-size-2x ca1"> account_circle </md-icon>
-				</md-avatar>
-				<div class="name">{{ item.firstName }} {{ item.lastName }}</div>
-				<div class="eligibility cred">{{item.overdue ? 'Inelegible' : '&nbsp;'}}</div>
-				<div class="total-label">Total</div>
-				<div class="total-amount">${{total}}</div>
-			</div>
-			<div class="bars-with-hover">
-				<div class="green" :style="paidWidth">
-					<div class="hover">
-						<div class="hover-title">Paid</div>
-						<div class="hover-number">${{paid}}</div>
-					</div>
-				</div>
-				<div class="gray" :style="unpaidWidth">
-					<div class="hover">
-						<div class="hover-title">Unpaid</div>
-						<div class="hover-number">${{unpaid}}</div>
-					</div>
-				</div>
-				<div class="red" :style="overdueWidth">
-					<div class="hover">
-						<div class="hover-title">Overdue</div>
-						<div class="hover-number">${{overdue}}</div>
-					</div>
-				</div>
-				<div class="blue" :style="otherWidth">
-					<div class="hover">
-						<div class="hover-title">Other</div>
-						<div class="hover-number">${{other}}</div>
-					</div>
-				</div>
-			</div>
+		<md-card md-with-hover>
+			<div class="card-player-eligibility"  @click="selectPlayer">
+        <div class="top-box">
+        				<md-avatar class="md-size-c">
+        					<img v-if="showAvatar" @error="showAvatar = false" :src="avatar" alt="avatar">
+        					<md-icon v-else class="md-size-2x ca1"> account_circle </md-icon>
+        				</md-avatar>
+        				<div class="name">{{ item.firstName }} {{ item.lastName }}</div>
+        				<div class="eligibility cred">{{item.overdue ? 'Inelegible' : '&nbsp;'}}</div>
+        				<div class="total-label">Total</div>
+        				<div class="total-amount">${{total}}</div>
+        			</div>
+        			<div class="bars-with-hover">
+        				<div class="green" :style="paidWidth">
+        					<div class="hover">
+        						<div class="hover-title">Paid</div>
+        						<div class="hover-number">${{paid}}</div>
+        					</div>
+        				</div>
+        				<div class="gray" :style="unpaidWidth">
+        					<div class="hover">
+        						<div class="hover-title">Unpaid</div>
+        						<div class="hover-number">${{unpaid}}</div>
+        					</div>
+        				</div>
+        				<div class="red" :style="overdueWidth">
+        					<div class="hover">
+        						<div class="hover-title">Overdue</div>
+        						<div class="hover-number">${{overdue}}</div>
+        					</div>
+        				</div>
+        				<div class="blue" :style="otherWidth">
+        					<div class="hover">
+        						<div class="hover-title">Other</div>
+        						<div class="hover-number">${{other}}</div>
+        					</div>
+        				</div>
+        			</div>
+      </div>
 		</md-card>
-	</div>
 </template>
 <script>
 import { mapActions, mapMutations } from 'vuex'
