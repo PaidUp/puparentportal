@@ -1,8 +1,10 @@
 <template lang="pug">
   md-step(:id="stepId" md-label="Payment Plan" :md-description="description" :md-done.sync="step")
-    .md-theme-default(v-if="planSelected") Your account will be automatically charged on the dates below.
+    .md-theme-default(v-if="planSelected") You are accepting the entire payment plan and cannot pay just a single invoice.
+      br
+      | Your account will be automatically charged on the dates below (autopay).
       br 
-      | Click on EDIT on each invoice below to change the payment date or payment account for any specific installment.
+      | Click EDIT on each invoice below to change the payment date or payment account for any specific installment.
       br
       | If you need a custom payment plan, please email 
       a(href="mailto:support@getpaidup.com") support@getpaidup.com 
