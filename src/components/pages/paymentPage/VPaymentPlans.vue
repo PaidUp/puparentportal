@@ -1,9 +1,19 @@
 <template lang="pug">
   md-step(:id="stepId" md-label="Payment Plan" :md-description="description" :md-done.sync="step")
-    div(v-if="preorders.length && !planSelected") Your payment plans
-    md-field(v-if="planSelected")
-      md-input(:readonly="true" :placeholder="placeholderSelectAccount" v-model="paymentAccountDesc" @click="showPaymentAccountDialog = true")
+    .md-theme-default(v-if="planSelected") Your account will be automatically charged on the dates below.
+      br 
+      | Click on EDIT on each invoice below to change the payment date or payment account for any specific installment.
+      br
+      | If you need a custom payment plan, please email 
+      a(href="mailto:support@getpaidup.com") support@getpaidup.com 
+      | or call 
+      a(href="tel:+18557643232") (855) 764-3232.
 
+    div(v-if="preorders.length && !planSelected") Your payment plans
+    .custom-input-small
+      md-field(v-if="planSelected")
+        md-input(:readonly="true" :placeholder="placeholderSelectAccount" v-model="paymentAccountDesc" @click="showPaymentAccountDialog = true")
+        md-icon arrow_drop_down
     .payment-plans.cards-layout
       v-payment-plan-card(v-if="!planSelected && paymentAccount" @click="select" v-for="plan in preorders" :key="plan._id" :plan="plan")
     div(v-if="preorders.length && !planSelected") All Payments Plan

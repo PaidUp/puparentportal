@@ -3,8 +3,10 @@
     .programs(v-show="!season")
       .program.md-elevation-2.md-body-2(v-for="sns in seasons" @click="season = sns" :key="sns._id") {{ sns.name }}
     .div(v-show="season")
-      md-field(md-clearable)
-        md-input(placeholder="Search..." v-model="search")
+      .custom-input-small
+        md-field(md-clearable)
+          md-input(placeholder="Search..." v-model="search")
+          md-icon search
       .programs
         .program.md-elevation-2.md-body-2(@click="select(product)" v-for="product in productFiltered" :key="product._id") {{ product.name }}
     .step-actions
