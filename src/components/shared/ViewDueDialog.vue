@@ -69,7 +69,7 @@
         amount: currency(this.due.amount),
         dateCharge: new Date(this.due.dateCharge),
         description: this.due.description,
-        paymentMethod: `${this.due.account.brand || this.due.account.bank_name}••••${this.due.account.last4}`,
+        paymentMethod: this.due.account ? `${this.due.account.brand || this.due.account.bank_name}••••${this.due.account.last4}` : '',
         paymentMethodObj: null,
         submited: false,
         showPaymentAccountDialog: false

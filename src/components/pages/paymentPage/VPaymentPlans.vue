@@ -17,13 +17,13 @@
         md-input(:readonly="true" :placeholder="placeholderSelectAccount" v-model="paymentAccountDesc" @click="showPaymentAccountDialog = true")
         md-icon arrow_drop_down
     .payment-plans.cards-layout
-      v-payment-plan-card(v-if="!planSelected && paymentAccount" @click="select" v-for="plan in preorders" :key="plan._id" :plan="plan")
+      v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in preorders" :key="plan._id" :plan="plan")
     div(v-if="preorders.length && !planSelected") All Payments Plan
     .payment-plans.cards-layout
       v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in plansFiltered" :key="plan._id" :plan="plan")
       md-card(v-if="planSelected" v-for="due in dues" :key="due._id")
         v-payment-plan-details(v-if="due.type === 'invoice'" :due="due" @updated="editDue")
-        v-payment-plan-credit-details(v-if="!due.account" :due="due" @updated="editDue")
+        v-payment-plan-credit-details(v-else :due="due" @updated="editDue")
     .steppers-btns
       md-button.lblue.md-accent(@click="cancel") CANCEL
       md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK    
