@@ -3,6 +3,9 @@
     <div class="dialog-header white-dialog-header">
       <div class="title">Choose Payment Account</div>
     </div>
+    <div class="details-box cred bolder">
+      IMPORTANT: There is an additional 2.9% + $0.30 fee per installment for paying with a debit/credit card. Bank account/ACH payments do not have a fee.
+    </div>
     <md-list class="md-double-line">
       <md-subheader>Existing Accounts</md-subheader>
       <div v-for="account in accounts" :key="account.id">

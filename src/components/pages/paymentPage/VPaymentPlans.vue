@@ -17,6 +17,9 @@
         md-input(:readonly="true" :placeholder="placeholderSelectAccount" v-model="paymentAccountDesc" @click="showPaymentAccountDialog = true")
         md-icon arrow_drop_down
 
+    .cred(v-if="planSelected && paymentAccount && paymentAccount.object === 'card'")  IMPORTANT: There is an additional 2.9% + $0.30 fee per installment for paying with a debit/credit card. Bank account/ACH payments do not have a fee.
+    br
+
     .steppers-btns
       md-button.lblue.md-accent(@click="cancel") CANCEL
       md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK    
@@ -40,6 +43,7 @@ import VPaymentPlanCard from './VPaymentPlanCard.vue'
 import VPaymentPlanDetails from './VPaymentPlanDetails.vue'
 import VPaymentPlanCreditDetails from './VPaymentPlanCreditDetails.vue'
 import PaymentAccountsDialog from '@/components/shared/payment/PaymentAccountsDialog.vue'
+import Calculations from '@/helpers/calculations'
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -181,7 +185,13 @@ export default {
         })
         let resp = {}
         items.forEach(due => {
-          resp[due._id] = Object.assign({}, due)
+          let cloneDue = Object.assign({}, due)
+          if (this.program.unbundle && cloneDue.type === 'invoice') {
+            let calculation = Calculations.exec(this.program, cloneDue)
+            cloneDue.amount = calculation.price
+          }
+
+          resp[due._id] = cloneDue
         })
         this.dues = resp
       }
