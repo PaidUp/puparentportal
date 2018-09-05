@@ -16,6 +16,13 @@
       md-field(v-if="planSelected")
         md-input(:readonly="true" :placeholder="placeholderSelectAccount" v-model="paymentAccountDesc" @click="showPaymentAccountDialog = true")
         md-icon arrow_drop_down
+
+    .steppers-btns
+      md-button.lblue.md-accent(@click="cancel") CANCEL
+      md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK    
+      md-button.lblue.md-accent.md-raised(v-if="planSelected" @click="accept") ACCEPT PAYMENT PLAN
+    br
+
     .payment-plans.cards-layout
       v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in preorders" :key="plan._id" :plan="plan")
     div(v-if="preorders.length && !planSelected") All Payments Plan
@@ -24,10 +31,7 @@
       md-card(v-if="planSelected" v-for="due in dues" :key="due._id")
         v-payment-plan-details(v-if="due.type === 'invoice'" :due="due" @updated="editDue")
         v-payment-plan-credit-details(v-else :due="due" @updated="editDue")
-    .steppers-btns
-      md-button.lblue.md-accent(@click="cancel") CANCEL
-      md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK    
-      md-button.lblue.md-accent.md-raised(v-if="planSelected" @click="accept") ACCEPT PAYMENT PLAN
+    
     payment-accounts-dialog(:showDialog="showPaymentAccountDialog" @close="showPaymentAccountDialog = false" :accounts="paymentAccounts" @selected="selectAccount")
 
 </template>
