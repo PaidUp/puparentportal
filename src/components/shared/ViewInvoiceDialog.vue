@@ -112,6 +112,7 @@
   import { mapGetters, mapActions } from 'vuex'
   import currency from '@/helpers/currency'
   import capitalize from '@/helpers/capitalize'
+  import Calculations from '@/helpers/calculations'
 
   export default {
     components: { VPayAnimation, PaymentAccountsDialog },
@@ -163,6 +164,10 @@
         if (account && account.id) {
           this.paymentMethod = `${account.brand || account.bank_name}••••${account.last4}`
           this.paymentMethodObj = account
+          if (this.invoice.unbundle) {
+            let calculation = Calculations.exec(this.invoice, account.object, this.invoice.priceBase)
+            this.amount = calculation.price
+          }
         } else {
           this.paymentMethodObj = null
           this.paymentMethod = `${this.invoice.paymentDetails.brand}••••${this.invoice.paymentDetails.last4}`
@@ -174,6 +179,7 @@
         let params = {
           id: this.invoice._id,
           values: {
+            unbundle: this.invoice.unbundle,
             dateCharge: this.dateCharge,
             status: 'autopay'
           }
