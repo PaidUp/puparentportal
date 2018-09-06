@@ -27,7 +27,8 @@ export default {
   computed: {
     total () {
       let total = this.plan.dues.reduce((subTotal, due) => {
-        return subTotal + due.amount
+        due.baseAmount = due.baseAmount || due.amount
+        return subTotal + due.baseAmount
       }, 0)
       return currency(total)
     },

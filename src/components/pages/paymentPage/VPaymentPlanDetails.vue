@@ -18,7 +18,7 @@
     <div class="actions">
       <md-button class="lblue md-accent" @click="showEditDialog = true">EDIT</md-button>
     </div>
-    <view-due-dialog :due="due" :showDialog="showEditDialog" @cancel="showEditDialog = false" @updated="editDue"/>
+    <view-due-dialog :due="due" :program="program" :showDialog="showEditDialog" @cancel="showEditDialog = false" @updated="editDue"/>
   </div>
 </template>
 <script>
@@ -28,7 +28,8 @@ import ViewDueDialog from '@/components/shared/ViewDueDialog.vue'
 export default {
   components: { VCurrency, ViewDueDialog },
   props: {
-    due: Object
+    due: Object,
+    program: Object
   },
   data () {
     return {

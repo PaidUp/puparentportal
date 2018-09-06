@@ -26,14 +26,14 @@
         <md-field>
           <label>Amount</label>
           <span class="md-prefix">$</span>
-          <md-input :disabled="true" v-model="amount"></md-input>
+          <md-input :disabled="true" :value="amount"></md-input>
         </md-field>
         <md-datepicker v-model="dateCharge" :md-disabled-dates="disabledDates">
           <label>Charge date</label>
         </md-datepicker>
         <md-field>
           <label for="payment">Payment Account</label>
-          <md-input :readonly="true" v-model="paymentMethod" @click="showPaymentAccountDialog = true"></md-input>
+          <md-input :readonly="true" :value="paymentMethod" @click="showPaymentAccountDialog = true"></md-input>
         </md-field>
         </div>
       </md-tab>
@@ -42,7 +42,7 @@
       <md-button class="md-accent lblue" @click="$emit('cancel')">CANCEL</md-button>
       <md-button class="md-accent lblue" @click="apply">APPLY</md-button>
     </md-dialog-actions>
-    <payment-accounts-dialog :showDialog="showPaymentAccountDialog" :accounts="paymentAccounts" @selected="selectAccount"/>
+    <payment-accounts-dialog :unbundle="program.unbundle" :showDialog="showPaymentAccountDialog" :accounts="paymentAccounts" @selected="selectAccount"/>
   </md-dialog>
 </template>
 
@@ -50,11 +50,13 @@
   import PaymentAccountsDialog from '@/components/shared/payment/PaymentAccountsDialog.vue'
   import { mapGetters } from 'vuex'
   import currency from '@/helpers/currency'
+  import Calculations from '@/helpers/calculations'
 
   export default {
     components: { PaymentAccountsDialog },
     props: {
       due: Object,
+      program: Object,
       showDialog: Boolean
     },
     data: function () {
@@ -66,7 +68,6 @@
           today.setHours(0, 0, 0, 0)
           return date.getTime() < today.getTime() || date.getTime() > maxDateCharge
         },
-        amount: currency(this.due.amount),
         dateCharge: new Date(this.due.dateCharge),
         description: this.due.description,
         paymentMethod: this.due.account ? `${this.due.account.brand || this.due.account.bank_name}••••${this.due.account.last4}` : '',
@@ -80,6 +81,10 @@
         if (account && account.id) {
           this.paymentMethod = `${account.brand || account.bank_name}••••${account.last4}`
           this.paymentMethodObj = account
+          if (this.program.unbundle && this.due.type === 'invoice') {
+            let calculation = Calculations.exec(this.program, account.object, this.due.baseAmount)
+            this.due.amount = calculation.price
+          }
         } else {
           this.paymentMethodObj = null
           this.paymentMethod = `${this.due.account.brand}••••${this.due.account.last4}`
@@ -97,7 +102,15 @@
     computed: {
       ...mapGetters('paymentModule', {
         paymentAccounts: 'paymentAccounts'
-      })
+      }),
+      amount () {
+        return currency(this.due.amount)
+      }
+    },
+    watch: {
+      due () {
+        this.paymentMethod = this.due.account ? `${this.due.account.brand || this.due.account.bank_name}••••${this.due.account.last4}` : ''
+      }
     }
   }
 </script>

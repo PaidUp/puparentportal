@@ -17,7 +17,7 @@
         md-input(:readonly="true" :placeholder="placeholderSelectAccount" v-model="paymentAccountDesc" @click="showPaymentAccountDialog = true")
         md-icon arrow_drop_down
 
-    .cred(v-if="planSelected && paymentAccount && paymentAccount.object === 'card'")  IMPORTANT: There is an additional 2.9% + $0.30 fee per installment for paying with a debit/credit card. Bank account/ACH payments do not have a fee.
+    .cred(v-if="planSelected && paymentAccount && paymentAccount.object === 'card' && program.unbundle")  IMPORTANT: There is an additional 2.9% + $0.30 fee per installment for paying with a debit/credit card. Bank account/ACH payments do not have a fee.
     br
 
     .steppers-btns
@@ -32,10 +32,10 @@
     .payment-plans.cards-layout
       v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in plansFiltered" :key="plan._id" :plan="plan")
       md-card(v-if="planSelected" v-for="due in dues" :key="due._id")
-        v-payment-plan-details(v-if="due.type === 'invoice'" :due="due" @updated="editDue")
+        v-payment-plan-details(v-if="due.type === 'invoice'" :due="due" :program="program" @updated="editDue")
         v-payment-plan-credit-details(v-else :due="due" @updated="editDue")
     
-    payment-accounts-dialog(:showDialog="showPaymentAccountDialog" @close="showPaymentAccountDialog = false" :accounts="paymentAccounts" @selected="selectAccount")
+    payment-accounts-dialog(:showDialog="showPaymentAccountDialog" :unbundle="program ? program.unbundle : false" @close="showPaymentAccountDialog = false" :accounts="paymentAccounts" @selected="selectAccount")
 
 </template>
 <script>
@@ -186,8 +186,9 @@ export default {
         let resp = {}
         items.forEach(due => {
           let cloneDue = Object.assign({}, due)
+          cloneDue.baseAmount = cloneDue.baseAmount || cloneDue.amount
           if (this.program.unbundle && cloneDue.type === 'invoice') {
-            let calculation = Calculations.exec(this.program, cloneDue)
+            let calculation = Calculations.exec(this.program, cloneDue.account.object, cloneDue.baseAmount)
             cloneDue.amount = calculation.price
           }
 
