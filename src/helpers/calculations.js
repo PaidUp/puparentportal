@@ -57,7 +57,6 @@ export default class Calculations {
     } else if (type === 'bank_account') {
       result = bank(product, amount)
     }
-    console.log('res: ', result)
     return result
   }
 }
