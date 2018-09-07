@@ -18,10 +18,11 @@ function card (product, amount) {
     totalFee: 0
   }
 
-  result.price = round(cardFeeFlat + (basePrice / (1 - cardFee)))
-  result.paidupFee = round(basePrice * paidUpFee + paidUpFeeFlat)
-  result.processingFee = round(result.price * cardFee + cardFeeFlat)
+  result.price = round((Math.ceil(cardFeeFlat + (basePrice / (1 - cardFee)) * 100)) / 100)
+  result.paidupFee = round(Math.ceil((basePrice * paidUpFee + paidUpFeeFlat) * 100) / 100)
+  result.processingFee = round(Math.ceil((result.price * cardFee + cardFeeFlat) * 100) / 100)
   result.totalFee = round(result.paidupFee + result.processingFee)
+
   return result
 }
 
@@ -41,8 +42,8 @@ function bank (product, amount) {
   }
 
   result.price = round(basePrice)
-  result.processingFee = round(result.price * achFee + achFeeFlat)
-  result.paidupFee = round(((basePrice * paidUpFee) + paidUpFeeFlat) - result.processingFee)
+  result.processingFee = round(Math.ceil((result.price * achFee + achFeeFlat) * 100) / 100)
+  result.paidupFee = round(Math.ceil((basePrice * paidUpFee + paidUpFeeFlat) * 100) / 100)
   result.totalFee = round(result.paidupFee + result.processingFee)
 
   return result
@@ -56,6 +57,7 @@ export default class Calculations {
     } else if (type === 'bank_account') {
       result = bank(product, amount)
     }
+    console.log('res: ', result)
     return result
   }
 }
