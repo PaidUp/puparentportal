@@ -144,11 +144,16 @@ const module = {
             maxDate: val.maxDateCharge ? new Date(val.maxDateCharge) : new Date(val.dateCharge),
             chargeDate: getChargeDate(val),
             price: val.price,
+            priceBase: val.priceBase,
+            processingFee: val.stripeFee,
+            collectionFees: val.collectionFees,
             status: val.status,
             paymentDetails: val.paymentDetails,
+            processingFees: val.processingFees,
             user: val.user,
             productId: val.productId,
             tags: val.tags || [],
+            unbundle: val.unbundle,
             type: 'invoice',
             __v: val.__v
           })
