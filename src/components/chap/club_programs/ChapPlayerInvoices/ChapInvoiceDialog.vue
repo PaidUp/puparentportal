@@ -177,7 +177,6 @@
     watch: {
       invoice () {
         if (this.invoice) {
-          console.log(this.invoice)
           this.showDialog = true
           this.reset()
         } else {

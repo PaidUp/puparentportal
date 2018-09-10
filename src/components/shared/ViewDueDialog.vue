@@ -23,8 +23,18 @@
           <label>Description</label>
           <md-input disabled v-model="due.description"></md-input>
         </md-field>
+        <md-field v-if="program.unbundle">
+          <label>Base Amount</label>
+          <span class="md-prefix">$</span>
+          <md-input :disabled="true" :value="baseAmount"></md-input>
+        </md-field>
+        <md-field v-if="program.unbundle">
+          <label>Processing Fee</label>
+          <span class="md-prefix">$</span>
+          <md-input :disabled="true" :value="processingFee"></md-input>
+        </md-field>
         <md-field>
-          <label>Amount</label>
+          <label>Charge Amount</label>
           <span class="md-prefix">$</span>
           <md-input :disabled="true" :value="amount"></md-input>
         </md-field>
@@ -73,7 +83,13 @@
         paymentMethod: this.due.account ? `${this.due.account.brand || this.due.account.bank_name}••••${this.due.account.last4}` : '',
         paymentMethodObj: null,
         submited: false,
-        showPaymentAccountDialog: false
+        showPaymentAccountDialog: false,
+        calculation: null
+      }
+    },
+    created () {
+      if (this.program.unbundle && this.due.type === 'invoice') {
+        this.calculation = Calculations.exec(this.program, this.due.account.object, this.due.baseAmount)
       }
     },
     methods: {
@@ -82,8 +98,8 @@
           this.paymentMethod = `${account.brand || account.bank_name}••••${account.last4}`
           this.paymentMethodObj = account
           if (this.program.unbundle && this.due.type === 'invoice') {
-            let calculation = Calculations.exec(this.program, account.object, this.due.baseAmount)
-            this.due.amount = calculation.price
+            this.calculation = Calculations.exec(this.program, account.object, this.due.baseAmount)
+            this.due.amount = this.calculation.price
           }
         } else {
           this.paymentMethodObj = null
@@ -105,6 +121,13 @@
       }),
       amount () {
         return currency(this.due.amount)
+      },
+      baseAmount () {
+        return currency(this.due.baseAmount)
+      },
+      processingFee () {
+        if ((this.paymentMethodObj && this.paymentMethodObj.object === 'bank_account') || this.due.account.object === 'bank_account') return currency(0)
+        return currency(this.calculation.processingFee)
       }
     },
     watch: {
