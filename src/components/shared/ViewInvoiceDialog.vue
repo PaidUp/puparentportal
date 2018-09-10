@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="invoice-dialog">
+  <md-dialog :md-active.sync="showDialog" @md-closed="closeDialog" class="invoice-dialog">
     <div class="dialog-header">
       <div class="title">Invoice: {{ invoice.invoiceId }}</div>
       <md-menu v-if="false" md-size="small" md-direction="bottom-end">
@@ -32,8 +32,18 @@
           <label>Description</label>
           <md-input disabled v-model="invoice.label"></md-input>
         </md-field>
+        <md-field v-if="invoice.unbundle">
+          <label>Base Amount</label>
+          <span class="md-prefix">$</span>
+          <md-input :disabled="true" v-model="baseAmount"></md-input>
+        </md-field>
+        <md-field v-if="invoice.unbundle">
+          <label>Processing Fee</label>
+          <span class="md-prefix">$</span>
+          <md-input :disabled="true" v-model="processingFees"></md-input>
+        </md-field>
         <md-field>
-          <label>Amount</label>
+          <label>Charge Amount</label>
           <span class="md-prefix">$</span>
           <md-input :disabled="true" v-model="amount"></md-input>
         </md-field>
@@ -132,12 +142,15 @@
         dateCharge: new Date(),
         description: '',
         amount: 0,
+        baseAmount: 0,
         status: '',
         paymentMethod: '',
         paymentMethodObj: null,
         submited: false,
         showPaymentAccountDialog: false,
-        dateChargeDisable: ''
+        dateChargeDisable: '',
+        processingFees: 0,
+        showDialog: false
       }
     },
     watch: {
@@ -148,8 +161,11 @@
           this.description = this.invoice.label
           this.amount = currency(this.invoice.price)
           this.status = capitalize(this.invoice.status)
+          this.processingFees = this.invoice.paymentDetails.paymentMethodtype === 'card' ? currency(this.invoice.stripeFee) : 0
+          this.baseAmount = currency(this.invoice.priceBase)
           this.paymentMethod = `${this.invoice.paymentDetails.brand}••••${this.invoice.paymentDetails.last4}`
         }
+        this.showDialog = typeof this.invoice._id === 'string'
       }
     },
     methods: {
@@ -167,6 +183,7 @@
           if (this.invoice.unbundle) {
             let calculation = Calculations.exec(this.invoice, account.object, this.invoice.priceBase)
             this.amount = calculation.price
+            this.processingFees = account.object === 'card' ? calculation.processingFee : 0
           }
         } else {
           this.paymentMethodObj = null
@@ -213,9 +230,6 @@
       ...mapGetters('paymentModule', {
         paymentAccounts: 'paymentAccounts'
       }),
-      showDialog () {
-        return typeof this.invoice._id === 'string'
-      },
       date () {
         if (this.invoice.createOn) return new Date(this.invoice.createOn)
         return new Date()
