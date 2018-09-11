@@ -24,22 +24,27 @@
           <md-input v-model="updInvoice.label" @input="$v.updInvoice.label.$touch()"></md-input>
           <span class="md-error" v-if="!$v.updInvoice.label.required">{{ $t('validations.required', { field: 'Description' }) }}</span>
         </md-field>
-        <md-field v-if="false" :class="{'md-invalid': $v.updInvoice.priceBase.$error}">
+        <md-field v-if="updInvoice.unbundle" :class="{'md-invalid': $v.updInvoice.priceBase.$error}">
           <label>Base Amount</label>
           <span class="md-prefix">$</span>
-          <md-input v-model="updInvoice.priceBase" :disabled="disabled" @input="$v.updInvoice.priceBase.$touch()"></md-input>
+          <md-input v-model="baseAmount" :disabled="disabled" @input="$v.updInvoice.priceBase.$touch()"></md-input>
           <span class="md-error" v-if="!$v.updInvoice.priceBase.required">{{ $t('validations.required', { field: 'Amount' }) }}</span>
           <span class="md-error" v-if="!$v.updInvoice.priceBase.decimal">{{ $t('validations.numeric', { field: 'Amount' }) }} </span>
         </md-field>
-        <md-field v-if="false">
+        <md-field v-if="updInvoice.unbundle">
           <label>Processing Fee</label>
           <span class="md-prefix">$</span>
-          <md-input v-model="updInvoice.processingFee" :disabled="true"></md-input>
+          <md-input :value="currency(processingFee)" :disabled="true"></md-input>
         </md-field>
-        <md-field :class="{'md-invalid': $v.updInvoice.price.$error}">
+        <md-field v-if="updInvoice.unbundle">
           <label>Charge Amount</label>
           <span class="md-prefix">$</span>
-          <md-input v-model="updInvoice.price" :disabled="disabled" @input="$v.updInvoice.price.$touch()"></md-input>
+          <md-input :value="currency(updInvoice.price)" :disabled="true"></md-input>
+        </md-field>
+        <md-field v-else :class="{'md-invalid': $v.updInvoice.price.$error}">
+          <label>Charge Amount</label>
+          <span class="md-prefix">$</span>
+          <md-input v-model="updInvoice.price" :disabled="disabled || updInvoice.unbundle" @input="$v.updInvoice.price.$touch()"></md-input>
           <span class="md-error" v-if="!$v.updInvoice.price.required">{{ $t('validations.required', { field: 'Amount' }) }}</span>
           <span class="md-error" v-if="!$v.updInvoice.price.decimal">{{ $t('validations.numeric', { field: 'Amount' }) }} </span>
         </md-field>
@@ -156,6 +161,7 @@
   import { required, decimal } from 'vuelidate/lib/validators'
   import { mapState, mapActions } from 'vuex'
   import Calculations from '@/helpers/calculations'
+  import currency from '@/helpers/currency'
 
   export default {
     components: { VPayAnimation },
@@ -167,11 +173,13 @@
     data () {
       return {
         updInvoice: {},
+        baseAmount: 0,
         pmSelected: null,
         showDialog: false,
         parent: null,
         submited: false,
-        tagsAvailable: []
+        tagsAvailable: [],
+        processingFee: 0
       }
     },
     watch: {
@@ -185,6 +193,12 @@
       },
       showDialog () {
         this.$emit('changeStatus', this.showDialog)
+      },
+      baseAmount () {
+        let calculation = Calculations.exec(this.invoice, this.updInvoice.paymentDetails.paymentMethodtype, this.baseAmount)
+        this.updInvoice.price = calculation.price
+        this.invoice.priceBase = this.baseAmount
+        this.processingFee = this.updInvoice.paymentDetails.paymentMethodtype === 'card' ? calculation.processingFee : 0
       },
       pmSelected () {
         if (this.parentPaymentMethods && this.parentPaymentMethods.length) {
@@ -200,7 +214,8 @@
               }
               if (this.invoice.unbundle) {
                 let calculation = Calculations.exec(this.invoice, account.object, this.invoice.priceBase)
-                console.log('cal: ', calculation)
+                this.updInvoice.price = calculation.price
+                this.processingFee = account.object === 'card' ? calculation.processingFee : 0
               }
             }
           })
@@ -231,11 +246,12 @@
         delete this.updInvoice.paymentDetails
       },
       reset () {
+        this.baseAmount = this.invoice.priceBase
         this.updInvoice = {
+          unbundle: this.invoice.unbundle,
           label: this.invoice.title,
           price: this.invoice.price,
           priceBase: this.invoice.priceBase,
-          processingFee: this.invoice.processingFee,
           dateCharge: this.invoice.date,
           maxDateCharge: this.invoice.maxDate,
           status: this.isClone ? 'autopay' : this.invoice.status,
@@ -303,6 +319,9 @@
             this.setWarning('Invoice was not cloned')
           })
         })
+      },
+      currency (value) {
+        return currency(value)
       }
     },
     computed: {
