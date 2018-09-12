@@ -14,6 +14,7 @@ const module = {
     programs: null,
     playerSelected: null,
     programSelected: null,
+    programSelectedObj: null,
     seasonSelected: null,
     organization: null,
     beneficiaries: null
@@ -51,6 +52,9 @@ const module = {
     setItems (state, items) {
       state.items = items
     },
+    setProgramSelectedObj (state, program) {
+      state.programSelectedObj = program
+    },
     setPrograms (state, programs) {
       state.programs = programs
     },
@@ -77,6 +81,11 @@ const module = {
     }
   },
   actions: {
+    loadProduct (context, id) {
+      return productService.getProduct(id).then(product => {
+        context.commit('setProgramSelectedObj', product)
+      })
+    },
     getReducePrograms (context) {
       let organizationId = context.state.organization._id
       let seasonId = context.state.seasonSelected

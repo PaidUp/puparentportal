@@ -47,6 +47,7 @@
         this.getAll()
       },
       programSelected () {
+        this.loadProduct(this.programSelected)
         this.getAll()
       },
       playerSelected () {
@@ -58,6 +59,7 @@
         getOrganization: 'getOrganization'
       }),
       ...mapActions('clubprogramsModule', {
+        loadProduct: 'loadProduct',
         getReducePrograms: 'getReducePrograms',
         setPlayerSelected: 'setPlayerSelected'
       }),

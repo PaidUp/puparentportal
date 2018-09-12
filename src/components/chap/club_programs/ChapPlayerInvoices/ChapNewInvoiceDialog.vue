@@ -15,12 +15,29 @@
           <md-input v-model="label" @input="$v.label.$touch()"></md-input>
           <span class="md-error" v-if="!$v.label.required">{{ $t('validations.required', { field: 'Description' }) }}</span>
         </md-field>
-        <md-field :class="{'md-invalid': $v.price.$error}">
-          <label>Amount</label>
+        <md-field v-if="programSelectedObj.unbundle" :class="{'md-invalid': $v.price.$error}">
+          <label>Base Amount</label>
+          <span class="md-prefix">$</span>
+          <md-input v-model="priceBase" @input="$v.price.$touch()"></md-input>
+          <span class="md-error" v-if="!$v.price.required">{{ $t('validations.required', { field: 'Charge Amount' }) }}</span>
+          <span class="md-error" v-if="!$v.price.decimal">{{ $t('validations.numeric', { field: 'Charge Amount' }) }} </span>
+        </md-field>
+        <md-field v-if="programSelectedObj.unbundle">
+          <label>Processing fee</label>
+          <span class="md-prefix">$</span>
+          <md-input :disabled="true" :value="processingFee"></md-input>
+        </md-field>
+        <md-field v-if="programSelectedObj.unbundle">
+          <label>Charge Amount</label>
+          <span class="md-prefix">$</span>
+          <md-input :value="price" :disabled="true"></md-input>
+        </md-field>
+        <md-field v-else :class="{'md-invalid': $v.price.$error}">
+          <label>Charge Amount</label>
           <span class="md-prefix">$</span>
           <md-input v-model="price" @input="$v.price.$touch()"></md-input>
-          <span class="md-error" v-if="!$v.price.required">{{ $t('validations.required', { field: 'Amount' }) }}</span>
-          <span class="md-error" v-if="!$v.price.decimal">{{ $t('validations.numeric', { field: 'Amount' }) }} </span>
+          <span class="md-error" v-if="!$v.price.required">{{ $t('validations.required', { field: 'Charge Amount' }) }}</span>
+          <span class="md-error" v-if="!$v.price.decimal">{{ $t('validations.numeric', { field: 'Charge Amount' }) }} </span>
         </md-field>
         <div :class="{'md-invalid': $v.dateCharge.$error}">
           <label>Charge Date</label>
@@ -80,6 +97,7 @@
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
   import { mapState, mapActions } from 'vuex'
   import { required, decimal } from 'vuelidate/lib/validators'
+  import Calculations from '@/helpers/calculations'
 
   export default {
     components: { VPayAnimation },
@@ -90,6 +108,8 @@
       return {
         label: null,
         price: null,
+        priceBase: null,
+        processingFee: null,
         dateCharge: null,
         maxDateCharge: null,
         status: null,
@@ -129,8 +149,36 @@
                 brand: account.brand || account.bank_name,
                 last4: account.last4
               }
+              if (this.programSelectedObj.unbundle && this.priceBase) {
+                if (account.object === 'bank_account') {
+                  this.processingFee = 0
+                  this.price = this.priceBase
+                  return true
+                } else {
+                  let cal = Calculations.exec(this.programSelectedObj, account.object, this.priceBase)
+                  this.processingFee = cal.processingFee
+                  this.price = cal.price
+                }
+              }
             }
           })
+        }
+      },
+      priceBase () {
+        if ((this.priceBase && this.priceBase.trim().length === 0) || this.priceBase === '0') {
+          this.price = null
+          this.processingFee = null
+          return false
+        }
+        if (this.paymentDetails) {
+          if (this.paymentDetails.paymentMethodtype === 'bank_account') {
+            this.processingFee = 0
+            this.price = this.priceBase
+            return true
+          }
+          let cal = Calculations.exec(this.programSelectedObj, this.paymentDetails.paymentMethodtype, this.priceBase)
+          this.processingFee = cal.processingFee
+          this.price = cal.price
         }
       }
     },
@@ -160,6 +208,7 @@
       reset () {
         this.label = null
         this.price = null
+        this.priceBase = null
         this.dateCharge = null
         this.maxDateCharge = null
         this.status = null
@@ -176,39 +225,39 @@
         if (this.user && !this.paymentDetails) {
           return this.setWarning('Payment account is required')
         }
-        this.getProduct(this.programSelected).then(product => {
-          this.paymentDetails.statementDescriptor = product.statementDescriptor
-          let inv = {
-            label: this.label,
-            price: this.price,
-            dateCharge: this.dateCharge,
-            maxDateCharge: this.maxDateCharge,
-            status: 'autopay',
-            paymentDetails: this.paymentDetails,
-            user: this.user,
-            organizationId: this.organization._id,
-            organizationName: this.organization.businessName,
-            connectAccount: this.organization.connectAccount,
-            productId: product._id,
-            productName: product.name,
-            beneficiaryId: this.beneficiary.id,
-            beneficiaryFirstName: this.beneficiary.firstName,
-            beneficiaryLastName: this.beneficiary.lastName,
-            season: this.seasonSelected,
-            tags: this.tags
-          }
-          let params = {
-            product,
-            values: inv
-          }
-          this.new(params).then(resp => {
-            this.setSuccess('Invoice was created succeeded')
-            this.$emit('created', true)
-            this.submited = false
-          }).catch(reason => {
-            this.submited = false
-            this.setWarning('Invoice was not created')
-          })
+        this.paymentDetails.statementDescriptor = this.programSelectedObj.statementDescriptor
+        let inv = {
+          unbundle: this.programSelectedObj.unbundle,
+          label: this.label,
+          price: this.price,
+          priceBase: this.priceBase,
+          dateCharge: this.dateCharge,
+          maxDateCharge: this.maxDateCharge,
+          status: 'autopay',
+          paymentDetails: this.paymentDetails,
+          user: this.user,
+          organizationId: this.organization._id,
+          organizationName: this.organization.businessName,
+          connectAccount: this.organization.connectAccount,
+          productId: this.programSelectedObj._id,
+          productName: this.programSelectedObj.name,
+          beneficiaryId: this.beneficiary.id,
+          beneficiaryFirstName: this.beneficiary.firstName,
+          beneficiaryLastName: this.beneficiary.lastName,
+          season: this.seasonSelected,
+          tags: this.tags
+        }
+        let params = {
+          product: this.programSelectedObj,
+          values: inv
+        }
+        this.new(params).then(resp => {
+          this.setSuccess('Invoice was created succeeded')
+          this.$emit('created', true)
+          this.submited = false
+        }).catch(reason => {
+          this.submited = false
+          this.setWarning('Invoice was not created')
         })
       },
       addCredit () {
@@ -248,7 +297,8 @@
       ...mapState('clubprogramsModule', {
         programSelected: 'programSelected',
         seasonSelected: 'seasonSelected',
-        organization: 'organization'
+        organization: 'organization',
+        programSelectedObj: 'programSelectedObj'
       }),
       disableSaveButton () {
         return this.$v.$invalid || this.submmited
