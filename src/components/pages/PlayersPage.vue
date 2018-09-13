@@ -2,17 +2,17 @@
   .players-page
     .player
       v-player-info(v-if="beneficiary" :player="beneficiary", :numInvoices="allInvoices.length" @avatarChanged="reloadBeneficiaries")
-    .player-empty(v-if="!allInvoices.length")
+    .player-empty(v-if="!allInvoices.length && !allCredits.length")
       div(class="title bold cgray") {{ beneficiary ? beneficiary.firstName : '' }} does not have any payment history yet.
       div(class="cgray") Start by making a payment to {{ beneficiary ? beneficiary.organizationName : '' }}.
       md-button(v-if="beneficiary" class="md-raised md-accent lblue" :to="'/payments/'+beneficiary._id") MAKE A NEW PAYMENT
       div
         img(src="@/assets/shield.svg" alt="pay")
-    .player-with-payments(v-show="allInvoices.length")
+    .player-with-payments(v-else)
       .details
         .pre-cards-title Details
         .details-box
-          v-player-details-selection(:invoices="allInvoices" @selectSeason="setSeason" @selectProgram="setProgram")
+          v-player-details-selection(@selectSeason="setSeason" @selectProgram="setProgram")
           v-player-details-totals(:invoices="invoices")
       button(v-if="false" class="md-button md-raised" @click="showDuplicateDialog = true") Duplicate Payment Dialog
       .invoices(v-if="invoices")

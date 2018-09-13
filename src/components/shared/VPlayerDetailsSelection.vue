@@ -14,10 +14,6 @@ import { mapState } from 'vuex'
 
 export default {
   props: {
-    invoices: {
-      type: Array,
-      default: null
-    }
   },
   data () {
     return {
@@ -28,9 +24,15 @@ export default {
     }
   },
   mounted () {
+    this.getSeasons()
+    if (this.seasons && this.seasons.length) this.season = this.seasons[this.seasons.length - 1]._id
   },
   watch: {
-    invoices () {
+    allInvoices () {
+      this.getSeasons()
+      if (this.seasons && this.seasons.length) this.season = this.seasons[this.seasons.length - 1]._id
+    },
+    allCredits () {
       this.getSeasons()
       if (this.seasons && this.seasons.length) this.season = this.seasons[this.seasons.length - 1]._id
     },
@@ -50,12 +52,14 @@ export default {
   },
   computed: {
     ...mapState('playerModule', {
-      organization: 'organization'
+      organization: 'organization',
+      allInvoices: 'allInvoices',
+      allCredits: 'allCredits'
     }),
     programs () {
       this.program = null
       let set = new Set()
-      this.invoices.forEach(inv => {
+      this.allInvoices.concat(this.allCredits).forEach(inv => {
         if (this.season === inv.season) {
           set.add(inv.productId + '|' + inv.productName)
         }
@@ -66,7 +70,7 @@ export default {
   methods: {
     getSeasons () {
       this.seasons = this.organization.seasons.filter(season => {
-        return this.invoices.some(inv => {
+        return this.allInvoices.concat(this.allCredits).some(inv => {
           return inv.season === season._id
         })
       }).sort((eleA, eleB) => {
