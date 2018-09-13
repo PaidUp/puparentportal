@@ -152,19 +152,26 @@ const module = {
         beneficiaryFirstName: playerSelected.firstName,
         beneficiaryLastName: playerSelected.lastName
       }
-      let promises = []
-      promises.push(commerceService.checkoutInvoice({
-        order,
-        dues: paymentPlanSelected.dues,
-        product: programSelected
-      }))
-      if (paymentPlanSelected.credits && paymentPlanSelected.credits.length) {
-        promises.push(commerceService.checkoutCredit({
+      return new Promise((resolve, reject) => {
+        commerceService.checkoutInvoice({
           order,
-          credits: paymentPlanSelected.credits
-        }))
-      }
-      return Promise.all(promises).then(values => values)
+          dues: paymentPlanSelected.dues,
+          product: programSelected
+        }).then(invoices => {
+          if (paymentPlanSelected.credits && paymentPlanSelected.credits.length) {
+            commerceService.checkoutCredit({
+              order,
+              credits: paymentPlanSelected.credits
+            }).then(credits => {
+              resolve([invoices, credits])
+            }).catch(reason => {
+              reject(reason)
+            })
+          }
+        }).catch(reason => {
+          reject(reason)
+        })
+      })
     },
     updateInvoice (context, { id, values }) {
       return commerceService.updateInvoice({ id, values })
