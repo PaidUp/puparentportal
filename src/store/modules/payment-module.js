@@ -167,6 +167,8 @@ const module = {
             }).catch(reason => {
               reject(reason)
             })
+          } else {
+            resolve([invoices])
           }
         }).catch(reason => {
           reject(reason)
