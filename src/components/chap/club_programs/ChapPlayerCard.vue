@@ -6,7 +6,7 @@
 					<md-icon v-else class="md-size-2x ca1"> account_circle </md-icon>
 				</md-avatar>
 				<div class="name">{{ item.firstName }} {{ item.lastName }}</div>
-				<div class="eligibility cred">{{item.overdue ? 'Inelegible' : '&nbsp;'}}</div>
+				<div class="eligibility cred">{{item.overdue ? 'Ineligible' : '&nbsp;'}}</div>
 				<div class="total-label">Total</div>
 				<div class="total-amount">${{total}}</div>
 			</div>

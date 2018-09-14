@@ -17,7 +17,7 @@
             <div class="concept">
               Ineligible
             </div>
-            <div class="number cred bolder">{{item.inelegible.size}}</div>
+            <div class="number cred bolder">{{item.ineligible.size}}</div>
           </div>
         </div>
         <div class="total">
@@ -97,7 +97,7 @@ export default {
       return players + ' players'
     },
     elegible () {
-      return this.item.players.size - this.item.inelegible.size
+      return this.item.players.size - this.item.ineligible.size
     },
     total () {
       return currency(this.item.total)

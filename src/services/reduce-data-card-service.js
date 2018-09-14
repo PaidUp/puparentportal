@@ -17,7 +17,7 @@ class ReduceCardService {
           overdue: 0,
           other: 0,
           players: new Set(),
-          inelegible: new Set()
+          ineligible: new Set()
         }
         prd.players.add(current.beneficiaryId)
         val[current.productId] = prd
@@ -27,7 +27,7 @@ class ReduceCardService {
       } else if (current.status === 'autopay') {
         prd.unpaid = prd.unpaid + current.price
       } else if (current.status === 'failed') {
-        prd.inelegible.add(current.beneficiaryId)
+        prd.ineligible.add(current.beneficiaryId)
         prd.overdue = prd.overdue + current.price
       } else if (current.status === 'void' || current.status === 'disabled') {
         prd.other = prd.other + current.price
@@ -85,7 +85,7 @@ class ReduceCardService {
           overdue: 0,
           other: 0,
           players: new Set(),
-          inelegible: new Set()
+          ineligible: new Set()
         }
         prd.players.add(current.beneficiaryId)
         val[current.productId] = prd
@@ -147,7 +147,7 @@ class ReduceCardService {
               overdue: 0,
               other: 0,
               players: new Set(),
-              inelegible: new Set()
+              ineligible: new Set()
             }
             prd.players.add(current.beneficiaryId)
             val[current.productId] = prd
@@ -156,7 +156,7 @@ class ReduceCardService {
           if (today < dateCharge) {
             prd.unpaid = prd.unpaid + due.amount
           } else {
-            prd.inelegible.add(current.beneficiaryId)
+            prd.ineligible.add(current.beneficiaryId)
             prd.overdue = prd.overdue + due.amount
           }
         })
@@ -177,7 +177,7 @@ class ReduceCardService {
               overdue: 0,
               other: 0,
               players: new Set(),
-              inelegible: new Set()
+              ineligible: new Set()
             }
             prd.players.add(current.beneficiaryId)
             val[current.productId] = prd
