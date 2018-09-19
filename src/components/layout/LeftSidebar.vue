@@ -67,6 +67,11 @@
         <span class="md-list-item-text ca1 bold">Chap Designs</span>
       </md-list-item>
 
+      <!-- TO BULK: CHAP/BULK -->
+      <md-list-item to="/bulk/beneficiaries" v-if="isRole('chap')">
+        <span class="md-list-item-text ca1 bold">Import Beneficiaries</span>
+      </md-list-item>
+
     </md-list>
     <pu-botton />
   </div>
