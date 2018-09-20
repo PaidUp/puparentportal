@@ -67,10 +67,12 @@
           </div>
         </md-tab>
       </md-tabs>
-      <chap-invoice-dialog :invoice="item" :isClone="isClone" @updated="reloadItems" @changeStatus="changeInvoceDialogStatus"></chap-invoice-dialog>
-      <chap-credit-dialog :invoice="creditItem" :isClone="isCreditClone" @updated="reloadItems" @changeStatus="changeCreditDialogStatus"></chap-credit-dialog>
-      <chap-refund-dialog :invoice="refundItem" @updated="reloadItems" @changeStatus="changeRefundDialogStatus"></chap-refund-dialog>
-      <chap-new-invoice-dialog :show="showNewInvoiceDialog" @created="reloadItems" @changeStatus="changeNewInvoceDialogStatus"></chap-new-invoice-dialog>
+      <chap-invoice-dialog :invoice="item" @submited="setShowAnimate" :isClone="isClone" @updated="reloadItems"></chap-invoice-dialog>
+      <chap-credit-dialog :invoice="creditItem" @submited="setShowAnimate" :isClone="isCreditClone" @updated="reloadItems"></chap-credit-dialog>
+      <chap-refund-dialog :invoice="refundItem" @submited="setShowAnimate" @updated="reloadItems"></chap-refund-dialog>
+      <chap-new-invoice-dialog :show="showNewInvoiceDialog" @submited="setShowAnimate" @created="reloadItems" @changeStatus="changeNewInvoceDialogStatus"></chap-new-invoice-dialog>
+
+      <v-pay-animation :animate="showAnimate" />
     </div>
 </template>
 <script>
@@ -82,9 +84,10 @@ import ChapInvoiceDialog from './ChapPlayerInvoices/ChapInvoiceDialog.vue'
 import ChapCreditDialog from './ChapPlayerInvoices/ChapCreditDialog.vue'
 import ChapRefundDialog from './ChapPlayerInvoices/ChapRefundDialog.vue'
 import ChapNewInvoiceDialog from './ChapPlayerInvoices/ChapNewInvoiceDialog.vue'
+import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 import { mapActions, mapState } from 'vuex'
 export default {
-  components: { ChapInvoiceCard, ChapCreditCard, ChapPreorderCard, ChapInvoiceDialog, ChapNewInvoiceDialog, ChapCreditDialog, ChapRefundDialog },
+  components: { ChapInvoiceCard, ChapCreditCard, ChapPreorderCard, ChapInvoiceDialog, ChapNewInvoiceDialog, ChapCreditDialog, ChapRefundDialog, VPayAnimation },
   data () {
     return {
       items: null,
@@ -94,6 +97,7 @@ export default {
       isClone: false,
       isCreditClone: false,
       showNewInvoiceDialog: false,
+      showAnimate: false,
       tableData: [ {
         id: 1,
         name: 'Shawna Dubbin',
@@ -134,20 +138,8 @@ export default {
     ...mapActions('playerInvoicesModule', {
       loadPaymentMethods: 'loadPaymentMethods'
     }),
-    changeInvoceDialogStatus (status) {
-      if (!status) {
-        this.item = null
-      }
-    },
-    changeCreditDialogStatus (status) {
-      if (!status) {
-        this.creditItem = null
-      }
-    },
-    changeRefundDialogStatus (status) {
-      if (!status) {
-        this.refundItem = null
-      }
+    setShowAnimate (val) {
+      this.showAnimate = val
     },
     changeNewInvoceDialogStatus (status) {
       this.showNewInvoiceDialog = status

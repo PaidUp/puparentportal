@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="invoice-dialog" v-if="invoice">
+  <md-dialog :md-active.sync="showDialog" class="invoice-dialog" v-if="invoice" :md-click-outside-to-close="false">
     <div class="dialog-header">
       <div class="title" v-if="!isClone">Credit: {{ invoice.seq }}</div>
       <md-menu v-if="!isClone" md-size="small" md-direction="bottom-end">
@@ -68,7 +68,6 @@
       <md-button v-if='isClone' :disabled="disableSaveButton" class="md-accent lblue" @click="clone" >CLONE</md-button>
       <md-button v-else :disabled="disableSaveButton" class="md-accent lblue" @click="save" >SAVE</md-button>
     </md-dialog-actions>
-    <v-pay-animation :animate="submited"  @finish="showDialog = false" />
   </md-dialog>
 </template>
 
@@ -81,7 +80,6 @@
     components: { VPayAnimation },
     props: {
       invoice: Object,
-      show: Boolean,
       isClone: Boolean
     },
     data () {
@@ -101,8 +99,8 @@
           this.showDialog = false
         }
       },
-      showDialog () {
-        this.$emit('changeStatus', this.showDialog)
+      submited () {
+        this.$emit('submited', this.submited)
       }
     },
     mounted () {
@@ -144,6 +142,8 @@
         this.updInvoice.tags.splice(this.updInvoice.tags.indexOf(value), 1)
       },
       save () {
+        if (this.submited) return false
+        this.showDialog = false
         this.submited = true
         this.updInvoice.updateOn = new Date()
         let params = {
@@ -159,6 +159,8 @@
         })
       },
       clone () {
+        if (this.submited) return false
+        this.showDialog = false
         this.submited = true
         this.getProduct(this.programSelected).then(product => {
           this.updInvoice['description'] = this.updInvoice.label
@@ -189,7 +191,7 @@
         organization: 'organization'
       }),
       disableSaveButton () {
-        return this.$v.$invalid || this.submmited
+        return this.$v.$invalid || this.submited
       }
     },
     validations: {

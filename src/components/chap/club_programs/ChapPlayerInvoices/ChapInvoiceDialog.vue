@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="invoice-dialog" v-if="invoice">
+  <md-dialog :md-active.sync="showDialog" class="invoice-dialog" v-if="invoice" :md-click-outside-to-close="false">
     <div class="dialog-header">
       <div class="title" v-if="!isClone">Invoice: {{ invoice.seq }}</div>
       <md-menu v-if="!isClone" md-size="small" md-direction="bottom-end">
@@ -152,22 +152,18 @@
       <md-button v-if='isClone' md-check-duplicated :disabled="disableSaveButton" class="md-accent lblue" @click="clone" >CLONE</md-button>
       <md-button v-else :disabled="disableSaveButton" class="md-accent lblue" @click="save" >SAVE</md-button>
     </md-dialog-actions>
-    <v-pay-animation :animate="submited"  @finish="showDialog = false" />
   </md-dialog>
 </template>
 
 <script>
-  import VPayAnimation from '@/components/shared/VPayAnimation.vue'
   import { required, decimal } from 'vuelidate/lib/validators'
   import { mapState, mapActions } from 'vuex'
   import Calculations from '@/helpers/calculations'
   import currency from '@/helpers/currency'
 
   export default {
-    components: { VPayAnimation },
     props: {
       invoice: Object,
-      show: Boolean,
       isClone: Boolean
     },
     data () {
@@ -191,13 +187,13 @@
           this.showDialog = false
         }
       },
-      showDialog () {
-        this.$emit('changeStatus', this.showDialog)
+      submited () {
+        this.$emit('submited', this.submited)
       },
       baseAmount () {
         let calculation = Calculations.exec(this.invoice, this.updInvoice.paymentDetails.paymentMethodtype, this.baseAmount)
         this.updInvoice.price = calculation.price
-        this.invoice.priceBase = this.baseAmount
+        this.updInvoice.priceBase = this.baseAmount
         this.processingFee = this.updInvoice.paymentDetails.paymentMethodtype === 'card' ? calculation.processingFee : 0
       },
       pmSelected () {
@@ -268,12 +264,14 @@
         this.submited = false
       },
       save () {
+        if (this.submited) return false
         this.submited = true
         if (this.updInvoice.user && !this.updInvoice.paymentDetails) {
           this.setWarning('Payment account is required')
           this.submited = false
           return false
         }
+        this.showDialog = false
         this.getProduct(this.programSelected).then(product => {
           this.updInvoice.updateOn = new Date()
           let params = {
@@ -293,8 +291,10 @@
       clone () {
         this.submited = true
         if (this.updInvoice.user && !this.updInvoice.paymentDetails) {
+          this.submited = false
           return this.setWarning('Payment account is required')
         }
+        this.showDialog = false
         this.getProduct(this.programSelected).then(product => {
           this.updInvoice['organizationId'] = this.organization._id
           this.updInvoice['organizationName'] = this.organization.businessName
@@ -339,7 +339,7 @@
         return !this.isClone && this.invoice.status !== 'autopay' && this.invoice.status !== 'failed'
       },
       disableSaveButton () {
-        return this.$v.$invalid || this.submmited
+        return this.$v.$invalid || this.submited
       },
       parentPaymentMethods () {
         if (!this.invoice.user) return []

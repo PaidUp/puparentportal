@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="invoice-dialog" v-if="invoice">
+  <md-dialog :md-active.sync="showDialog" class="invoice-dialog" v-if="invoice" :md-click-outside-to-close="false">
     <div class="dialog-header">
       <div class="title">Refund Invoice: {{ invoice.seq }}</div>
     </div>
@@ -29,20 +29,16 @@
       <md-button class="md-accent lblue" @click="showDialog = false">CANCEL</md-button>
       <md-button :disabled="disableSaveButton" class="md-accent lblue" @click="refund" >REFUND</md-button>
     </md-dialog-actions>
-    <v-pay-animation :animate="submited"  @finish="showDialog = false" />
   </md-dialog>
 </template>
 
 <script>
-  import VPayAnimation from '@/components/shared/VPayAnimation.vue'
   import { required, decimal } from 'vuelidate/lib/validators'
   import { mapState, mapActions } from 'vuex'
 
   export default {
-    components: { VPayAnimation },
     props: {
-      invoice: Object,
-      show: Boolean
+      invoice: Object
     },
     data () {
       return {
@@ -66,11 +62,9 @@
           this.showDialog = false
         }
       },
-      showDialog () {
-        this.$emit('changeStatus', this.showDialog)
+      submited () {
+        this.$emit('submited', this.submited)
       }
-    },
-    mounted () {
     },
     methods: {
       ...mapActions('playerInvoicesModule', {
@@ -85,6 +79,8 @@
         setWarning: 'setWarning'
       }),
       refund () {
+        if (this.submited) return false
+        this.showDialog = false
         this.submited = true
         let refundParams = {
           chargeId: this.chargeId,
@@ -149,7 +145,7 @@
         organization: 'organization'
       }),
       disableSaveButton () {
-        return this.$v.$invalid || this.submmited
+        return this.$v.$invalid || this.submited
       },
       chargeId () {
         let chargeId = null

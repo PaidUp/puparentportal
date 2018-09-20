@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     select () {
-      this.$emit('select', this.enable)
+      if (!this.processing) this.$emit('select', this.enable)
     },
     cancel () {
       this.$router.push({

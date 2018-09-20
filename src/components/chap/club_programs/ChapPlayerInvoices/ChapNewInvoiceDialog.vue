@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="invoice-dialog">
+  <md-dialog :md-active.sync="showDialog" class="invoice-dialog" :md-click-outside-to-close="false">
     <div class="dialog-header">
       <div class="title">New Invoice</div>
     </div>
@@ -15,19 +15,19 @@
           <md-input v-model="label" @input="$v.label.$touch()"></md-input>
           <span class="md-error" v-if="!$v.label.required">{{ $t('validations.required', { field: 'Description' }) }}</span>
         </md-field>
-        <md-field v-if="programSelectedObj.unbundle" :class="{'md-invalid': $v.price.$error}">
+        <md-field v-if="programSelectedObj.unbundle && status === 'autopay'" :class="{'md-invalid': $v.price.$error}">
           <label>Base Amount</label>
           <span class="md-prefix">$</span>
           <md-input v-model="priceBase" @input="$v.price.$touch()"></md-input>
           <span class="md-error" v-if="!$v.price.required">{{ $t('validations.required', { field: 'Charge Amount' }) }}</span>
           <span class="md-error" v-if="!$v.price.decimal">{{ $t('validations.numeric', { field: 'Charge Amount' }) }} </span>
         </md-field>
-        <md-field v-if="programSelectedObj.unbundle">
+        <md-field v-if="programSelectedObj.unbundle && status === 'autopay'">
           <label>Processing fee</label>
           <span class="md-prefix">$</span>
           <md-input :disabled="true" :value="processingFee"></md-input>
         </md-field>
-        <md-field v-if="programSelectedObj.unbundle">
+        <md-field v-if="programSelectedObj.unbundle && status === 'autopay'">
           <label>Charge Amount</label>
           <span class="md-prefix">$</span>
           <md-input :value="price" :disabled="true"></md-input>
@@ -89,18 +89,15 @@
       <md-button v-if="!status || status === 'autopay'" :disabled="disableSaveButton" class="md-accent lblue" @click="newInvoice" >SAVE</md-button>
       <md-button v-else :disabled="disableSaveButton" class="md-accent lblue" @click="addCredit">SAVE CREDIT</md-button>
     </md-dialog-actions>
-    <v-pay-animation :animate="submited"  @finish="showDialog = false" />
   </md-dialog>
 </template>
 
 <script>
-  import VPayAnimation from '@/components/shared/VPayAnimation.vue'
   import { mapState, mapActions } from 'vuex'
   import { required, decimal } from 'vuelidate/lib/validators'
   import Calculations from '@/helpers/calculations'
 
   export default {
-    components: { VPayAnimation },
     props: {
       show: Boolean
     },
@@ -130,6 +127,11 @@
           this.reset()
         }
       },
+      status () {
+        if (this.status === 'autopay') {
+          this.price = null
+        }
+      },
       showDialog () {
         this.$emit('changeStatus', this.showDialog)
       },
@@ -137,6 +139,9 @@
         this.pmSelected = null
         this.user = this.parentObj
         this.paymentDetails = null
+      },
+      submited () {
+        this.$emit('submited', this.submited)
       },
       pmSelected () {
         if (this.parentPaymentMethods && this.parentPaymentMethods.length) {
@@ -221,10 +226,13 @@
         this.tagsAvailable = this.organization.tags.concat([])
       },
       newInvoice () {
+        if (this.submited) return false
         this.submited = true
         if (this.user && !this.paymentDetails) {
+          this.submited = false
           return this.setWarning('Payment account is required')
         }
+        this.showDialog = false
         this.paymentDetails.statementDescriptor = this.programSelectedObj.statementDescriptor
         let inv = {
           unbundle: this.programSelectedObj.unbundle,
@@ -261,6 +269,8 @@
         })
       },
       addCredit () {
+        if (this.submited) return false
+        this.showDialog = false
         this.submited = true
         this.getProduct(this.programSelected).then(product => {
           let params = {
@@ -301,7 +311,7 @@
         programSelectedObj: 'programSelectedObj'
       }),
       disableSaveButton () {
-        return this.$v.$invalid || this.submmited
+        return this.$v.$invalid || this.submited
       },
       parentPaymentMethods () {
         if (!this.user) return []
