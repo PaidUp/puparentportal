@@ -71,6 +71,9 @@
       <md-list-item to="/bulk/beneficiaries" v-if="isRole('chap')">
         <span class="md-list-item-text ca1 bold">Import Beneficiaries</span>
       </md-list-item>
+      <md-list-item to="/bulk/preorders" v-if="isRole('chap')">
+        <span class="md-list-item-text ca1 bold">PreOrder Assignment</span>
+      </md-list-item>
 
     </md-list>
     <pu-botton />

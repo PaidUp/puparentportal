@@ -26,6 +26,7 @@ import PrintIneligible from '@/components/pages/PrintIneligible.vue'
 import PrintEligible from '@/components/pages/PrintEligible.vue'
 import ChapDesigns from '@/components/chap/ChapDesigns.vue'
 import ImportBeneficiaries from '@/components/chap/ImportBeneficiaries.vue'
+import PreOrderAssignment from '@/components/chap/PreOrderAssignment.vue'
 
 const routes = [
   {
@@ -85,6 +86,14 @@ const routes = [
           roles: ['chap']
         },
         component: ImportBeneficiaries
+      },
+      {
+        path: '/bulk/preorders',
+        name: 'preOrderAssignment',
+        meta: {
+          roles: ['chap']
+        },
+        component: PreOrderAssignment
       },
       {
         path: '/club/:id/season/:seasonId',

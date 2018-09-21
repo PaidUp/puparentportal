@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 16px;">
     <div class="title">
-      Import Beneficiaries
+      PreOrder Assignment
     </div>
     <br/>
     <md-field>
@@ -19,7 +19,7 @@ import config from '@/config'
 export default {
   data () {
     return {
-      url: config.api.organization + '/beneficiary/bulk',
+      url: config.api.commerce + '/preorder/bulk',
       fileName: null,
       file: null
     }
@@ -49,8 +49,10 @@ export default {
       }).then(resp => {
         this.fileName = null
         this.file = null
-        this.setSuccess('An email was send to you account with the result of bulk beneficiary import')
-      }, reason => {})
+        this.setSuccess('An email was send to you account with the result of bulk preorders assignment ')
+      }, reason => {
+        console.log('reason', reason)
+      })
     }
   }
 
