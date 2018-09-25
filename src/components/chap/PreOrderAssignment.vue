@@ -3,6 +3,7 @@
     <div class="title">
       PreOrder Assignment
     </div>
+    <VueTrix v-model="comment"/>
     <br/>
     <md-field>
       <label>Select file</label>
@@ -16,9 +17,12 @@
 <script>
 import { mapActions } from 'vuex'
 import config from '@/config'
+import VueTrix from 'vue-trix'
 export default {
+  components: { VueTrix },
   data () {
     return {
+      comment: '',
       url: config.api.commerce + '/preorder/bulk',
       fileName: null,
       file: null
@@ -39,6 +43,7 @@ export default {
     upload () {
       let formData = new FormData()
       formData.append('file', this.file)
+      formData.append('comment', this.comment)
       this.$http.post(this.url, formData, {
         headers: {
           Authorization: 'Bearer ' + localStorage.token
