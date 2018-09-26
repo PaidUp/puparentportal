@@ -40,12 +40,16 @@ export default {
     player () {
       if (this.allPreorders && this.allPreorders[0] && this.products) {
         this.products.filter(prod => {
-          if (prod._id === this.allPreorders[0].productId && this.allPreorders[0].status === 'active') {
-            this.showBack = false
-            this.select(prod)
-            this.season = prod.season
-            return true
-          }
+          let resp = false
+          this.allPreorders.forEach(po => {
+            if (prod._id === po.productId && po.status === 'active') {
+              this.showBack = false
+              this.select(prod)
+              this.season = prod.season
+              return true
+            }
+          })
+          return resp
         })
       } else {
         this.select({})

@@ -150,7 +150,8 @@ const module = {
         season: programSelected.season,
         beneficiaryId: playerSelected._id,
         beneficiaryFirstName: playerSelected.firstName,
-        beneficiaryLastName: playerSelected.lastName
+        beneficiaryLastName: playerSelected.lastName,
+        preorderId: paymentPlanSelected.preorderId
       }
       return new Promise((resolve, reject) => {
         commerceService.checkoutInvoice({

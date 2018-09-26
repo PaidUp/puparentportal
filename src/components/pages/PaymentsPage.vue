@@ -148,10 +148,6 @@
           paymentPlanSelected: this.paymentPlanSelected,
           user: this.user
         }).then(res => {
-          if (this.paymentPlanSelected.preorderId) {
-            this.inactivePreorder(this.paymentPlanSelected.preorderId).then(res => {
-            })
-          }
           this.getBeneficiaries(this.user.email).then(res => {
             this.setSuccess('component.payment.done')
             this.processing = false

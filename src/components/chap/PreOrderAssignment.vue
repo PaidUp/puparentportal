@@ -8,7 +8,7 @@
           <md-input v-model="subject"></md-input>
       </md-field>
     <h3>Comment</h3>
-    <VueTrix v-model="comment"/>
+    <VueTrix name="comment" v-model="comment" />
     <br/>
     <md-field>
       <label>Select file</label>
