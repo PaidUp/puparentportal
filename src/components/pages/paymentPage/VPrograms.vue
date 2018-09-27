@@ -1,17 +1,18 @@
 <template lang="pug">
-  md-step(:id="stepId" md-label="Program" :md-description="step ? selected.name : pending" :md-done.sync="step")
-    .programs(v-show="!season")
-      .program.md-elevation-2.md-body-2(v-for="sns in seasons" @click="season = sns" :key="sns._id") {{ sns.name }}
-    .div(v-show="season")
-      .custom-input-small
-        md-field(md-clearable)
-          md-input(placeholder="Search..." v-model="search")
-          md-icon search
-      .programs
-        .program.md-elevation-2.md-body-2(@click="select(product)" v-for="product in productFiltered" :key="product._id") {{ product.name }}
-    .step-actions
-      md-button.lblue.md-accent(@click="cancel") CANCEL
-      md-button.lblue.md-accent(v-show="season" @click="back") BACK
+  md-step(:id="stepId" md-label="Program" :md-description="description" :md-done.sync="step")
+    div(v-if="editable")
+      .programs(v-show="!season")
+        .program.md-elevation-2.md-body-2(v-for="sns in seasons" @click="season = sns" :key="sns._id") {{ sns.name }}
+      .div(v-show="season")
+        .custom-input-small
+          md-field(md-clearable)
+            md-input(placeholder="Search..." v-model="search")
+            md-icon search
+        .programs
+          .program.md-elevation-2.md-body-2(@click="select(product)" v-for="product in productFiltered" :key="product._id") {{ product.name }}
+        .step-actions
+          md-button.lblue.md-accent(@click="cancel") CANCEL
+          md-button.lblue.md-accent(v-show="season" @click="back") BACK
 </template>
 <script>
 import { mapState } from 'vuex'
@@ -27,9 +28,10 @@ export default {
   },
   data () {
     return {
+      editable: true,
       season: null,
       productFiltered: [],
-      pending: 'Click on your program below or search to filter the list.',
+      description: '',
       selected: {},
       search: ''
     }
@@ -38,14 +40,13 @@ export default {
   },
   watch: {
     player () {
-      if (this.allPreorders && this.allPreorders[0] && this.products) {
+      if (this.organization && this.allPreorders && this.allPreorders[0] && this.products) {
         this.products.filter(prod => {
           let resp = false
           this.allPreorders.forEach(po => {
             if (prod._id === po.productId && po.status === 'active') {
               this.showBack = false
-              this.select(prod)
-              this.season = prod.season
+              this.select(prod, po)
               return true
             }
           })
@@ -86,9 +87,15 @@ export default {
         return prodA.name > prodB.name ? 1 : -1
       })
     },
-    select (param) {
-      this.selected = param
-      this.$emit('select', param)
+    select (program, preorder) {
+      this.selected = program
+      this.season = program.season
+      this.description = program.name || 'Click on your program below or search to filter the list.'
+      this.applyFilter()
+      this.$emit('select', program)
+      if (program.restrictProductModification && preorder) {
+        this.editable = false
+      }
     },
     back () {
       this.search = ''

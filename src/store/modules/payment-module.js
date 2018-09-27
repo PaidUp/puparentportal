@@ -151,7 +151,8 @@ const module = {
         beneficiaryId: playerSelected._id,
         beneficiaryFirstName: playerSelected.firstName,
         beneficiaryLastName: playerSelected.lastName,
-        preorderId: paymentPlanSelected.preorderId
+        preorderId: paymentPlanSelected.preorderId,
+        planGroupId: paymentPlanSelected.groupId
       }
       return new Promise((resolve, reject) => {
         commerceService.checkoutInvoice({
