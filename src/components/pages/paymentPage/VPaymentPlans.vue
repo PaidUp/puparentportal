@@ -11,29 +11,32 @@
       | or call 
       a(href="tel:+18557643232") (855) 764-3232.
 
+    .steppers-btns(v-if="planSelected")
+      md-button.lblue.md-accent(@click="cancel") CANCEL
+      md-button.lblue.md-accent(@click="planSelected=null") BACK    
+      md-button.lblue.md-accent.md-raised.blinker(@click="accept") ACCEPT PAYMENT PLAN
+
     div(v-if="preorders.length && !planSelected") Your payment plans
     .custom-input-small
       md-field(v-if="planSelected")
         md-input(:readonly="true" :placeholder="placeholderSelectAccount" v-model="paymentAccountDesc" @click="showPaymentAccountDialog = true")
         md-icon arrow_drop_down
-
     .cred(v-if="planSelected && paymentAccount && paymentAccount.object === 'card' && program.unbundle")  IMPORTANT: There is an additional 2.9% + $0.30 fee per installment for paying with a debit/credit card. Bank account/ACH payments do not have a fee.
     br
-
-    .steppers-btns
-      md-button.lblue.md-accent(@click="cancel") CANCEL
-      md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK    
-      md-button.lblue.md-accent.md-raised(v-if="planSelected" @click="accept") ACCEPT PAYMENT PLAN
-    br
-
     .payment-plans.cards-layout
       v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in preorders" :key="plan._id" :plan="plan")
     div(v-if="preorders.length && !planSelected") All Payments Plan
+    br
     .payment-plans.cards-layout
       v-payment-plan-card(v-if="!planSelected" @click="select" v-for="plan in plansFiltered" :key="plan._id" :plan="plan")
       md-card(v-if="planSelected" v-for="due in dues" :key="due._id")
         v-payment-plan-details(v-if="due.type === 'invoice'" :due="due" :program="program" @updated="editDue")
         v-payment-plan-credit-details(v-else :due="due" @updated="editDue")
+
+    .steppers-btns
+      md-button.lblue.md-accent(@click="cancel") CANCEL
+      md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK    
+      md-button.lblue.md-accent.md-raised.blinker(v-if="planSelected" @click="accept") ACCEPT PAYMENT PLAN
     
     payment-accounts-dialog(:showDialog="showPaymentAccountDialog" :unbundle="program ? program.unbundle : false" @close="showPaymentAccountDialog = false" :accounts="paymentAccounts" @selected="selectAccount")
 
@@ -200,3 +203,35 @@ export default {
   }
 }
 </script>
+<style>
+.blinker {
+  animation-name: blink;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  -webkit-animation-name:blink;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blink{  
+  0% { opacity: 1.0; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blink {  
+  0% { opacity: 1.0; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1.0; }
+}
+
+@keyframes blink {  
+  0% { opacity: 1.0; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1.0; }
+}
+</style>
+

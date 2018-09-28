@@ -30,6 +30,9 @@
         show: false
       }
     },
+    mounted () {
+      this.preventReloadClose()
+    },
     watch: {
       showNavigation () {
         this.show = this.showNavigation
@@ -45,7 +48,8 @@
     },
     methods: {
       ...mapMutations('uiModule', {
-        toggleNavigation: 'toggleNavigation'
+        toggleNavigation: 'toggleNavigation',
+        preventReloadClose: 'preventReloadClose'
       })
     }
   }

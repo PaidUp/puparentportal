@@ -2,7 +2,8 @@ const module = {
   namespaced: true,
 
   state: {
-    showNavigation: false
+    showNavigation: false,
+    prc: false
   },
   getters: {
     isIE () {
@@ -48,6 +49,14 @@ const module = {
   mutations: {
     toggleNavigation (state, event) {
       state.showNavigation = event === true
+    },
+    setPrc (state, val) {
+      state.prc = val
+    },
+    preventReloadClose (state) {
+      window.onbeforeunload = () => {
+        if (state.prc) { return 'Are you sure you want to leave? You must complete all steps of the checkout process to authorize your payments.' }
+      }
     }
   }
 }

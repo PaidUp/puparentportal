@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapMutations, mapActions } from 'vuex'
   import VPlayers from './paymentPage/VPlayers.vue'
   import VPrograms from './paymentPage/VPrograms.vue'
   import VPaymentAccounts from './paymentPage/VPaymentAccounts.vue'
@@ -41,7 +41,35 @@
         playerSelected: null,
         processing: false,
         programSelected: null,
-        paymentPlanSelected: null
+        paymentPlanSelected: null,
+        preventExit: false,
+        confirmMessage: 'Are you sure you want to leave? You must complete all steps of the checkout process to authorize your payments.'
+      }
+    },
+    beforeRouteLeave (to, from, next) {
+      if (this.preventExit) {
+        const answer = window.confirm(this.confirmMessage)
+        this.setPrc(!answer)
+        if (answer) {
+          next()
+        } else {
+          next(false)
+        }
+      } else {
+        next()
+      }
+    },
+    beforeRouteUpdate (to, from, next) {
+      if (this.preventExit) {
+        const answer = window.confirm(this.confirmMessage)
+        this.setPrc(!answer)
+        if (answer) {
+          next()
+        } else {
+          next(false)
+        }
+      } else {
+        next()
       }
     },
     mounted () {
@@ -64,9 +92,15 @@
       },
       programSelected () {
         this.paymentPlanSelected = null
+      },
+      preventExit () {
+        this.setPrc(this.preventExit)
       }
     },
     methods: {
+      ...mapMutations('uiModule', {
+        setPrc: 'setPrc'
+      }),
       ...mapActions('paymentModule', {
         getPlans: 'getPlans',
         getProducts: 'getProducts',
@@ -104,10 +138,12 @@
       setProgram (program) {
         this.programSelected = program
         if (program._id) {
+          this.preventExit = true
           this.getPlans(this.programSelected._id)
           this.step2 = true
           this.active = 'step4'
         } else {
+          this.preventExit = false
           this.step2 = false
           this.active = 'step2'
         }
@@ -159,6 +195,8 @@
         })
       },
       redirect () {
+        this.preventExit = false
+        this.setPrc(false)
         this.$router.push({
           name: 'history',
           params: { id: this.playerSelected._id }
