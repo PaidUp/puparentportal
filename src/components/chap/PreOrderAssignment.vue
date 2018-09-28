@@ -28,7 +28,7 @@ export default {
   data () {
     return {
       comment: '',
-      subject: '{{organization}} Payment - {{beneficiaryFirstName}}',
+      subject: '',
       url: config.api.commerce + '/preorder/bulk',
       fileName: null,
       file: null,
