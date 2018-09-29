@@ -88,7 +88,7 @@
       }
     },
     created () {
-      if (this.program.unbundle && this.due.type === 'invoice') {
+      if (this.program.unbundle && this.due.account && this.due.type === 'invoice') {
         this.calculation = Calculations.exec(this.program, this.due.account.object, this.due.baseAmount)
       }
     },
@@ -97,7 +97,7 @@
         if (account && account.id) {
           this.paymentMethod = `${account.brand || account.bank_name}••••${account.last4}`
           this.paymentMethodObj = account
-          if (this.program.unbundle && this.due.type === 'invoice') {
+          if (this.program.unbundle && this.due.account && this.due.type === 'invoice') {
             this.calculation = Calculations.exec(this.program, account.object, this.due.baseAmount)
             this.due.amount = this.calculation.price
           }
@@ -126,7 +126,7 @@
         return currency(this.due.baseAmount)
       },
       processingFee () {
-        if ((this.paymentMethodObj && this.paymentMethodObj.object === 'bank_account') || this.due.account.object === 'bank_account') return currency(0)
+        if ((this.paymentMethodObj && this.paymentMethodObj.object === 'bank_account') || (!this.due.account || this.due.account.object === 'bank_account') || !this.calculation) return currency(0)
         return currency(this.calculation.processingFee)
       }
     },

@@ -14,7 +14,7 @@
     .steppers-btns(v-if="planSelected")
       md-button.lblue.md-accent(@click="cancel") CANCEL
       md-button.lblue.md-accent(@click="planSelected=null") BACK    
-      md-button.lblue.md-accent.md-raised.blinker(@click="accept") ACCEPT PAYMENT PLAN
+      md-button.lblue.md-accent.md-raised(@click="accept" :class="{'blinker': this.paymentAccount}" :disabled="!this.paymentAccount") ACCEPT PAYMENT PLAN
 
     div(v-if="preorders.length && !planSelected") Your payment plans
     .custom-input-small
@@ -36,7 +36,7 @@
     .steppers-btns
       md-button.lblue.md-accent(@click="cancel") CANCEL
       md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK    
-      md-button.lblue.md-accent.md-raised.blinker(v-if="planSelected" @click="accept") ACCEPT PAYMENT PLAN
+      md-button.lblue.md-accent.md-raised.blinker(v-if="planSelected" @click="accept" :class="{'blinker': this.paymentAccount}" :disabled="!this.paymentAccount") ACCEPT PAYMENT PLAN
     
     payment-accounts-dialog(:showDialog="showPaymentAccountDialog" :unbundle="program ? program.unbundle : false" @close="showPaymentAccountDialog = false" :accounts="paymentAccounts" @selected="selectAccount")
 
@@ -118,7 +118,7 @@ export default {
       return pps
     },
     placeholderSelectAccount () {
-      return this.paymentAccount ? 'Click to Select Payment Account' : 'Click to Add New Payment Accoun'
+      return this.paymentAccount ? 'Click to Select Payment Account' : 'Click to Add New Payment Account'
     }
   },
   watch: {
@@ -190,7 +190,7 @@ export default {
         items.forEach(due => {
           let cloneDue = Object.assign({}, due)
           cloneDue.baseAmount = cloneDue.baseAmount || cloneDue.amount
-          if (this.program.unbundle && cloneDue.type === 'invoice') {
+          if (this.program.unbundle && cloneDue.account && cloneDue.type === 'invoice') {
             let calculation = Calculations.exec(this.program, cloneDue.account.object, cloneDue.baseAmount)
             cloneDue.amount = calculation.price
           }
