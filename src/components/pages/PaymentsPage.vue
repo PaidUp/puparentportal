@@ -3,13 +3,21 @@
     <div class="title">
       Make/Schedule Payment for {{ playerSelected ? playerSelected.firstName : '' }}
     </div>
+    <br/>
     <md-steppers md-vertical md-linear md-dynamic-height :md-active-step.sync="active">
-      <v-programs step-id="step2" :step="step2" :player="playerSelected" @select="setProgram" />
+      <md-step id="step2" md-label="Program" :md-description="programDescription" :md-done.sync="step2">
+        <v-programs @next="step2Next"/>
+      </md-step>
+      
+      <md-step id="step4" md-label="Payment Plan" :md-description="planDescription" :md-done.sync="step4">
+        <v-payment-plans :program="programSelected" @selectAccount="setPaymentAccount" @select="setPaymentPlan" />
+        <v-review-approve :processing="processing" @select="approve" />
+      </md-step>
       <!-- v-payment-accounts step-id="step3" :step="step3" @select="setPaymentAccount" / -->
-      <v-payment-plans step-id="step4" :program="programSelected" :step="step4" @selectAccount="setPaymentAccount" @select="setPaymentPlan" />
-      <v-additional-info v-if="false" step-id="step5" :step="step5" @select="setCustomInfo" />
-      <v-document-signature v-if="false" step-id="step6" :step="step6" @select="setSignature" />
-      <v-review-approve step-id="step7" :processing="processing" :step="step7" :plan="paymentPlanSelected" @select="approve" />
+      <!-- v-payment-plans step-id="step4" :program="programSelected" :step="step4" @selectAccount="setPaymentAccount" @select="setPaymentPlan" / -->
+      <!-- <v-additional-info v-if="false" step-id="step5" :step="step5" @select="setCustomInfo" /> -->
+      <!-- <v-document-signature v-if="false" step-id="step6" :step="step6" @select="setSignature" /> -->
+      <!-- v-review-approve step-id="step7" :processing="processing" :step="step7" :plan="paymentPlanSelected" @select="approve" / -->
     </md-steppers>
     <v-pay-animation :animate="processing" @finish="redirect" />
   </div>
@@ -38,12 +46,9 @@
         step5: false,
         step6: false,
         step7: false,
-        playerSelected: null,
         processing: false,
-        programSelected: null,
-        paymentPlanSelected: null,
         preventExit: false,
-        confirmMessage: 'Are you sure you want to leave? You must complete all steps of the checkout process to authorize your payments.'
+        confirmMessage: 'STOP!!! You have not finished setting up your payments. Please scroll down, check all the boxes and click on AUTHORIZE PAYMENTS.'
       }
     },
     beforeRouteLeave (to, from, next) {
@@ -74,25 +79,41 @@
     },
     mounted () {
       if (this.user) {
-        this.load()
+        this.getBeneficiary(this.$route.params.id).then(ps => {
+          Promise.all([
+            this.getOrganization({id: ps.organizationId}),
+            this.getPreorders({beneficiaryId: this.$route.params.id, userEmail: this.user.email}),
+            this.getProducts(ps.organizationId)
+          ]).then(values => {
+            this.setPlayerSelected(ps)
+          })
+        })
       }
+    },
+    beforeDestroy () {
+      this.clean()
     },
     computed: {
       ...mapState('userModule', {
         user: 'user'
       }),
+      ...mapState('paymentModule', {
+        playerSelected: 'playerSelected',
+        programSelected: 'programSelected',
+        paymentPlanSelected: 'paymentPlanSelected'
+      }),
       ...mapState('playerModule', {
         beneficiaries: 'beneficiaries',
         allPreorders: 'allPreorders'
-      })
+      }),
+      programDescription () {
+        return this.programSelected.name || 'Click on your program below or search to filter the list.'
+      },
+      planDescription () {
+        return this.paymentPlanSelected ? this.paymentPlanSelected.description : 'Review & Approve'
+      }
     },
     watch: {
-      user () {
-        // this.load()
-      },
-      programSelected () {
-        this.paymentPlanSelected = null
-      },
       preventExit () {
         this.setPrc(this.preventExit)
       }
@@ -101,11 +122,14 @@
       ...mapMutations('uiModule', {
         setPrc: 'setPrc'
       }),
+      ...mapMutations('paymentModule', {
+        clean: 'clean',
+        setPlayerSelected: 'setPlayerSelected'
+      }),
       ...mapActions('paymentModule', {
         getPlans: 'getPlans',
         getProducts: 'getProducts',
-        checkout: 'checkout',
-        inactivePreorder: 'inactivePreorder'
+        checkout: 'checkout'
       }),
       ...mapActions('messageModule', {
         setWarning: 'setWarning',
@@ -117,27 +141,8 @@
         getBeneficiary: 'getBeneficiary',
         getOrganization: 'getOrganization'
       }),
-      load () {
-        this.getBeneficiary(this.$route.params.id).then(ps => {
-          Promise.all([
-            this.getOrganization({id: ps.organizationId}),
-            this.getPreorders({beneficiaryId: this.$route.params.id, userEmail: this.user.email}),
-            this.getProducts(ps.organizationId)
-          ]).then(values => {
-            this.playerSelected = ps
-          })
-        })
-      },
-      setPlayer (player) {
-        this.playerSelected = player
-        if (player) {
-          this.step1 = true
-          this.active = 'step2'
-        }
-      },
-      setProgram (program) {
-        this.programSelected = program
-        if (program._id) {
+      step2Next () {
+        if (this.programSelected._id) {
           this.preventExit = true
           this.getPlans(this.programSelected._id)
           this.step2 = true
@@ -161,7 +166,7 @@
           this.step4 = true
           this.step5 = true
           this.step6 = true
-          this.active = 'step7'
+          // this.active = 'step7'
         }
       },
       setCustomInfo (setCustomInfo) {
@@ -178,12 +183,7 @@
       approve (status) {
         if (!status) return
         this.processing = true
-        this.checkout({
-          playerSelected: this.playerSelected,
-          programSelected: this.programSelected,
-          paymentPlanSelected: this.paymentPlanSelected,
-          user: this.user
-        }).then(res => {
+        this.checkout().then(res => {
           this.getBeneficiaries(this.user.email).then(res => {
             this.setSuccess('component.payment.done')
             this.processing = false

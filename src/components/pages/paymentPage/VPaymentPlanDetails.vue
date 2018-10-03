@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="payment-single">
     <div>
       <div class="title cgray bold">{{ due.description }}</div>

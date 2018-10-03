@@ -97,11 +97,6 @@ class CommerceService {
       .get(`/preorder/beneficiary/${beneficiaryId}${query}`)
   }
 
-  inactivePreorder (id) {
-    return trae
-      .put('/preorder', { id, values: { status: 'inactive' } })
-  }
-
   creditsByBeneficiary (beneficiaryId, userEmail) {
     let query = ''
     if (userEmail) query = encodeURI(`?assegnee=${userEmail}`)

@@ -72,9 +72,9 @@ const module = {
     update (context, params) {
       return commerceService.updateInvoiceCalculations(params)
     },
-    updateSimple (context, params) {
-      return commerceService.updateInvoice(params)
-    },
+    // updateSimple (context, params) {
+    //   return commerceService.updateInvoice(params)
+    // },
     new (context, params) {
       return commerceService.newInvoice(params)
     },

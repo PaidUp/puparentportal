@@ -1,31 +1,22 @@
 <template lang="pug">
-  md-step(:id="stepId" md-label="Program" :md-description="description" :md-done.sync="step")
-    div(v-if="editable")
-      .programs(v-show="!season")
-        .program.md-elevation-2.md-body-2(v-for="sns in seasons" @click="season = sns" :key="sns._id") {{ sns.name }}
-      .div(v-show="season")
-        .custom-input-small
-          md-field(md-clearable)
-            md-input(placeholder="Search..." v-model="search")
-            md-icon search
-        .programs
-          .program.md-elevation-2.md-body-2(@click="select(product)" v-for="product in productFiltered" :key="product._id") {{ product.name }}
-        .step-actions
-          md-button.lblue.md-accent(@click="cancel") CANCEL
-          md-button.lblue.md-accent(v-show="season" @click="back") BACK
+  div(v-if="editable")
+    .programs(v-show="!season && playerSelected")
+      .program.md-elevation-2.md-body-2(v-for="sns in seasons" @click="season = sns" :key="sns._id") {{ sns.name }}
+    .div(v-show="season")
+      .custom-input-small(v-show="!programSelected._id")
+        md-field(md-clearable)
+          md-input(placeholder="Search..." v-model="search")
+          md-icon search
+      .programs
+        .program.md-elevation-2.md-body-2(@click="select(product)" v-for="product in productFiltered" :key="product._id") {{ product.name }}
+      .step-actions
+        md-button.lblue.md-accent(@click="cancel") CANCEL
+        md-button.lblue.md-accent(v-show="season" @click="back") BACK
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
-  props: {
-    stepId: {
-      type: String,
-      required: true
-    },
-    step: Boolean,
-    player: Object
-  },
   data () {
     return {
       editable: true,
@@ -39,7 +30,7 @@ export default {
   mounted () {
   },
   watch: {
-    player () {
+    playerSelected () {
       if (this.organization && this.allPreorders && this.allPreorders[0] && this.products) {
         this.products.filter(prod => {
           let resp = false
@@ -65,7 +56,9 @@ export default {
   },
   computed: {
     ...mapState('paymentModule', {
-      products: 'products'
+      playerSelected: 'playerSelected',
+      products: 'products',
+      programSelected: 'programSelected'
     }),
     ...mapState('playerModule', {
       allPreorders: 'allPreorders',
@@ -79,7 +72,11 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('paymentModule', {
+      setProgramSelected: 'setProgramSelected'
+    }),
     applyFilter () {
+      if (!this.products) return false
       this.productFiltered = this.products.filter(prd => {
         if (!this.season) return true
         return (prd.season === this.season._id) && (prd.status === 'active') && prd.name.toLowerCase().includes(this.search.toLowerCase())
@@ -92,7 +89,8 @@ export default {
       this.season = program.season
       this.description = program.name || 'Click on your program below or search to filter the list.'
       this.applyFilter()
-      this.$emit('select', program)
+      this.setProgramSelected(program)
+      this.$emit('next', true)
       if (program.restrictProductModification && preorder) {
         this.editable = false
       }

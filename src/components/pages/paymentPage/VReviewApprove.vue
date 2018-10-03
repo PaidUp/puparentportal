@@ -1,6 +1,6 @@
 <template lang="pug">
-  md-step(:id="stepId" md-label="Review & Approve" md-description="" :md-done.sync="step")
-    .review-checks(v-if="plan")
+  div
+    .review-checks(v-if="paymentPlanSelected")
       md-checkbox.lblue(v-if="chargeToday" v-model="check1") I authorize PaidUp to charge me 
         span.cgreen
           b ${{ currency(chargeToday) }} 
@@ -11,28 +11,20 @@
         b on autopay 
         | on the dates and amount in the payment plan I selected
       md-checkbox.lblue(v-model="check3") I agree that PaidUp cannot modify, cancel or refund any payments without approval from the club
-    md-button.lblue.md-accent(@click="cancel") CANCEL
-    md-button.lblue.md-accent.md-raised(:disabled="!enable || processing" @click="select") AUTHORIZE PAYMENTS
+    md-button.lblue.md-accent(v-if="paymentPlanSelected" @click="back") BACK
+    md-button.lblue.md-accent.md-raised(:disabled="!enable || processing" :class="{'blinker': enable}" @click="select") AUTHORIZE PAYMENTS
 
 </template>
 <script>
+import { mapState, mapMutations } from 'vuex'
 import currency from '@/helpers/currency'
 
 export default {
   props: {
-    stepId: {
-      type: String,
-      required: true
-    },
-    step: {
-      type: Boolean,
-      required: true
-    },
     processing: {
       type: Boolean,
       required: true
-    },
-    plan: Object
+    }
   },
   data () {
     return {
@@ -43,43 +35,55 @@ export default {
     }
   },
   computed: {
+    ...mapState('paymentModule', {
+      paymentPlanSelected: 'paymentPlanSelected',
+      dues: 'dues',
+      paymentAccountSelected: 'paymentAccountSelected'
+    }),
     chargeToday () {
-      if (!this.plan) return 0
-      const res = this.plan.dues.reduce((subTotal, due) => {
-        if (this.today > due.dateCharge.getTime()) return subTotal + due.amount
-        return subTotal
-      }, 0)
+      if (!this.paymentPlanSelected) return 0
+      let res = 0
+      Object.keys(this.dues).forEach(key => {
+        const due = this.dues[key]
+        if (due.type === 'invoice' && this.today > due.dateCharge.getTime()) {
+          res = res + due.amount
+        }
+      })
       if (res) this.check1 = false
       return res
     },
     chargeRemaining () {
-      if (!this.plan) return 0
-      const res = this.plan.dues.reduce((subTotal, due) => {
-        if (this.today <= due.dateCharge.getTime()) return subTotal + due.amount
-        return subTotal
-      }, 0)
+      if (!this.paymentPlanSelected) return 0
+      let res = 0
+      Object.keys(this.dues).forEach(key => {
+        const due = this.dues[key]
+        if (due.type === 'invoice' && this.today <= due.dateCharge.getTime()) {
+          res = res + due.amount
+        }
+      })
       if (res) this.check2 = false
       return res
     },
     enable () {
-      return ((!this.chargeToday || this.check1) && (!this.chargeRemaining || this.check2) && this.check3)
+      return ((!this.chargeToday || this.check1) && (!this.chargeRemaining || this.check2) && this.check3 && this.paymentAccountSelected)
     }
   },
   watch: {
-    plan () {
+    paymentPlanSelected () {
       this.check1 = true
       this.check2 = true
       this.check3 = false
     }
   },
   methods: {
+    ...mapMutations('paymentModule', {
+      setPaymentPlanSelected: 'setPaymentPlanSelected'
+    }),
     select () {
       if (!this.processing) this.$emit('select', this.enable)
     },
-    cancel () {
-      this.$router.push({
-        name: 'home'
-      })
+    back () {
+      this.setPaymentPlanSelected(null)
     },
     currency (value) {
       return currency(value)
@@ -87,3 +91,34 @@ export default {
   }
 }
 </script>
+<style>
+.blinker {
+  animation-name: blink;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  -webkit-animation-name:blink;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blink{  
+  0% { opacity: 1.0; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blink {  
+  0% { opacity: 1.0; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1.0; }
+}
+
+@keyframes blink {  
+  0% { opacity: 1.0; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1.0; }
+}
+</style>

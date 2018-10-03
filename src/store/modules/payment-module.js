@@ -4,6 +4,12 @@ const module = {
   namespaced: true,
 
   state: {
+    playerSelected: null,
+    programSelected: {},
+    paymentPlanSelected: null,
+    paymentAccountSelected: null,
+    dues: {},
+
     cards: [],
     bankAccounts: [],
     products: null,
@@ -17,6 +23,17 @@ const module = {
   },
 
   mutations: {
+    clean (state) {
+      state.playerSelected = null
+      state.programSelected = {}
+      state.paymentPlanSelected = null
+      // state.paymentAccountSelected = null
+      state.dues = {}
+      // state.cards = []
+      // state.bankAccounts = []
+      state.products = null
+      state.plans = []
+    },
     setCards (state, cards) {
       state.cards = cards
     },
@@ -41,6 +58,21 @@ const module = {
       state.bankAccounts = state.bankAccounts.filter(bank => {
         return bankId !== bank.id
       })
+    },
+    setPlayerSelected (state, playerSelected) {
+      state.playerSelected = playerSelected
+    },
+    setProgramSelected (state, programSelected) {
+      state.programSelected = programSelected
+    },
+    setPaymentAccountSelected (state, paymentAccountSelected) {
+      state.paymentAccountSelected = paymentAccountSelected
+    },
+    setPaymentPlanSelected (state, paymentPlanSelected) {
+      state.paymentPlanSelected = paymentPlanSelected
+    },
+    setDues (state, dues) {
+      state.dues = dues
     }
   },
 
@@ -137,33 +169,29 @@ const module = {
         context.commit('setPlans', plans)
       })
     },
-    inactivePreorder (context, id) {
-      return commerceService.inactivePreorder(id)
-    },
-    checkout (context, { playerSelected, programSelected, paymentPlanSelected }) {
+    checkout (context) {
       let order = {
-        organizationId: playerSelected.organizationId,
-        organizationName: playerSelected.organizationName,
-        productId: programSelected._id,
-        productName: programSelected.name,
-        productImage: programSelected.image,
-        season: programSelected.season,
-        beneficiaryId: playerSelected._id,
-        beneficiaryFirstName: playerSelected.firstName,
-        beneficiaryLastName: playerSelected.lastName,
-        preorderId: paymentPlanSelected.preorderId,
-        planGroupId: paymentPlanSelected.groupId
+        organizationId: context.state.playerSelected.organizationId,
+        organizationName: context.state.playerSelected.organizationName,
+        productId: context.state.programSelected._id,
+        productName: context.state.programSelected.name,
+        season: context.state.programSelected.season,
+        beneficiaryId: context.state.playerSelected._id,
+        beneficiaryFirstName: context.state.playerSelected.firstName,
+        beneficiaryLastName: context.state.playerSelected.lastName,
+        preorderId: context.state.paymentPlanSelected.preorderId,
+        planGroupId: context.state.paymentPlanSelected.groupId
       }
       return new Promise((resolve, reject) => {
         commerceService.checkoutInvoice({
           order,
-          dues: paymentPlanSelected.dues,
-          product: programSelected
+          dues: context.state.paymentPlanSelected.dues,
+          product: context.state.programSelected
         }).then(invoices => {
-          if (paymentPlanSelected.credits && paymentPlanSelected.credits.length) {
+          if (context.state.paymentPlanSelected.credits && context.state.paymentPlanSelected.credits.length) {
             commerceService.checkoutCredit({
               order,
-              credits: paymentPlanSelected.credits
+              credits: context.state.paymentPlanSelected.credits
             }).then(credits => {
               resolve([invoices, credits])
             }).catch(reason => {
