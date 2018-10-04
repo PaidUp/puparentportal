@@ -164,6 +164,11 @@
           this.processingFees = this.invoice.paymentDetails.paymentMethodtype === 'card' ? currency(this.invoice.stripeFee) : 0
           this.baseAmount = currency(this.invoice.priceBase)
           this.paymentMethod = `${this.invoice.paymentDetails.brand}••••${this.invoice.paymentDetails.last4}`
+          this.paymentAccounts.forEach(account => {
+            if (account.id === this.invoice.paymentDetails.externalPaymentMethodId) {
+              this.paymentMethodObj = account
+            }
+          })
         }
         this.showDialog = typeof this.invoice._id === 'string'
       }
