@@ -67,9 +67,9 @@
           </div>
         </md-tab>
       </md-tabs>
-      <chap-invoice-dialog :invoice="item" @submited="setShowAnimate" :isClone="isClone" @updated="reloadItems"></chap-invoice-dialog>
-      <chap-credit-dialog :invoice="creditItem" @submited="setShowAnimate" :isClone="isCreditClone" @updated="reloadItems"></chap-credit-dialog>
-      <chap-refund-dialog :invoice="refundItem" @submited="setShowAnimate" @updated="reloadItems"></chap-refund-dialog>
+      <chap-invoice-dialog :show="showInvoiceDialog" :invoice="item" @close="showInvoiceDialog = false" @submited="setShowAnimate" :isClone="isClone" @updated="reloadItems"></chap-invoice-dialog>
+      <chap-credit-dialog :show="showCreditDialog" @close="showCreditDialog = false" :invoice="creditItem" @submited="setShowAnimate" :isClone="isCreditClone" @updated="reloadItems"></chap-credit-dialog>
+      <chap-refund-dialog :show="showRefundDialog" @close="showRefundDialog = false" :invoice="refundItem" @submited="setShowAnimate" @updated="reloadItems"></chap-refund-dialog>
       <chap-new-invoice-dialog :show="showNewInvoiceDialog" @submited="setShowAnimate" @created="reloadItems" @changeStatus="changeNewInvoceDialogStatus"></chap-new-invoice-dialog>
 
       <v-pay-animation :animate="showAnimate" />
@@ -92,8 +92,11 @@ export default {
     return {
       items: null,
       item: null,
+      showInvoiceDialog: false,
       creditItem: null,
+      showCreditDialog: false,
       refundItem: null,
+      showRefundDialog: false,
       isClone: false,
       isCreditClone: false,
       showNewInvoiceDialog: false,
@@ -156,13 +159,16 @@ export default {
     setItem (value) {
       this.isClone = value.isClone
       this.item = value.item
+      this.showInvoiceDialog = true
     },
     setRefundItem (value) {
       this.refundItem = value
+      this.showRefundDialog = true
     },
     setCreditItem (value) {
       this.isCreditClone = value.isClone
       this.creditItem = value.item
+      this.showCreditDialog = true
     }
   }
 }

@@ -164,14 +164,15 @@
   export default {
     props: {
       invoice: Object,
-      isClone: Boolean
+      isClone: Boolean,
+      show: Boolean
     },
     data () {
       return {
         updInvoice: {},
         baseAmount: 0,
         pmSelected: null,
-        showDialog: false,
+        showDialog: this.show,
         parent: null,
         submited: false,
         tagsAvailable: [],
@@ -181,10 +182,15 @@
     watch: {
       invoice () {
         if (this.invoice) {
-          this.showDialog = true
           this.reset()
-        } else {
-          this.showDialog = false
+        }
+      },
+      show () {
+        this.showDialog = this.show
+      },
+      showDialog () {
+        if (!this.showDialog) {
+          this.$emit('close')
         }
       },
       submited () {

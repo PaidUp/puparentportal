@@ -80,12 +80,13 @@
     components: { VPayAnimation },
     props: {
       invoice: Object,
-      isClone: Boolean
+      isClone: Boolean,
+      show: Boolean
     },
     data () {
       return {
         updInvoice: {},
-        showDialog: false,
+        showDialog: this.show,
         submited: false,
         tagsAvailable: []
       }
@@ -93,10 +94,15 @@
     watch: {
       invoice () {
         if (this.invoice) {
-          this.showDialog = true
           this.reset()
-        } else {
-          this.showDialog = false
+        }
+      },
+      show () {
+        this.showDialog = this.show
+      },
+      showDialog () {
+        if (!this.showDialog) {
+          this.$emit('close')
         }
       },
       submited () {

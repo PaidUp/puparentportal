@@ -38,28 +38,34 @@
 
   export default {
     props: {
-      invoice: Object
+      invoice: Object,
+      show: Boolean
     },
     data () {
       return {
         reason: null,
         price: null,
         invoiceReq: null,
-        showDialog: false,
+        showDialog: this.show,
         submited: false
       }
     },
     watch: {
       invoice () {
         if (this.invoice) {
-          this.showDialog = true
           this.getInvoiceById(this.invoice.id).then(inv => {
             this.invoiceReq = inv
             this.price = this.invoice.price
             this.submited = false
           })
-        } else {
-          this.showDialog = false
+        }
+      },
+      show () {
+        this.showDialog = this.show
+      },
+      showDialog () {
+        if (!this.showDialog) {
+          this.$emit('close')
         }
       },
       submited () {
