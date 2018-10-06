@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page">
+  <div class="login-page" v-if="!isIE">
     <md-field :class="{'md-invalid': $v.loginParams.email.$error}">
       <label>{{ $t('component.login.email') }}</label>
       <md-input v-model.trim="loginParams.email" @keyup.enter="focusPassword"></md-input>
@@ -68,6 +68,9 @@
       }
     },
     computed: {
+      ...mapGetters('uiModule', {
+        isIE: 'isIE'
+      }),
       ...mapState('userModule', {
         loginParams: 'loginParams',
         fbUser: 'fbUser'
