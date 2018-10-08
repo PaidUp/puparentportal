@@ -19,7 +19,8 @@
       <!-- <v-document-signature v-if="false" step-id="step6" :step="step6" @select="setSignature" /> -->
       <!-- v-review-approve step-id="step7" :processing="processing" :step="step7" :plan="paymentPlanSelected" @select="approve" / -->
     </md-steppers>
-    <v-pay-animation :animate="processing" @finish="redirect" />
+    <v-pay-animation :animate="processing" @finish="redirect(true)" />
+    <duplicate-payment-dialog :show="showDuplicatePaymentDialog" @confirm="confirmDuplicate"></duplicate-payment-dialog>
   </div>
 </template>
 
@@ -33,11 +34,13 @@
   import VDocumentSignature from './paymentPage/VDocumentSignature.vue'
   import VReviewApprove from './paymentPage/VReviewApprove.vue'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
+  import DuplicatePaymentDialog from '@/components/shared/checkout/DuplicatePaymentDialog.vue'
 
   export default {
-    components: { VPlayers, VPrograms, VPaymentAccounts, VPaymentPlans, VAdditionalInfo, VDocumentSignature, VReviewApprove, VPayAnimation },
+    components: { VPlayers, VPrograms, VPaymentAccounts, VPaymentPlans, VAdditionalInfo, VDocumentSignature, VReviewApprove, VPayAnimation, DuplicatePaymentDialog },
     data: function () {
       return {
+        showDuplicatePaymentDialog: false,
         animation: false,
         active: 'step2',
         step2: false,
@@ -100,7 +103,8 @@
       ...mapState('paymentModule', {
         playerSelected: 'playerSelected',
         programSelected: 'programSelected',
-        paymentPlanSelected: 'paymentPlanSelected'
+        paymentPlanSelected: 'paymentPlanSelected',
+        allInvoices: 'allInvoices'
       }),
       ...mapState('playerModule', {
         beneficiaries: 'beneficiaries',
@@ -139,7 +143,8 @@
         getPreorders: 'getPreorders',
         getBeneficiaries: 'getBeneficiaries',
         getBeneficiary: 'getBeneficiary',
-        getOrganization: 'getOrganization'
+        getOrganization: 'getOrganization',
+        getInvoices: 'getInvoices'
       }),
       step2Next () {
         if (this.programSelected._id) {
@@ -147,6 +152,18 @@
           this.getPlans(this.programSelected._id)
           this.step2 = true
           this.active = 'step4'
+          if (this.user && this.playerSelected && this.programSelected) {
+            this.getInvoices({beneficiary: this.playerSelected, userEmail: this.user.email}).then(invoices => {
+              invoices.forEach(invoice => {
+                if (
+                  invoice.productId === this.programSelected._id &&
+                  invoice.season === this.programSelected.season &&
+                  invoice.beneficiaryId === this.playerSelected._id) {
+                  this.showDuplicatePaymentDialog = true
+                }
+              })
+            })
+          }
         } else {
           this.preventExit = false
           this.step2 = false
@@ -194,12 +211,18 @@
           this.processing = false
         })
       },
-      redirect () {
+      confirmDuplicate (val) {
+        this.showDuplicatePaymentDialog = false
+        if (!val) {
+          this.redirect(false)
+        }
+      },
+      redirect (checkout) {
         this.preventExit = false
         this.setPrc(false)
         this.$router.push({
           name: 'history',
-          params: { id: this.playerSelected._id }
+          params: { id: this.playerSelected._id, checkout }
         })
       }
     }

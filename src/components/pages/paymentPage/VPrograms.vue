@@ -1,8 +1,8 @@
 <template lang="pug">
   div(v-if="editable")
-    .programs(v-show="!season && playerSelected")
-      .program.md-elevation-2.md-body-2(v-for="sns in seasons" @click="season = sns" :key="sns._id") {{ sns.name }}
-    .div(v-show="season")
+    .programs(v-show="!seasonSelected && playerSelected")
+      .program.md-elevation-2.md-body-2(v-for="sns in seasons" @click="setSeasonSelected(sns)" :key="sns._id") {{ sns.name }}
+    .div(v-show="seasonSelected")
       .custom-input-small(v-show="!programSelected._id")
         md-field(md-clearable)
           md-input(placeholder="Search..." v-model="search")
@@ -11,7 +11,7 @@
         .program.md-elevation-2.md-body-2(@click="select(product)" v-for="product in productFiltered" :key="product._id") {{ product.name }}
       .step-actions
         md-button.lblue.md-accent(@click="cancel") CANCEL
-        md-button.lblue.md-accent(v-show="season" @click="back") BACK
+        md-button.lblue.md-accent(v-show="seasonSelected" @click="back") BACK
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex'
@@ -47,7 +47,7 @@ export default {
         this.select({})
       }
     },
-    season () {
+    seasonSelected () {
       this.applyFilter()
     },
     search () {
@@ -57,6 +57,7 @@ export default {
   computed: {
     ...mapState('paymentModule', {
       playerSelected: 'playerSelected',
+      seasonSelected: 'seasonSelected',
       products: 'products',
       programSelected: 'programSelected'
     }),
@@ -73,20 +74,21 @@ export default {
   },
   methods: {
     ...mapMutations('paymentModule', {
-      setProgramSelected: 'setProgramSelected'
+      setProgramSelected: 'setProgramSelected',
+      setSeasonSelected: 'setSeasonSelected'
     }),
     applyFilter () {
       if (!this.products) return false
       this.productFiltered = this.products.filter(prd => {
-        if (!this.season) return true
-        return (prd.season === this.season._id) && (prd.status === 'active') && prd.name.toLowerCase().includes(this.search.toLowerCase())
+        if (!this.seasonSelected) return true
+        return (prd.season === this.seasonSelected._id) && (prd.status === 'active') && prd.name.toLowerCase().includes(this.search.toLowerCase())
       }).sort((prodA, prodB) => {
         return prodA.name > prodB.name ? 1 : -1
       })
     },
     select (program, preorder) {
       this.selected = program
-      this.season = program.season
+      // this.season = program.season
       this.description = program.name || 'Click on your program below or search to filter the list.'
       this.applyFilter()
       this.setProgramSelected(program)
@@ -97,7 +99,7 @@ export default {
     },
     back () {
       this.search = ''
-      this.season = null
+      this.setSeasonSelected(null)
     },
     cancel () {
       this.$router.push({

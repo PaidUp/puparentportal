@@ -14,7 +14,6 @@
         .details-box
           v-player-details-selection(@selectSeason="setSeason" @selectProgram="setProgram")
           v-player-details-totals(:invoices="invoices")
-      button(v-if="false" class="md-button md-raised" @click="showDuplicateDialog = true") Duplicate Payment Dialog
       .invoices(v-if="invoices")
         .pre-cards-title
           div Invoices
@@ -53,17 +52,17 @@
         .cards-layout
           v-player-invoices(:invoice="invoice" v-for="invoice in invoices" :key="invoice._id" @select="selectInvoice")
     view-invoice-dialog(:invoice="viewInvoice" :closeDialog="closeDialog" @updated="reloadBeneficiaries")
-    duplicate-payment-dialog(:showDialog="showDuplicateDialog" :closeDialog="closeDialog")
+    v-success-checkout-dialog(:show="showSuccessCheckoutDialog")
 </template>
 
 <script>
   import { mapState, mapActions } from 'vuex'
   import VPlayerInfo from '@/components/shared/VPlayerInfo.vue'
+  import VSuccessCheckoutDialog from '@/components/shared/checkout/VSuccessCheckoutDialog.vue'
   import VPlayerDetailsTotals from '@/components/shared/VPlayerDetailsTotals.vue'
   import VPlayerDetailsSelection from '@/components/shared/VPlayerDetailsSelection.vue'
   import VPlayerInvoices from '@/components/shared/VPlayerInvoices.vue'
   import ViewInvoiceDialog from '@/components/shared/ViewInvoiceDialog.vue'
-  import DuplicatePaymentDialog from '@/components/shared/DuplicatePaymentDialog.vue'
   
   function sort (a, b) {
     let dataA = a.dateCharge || a.createOn
@@ -78,14 +77,14 @@
       VPlayerDetailsTotals,
       VPlayerDetailsSelection,
       ViewInvoiceDialog,
-      DuplicatePaymentDialog
+      VSuccessCheckoutDialog
     },
     data: function () {
       return {
         season: null,
         program: null,
         viewInvoice: {},
-        showDuplicateDialog: false,
+        showSuccessCheckoutDialog: this.$route.params.checkout,
         sortRadio: 'asc',
         filterChecks: []
       }

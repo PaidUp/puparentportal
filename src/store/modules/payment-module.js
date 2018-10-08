@@ -5,6 +5,7 @@ const module = {
 
   state: {
     playerSelected: null,
+    seasonSelected: null,
     programSelected: {},
     paymentPlanSelected: null,
     paymentAccountSelected: null,
@@ -33,6 +34,7 @@ const module = {
       // state.bankAccounts = []
       state.products = null
       state.plans = []
+      state.seasonSelected = null
     },
     setCards (state, cards) {
       state.cards = cards
@@ -73,6 +75,9 @@ const module = {
     },
     setDues (state, dues) {
       state.dues = dues
+    },
+    setSeasonSelected (state, season) {
+      state.seasonSelected = season
     }
   },
 
