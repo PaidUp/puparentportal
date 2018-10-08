@@ -4,12 +4,14 @@
       md-checkbox.lblue(v-if="chargeToday" v-model="check1") I authorize PaidUp to charge me 
         span.cgreen
           b ${{ currency(chargeToday) }} 
-        b today 
+        b today
+      br
       md-checkbox.lblue(v-if="chargeRemaining" v-model="check2") I authorize PaidUp to setup the remaining 
         span.cgreen
           b ${{ currency(chargeRemaining) }} 
         b on autopay 
         | on the dates and amount in the payment plan I selected
+      br
       md-checkbox.lblue(v-model="check3") I agree that PaidUp cannot modify, cancel or refund any payments without approval from the club
     md-button.lblue.md-accent(v-if="paymentPlanSelected" @click="back") BACK
     md-button.lblue.md-accent.md-raised(:disabled="!enable || processing" :class="{'blinker': enable}" @click="select") AUTHORIZE PAYMENTS
