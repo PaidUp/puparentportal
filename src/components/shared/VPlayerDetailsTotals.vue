@@ -30,7 +30,7 @@ export default {
     total () {
       if (!this.invoices) return 0
       return this.invoices.reduce((subTotal, current) => {
-        return subTotal + current.price
+        return current.status !== 'refunded' ? subTotal + current.price : subTotal
       }, 0)
     },
     paid () {
@@ -57,7 +57,7 @@ export default {
     other () {
       if (!this.invoices) return 0
       return this.invoices.reduce((subTotal, current) => {
-        if (current.status === 'discount' || current.status === 'partially_refunded' || current.status === 'refunded') return subTotal + current.price
+        if (current.status === 'discount') return subTotal + current.price
         return subTotal
       }, 0)
     }

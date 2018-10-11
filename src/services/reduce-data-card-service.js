@@ -5,7 +5,7 @@ class ReduceCardService {
     return invoices.reduce((val, current) => {
       let prd = val[current.productId]
       if (prd) {
-        prd.total = prd.total + current.price
+        if (current.status !== 'void') prd.total = prd.total + current.price
         prd.players.add(current.beneficiaryId)
       } else {
         prd = {
@@ -29,7 +29,7 @@ class ReduceCardService {
       } else if (current.status === 'failed') {
         prd.ineligible.add(current.beneficiaryId)
         prd.overdue = prd.overdue + current.price
-      } else if (current.status === 'void' || current.status === 'disabled') {
+      } else if (current.status === 'disabled') {
         prd.other = prd.other + current.price
       }
       return val
@@ -40,7 +40,7 @@ class ReduceCardService {
     return invoices.reduce((val, current) => {
       let prd = val[current.beneficiaryId]
       if (prd) {
-        prd.total = prd.total + current.price
+        if (current.status !== 'void') prd.total = prd.total + current.price
       } else {
         const beneficiary = beneficiaries[current.beneficiaryId]
         prd = {
@@ -62,7 +62,7 @@ class ReduceCardService {
         prd.unpaid = prd.unpaid + current.price
       } else if (current.status === 'failed') {
         prd.overdue = prd.overdue + current.price
-      } else if (current.status === 'void' || current.status === 'disabled') {
+      } else if (current.status === 'disabled') {
         prd.other = prd.other + current.price
       }
       return val
@@ -73,7 +73,7 @@ class ReduceCardService {
     return credits.reduce((val, current) => {
       let prd = val[current.productId]
       if (prd) {
-        prd.total = prd.total + current.price
+        if (current.status !== 'refunded') prd.total = prd.total + current.price
         prd.players.add(current.beneficiaryId)
       } else {
         prd = {
@@ -92,7 +92,7 @@ class ReduceCardService {
       }
       if (current.status === 'paid' || current.status === 'credited') {
         prd.paid = prd.paid + current.price
-      } else if (current.status === 'discount' || current.status === 'refunded') {
+      } else if (current.status === 'discount') {
         prd.other = prd.other + current.price
       }
       return val
@@ -104,7 +104,7 @@ class ReduceCardService {
       let prd = val[current.beneficiaryId]
       const beneficiary = beneficiaries[current.beneficiaryId]
       if (prd) {
-        prd.total = prd.total + current.price
+        if (current.status !== 'refunded') prd.total = prd.total + current.price
       } else {
         prd = {
           id: current.beneficiaryId,
@@ -121,7 +121,7 @@ class ReduceCardService {
       }
       if (current.status === 'paid' || current.status === 'credited') {
         prd.paid = prd.paid + current.price
-      } else if (current.status === 'discount' || current.status === 'refunded') {
+      } else if (current.status === 'discount') {
         prd.other = prd.other + current.price
       }
       return val
