@@ -217,7 +217,7 @@
       <br/>
     </md-drawer>
 
-    <v-pay-animation :animate="loading" />
+    <v-pay-animation :animate="loading" :result="paymentsFiltered"/>
   </div>
 </template>
 

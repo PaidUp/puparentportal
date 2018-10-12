@@ -188,23 +188,13 @@ const module = {
         planGroupId: context.state.paymentPlanSelected.groupId
       }
       return new Promise((resolve, reject) => {
-        commerceService.checkoutInvoice({
+        commerceService.checkout({
           order,
           dues: context.state.paymentPlanSelected.dues,
+          credits: context.state.paymentPlanSelected.credits,
           product: context.state.programSelected
-        }).then(invoices => {
-          if (context.state.paymentPlanSelected.credits && context.state.paymentPlanSelected.credits.length) {
-            commerceService.checkoutCredit({
-              order,
-              credits: context.state.paymentPlanSelected.credits
-            }).then(credits => {
-              resolve([invoices, credits])
-            }).catch(reason => {
-              reject(reason)
-            })
-          } else {
-            resolve([invoices])
-          }
+        }).then(resp => {
+          resolve(resp)
         }).catch(reason => {
           reject(reason)
         })

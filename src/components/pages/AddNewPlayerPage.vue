@@ -116,7 +116,7 @@
           this.playerId = player._id
           this.apiUrl = `${config.api.organization}/beneficiary/avatar/${player._id}`
         }).catch(reason => {
-          this.setWarning('common.error')
+          this.setWarning('common.error.default')
           this.processing = false
         })
       },

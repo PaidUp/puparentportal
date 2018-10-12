@@ -8,7 +8,8 @@
         <div class="content">
           <img src="@/assets/app-logo-white.svg" class="logo-img" alt="logo">
           <!-- <md-icon class="material-icons place">place</md-icon> -->
-          <md-icon class="check">check</md-icon>
+          <md-icon v-if="result" class="check">check</md-icon>
+          <md-icon v-else class="failed">close</md-icon>
         </div>
         <svg class="mask-shadow" viewBox="0 0 115 115" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <defs>
@@ -45,7 +46,8 @@
 <script>
   export default {
     props: {
-      animate: Boolean
+      animate: Boolean,
+      result: Object
     },
     data () {
       return {

@@ -39,7 +39,7 @@
         </div>
       </div>
     </div>
-    <v-pay-animation :animate="submited" @finish="done" />
+    <v-pay-animation :animate="submited" :result="{}" @finish="done" />
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="closeDialog">Cancel</md-button>
       <md-button class="md-accent md-raised lblue" @click='remove' :disabled="submited">DELETE CARD</md-button>

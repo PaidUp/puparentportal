@@ -72,7 +72,7 @@
       <chap-refund-dialog :show="showRefundDialog" @close="showRefundDialog = false" :invoice="refundItem" @submited="setShowAnimate" @updated="reloadItems"></chap-refund-dialog>
       <chap-new-invoice-dialog :show="showNewInvoiceDialog" @submited="setShowAnimate" @created="reloadItems" @changeStatus="changeNewInvoceDialogStatus"></chap-new-invoice-dialog>
 
-      <v-pay-animation :animate="showAnimate" />
+      <v-pay-animation :animate="showAnimate" :result="{}" />
     </div>
 </template>
 <script>

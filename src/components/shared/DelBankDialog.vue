@@ -21,7 +21,7 @@
         <md-input v-model="bank.currency" disabled></md-input>
       </md-field>
     </div>
-    <v-pay-animation :animate="submited" @finish="done" />
+    <v-pay-animation :animate="submited" :result="{}" @finish="done" />
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="closeDialog">Cancel</md-button>
       <md-button class="md-accent md-raised lblue" @click='remove' :disabled="submited">DELETE BANK</md-button>

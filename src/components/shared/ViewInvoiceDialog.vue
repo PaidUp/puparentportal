@@ -111,7 +111,7 @@
       <md-button class="md-accent lblue" @click="closeDialog">CANCEL</md-button>
       <md-button v-if="!disabled" class="md-accent lblue" :disabled="submited" @click="submit">SAVE</md-button>
     </md-dialog-actions>
-    <v-pay-animation :animate="submited" @finish="closeDialog" />
+    <v-pay-animation :animate="submited" :result="{}" @finish="closeDialog" />
     <payment-accounts-dialog :showDialog="showPaymentAccountDialog" :accounts="paymentAccounts" @selected="selectAccount"/>
   </md-dialog>
 </template>
@@ -224,7 +224,7 @@
         }).catch(reason => {
           this.paymentMethodObj = null
           this.submited = false
-          this.setWarning('common.error')
+          this.setWarning('common.error.default')
         })
       }
     },

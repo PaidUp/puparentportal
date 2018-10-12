@@ -35,7 +35,7 @@
         <md-button class="md-accent lblue md-raised" :disabled="disableSaveButton" @click="save">SAVE</md-button>
       </div>
     </div>
-    <v-pay-animation :animate="submited" @finish="close" />
+    <v-pay-animation :animate="submited" :result="{}" @finish="close" />
   </md-dialog>
 </template>
 

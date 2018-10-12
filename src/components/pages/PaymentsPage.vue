@@ -19,7 +19,7 @@
       <!-- <v-document-signature v-if="false" step-id="step6" :step="step6" @select="setSignature" /> -->
       <!-- v-review-approve step-id="step7" :processing="processing" :step="step7" :plan="paymentPlanSelected" @select="approve" / -->
     </md-steppers>
-    <v-pay-animation :animate="processing" @finish="redirect(true)" />
+    <v-pay-animation :animate="processing" :result="checkoutResult" @finish="redirect(true)" />
     <duplicate-payment-dialog :show="showDuplicatePaymentDialog" @confirm="confirmDuplicate"></duplicate-payment-dialog>
   </div>
 </template>
@@ -51,6 +51,7 @@
         step7: false,
         processing: false,
         preventExit: false,
+        checkoutResult: null,
         confirmMessage: 'STOP!!! You have not finished setting up your payments. Please scroll down, check all the boxes and click on AUTHORIZE PAYMENTS.'
       }
     },
@@ -201,29 +202,34 @@
         if (!status) return
         this.processing = true
         this.checkout().then(res => {
+          this.checkoutResult = res
+          console.log('this.checkoutResult: ', this.checkoutResult)
           this.getBeneficiaries(this.user.email).then(res => {
             this.setSuccess('component.payment.done')
             this.processing = false
           })
         }).catch(reason => {
           console.log('reason: ', reason)
-          this.setWarning('common.error')
+          this.setWarning('common.error.default')
           this.processing = false
         })
       },
       confirmDuplicate (val) {
         this.showDuplicatePaymentDialog = false
         if (!val) {
+          this.checkoutResult = {}
           this.redirect(false)
         }
       },
       redirect (checkout) {
-        this.preventExit = false
-        this.setPrc(false)
-        this.$router.push({
-          name: 'history',
-          params: { id: this.playerSelected._id, checkout }
-        })
+        if (this.checkoutResult) {
+          this.preventExit = false
+          this.setPrc(false)
+          this.$router.push({
+            name: 'history',
+            params: { id: this.playerSelected._id, checkout }
+          })
+        }
       }
     }
   }

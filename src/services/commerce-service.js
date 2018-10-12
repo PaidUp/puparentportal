@@ -5,13 +5,9 @@ const trae = new Trae(config.api.commerce)
 let commerceService
 
 class CommerceService {
-  checkoutInvoice ({ order, dues, product }) {
+  checkout ({ order, dues, product, credits }) {
     return trae
-      .post('/invoice/checkout', { order, dues, product })
-  }
-  checkoutCredit ({ order, credits }) {
-    return trae
-      .post('/credit/checkout', { order, credits })
+      .post('/checkout', { order, dues, product, credits })
   }
 
   updateInvoice ({ id, values }) {

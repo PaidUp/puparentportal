@@ -30,6 +30,12 @@
       opacity: 0;
       position: absolute;
     }
+    .failed {
+      color: black!important;
+      font-size: 48px!important;
+      opacity: 0;
+      position: absolute;
+    }
     .logo-img {
       opacity: 1;
       width: 60%
@@ -84,6 +90,11 @@
         opacity: 0;
       }
       .check {
+        animation: iconFadeOut linear .5s;
+        opacity: 1;
+      }
+      .failed  {
+        color: red;
         animation: iconFadeOut linear .5s;
         opacity: 1;
       }

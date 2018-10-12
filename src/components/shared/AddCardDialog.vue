@@ -37,7 +37,7 @@
         </md-field>
       </div>
     </div>
-    <v-pay-animation :animate="animation" @finish="closeDialog" />
+    <v-pay-animation :animate="animation" :result="{}" @finish="closeDialog" />
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="closeDialog">Cancel</md-button>
       <md-button class="md-accent md-raised lblue" @click='submited = !submited' :disabled="disabled">ADD NEW CARD</md-button>
