@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="show" class="accounts-dialog">
+  <md-dialog :md-active.sync="show" class="accounts-dialog" :md-click-outside-to-close="false">
     <div class="dialog-header white-dialog-header">
       <div class="title">Choose Payment Account</div>
     </div>
@@ -30,7 +30,7 @@
       <md-divider></md-divider>
     </md-list>
     <md-dialog-actions>
-      <md-button class="md-accent lblue" @click="selectAccount()">CANCEL</md-button>
+      <md-button class="md-accent lblue" @click="show = false">CANCEL</md-button>
       <md-button class="lblue md-accent md-raised" @click="showAddCardDialog=true"> ADD NEW CARD </md-button>&nbsp;
       <pu-bank type="button"></pu-bank>
     </md-dialog-actions>
@@ -69,6 +69,12 @@
       },
       showDialog () {
         if (this.showDialog) this.show = true
+      },
+      accounts () {
+        if (this.accounts && this.accounts.length === 1) {
+          console.log('accounts....')
+          this.selectAccount(this.accounts[0])
+        }
       }
     },
     computed: {

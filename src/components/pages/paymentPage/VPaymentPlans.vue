@@ -16,18 +16,21 @@
       | (M-F 9am-5pm CST).
 
     div(v-if="preorders.length && !paymentPlanSelected") Your payment plans
-    .custom-input-small
-      md-field(v-if="paymentPlanSelected")
+    .custom-input-small(v-if="paymentPlanSelected")
+      md-field(v-if="paymentAccountSelected")
         md-input(:readonly="true" :placeholder="placeholderSelectAccount" :value="paymentAccountDesc" @click="showPaymentAccountDialog = true")
         md-icon arrow_drop_down
+      div(v-else)
+        br
+        md-button(class="md-accent lblue md-raised" @click="showPaymentAccountDialog = true") {{placeholderSelectAccount}}    
     .cred(v-if="paymentPlanSelected && paymentAccountSelected && paymentAccountSelected.object === 'card' && programSelected.unbundle")  IMPORTANT: There is an additional 2.9% + $0.30 fee per installment for paying with a debit/credit card. Bank account/ACH payments do not have a fee.
     br
     .payment-plans.cards-layout(v-if="!paymentPlanSelected")
-      v-payment-plan-card(@click="select" v-for="plan in preorders" :key="plan._id" :plan="plan")
+      v-payment-plan-card(@click="setPaymentPlanSelected" v-for="plan in preorders" :key="plan._id" :plan="plan")
     div(v-if="preorders.length && !paymentPlanSelected") All Payments Plan
     br
     .payment-plans.cards-layout
-      v-payment-plan-card(v-if="!paymentPlanSelected" @click="select" v-for="plan in plansFiltered" :key="plan._id" :plan="plan")
+      v-payment-plan-card(v-if="!paymentPlanSelected" @click="setPaymentPlanSelected" v-for="plan in plansFiltered" :key="plan._id" :plan="plan")
       md-card(v-if="paymentPlanSelected" v-for="due in dues" :key="due._id")
         v-payment-plan-details(v-if="due.type === 'invoice'" :due="due" :program="programSelected" @updated="editDue")
         v-payment-plan-credit-details(v-else :due="due" @updated="editDue")
@@ -37,7 +40,7 @@
     //-   md-button.lblue.md-accent(v-if="planSelected" @click="planSelected=null") BACK    
     //-   md-button.lblue.md-accent.md-raised.blinker(v-if="planSelected" @click="accept" :class="{'blinker': this.paymentAccount}" :disabled="!this.paymentAccount") ACCEPT PAYMENT PLAN
     
-    payment-accounts-dialog(:showDialog="showPaymentAccountDialog" :unbundle="programSelected ? programSelected.unbundle : false" @close="showPaymentAccountDialog = false" :accounts="paymentAccounts" @selected="selectAccount")
+    payment-accounts-dialog(:showDialog="showPaymentAccountDialog" :unbundle="programSelected ? programSelected.unbundle : false" @close="showPaymentAccountDialog = false" :accounts="paymentAccounts" @selected="setPaymentAccountSelected")
 
 </template>
 <script>
@@ -58,7 +61,7 @@ export default {
   },
   mounted () {
     if (this.paymentAccounts && this.paymentAccounts.length > 0) {
-      this.selectAccount(this.paymentAccounts[0])
+      this.setPaymentAccountSelected(this.paymentAccounts[0])
     }
   },
   computed: {
@@ -122,6 +125,12 @@ export default {
       this.description = 'If you need a custom payment plan, please email support@getpaidup.com or call (855) 764-3232'
       this.setPaymentPlanSelected(null)
       this.setDues({})
+    },
+    paymentAccountSelected () {
+      this.calculatePlan()
+    },
+    paymentPlanSelected () {
+      this.calculatePlan()
     }
   },
   methods: {
@@ -133,14 +142,14 @@ export default {
       setPaymentPlanSelected: 'setPaymentPlanSelected',
       setDues: 'setDues'
     }),
-    selectAccount (account) {
-      this.setPaymentAccountSelected(account)
-      this.calculatePlan()
-    },
-    select (param) {
-      this.setPaymentPlanSelected(param)
-      this.calculatePlan()
-    },
+    // selectAccount (account) {
+    //   this.setPaymentAccountSelected(account)
+    //   this.calculatePlan()
+    // },
+    // select (param) {
+    //   this.setPaymentPlanSelected(param)
+    //   this.calculatePlan()
+    // },
     cancel () {
       this.$router.push({
         name: 'home'
