@@ -269,7 +269,7 @@
           'Payment Account Last4': 'paymentMethodLast4'
         },
         loading: false,
-        paymentsFiltered: [],
+        paymentsFiltered: {},
         paginationStart: 0,
         pag: 100
       }

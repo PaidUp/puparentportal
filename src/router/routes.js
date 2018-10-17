@@ -136,6 +136,10 @@ const routes = [
       },
       {
         path: '/search',
+        name: 'search',
+        meta: {
+          roles: ['chap']
+        },
         component: SearchResultPage
       },
       {
