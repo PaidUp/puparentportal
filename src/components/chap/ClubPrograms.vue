@@ -47,7 +47,9 @@
         this.getAll()
       },
       programSelected () {
-        this.loadProduct(this.programSelected)
+        if (this.programSelected) {
+          this.loadProduct(this.programSelected)
+        }
         this.getAll()
       },
       playerSelected () {
@@ -60,12 +62,10 @@
       }),
       ...mapActions('clubprogramsModule', {
         loadProduct: 'loadProduct',
-        getReducePrograms: 'getReducePrograms',
-        setPlayerSelected: 'setPlayerSelected'
+        getReducePrograms: 'getReducePrograms'
       }),
       ...mapMutations('clubprogramsModule', {
         setOrganization: 'setOrganization',
-        setPlayerSelected: 'setPlayerSelected',
         reset: 'reset'
       }),
       getAll () {

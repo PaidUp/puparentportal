@@ -1,6 +1,6 @@
 <template>
 		<md-card md-with-hover class="card-player-eligibility">
-			<div class="top-box" @click="selectPlayer">
+			<div class="top-box" @click="select">
 				<md-avatar class="md-size-c">
 					<img v-if="showAvatar" @error="showAvatar = false" :src="avatar" alt="avatar">
 					<md-icon v-else class="md-size-2x ca1"> account_circle </md-icon>
@@ -63,7 +63,7 @@
 		</md-card>
 </template>
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 import currency from '@/helpers/currency'
 export default {
   props: {
@@ -113,23 +113,8 @@ export default {
     ...mapActions('playerModule', {
       avatarUrl: 'avatarUrl'
     }),
-    ...mapActions('playerInvoicesModule', {
-      loadParents: 'loadParents'
-    }),
-    ...mapMutations('clubprogramsModule', {
-      setPlayerSelected: 'setPlayerSelected'
-    }),
-    ...mapActions('clubprogramsModule', {
-      getReducePrograms: 'getReducePrograms'
-    }),
-    ...mapMutations('playerInvoicesModule', {
-      setBeneficiary: 'setBeneficiary'
-    }),
-    selectPlayer () {
-      this.setPlayerSelected(this.item.id)
-      this.getReducePrograms()
-      this.loadParents(this.item)
-      this.setBeneficiary(this.item)
+    select () {
+      this.$emit('select', this.item)
     }
   }
 }

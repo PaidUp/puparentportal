@@ -80,7 +80,6 @@
 </template>
 <script>
 import currency from '@/helpers/currency'
-import { mapMutations } from 'vuex'
 export default {
   props: {
     item: Object
@@ -129,14 +128,11 @@ export default {
 
   },
   methods: {
-    ...mapMutations('clubprogramsModule', {
-      setProgramSelected: 'setProgramSelected'
-    }),
     selectProgram (e) {
       if (e.target.className.includes('action-trigger')) {
         return false
       }
-      this.setProgramSelected(this.item.id)
+      this.$emit('select', this.item)
     }
   }
 }

@@ -60,9 +60,11 @@ const module = {
     },
     setPlayerSelected (state, player) {
       state.playerSelected = player
+      return state.playerSelected
     },
     setProgramSelected (state, program) {
       state.programSelected = program
+      return state.programSelected
     },
     setSeasonSelected (state, season) {
       state.seasonSelected = season

@@ -3,7 +3,7 @@
 		<md-tabs class="tabs-lblue">
 			<md-tab id="tab-player" md-label="Players" >
         <div class="cards-layout">
-				  <chap-player-card :item="item" v-for="item in items" :key="item.id"></chap-player-card>
+				  <chap-player-card :item="item" v-for="item in items" :key="item.id" @select="selectPlayer"></chap-player-card>
         </div>
 			</md-tab>
 			<md-tab id="tab-plans" md-label="Program Payment Plans">
@@ -13,7 +13,7 @@
 	</div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import ChapPlayerCard from './ChapPlayerCard.vue'
 import ChapProductPlans from './ChapProductPlans.vue'
 export default {
@@ -35,12 +35,35 @@ export default {
   watch: {
     programSelected () {
       this.getAll()
+    },
+    items () {
+      if (this.items && this.$route.params.player) {
+        const player = this.items[this.$route.params.player]
+        if (player) this.selectPlayer(player)
+        this.$route.params.player = null
+      }
     }
   },
   methods: {
     ...mapActions('clubprogramsModule', {
-      getReducePlayers: 'getReducePlayers'
+      getReducePlayers: 'getReducePlayers',
+      getReducePrograms: 'getReducePrograms'
     }),
+    ...mapMutations('clubprogramsModule', {
+      setPlayerSelected: 'setPlayerSelected'
+    }),
+    ...mapMutations('playerInvoicesModule', {
+      setBeneficiary: 'setBeneficiary'
+    }),
+    ...mapActions('playerInvoicesModule', {
+      loadParents: 'loadParents'
+    }),
+    selectPlayer (player) {
+      this.setPlayerSelected(player.id)
+      this.getReducePrograms()
+      this.loadParents(player)
+      this.setBeneficiary(player)
+    },
     getAll () {
       this.getReducePlayers().then(items => {
         this.items = items
