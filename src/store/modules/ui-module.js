@@ -3,6 +3,7 @@ const module = {
 
   state: {
     showNavigation: false,
+    criteria: '',
     prc: false
   },
   getters: {
@@ -52,6 +53,9 @@ const module = {
     },
     setPrc (state, val) {
       state.prc = val
+    },
+    setCriteria (state, criteria) {
+      state.criteria = criteria
     },
     preventReloadClose (state) {
       window.onbeforeunload = () => {

@@ -20,11 +20,6 @@
       <md-list-item to="/scoreboard" v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Scoreboard</span>
       </md-list-item>
-
-      <!-- Search Result: maybe move to somewhere else -->
-      <md-list-item to="/search" v-if="isRole('chap')">
-        <span class="md-list-item-text ca1 bold">Search Result</span>
-      </md-list-item>
       
       <!-- Reports -->
       <md-list-item to="/reports/payments" md-expand v-if="isRole('coach')">

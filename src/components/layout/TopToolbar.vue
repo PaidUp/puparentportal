@@ -10,7 +10,7 @@
     </div>
     <div class="search-input" v-if="isRole('chap')">
       <md-icon>search</md-icon>
-      <input type="text" placeholder="Search" @keyup.enter="search" v-model="criteria">
+      <input type="text" placeholder="Search" @keyup.enter="search" v-model="criteriaSearch">
       <md-icon v-show="valid">check</md-icon>
     </div>
     <div>
@@ -24,7 +24,7 @@
   export default {
     data: function () {
       return {
-        criteria: '',
+        criteriaSearch: '',
         placeholder: 'placeholder'
       }
     },
@@ -33,10 +33,16 @@
         user: 'user'
       }),
       ...mapState('uiModule', {
-        showNavigation: 'showNavigation'
+        showNavigation: 'showNavigation',
+        criteria: 'criteria'
       }),
       valid () {
         return this.criteria.length > 4
+      }
+    },
+    watch: {
+      criteria () {
+        this.criteriaSearch = this.criteria
       }
     },
     methods: {
@@ -50,7 +56,7 @@
         return false
       },
       search () {
-        this.$router.push(`/search?criteria=${encodeURI(this.criteria)}`)
+        this.$router.push(`/search?criteria=${encodeURI(this.criteriaSearch)}`)
       }
     }
   }

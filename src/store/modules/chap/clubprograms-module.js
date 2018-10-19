@@ -31,7 +31,7 @@ const module = {
     },
     programSelectedName (state) {
       let name = ''
-      if (state.programSelected) {
+      if (state.programs && state.programSelected) {
         state.programs.forEach(program => {
           if (program.id === state.programSelected) {
             name = program.name
