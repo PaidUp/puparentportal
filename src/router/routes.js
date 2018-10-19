@@ -202,6 +202,10 @@ const routes = [
         component: LoginPage
       },
       {
+        path: '/login/:email',
+        component: LoginPage
+      },
+      {
         path: '/logout',
         name: 'logout',
         component: Logout
@@ -209,6 +213,10 @@ const routes = [
       {
         path: '/signup',
         name: 'signup',
+        component: SignUpPage
+      },
+      {
+        path: '/signup/:email',
         component: SignUpPage
       },
       {

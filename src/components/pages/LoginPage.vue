@@ -32,15 +32,8 @@
   </div>
 </template>
 <script>
-  import {
-    mapState,
-    mapGetters,
-    mapActions
-  } from 'vuex'
-  import {
-    required,
-    email
-  } from 'vuelidate/lib/validators'
+  import { mapState, mapGetters, mapActions } from 'vuex'
+  import { required, email } from 'vuelidate/lib/validators'
 
   export default {
     data () {
@@ -49,6 +42,14 @@
           scope: 'email',
           return_scopes: true
         }
+      }
+    },
+    mounted () {
+      if (this.$route.params.email) {
+        localStorage.email = Buffer.from(this.$route.params.email, 'base64').toString()
+      }
+      if (localStorage.email) {
+        this.loginParams.email = localStorage.email
       }
     },
     watch: {
