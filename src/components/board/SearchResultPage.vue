@@ -22,7 +22,7 @@
               </md-avatar -->
               {{ item.beneficiaryFirstName }} {{ item.beneficiaryLastName }}
             </md-table-cell>
-            <md-table-cell md-label="Parent Email" md-sort-by="name" class="col-15">{{ item.user.userEmail }}</md-table-cell>
+            <md-table-cell md-label="Parent Email" class="col-15">{{ item.user.userEmail }}</md-table-cell>
             <md-table-cell md-label="Parent" class="col-20 col-with-img">
               <md-icon class="md-size-2">account_circle</md-icon>
               <!-- md-avatar class="md-small">
@@ -30,6 +30,7 @@
               </md-avatar -->
               {{ item.user.userFirstName }} {{ item.user.userLastName }}
             </md-table-cell>
+            <md-table-cell md-label="Product" class="col-15">{{ item.productName }}</md-table-cell>
           </md-table-row>
         </md-table>
       </div>
@@ -39,9 +40,9 @@
         <md-table md-card v-model="searchResult.credits" md-sort="invoiceId" md-sort-order="asc" class="custom-table">
           <md-table-row class="pointer" slot="md-table-row" slot-scope="{ item }" @click="actionInvoice(item)">
             <md-table-cell md-label="Credit ID" class="col-10">{{ item.memoId }}</md-table-cell>
-            <md-table-cell md-label="Parent Email" md-sort-by="name" class="col-15">{{ item.assigneeEmail }}</md-table-cell>
-            <md-table-cell md-label="Description" md-sort-by="name" class="col-15">{{ item.label }}</md-table-cell>
-            <md-table-cell md-label="Product" md-sort-by="name" class="col-15">{{ item.productName }}</md-table-cell>
+            <md-table-cell md-label="Parent Email" class="col-15">{{ item.assigneeEmail }}</md-table-cell>
+            <md-table-cell md-label="Description" class="col-15">{{ item.label }}</md-table-cell>
+            <md-table-cell md-label="Product" class="col-15">{{ item.productName }}</md-table-cell>
           </md-table-row>
         </md-table>
       </div>
@@ -50,9 +51,9 @@
         <div class="table-title">Preorders ({{preorders.length}})</div>
         <md-table md-card v-model="searchResult.preorders" md-sort="invoiceId" md-sort-order="asc" class="custom-table">
           <md-table-row class="pointer" slot="md-table-row" slot-scope="{ item }" @click="actionInvoice(item)">
-            <md-table-cell md-label="Product Name" class="col-10">{{ item.productName }}</md-table-cell>
-            <md-table-cell md-label="Parent Email" md-sort-by="name" class="col-15">{{ item.assigneeEmail }}</md-table-cell>
-            <md-table-cell md-label="Status" md-sort-by="name" class="col-15">{{ item.status }}</md-table-cell>
+            <md-table-cell md-label="Product" class="col-10">{{ item.productName }}</md-table-cell>
+            <md-table-cell md-label="Parent Email" class="col-15">{{ item.assigneeEmail }}</md-table-cell>
+            <md-table-cell md-label="Status" class="col-15">{{ item.status }}</md-table-cell>
           </md-table-row>
         </md-table>
       </div>
@@ -61,7 +62,7 @@
         <div class="table-title">Players ({{players.length}})</div>
         <md-table md-card v-model="searchResult.beneficiaries" md-sort="lastName" md-sort-order="asc" class="custom-table">
           <md-table-row slot="md-table-row" slot-scope="{ item }">
-            <md-table-cell md-label="Name" md-sort-by="lastName" class="col-with-img col-10">
+            <md-table-cell md-label="Name" class="col-with-img col-10">
               <md-icon class="md-size-2">account_circle</md-icon>
               <!-- <md-avatar class="md-small" v-if="item.id ===2">
                 <img src="@/assets/avatar.jpg" alt="img">
@@ -70,8 +71,8 @@
                 {{ item.firstName }} {{ item.lastName }}
               </div>
             </md-table-cell>
-            <md-table-cell md-label="Organization" class="col-25" md-sort-by="item.organizationName">{{ item.organizationName }}</md-table-cell>
-            <md-table-cell md-label="Email Parents" class="col-25">
+            <md-table-cell md-label="Organization" class="col-25">{{ item.organizationName }}</md-table-cell>
+            <md-table-cell md-label="Parent Email" class="col-25">
               <span v-for="email in item.assigneesEmail" :key="email">
                 <a href="#" @click="search(email)">{{ email }}</a>
               </span>
@@ -84,15 +85,15 @@
         <div class="table-title">Parents ({{users.length}})</div>
         <md-table md-card v-model="searchResult.users" md-sort="name" md-sort-order="asc" class="custom-table">
           <md-table-row slot="md-table-row" slot-scope="{ item }">
-            <md-table-cell md-label="Name" md-sort-by="name" class="col-25 col-with-img">
+            <md-table-cell md-label="Name" class="col-25 col-with-img">
               <md-icon class="md-size-2">account_circle</md-icon>
               <!-- md-avatar class="md-small">
                 <img src="@/assets/avatar.jpg" alt="img">
               </md-avatar -->
               {{ item.firstName }} {{ item.lastName }}
             </md-table-cell>
-            <md-table-cell md-label="Email" md-sort-by="name" class="col-25"><a href="#" @click="search(item.email)">{{ item.email }}</a></md-table-cell>
-            <md-table-cell md-label="Phone" md-sort-by="name" class="col-10">{{ item.phone }}</md-table-cell>
+            <md-table-cell md-label="Email" class="col-25"><a href="#" @click="search(item.email)">{{ item.email }}</a></md-table-cell>
+            <md-table-cell md-label="Phone" class="col-10">{{ item.phone }}</md-table-cell>
           </md-table-row>
         </md-table>
       </div>
