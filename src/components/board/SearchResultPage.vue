@@ -74,7 +74,7 @@
             <md-table-cell md-label="Organization" class="col-25">{{ item.organizationName }}</md-table-cell>
             <md-table-cell md-label="Parent Email" class="col-25">
               <span v-for="email in item.assigneesEmail" :key="email">
-                <a href="#" @click="search(email)">{{ email }}</a>
+                <a href="#" @click="search(email)">{{ email }}</a>&nbsp;
               </span>
             </md-table-cell>
           </md-table-row>
