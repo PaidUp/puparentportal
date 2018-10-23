@@ -147,7 +147,7 @@
         return this.searchResult.preorders
       },
       noResults () {
-        return this.searchResult.users.length +
+        return this.searchResult && this.searchResult.users.length +
         this.searchResult.beneficiaries.length +
         this.searchResult.invoices.length +
         this.searchResult.credits.length +

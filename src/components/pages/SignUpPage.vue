@@ -141,43 +141,6 @@
         })
       }
     },
-    apollo: {
-      // Query with parameters
-      searchResult: {
-    // gql query
-        query: gql`
-        mutation userSignUp ($input: NewUser!) {
-          userSignUp(user:$input){
-            token
-            user {
-              _id
-              firstName
-              lastName
-              email
-              type
-              organizationId
-              phone
-              roles
-              facebookId
-            }
-          }
-        }
-        `,
-    // Static parameters
-        variables () {
-          return {
-            input: this.userForm
-          }
-        },
-        skip () {
-          return !this.criteria || this.criteria.length < 4
-        },
-        update: result => {
-          return result.data.userSignUp
-        }  // ,
-        // pollInterval: 1000
-      }
-    },
     validations: {
       confirmPassword: {
         sameAsPassword: sameAs('password')
