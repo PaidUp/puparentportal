@@ -1,5 +1,7 @@
 import { userService } from '@/services'
 import config from '@/config'
+import graphqlClient from '@/util/graphql'
+import gql from 'graphql-tag'
 
 function handlerError (err, context, message) {
   if (!message) {
@@ -140,7 +142,7 @@ const module = {
     onFbLoginError (error) {
       console.log('OH NOES', error)
     },
-    signup (context, userForm) {
+    signup1 (context, userForm) {
       userForm.type = 'customer'
       return userService
         .signup(userForm)
@@ -151,6 +153,37 @@ const module = {
           const message = (err.data.message && err.data.message.indexOf('The specified email address is already in use') > -1) ? 'module.user.email_address_in_use' : null
           handlerError(err, context, message)
         })
+    },
+    signup (context, userForm) {
+      userForm.type = 'customer'
+      graphqlClient.mutate({
+        variables: {
+          input: userForm
+        },
+        mutation: gql`
+          mutation userSignUp ($input: NewUser!) {
+          userSignUp(user:$input){
+            token
+            user {
+              _id
+              firstName
+              lastName
+              email
+              type
+              organizationId
+              phone
+              roles
+              facebookId
+            }
+          }
+        }
+      `
+      }).then(response => {
+        context.commit('setSession', response.data.userSignUp)
+      }).catch(err => {
+        const message = (err.message && err.message.indexOf('The specified email address is already in use') > -1) ? 'module.user.email_address_in_use' : null
+        handlerError(err, context, message)
+      })
     },
     logout (context) {
       return userService
