@@ -33,16 +33,6 @@ class UserService {
       .post('/login/fb', fbResponse)
   }
 
-  fbSignup (fbResponse) {
-    return trae
-      .post('/signup/fb', fbResponse)
-  }
-
-  signup (userForm) {
-    return trae
-      .post('/', userForm)
-  }
-
   update (id, values) {
     return trae
       .put('/', { id, values })

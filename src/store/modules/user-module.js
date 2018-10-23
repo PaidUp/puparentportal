@@ -129,30 +129,42 @@ const module = {
         })
     },
     onFbSignupSuccess (context, fbResponse) {
-      fbResponse.phone = context.state.fbUser.contacts.phone
-      return userService
-        .fbSignup(fbResponse)
-        .then(data => {
-          context.commit('setSession', data)
-        })
-        .catch(err => {
-          handlerError(err, context)
-        })
+      const input = {
+        accessToken: fbResponse.authResponse.accessToken,
+        rememberMe: false,
+        phone: context.state.fbUser.contacts.phone
+      }
+      graphqlClient.mutate({
+        variables: {
+          input
+        },
+        mutation: gql`
+          mutation userFbSignUp ($input: NewFbUser!) {
+          userFbSignUp(user:$input){
+            token
+            user {
+              _id
+              firstName
+              lastName
+              email
+              type
+              organizationId
+              phone
+              roles
+              facebookId
+            }
+          }
+        }
+      `
+      }).then(response => {
+        context.commit('setSession', response.data.userFbSignUp)
+      }).catch(err => {
+        const message = (err.message && err.message.indexOf('The specified email address is already in use') > -1) ? 'module.user.email_address_in_use' : null
+        handlerError(err, context, message)
+      })
     },
     onFbLoginError (error) {
       console.log('OH NOES', error)
-    },
-    signup1 (context, userForm) {
-      userForm.type = 'customer'
-      return userService
-        .signup(userForm)
-        .then(data => {
-          context.commit('setSession', data)
-        })
-        .catch(err => {
-          const message = (err.data.message && err.data.message.indexOf('The specified email address is already in use') > -1) ? 'module.user.email_address_in_use' : null
-          handlerError(err, context, message)
-        })
     },
     signup (context, userForm) {
       userForm.type = 'customer'
