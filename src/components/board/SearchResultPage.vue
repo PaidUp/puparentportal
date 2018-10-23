@@ -1,6 +1,6 @@
 <template>
   <div class="search-page">
-    <v-pay-animation :animate="this.$apollo.queries.searchResult.loading" :result="searchResult"/>
+    <!-- <v-pay-animation :animate="this.$apollo.queries.searchResult.loading" :result="searchResult"/> -->
     <div class="title">
       Search Results
     </div>
@@ -74,7 +74,7 @@
             <md-table-cell md-label="Organization" class="col-25">{{ item.organizationName }}</md-table-cell>
             <md-table-cell md-label="Parent Email" class="col-25">
               <span v-for="email in item.assigneesEmail" :key="email">
-                <a href="#" @click="search(email)">{{ email }}</a>&nbsp;
+                <a href="#" @click="searchEmail(email)">{{ email }}</a>&nbsp;
               </span>
             </md-table-cell>
           </md-table-row>
@@ -104,32 +104,27 @@
 </template>
 
 <script>
-  import gql from 'graphql-tag'
-
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
-  import { mapState, mapMutations } from 'vuex'
+  import { mapState, mapMutations, mapActions } from 'vuex'
   export default {
     components: { VPayAnimation },
     mounted () {
+      this.search(this.criteria)
     },
     watch: {
     },
     data: function () {
       return {
         criteria: this.$route.query.criteria,
-        loading: true,
-        searchResult: {
-          users: [],
-          beneficiaries: [],
-          invoices: [],
-          credits: [],
-          preorders: []
-        }
+        loading: true
       }
     },
     computed: {
       ...mapState('userModule', {
         'user': 'user'
+      }),
+      ...mapState('searchModule', {
+        'searchResult': 'searchResult'
       }),
       users () {
         return this.searchResult.users
@@ -158,91 +153,18 @@
       ...mapMutations('uiModule', {
         setCriteria: 'setCriteria'
       }),
+      ...mapActions('searchModule', {
+        'search': 'search'
+      }),
       actionInvoice (invoice) {
         this.$router.push({
           name: 'clubprograms',
           params: {id: invoice.organizationId, seasonId: invoice.season, program: invoice.productId, player: invoice.beneficiaryId}
         })
       },
-      search (email) {
+      searchEmail (email) {
         this.setCriteria(email)
         this.$router.push(`/search?criteria=${encodeURI(email)}`)
-      }
-    },
-    apollo: {
-      // Query with parameters
-      searchResult: {
-    // gql query
-        query: gql`query ASearch($criteria: String!) {
-      search(criteria: $criteria) {
-        users {
-          _id
-          firstName
-          lastName
-          email
-          phone
-        }
-        beneficiaries {
-          _id
-          firstName
-          lastName
-          organizationId
-          organizationName
-          assigneesEmail
-        }
-        invoices {
-          _id
-          invoiceId
-          beneficiaryId
-          beneficiaryFirstName
-          beneficiaryLastName
-          organizationId
-          organizationName
-          productId
-          productName
-          season
-          user {
-            userFirstName
-            userLastName
-            userEmail
-          }
-        },
-        credits {
-          _id
-          memoId,
-          label,
-          assigneeEmail
-          organizationId
-          productId
-          productName
-          season
-          beneficiaryId
-        },
-        preorders {
-          _id
-          productName
-          assigneeEmail
-          organizationId
-          productId
-          season
-          beneficiaryId,
-          status
-        }
-      }
-    }`,
-    // Static parameters
-        variables () {
-          return {
-            criteria: this.criteria
-          }
-        },
-        skip () {
-          return !this.criteria || this.criteria.length < 4
-        },
-        update: result => {
-          return result.search
-        }  // ,
-        // pollInterval: 1000
       }
     }
   }

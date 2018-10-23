@@ -217,12 +217,11 @@
       <br/>
     </md-drawer>
 
-    <v-pay-animation :animate="loading" :result="paymentsFiltered"/>
+    <v-pay-animation :animate="loading" :result="{}"/>
   </div>
 </template>
 
 <script>
-  import gql from 'graphql-tag'
   import { mapState, mapActions } from 'vuex'
   import currency from '@/helpers/currency'
   import capitalize from '@/helpers/capitalize'
@@ -236,7 +235,6 @@
         checkArray: [],
         indeterminateCheck: false,
         organization: null,
-        payments: [],
         programFilter: [],
         statusFilter: [],
         tagsFilter: [],
@@ -269,57 +267,17 @@
           'Payment Account Last4': 'paymentMethodLast4'
         },
         loading: false,
-        paymentsFiltered: {},
+        paymentsFiltered: [],
         paginationStart: 0,
         pag: 100
-      }
-    },
-    apollo: {
-  // Query with parameters
-      payments: {
-    // gql query
-        query: gql`query APayments($organizationId: String!, $seasonId: String!) {
-      payments(organizationId: $organizationId, seasonId: $seasonId) {
-        receiptId
-        type
-        chargeDate
-        receiptDate
-        description
-        program
-        status
-        parentName
-        parentEmail
-        parentPhone
-        playerName
-        amount
-        processingFee
-        paidupFee
-        totalFee,
-        tags,
-        paymentMethodBrand,
-        paymentMethodLast4,
-        index
-      }
-    }`,
-    // Static parameters
-        variables () {
-          return {
-            organizationId: this.organization._id,
-            seasonId: this.seasonSelected
-          }
-        },
-        skip () {
-          return !this.organization && !this.seasonSelected
-        },
-        update: result => {
-          return result.payments
-        }  // ,
-        // pollInterval: 1000
       }
     },
     computed: {
       ...mapState('userModule', {
         user: 'user'
+      }),
+      ...mapState('organizationModule', {
+        payments: 'payments'
       }),
       seasons () {
         if (!this.organization) return []
@@ -379,6 +337,7 @@
         this.loading = true
         this.programFilter = []
         this.statusFilter = []
+        this.fetchPayments({organizationId: this.user.organizationId, seasonId: this.seasonSelected})
       },
       showFiltersPanel () {
         if (!this.showFiltersPanel) {
@@ -404,7 +363,8 @@
     },
     methods: {
       ...mapActions('organizationModule', {
-        getOrganization: 'getOrganization'
+        getOrganization: 'getOrganization',
+        fetchPayments: 'fetchPayments'
       }),
       currency (value) {
         return currency(value)

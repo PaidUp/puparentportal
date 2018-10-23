@@ -10,6 +10,7 @@ import scoreboardModule from './modules/scoreboard-module'
 import clubprogramsModule from './modules/chap/clubprograms-module'
 import playerInvoicesModule from './modules/chap/player-invoices-module'
 import commonModule from './modules/common-module'
+import searchModule from './modules/search-module'
 
 Vue.use(Vuex)
 
@@ -24,7 +25,8 @@ const store = new Vuex.Store({
     clubprogramsModule,
     playerInvoicesModule,
     commonModule,
-    uiModule
+    uiModule,
+    searchModule
   }
 })
 

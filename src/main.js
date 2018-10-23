@@ -8,12 +8,6 @@ import i18n from '@/i18n'
 import FBSignInButton from 'vue-facebook-signin-button'
 import LoadScript from 'vue-plugin-load-script'
 import VueResource from 'vue-resource'
-import { ApolloClient } from 'apollo-client'
-import { ApolloLink } from 'apollo-link'
-import { HttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import VueApollo from 'vue-apollo'
-import config from '@/config'
 import JsonExcel from 'vue-json-excel'
 
 // eslint-disable-next-line
@@ -28,33 +22,10 @@ import 'vue-material/dist/vue-material.min.css'
 // import 'vue-material/dist/theme/default.css'
 import '@/style/theme.css'
 
-const httpLink = new HttpLink({
-  // You should use an absolute URL here
-  uri: config.api.broker + '/graphql'
-})
-
-const authMiddleware = new ApolloLink((operation, forward) => {
-  // add the authorization to the headers
-  const token = localStorage.token
-  operation.setContext({
-    headers: {
-      authorization: token ? `Bearer ${token}` : null
-    }
-  })
-
-  return forward(operation)
-})
-
-// Create the apollo client
-const apolloClient = new ApolloClient({
-  link: authMiddleware.concat(httpLink),
-  cache: new InMemoryCache(),
-  connectToDevTools: true
-})
-
-const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
-})
+// const httpLink = new HttpLink({
+//   // You should use an absolute URL here
+//   uri: config.api.broker + '/graphql'
+// })
 
 Vue.use(VueMaterial)
 // MATERIAL DESIGN COMPONENTS END
@@ -63,8 +34,6 @@ Vue.use(LoadScript)
 Vue.use(FBSignInButton)
 Vue.use(Vuelidate)
 Vue.use(VueResource)
-// Install the vue plugin
-Vue.use(VueApollo)
 
 Vue.component('downloadExcel', JsonExcel)
 
@@ -78,6 +47,5 @@ new Vue({
   store,
   i18n,
   template: '<App/>',
-  provide: apolloProvider.provide(),
   components: { App }
 })
