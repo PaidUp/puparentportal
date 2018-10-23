@@ -51,6 +51,7 @@
   </div>
 </template>
 <script>
+  import gql from 'graphql-tag'
   import { mapActions, mapGetters } from 'vuex'
   import { required, email, minLength, sameAs, numeric } from 'vuelidate/lib/validators'
   import capitalize from '@/helpers/capitalize'
@@ -112,7 +113,69 @@
         if (!this.agree) {
           return this.setWarning('validations.agree')
         }
-        this.signup(this.userForm)
+        // this.signup(this.userForm)
+        this.$apollo.mutate({
+          mutation: gql`
+            mutation userSignUp ($input: NewUser!) {
+            userSignUp(user:$input){
+              token
+              user {
+                _id
+                firstName
+                lastName
+                email
+                type
+                organizationId
+                phone
+                roles
+                facebookId
+              }
+            }
+          }
+        `,
+          variables () {
+            return {
+              input: this.userForm
+            }
+          }
+        })
+      }
+    },
+    apollo: {
+      // Query with parameters
+      searchResult: {
+    // gql query
+        query: gql`
+        mutation userSignUp ($input: NewUser!) {
+          userSignUp(user:$input){
+            token
+            user {
+              _id
+              firstName
+              lastName
+              email
+              type
+              organizationId
+              phone
+              roles
+              facebookId
+            }
+          }
+        }
+        `,
+    // Static parameters
+        variables () {
+          return {
+            input: this.userForm
+          }
+        },
+        skip () {
+          return !this.criteria || this.criteria.length < 4
+        },
+        update: result => {
+          return result.data.userSignUp
+        }  // ,
+        // pollInterval: 1000
       }
     },
     validations: {
