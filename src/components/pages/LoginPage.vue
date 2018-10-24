@@ -18,7 +18,7 @@
       <md-switch class="md-accent lblue" v-model="loginParams.rememberMe">{{ $t('component.login.remember_me') }}</md-switch>
     </div>
     <div>
-      <router-link to="forgot" class="clblue bold">Forgot Password?</router-link>
+      <router-link to="/forgot" class="clblue bold">Forgot Password?</router-link>
     </div>
     <div>
       <fb-signin-button :params="fbSignInParams" @success="onFbLoginSuccess" @error="onFbLoginError" class="fb-button md-elevation-4">{{ $t('component.login.login_fb') }}</fb-signin-button>
@@ -26,7 +26,7 @@
     <div class="last-info-box">
       <span>
         {{ $t('component.login.dont_have_account') }}
-        <router-link to="signup" class="clblue signup-link">{{ $t('component.login.sign_up') }} </router-link>
+        <router-link to="/signup" class="clblue signup-link">{{ $t('component.login.sign_up') }} </router-link>
       </span>
     </div>
   </div>

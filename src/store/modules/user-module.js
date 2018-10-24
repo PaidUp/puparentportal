@@ -132,7 +132,8 @@ const module = {
       const input = {
         accessToken: fbResponse.authResponse.accessToken,
         rememberMe: false,
-        phone: context.state.fbUser.contacts.phone
+        phone: context.state.fbUser.contacts.phone,
+        emailSuggested: localStorage.getItem('email')
       }
       graphqlClient.mutate({
         variables: {
@@ -168,6 +169,7 @@ const module = {
     },
     signup (context, userForm) {
       userForm.type = 'customer'
+      userForm.emailSuggested = localStorage.getItem('email')
       graphqlClient.mutate({
         variables: {
           input: userForm
