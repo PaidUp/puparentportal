@@ -68,9 +68,6 @@
       if (this.$route.params.email) {
         localStorage.email = Buffer.from(this.$route.params.email, 'base64').toString()
       }
-      if (localStorage.email) {
-        this.userForm.email = localStorage.email
-      }
     },
     watch: {
       isAutenticated () {

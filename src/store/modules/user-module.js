@@ -159,6 +159,7 @@ const module = {
       `
       }).then(response => {
         context.commit('setSession', response.data.userFbSignUp)
+        localStorage.removeItem('email')
       }).catch(err => {
         const message = (err.message && err.message.indexOf('The specified email address is already in use') > -1) ? 'module.user.email_address_in_use' : null
         handlerError(err, context, message)
@@ -194,6 +195,7 @@ const module = {
       `
       }).then(response => {
         context.commit('setSession', response.data.userSignUp)
+        localStorage.removeItem('email')
       }).catch(err => {
         const message = (err.message && err.message.indexOf('The specified email address is already in use') > -1) ? 'module.user.email_address_in_use' : null
         handlerError(err, context, message)
