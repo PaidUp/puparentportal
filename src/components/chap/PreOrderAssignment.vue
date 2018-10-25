@@ -40,13 +40,20 @@ export default {
       setSuccess: 'setSuccess',
       setWarning: 'setWarning'
     }),
+    ...mapActions('preorderAssignmentModule', {
+      uploadFile: 'uploadFile'
+    }),
+    upload () {
+      this.submited = true
+      this.uploadFile(this.file)
+    },
     handleFileUpload (fileList) {
       this.file = fileList[0]
     },
     cancel () {
       this.file = null
     },
-    upload () {
+    upload1 () {
       this.submited = true
       let formData = new FormData()
       formData.append('file', this.file)

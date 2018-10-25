@@ -1,6 +1,6 @@
 import { ApolloClient } from 'apollo-client'
 import { ApolloLink } from 'apollo-link'
-import { HttpLink } from 'apollo-link-http'
+import { createUploadLink } from 'apollo-upload-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import config from '@/config'
 
@@ -26,13 +26,10 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   return forward(operation)
 })
 
-const httpLink = new HttpLink({
-  // You should use an absolute URL here
-  uri: config.api.broker + '/graphql'
-})
-
 const apolloClient = new ApolloClient({
-  link: authMiddleware.concat(httpLink),
+  link: authMiddleware.concat(createUploadLink({
+    uri: config.api.broker + '/graphql'
+  })),
   cache: new InMemoryCache(),
   connectToDevTools: false,
   defaultOptions

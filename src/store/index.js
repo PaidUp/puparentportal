@@ -9,6 +9,7 @@ import organizationModule from './modules/organization-module'
 import scoreboardModule from './modules/scoreboard-module'
 import clubprogramsModule from './modules/chap/clubprograms-module'
 import playerInvoicesModule from './modules/chap/player-invoices-module'
+import preorderAssignmentModule from './modules/chap/preorder-assignment-module'
 import commonModule from './modules/common-module'
 import searchModule from './modules/search-module'
 
@@ -26,7 +27,8 @@ const store = new Vuex.Store({
     playerInvoicesModule,
     commonModule,
     uiModule,
-    searchModule
+    searchModule,
+    preorderAssignmentModule
   }
 })
 
