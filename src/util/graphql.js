@@ -4,6 +4,17 @@ import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import config from '@/config'
 
+const defaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'network-only',
+    errorPolicy: 'ignore'
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all'
+  }
+}
+
 const authMiddleware = new ApolloLink((operation, forward) => {
   // add the authorization to the headers
   const token = localStorage.token
@@ -23,7 +34,8 @@ const httpLink = new HttpLink({
 const apolloClient = new ApolloClient({
   link: authMiddleware.concat(httpLink),
   cache: new InMemoryCache(),
-  connectToDevTools: true
+  connectToDevTools: false,
+  defaultOptions
 })
 
 export default apolloClient
