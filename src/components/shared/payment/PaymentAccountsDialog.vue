@@ -72,7 +72,6 @@
       },
       accounts () {
         if (this.accounts && this.accounts.length === 1) {
-          console.log('accounts....')
           this.selectAccount(this.accounts[0])
         }
       }

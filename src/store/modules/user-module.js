@@ -132,16 +132,16 @@ const module = {
       const input = {
         accessToken: fbResponse.authResponse.accessToken,
         rememberMe: false,
-        phone: context.state.fbUser.contacts.phone,
-        emailSuggested: localStorage.getItem('email')
+        phone: context.state.fbUser.contacts.phone
       }
+      if (localStorage.getItem('email')) input.emailSuggested = localStorage.getItem('email')
       graphqlClient.mutate({
         variables: {
           input
         },
         mutation: gql`
           mutation userFbSignUp ($input: NewFbUser!) {
-          userFbSignUp(user:$input){
+          userFbSignUp(user: $input){
             token
             user {
               _id
@@ -177,7 +177,7 @@ const module = {
         },
         mutation: gql`
           mutation userSignUp ($input: NewUser!) {
-          userSignUp(user:$input){
+          userSignUp(user: $input){
             token
             user {
               _id

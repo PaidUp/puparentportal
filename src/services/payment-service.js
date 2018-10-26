@@ -2,7 +2,6 @@ import Trae from '@/services/trae-service'
 import config from '@/config'
 
 const trae = new Trae(config.api.payment)
-let paymentService
 
 class PaymentService {
   createCustomer (user, source) {
@@ -61,6 +60,5 @@ class PaymentService {
   }
 }
 
-paymentService = new PaymentService()
-
-export default paymentService
+export const paymentService = new PaymentService()
+// export default paymentService

@@ -203,7 +203,6 @@
         this.processing = true
         this.checkout().then(res => {
           this.checkoutResult = res
-          console.log('this.checkoutResult: ', this.checkoutResult)
           this.getBeneficiaries(this.user.email).then(res => {
             this.setSuccess('component.payment.done')
             this.processing = false

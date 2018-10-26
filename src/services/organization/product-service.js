@@ -2,7 +2,6 @@ import Trae from '@/services/trae-service'
 import config from '@/config'
 
 const trae = new Trae(config.api.organization + '/product')
-let productService
 
 class ProductService {
   create ({organizationId, season, sku, name, description, image,
@@ -44,6 +43,5 @@ class ProductService {
   }
 }
 
-productService = new ProductService()
-
-export default productService
+export const productService = new ProductService()
+// export default productService

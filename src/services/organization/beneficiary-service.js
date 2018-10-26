@@ -2,7 +2,6 @@ import Trae from '@/services/trae-service'
 import config from '@/config'
 
 const trae = new Trae(config.api.organization + '/beneficiary')
-let beneficiaryService
 
 class BeneficiaryService {
   create ({ organizationId, organizationName, firstName, lastName, assigneesEmail, description }) {
@@ -35,6 +34,5 @@ class BeneficiaryService {
   }
 }
 
-beneficiaryService = new BeneficiaryService()
-
-export default beneficiaryService
+export const beneficiaryService = new BeneficiaryService()
+// export default beneficiaryService

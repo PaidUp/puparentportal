@@ -2,7 +2,6 @@ import Trae from '@/services/trae-service'
 import config from '@/config'
 
 const trae = new Trae(config.api.user)
-let userService
 
 class UserService {
   login (params) {
@@ -59,6 +58,5 @@ class UserService {
   }
 }
 
-userService = new UserService()
-
-export default userService
+export const userService = new UserService()
+// export default userService

@@ -2,7 +2,6 @@ import Trae from '@/services/trae-service'
 import config from '@/config'
 
 const trae = new Trae(config.api.commerce)
-let commerceService
 
 class CommerceService {
   checkout ({ order, dues, product, credits }) {
@@ -101,6 +100,5 @@ class CommerceService {
   }
 }
 
-commerceService = new CommerceService()
-
-export default commerceService
+export const commerceService = new CommerceService()
+// export default commerceService

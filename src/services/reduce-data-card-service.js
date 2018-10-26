@@ -1,6 +1,4 @@
-let reduceCardService
-
-class ReduceCardService {
+class ReduceDataCardService {
   reduceInvoices (invoices) {
     return invoices.reduce((val, current) => {
       let prd = val[current.productId]
@@ -260,5 +258,5 @@ class ReduceCardService {
   }
 }
 
-reduceCardService = new ReduceCardService()
-export default reduceCardService
+export const reduceDataCardService = new ReduceDataCardService()
+// export default reduceCardService

@@ -2,7 +2,6 @@ import Trae from '@/services/trae-service'
 import config from '@/config'
 
 const trae = new Trae(config.api.organization + '/plan')
-let planService
 
 class PlanService {
   create ({ key, productId, description, visible = true, status = 'active',
@@ -22,6 +21,5 @@ class PlanService {
   }
 }
 
-planService = new PlanService()
-
-export default planService
+export const planService = new PlanService()
+// export default planService
