@@ -8,12 +8,12 @@ const module = {
   mutations: {
   },
   actions: {
-    uploadFile ({ commit }, { file, subject, comment }) {
+    uploadFile ({ commit }, { file }) {
       return graphqlClient.mutate({
-        variables: { file, subject, comment },
+        variables: { file },
         mutation: gql`
-          mutation preOrderAssignment ($file: Upload!, $subject: String!, $comment: String!) {
-            preOrderAssignment(file: $file, subject: $subject, comment: $comment) {
+          mutation importCredits ($file: Upload!) {
+            importCredits(file: $file) {
               filename
             }
           }

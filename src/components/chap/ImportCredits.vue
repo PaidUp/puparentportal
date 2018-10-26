@@ -30,6 +30,9 @@ export default {
       setSuccess: 'setSuccess',
       setWarning: 'setWarning'
     }),
+    ...mapActions('importCreditsModule', {
+      uploadFile: 'uploadFile'
+    }),
     handleFileUpload (fileList) {
       this.file = fileList[0]
     },
@@ -39,21 +42,12 @@ export default {
     },
     upload () {
       this.submited = true
-      let formData = new FormData()
-      formData.append('file', this.file)
-      this.$http.post(this.url, formData, {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.token
-        },
-        before: request => {
-          this.request = request
-        }
-      }).then(resp => {
+      this.uploadFile({file: this.file}).then(file => {
         this.fileName = null
         this.file = null
         this.submited = false
         this.setSuccess('An email was send to you account with the result of bulk credit import')
-      }, reason => {
+      }).catch(reason => {
         this.submited = false
         console.log('reason', reason)
       })

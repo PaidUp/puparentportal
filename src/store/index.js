@@ -10,6 +10,7 @@ import scoreboardModule from './modules/scoreboard-module'
 import clubprogramsModule from './modules/chap/clubprograms-module'
 import playerInvoicesModule from './modules/chap/player-invoices-module'
 import preorderAssignmentModule from './modules/chap/preorder-assignment-module'
+import importCreditsModule from './modules/chap/import-credits-module'
 import commonModule from './modules/common-module'
 import searchModule from './modules/search-module'
 
@@ -28,7 +29,8 @@ const store = new Vuex.Store({
     commonModule,
     uiModule,
     searchModule,
-    preorderAssignmentModule
+    preorderAssignmentModule,
+    importCreditsModule
   }
 })
 
