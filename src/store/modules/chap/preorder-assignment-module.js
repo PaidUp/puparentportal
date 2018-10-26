@@ -12,20 +12,17 @@ const module = {
     }
   },
   actions: {
-    async uploadFile ({ commit }, file) {
-      const response = await graphqlClient.mutate({
-        variables: {
-          file
-        },
+    uploadFile ({ commit }, { file, subject, comment }) {
+      return graphqlClient.mutate({
+        variables: { file, subject, comment },
         mutation: gql`
-          mutation($file: Upload!) {
-            preOrderAssignment(file: $file) {
+          mutation preOrderAssignment ($file: Upload!, $subject: String!, $comment: String!) {
+            preOrderAssignment(file: $file, subject: $subject, comment: $comment) {
               filename
             }
           }
         `
       })
-      commit('setResponse', response.data.File)
     }
   }
 }

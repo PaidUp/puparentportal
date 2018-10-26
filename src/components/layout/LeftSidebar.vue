@@ -63,15 +63,19 @@
       </md-list-item>
 
       <!-- TO BULK: CHAP/BULK -->
-      <md-list-item to="/bulk/beneficiaries" v-if="isRole('chap')">
-        <span class="md-list-item-text ca1 bold">Import Beneficiaries</span>
+      <md-list-item to="/reports/payments" md-expand v-if="isRole('chap')">
+        <span class="md-list-item-text ca1 bold">Bulk</span>
+        <md-list slot="md-expand">
+          <md-list-item to="/bulk/preorders">
+            <span class="md-list-item-text ca1 bold">PreOrder Assignment</span>
+          </md-list-item>
+          <md-list-item to="/bulk/credits">
+            <span class="md-list-item-text ca1 bold">Import Credits</span>
+          </md-list-item>
+        </md-list>
       </md-list-item>
-      <md-list-item to="/bulk/preorders" v-if="isRole('chap')">
-        <span class="md-list-item-text ca1 bold">PreOrder Assignment</span>
-      </md-list-item>
-      <md-list-item to="/bulk/credits" v-if="isRole('chap')">
-        <span class="md-list-item-text ca1 bold">Import Credits</span>
-      </md-list-item>
+
+      
     </md-list>
     <pu-botton />
   </div>

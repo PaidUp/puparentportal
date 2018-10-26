@@ -25,7 +25,6 @@ import PrintInvoice from '@/components/pages/PrintInvoice.vue'
 import PrintIneligible from '@/components/pages/PrintIneligible.vue'
 import PrintEligible from '@/components/pages/PrintEligible.vue'
 import ChapDesigns from '@/components/chap/ChapDesigns.vue'
-import ImportBeneficiaries from '@/components/chap/ImportBeneficiaries.vue'
 import ImportCredits from '@/components/chap/ImportCredits.vue'
 import PreOrderAssignment from '@/components/chap/PreOrderAssignment.vue'
 
@@ -79,14 +78,6 @@ const routes = [
           roles: ['chap']
         },
         component: Seasons
-      },
-      {
-        path: '/bulk/beneficiaries',
-        name: 'importBeneficiaries',
-        meta: {
-          roles: ['chap']
-        },
-        component: ImportBeneficiaries
       },
       {
         path: '/bulk/credits',

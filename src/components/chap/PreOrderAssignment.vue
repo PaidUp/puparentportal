@@ -21,7 +21,6 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
-import config from '@/config'
 import VueTrix from 'vue-trix'
 export default {
   components: { VueTrix },
@@ -29,7 +28,6 @@ export default {
     return {
       comment: '',
       subject: '',
-      url: config.api.commerce + '/preorder/bulk',
       fileName: null,
       file: null,
       submited: false
@@ -45,36 +43,21 @@ export default {
     }),
     upload () {
       this.submited = true
-      this.uploadFile(this.file)
+      this.uploadFile({file: this.file, subject: this.subject, comment: this.comment}).then(file => {
+        this.fileName = null
+        this.file = null
+        this.setSuccess('An email was send to you account with the result of bulk preorders assignment ')
+        this.submited = false
+      }).catch(reason => {
+        this.submited = false
+        console.log('reason', reason)
+      })
     },
     handleFileUpload (fileList) {
       this.file = fileList[0]
     },
     cancel () {
       this.file = null
-    },
-    upload1 () {
-      this.submited = true
-      let formData = new FormData()
-      formData.append('file', this.file)
-      formData.append('comment', this.comment)
-      formData.append('subject', this.subject)
-      this.$http.post(this.url, formData, {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.token
-        },
-        before: request => {
-          this.request = request
-        }
-      }).then(resp => {
-        this.fileName = null
-        this.file = null
-        this.setSuccess('An email was send to you account with the result of bulk preorders assignment ')
-        this.submited = false
-      }, reason => {
-        this.submited = false
-        console.log('reason', reason)
-      })
     }
   }
 
