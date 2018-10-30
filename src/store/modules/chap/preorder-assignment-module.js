@@ -4,8 +4,16 @@ import gql from 'graphql-tag'
 const module = {
   namespaced: true,
   state: {
+    files: [],
+    rows: []
   },
   mutations: {
+    setFiles (state, files) {
+      state.files = files
+    },
+    setRows (state, rows) {
+      state.rows = rows
+    }
   },
   actions: {
     uploadFile ({ commit }, { file, subject, comment }) {
@@ -19,6 +27,47 @@ const module = {
           }
         `
       })
+    },
+    async fetchFiles ({ commit }, email) {
+      const response = await graphqlClient.query({
+        query: gql`query preorderAssignmentFiles($email: String!) {
+          preorderAssignmentFiles(email: $email) {
+            _id
+            rows
+            keyFile
+            fileName
+            user
+            onUpload
+          }
+        }`,
+        variables: { email }
+      })
+      commit('setFiles', response.data.preorderAssignmentFiles)
+    },
+    async fetchFileRows ({ commit }, keyFile) {
+      const response = await graphqlClient.query({
+        query: gql`query preorderAssignmentRows($keyFile: String!) {
+          preorderAssignmentRows(keyFile: $keyFile) {
+            _id
+            row
+            status
+            organizationName
+            beneficiaryFirstName
+            beneficiaryLastName
+            parentFirstName
+            parentLastName
+            parentEmail
+            userStatus
+            beneficiaryStatus
+            preorderStatus
+            zdCreateUserStatus
+            zdTicketsCreateStatus
+            createOn
+          }
+        }`,
+        variables: { keyFile }
+      })
+      commit('setRows', response.data.preorderAssignmentRows)
     }
   }
 }
