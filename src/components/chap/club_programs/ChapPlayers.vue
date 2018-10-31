@@ -3,7 +3,7 @@
 		<md-tabs class="tabs-lblue">
 			<md-tab id="tab-player" md-label="Players" >
         <div class="tab-toolbar">
-          <download-excel :data= "players" :fields="reportFields" type= "csv" name= "players.csv">
+          <download-excel :fetch= "players" :fields="reportFields" type= "csv" name= "players.csv">
             <md-button class="lblue md-accent md-raised md-dens md-icon-button">
               <md-icon>cloud_download</md-icon>
             </md-button>
@@ -33,9 +33,14 @@ export default {
     return {
       items: null,
       reportFields: {
-        organization: 'organization',
         beneficiaryFirstName: 'beneficiaryFirstName',
-        beneficiaryLastName: 'beneficiaryLastName',
+        beneficiaryLastName: 'beneficiaryFirstName',
+        parentEmail: 'parentEmail',
+        parentPhoneNumber: 'parentPhoneNumber',
+        parentFirstName: 'parentFirstName',
+        parentLastName: 'parentLastName',
+        productName: 'productName',
+        organization: 'organization',
         season: 'season',
         product: 'product'
       }
@@ -52,17 +57,13 @@ export default {
       programSelected: 'programSelected',
       seasonSelected: 'seasonSelected'
     }),
-    players () {
-      return Object.keys(this.items).map(key => {
+    emailParents () {
+      let emails = []
+      Object.keys(this.items).forEach(key => {
         const beneficiary = this.items[key]
-        return {
-          beneficiaryFirstName: beneficiary.firstName,
-          beneficiaryLastName: beneficiary.lastName,
-          organization: this.organization.businessName,
-          season: this.seasonSelectedName,
-          product: this.programSelectedName
-        }
+        emails = emails.concat(beneficiary.assigneesEmail)
       })
+      return emails
     }
   },
   watch: {
@@ -91,6 +92,9 @@ export default {
     ...mapActions('playerInvoicesModule', {
       loadParents: 'loadParents'
     }),
+    ...mapActions('userModule', {
+      getParentsByEmails: 'getParentsByEmails'
+    }),
     selectPlayer (player) {
       this.setPlayerSelected(player.id)
       this.getReducePrograms()
@@ -99,9 +103,30 @@ export default {
     },
     getAll () {
       this.getReducePlayers().then(items => {
-        console.log('items: ', items)
         this.items = items
       })
+    },
+    async players () {
+      const parents = await this.getParentsByEmails(this.emailParents)
+      return Object.keys(this.items).reduce((curr, key) => {
+        const beneficiary = this.items[key]
+        beneficiary.assigneesEmail.forEach(email => {
+          const parent = parents[email]
+          curr.push({
+            beneficiaryFirstName: beneficiary.firstName,
+            beneficiaryLastName: beneficiary.lastName,
+            parentEmail: email,
+            parentPhoneNumber: parent ? parent.email : '',
+            parentFirstName: parent ? parent.firstName : '',
+            parentLastName: parent ? parent.lastName : '',
+            productName: this.programSelectedName,
+            organization: this.organization.businessName,
+            season: this.seasonSelectedName,
+            product: this.programSelectedName
+          })
+        })
+        return curr
+      }, [])
     }
   }
 }

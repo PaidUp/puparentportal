@@ -267,6 +267,23 @@ const module = {
           root: true
         })
       })
+    },
+    async getParentsByEmails (context, emails) {
+      const response = await graphqlClient.query({
+        query: gql`query getUsersByEmails($emails: [String]!) {
+            getUsersByEmails(emails: $emails) {
+              firstName
+              lastName
+              email
+              phone
+            }
+          }`,
+        variables: { emails }
+      })
+      return response.data.getUsersByEmails.reduce((curr, user) => {
+        curr[user.email] = user
+        return curr
+      }, {})
     }
   }
 }
