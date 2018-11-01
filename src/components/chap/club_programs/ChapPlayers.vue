@@ -2,21 +2,27 @@
   <div class="program-players" v-if="items">
 		<md-tabs class="tabs-lblue">
 			<md-tab id="tab-player" md-label="Players" >
-        <div class="tab-toolbar">
-          <download-excel :fetch= "players" :fields="reportFields" type= "csv" name= "players.csv">
-            <md-button class="lblue md-accent md-raised md-dens md-icon-button">
-              <md-icon>cloud_download</md-icon>
-            </md-button>
-          </download-excel>
-          
-        </div>
         <div class="cards-layout">
 				  <chap-player-card :item="item" v-for="item in items" :key="item.id" @select="selectPlayer"></chap-player-card>
         </div>
 			</md-tab>
-			<md-tab id="tab-plans" md-label="Program Payment Plans">
+			
+      <md-tab id="tab-plans" md-label="Program Payment Plans">
 				<chap-product-plans></chap-product-plans>
 			</md-tab>
+
+			<md-tab id="tab-download" md-label="Downloads" >
+        <div class="tab-toolbar">
+          <md-button class="lblue md-accent md-raised">
+            <download-excel :fetch= "players" :fields="reportFields" type= "csv" name= "players.csv">
+              Player and Parent Info
+              <md-icon>cloud_download</md-icon>
+            </download-excel>
+          </md-button>
+        </div>
+        
+			</md-tab>
+
 		</md-tabs>
 	</div>
 </template>
