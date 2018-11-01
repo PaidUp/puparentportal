@@ -3,18 +3,18 @@
     <md-dialog-title>
       <md-icon class="md-size-c cyellow icon"> warning </md-icon>
       <br/>
-      You are about to create duplicate payments.
+      Be Careful Not To Create Duplicate Payments
     </md-dialog-title>
     <div class="text-instructions">
       <ul>
         <li>
-          You have already authorized payments for {{playerSelected.firstName}} {{playerSelected.lastName}} - {{seasonSelected.name}} - {{programSelected.name}}.
+          You have already authorized payment(s) for {{playerSelected.firstName}} {{playerSelected.lastName}} - {{seasonSelected.name}} - {{programSelected.name}}.
         </li>
         <li>
-          If you want to modify a payment date/account or retry a failed payment, please visit the ‘Payment History’ section.
+          <b>Dues:</b> If you have already authorized your dues payments and want to modify a payment date/account or retry a failed payment, please click VIEW PAYMENT HISTORY.
         </li>
         <li>
-          If you are confident that you need to submit another payment, please click “Continue With Checkout” to authorize your payments.
+          <b>Travel/Tournament Fees:</b> If you are making a NEW travel/tournament payment, please click CONTINUE WITH CHECKOUT to view your options and authorize your payments.
         </li>
       </ul>
     </div>
