@@ -40,7 +40,7 @@ export default {
       items: null,
       reportFields: {
         beneficiaryFirstName: 'beneficiaryFirstName',
-        beneficiaryLastName: 'beneficiaryFirstName',
+        beneficiaryLastName: 'beneficiaryLastName',
         parentEmail: 'parentEmail',
         parentPhoneNumber: 'parentPhoneNumber',
         parentFirstName: 'parentFirstName',
