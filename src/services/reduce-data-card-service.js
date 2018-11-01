@@ -46,7 +46,7 @@ class ReduceDataCardService {
           firstName: beneficiary ? beneficiary.firstName : '',
           lastName: beneficiary ? beneficiary.lastName : '',
           total: current.price,
-          assigneesEmail: beneficiary.assigneesEmail,
+          assigneesEmail: beneficiary ? beneficiary.assigneesEmail : '',
           paid: 0,
           unpaid: 0,
           overdue: 0,
