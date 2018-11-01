@@ -41,8 +41,7 @@ export default {
         parentLastName: 'parentLastName',
         productName: 'productName',
         organization: 'organization',
-        season: 'season',
-        product: 'product'
+        season: 'season'
       }
     }
   },
@@ -116,13 +115,12 @@ export default {
             beneficiaryFirstName: beneficiary.firstName,
             beneficiaryLastName: beneficiary.lastName,
             parentEmail: email,
-            parentPhoneNumber: parent ? parent.email : '',
+            parentPhoneNumber: parent ? parent.phone : '',
             parentFirstName: parent ? parent.firstName : '',
             parentLastName: parent ? parent.lastName : '',
             productName: this.programSelectedName,
             organization: this.organization.businessName,
-            season: this.seasonSelectedName,
-            product: this.programSelectedName
+            season: this.seasonSelectedName
           })
         })
         return curr
