@@ -20,7 +20,8 @@ import Seasons from '@/components/chap/Seasons.vue'
 import AssignPlanToParent from '@/components/chap/AssignPlanToParent.vue'
 import FeesCalculator from '@/components/chap/FeesCalculator.vue'
 import SearchResultPage from '@/components/board/SearchResultPage.vue'
-import ReportsPage from '@/components/board/ReportsPage.vue'
+import PaymentsReport from '@/components/board/reports/PaymentsReport.vue'
+import DepositsReport from '@/components/board/reports/DepositsReport.vue'
 import PrintInvoice from '@/components/pages/PrintInvoice.vue'
 import PrintIneligible from '@/components/pages/PrintIneligible.vue'
 import PrintEligible from '@/components/pages/PrintEligible.vue'
@@ -135,7 +136,14 @@ const routes = [
       },
       {
         path: '/reports/payments',
-        component: ReportsPage,
+        component: PaymentsReport,
+        meta: {
+          roles: ['coach']
+        }
+      },
+      {
+        path: '/reports/deposits',
+        component: DepositsReport,
         meta: {
           roles: ['coach']
         }

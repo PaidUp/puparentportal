@@ -22,7 +22,7 @@
       </md-list-item>
       
       <!-- Reports -->
-      <md-list-item to="/reports/payments" md-expand v-if="isRole('coach')">
+      <md-list-item md-expand v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Reports</span>
         <md-list slot="md-expand">
           <md-list-item to="/reports/payments">
@@ -30,7 +30,7 @@
               Payments
             </div>
           </md-list-item>
-          <md-list-item v-if="false" to="/reports/deposits">
+          <md-list-item to="/reports/deposits">
             <div class="md-list-item-text">
               Deposits
             </div>

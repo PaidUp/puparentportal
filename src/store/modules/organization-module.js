@@ -7,7 +7,8 @@ const module = {
   state: {
     organizations: [],
     plans: {},
-    payments: []
+    payments: [],
+    payouts: []
   },
   mutations: {
     setOrganizations (state, organizations) {
@@ -18,6 +19,9 @@ const module = {
     },
     setPayments (state, payments) {
       state.payments = payments
+    },
+    setPayouts (state, payouts) {
+      state.payouts = payouts
     }
   },
   actions: {
@@ -60,6 +64,30 @@ const module = {
         }
       })
       commit('setPayments', response.data.payments)
+    },
+    async fetchPayouts ({ commit }, account) {
+      console.log(account)
+      const response = await graphqlClient.query({
+        query: gql`query fetchPayouts($account: String!) {
+          fetchPayouts(account: $account) {
+            _id
+            id
+            amount
+            arrival_date
+            destination {
+              account
+              bank_name
+              last4
+            }
+            status
+          }
+        }`,
+        variables: { account },
+        skip () {
+          return !account
+        }
+      })
+      commit('setPayouts', response.data.fetchPayouts)
     }
   }
 }
