@@ -66,7 +66,6 @@ const module = {
       commit('setPayments', response.data.payments)
     },
     async fetchPayouts ({ commit }, account) {
-      console.log(account)
       const response = await graphqlClient.query({
         query: gql`query fetchPayouts($account: String!) {
           fetchPayouts(account: $account) {

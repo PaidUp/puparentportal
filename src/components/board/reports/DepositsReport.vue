@@ -2,9 +2,10 @@
   <div class="reports-page">
     <div class="top-bar">
       <div class="title">
-        Deposits
+        Deposits <br/>
+        <br/>
       </div>
-      <div>
+      <!-- <div>
         <md-button v-if="false" class="md-button md-accent lblue">
           <md-icon>print</md-icon> Print
         </md-button>
@@ -15,31 +16,31 @@
             <md-icon>get_app</md-icon> Export
           </md-button>
         </download-excel>
-      </div>
+      </div> -->
     </div>
 
     <!-- FILTERS CHIPS AND TRIGGER FILTER BAR -->
-    <div class="filter-chips">
+    <!-- <div class="filter-chips">
       <md-chip class="blue with-icon" @click="showFiltersPanel = true">Add Filter
         <md-button class="md-icon-button md-input-action">
           <md-icon>add</md-icon>
         </md-button>
       </md-chip>
-      <!-- <md-chip v-if="seasonSelectedObj" class="lblue">Season: {{seasonSelectedObj.name}}</md-chip>
+      <md-chip v-if="seasonSelectedObj" class="lblue">Season: {{seasonSelectedObj.name}}</md-chip>
       <md-chip v-if="invoiceDateStart" class="lblue" md-deletable @md-delete="invoiceDateStart = null">Receipt date start: {{$d(invoiceDateStart, 'short')}}</md-chip>
       <md-chip v-if="invoiceDateEnd" class="lblue" md-deletable @md-delete="invoiceDateEnd = null">Receipt date end: {{$d(invoiceDateEnd, 'short')}}</md-chip>
       <md-chip v-if="chargeDateStart" class="lblue" md-deletable @md-delete="chargeDateStart = null">Charge date start: {{$d(chargeDateStart, 'short')}}</md-chip>
       <md-chip v-if="chargeDateEnd" class="lblue" md-deletable @md-delete="chargeDateEnd = null">Charge date end: {{$d(chargeDateEnd, 'short')}}</md-chip>
       <md-chip class="lblue" @md-delete="removeProgram(chip)" v-for="chip in programFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
       <md-chip class="lblue" @md-delete="removeStatus(chip)" v-for="chip in statusFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
-      <md-chip class="lblue" @md-delete="removeTag(chip)" v-for="chip in tagsFilter" :key="chip" md-deletable>{{ chip }}</md-chip> -->
+      <md-chip class="lblue" @md-delete="removeTag(chip)" v-for="chip in tagsFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
 
-    </div>
+    </div> -->
 
     <!-- TABLE -->
     <div class="table-container">
-    <md-table v-model="payouts" class="md-table custom-table" >
-      <md-table-toolbar>
+    <md-table v-model="payoutsPag" class="md-table custom-table" >
+      <!--- md-table-toolbar>
         <div class="md-toolbar-section-start">
           <h1 class="md-title"></h1>
         </div>
@@ -47,196 +48,52 @@
         <md-field md-clearable class="md-toolbar-section-end">
           <md-input placeholder="Search..." v-model="search" />
         </md-field>
-      </md-table-toolbar>
+      </md-table-toolbar -->
 
-      <md-table-row slot="md-table-row" slot-scope="{ item }" :class="{totals: (item.status === 'failed'), 'red-row': item.id === 3}">
-        <md-table-cell md-label="Amount">
-          {{item.amount}}
+      <md-table-row slot="md-table-row" slot-scope="{ item }" class="pointer" :class="{totals: (item.status === 'failed'), 'red-row': item.id === 3}">
+        <md-table-cell md-label="Amount" class="col-15">
+          ${{currency(item.amount)}}
         </md-table-cell>
-        <md-table-cell  md-label="Status">
-          {{item.chargeDate}}
+        <md-table-cell  md-label="Status" class="col-15">
+          {{capitalize(item.status)}}
         </md-table-cell>
-        <md-table-cell md-label="Bank/Card">
-          {{item.paymentMethodBrand ? item.paymentMethodBrand + '••••' : ''}}{{item.paymentMethodLast4}}
+        <md-table-cell md-label="Bank/Card" class="col-25">
+          {{`${item.destination.bank_name}••••${item.destination.last4}`}}
         </md-table-cell>
-        <md-table-cell md-label="Arrival Date">
-          {{item.description}}
+        <md-table-cell md-label="Arrival Date" class="col-15">
+          {{formatDate(item.arrival_date)}}
         </md-table-cell>
       </md-table-row>
     </md-table>
       <div class="pagination">
-      <md-button class="md-icon-button md-primary" :disabled="paginationStart <= 0" @click="previous">
+      <md-button class="md-icon-button md-primary" :disabled="paginationPos <= 0"  @click="previous">
         <md-icon>chevron_left</md-icon>
       </md-button>
-      <md-button class="md-icon-button md-primary" :disabled="paginationStart >= paymentsFiltered.length - 1" @click="next">
+      <md-button class="md-icon-button md-primary" :disabled="this.payoutSplit.length - 1 <= this.paginationPos" @click="next">
         <md-icon>chevron_right</md-icon>
       </md-button>
       </div>
-      <!-- <div class="pagination">
-        <a href="#" :class="{disabled: paginationStart <= 0}" @click="previous"><md-icon>chevron_left</md-icon> Previous</a>
-        <a href="#" :class="{disabled: paginationStart >= paymentsFiltered.length - 1}" @click="next">Next <md-icon class="md-primary">chevron_right</md-icon></a>
-      </div> -->
     </div>
-     <!-- FILTERS SIDEBAR -->
-    <md-drawer class="md-right filters-sidebar" :md-active.sync="showFiltersPanel">
-      <div class="title-section">
-        <span class="md-title">Edit Filters</span>
-        <md-button class="md-accent lblue md-dense">clear all filters</md-button>
-      </div>
-      <div class="filters-section">
-        <!-- SEASONS -->
-        <div class="filter-title">
-          <div class="bold">
-            Season
-          </div>
-        </div>
-        <md-radio :v-if="organization" v-for="season of seasons" :key="season._id" v-model="seasonSelected" :value="season._id" class="md-primary">{{season.name}}</md-radio>
+     <!-- FILTERS SIDEBAR TODO -->
 
-        <!-- DATES -->
-        <div class="filter-title">
-          <div class="bold">
-            Invoice Date
-          </div>
-          <md-button class="md-dense md-icon-button md-accent lblue">
-            <md-icon>clear</md-icon>
-          </md-button>
-        </div>
-        <div class="range-date">
-          <md-datepicker md-immediately v-model="invoiceDateStart" class="no-date-icon">
-            <label>Start</label>
-          </md-datepicker>
-          <md-datepicker md-immediately v-model="invoiceDateEnd" class="no-date-icon">
-            <label>End</label>
-          </md-datepicker>
-        </div>
-        <div class="filter-title">
-          <div class="bold">
-            Charge Date
-          </div>
-          <md-button class="md-dense md-icon-button md-accent lblue">
-            <md-icon>clear</md-icon>
-          </md-button>
-        </div>
-        <div class="range-date">
-          <md-datepicker md-immediately v-model="chargeDateStart" class="no-date-icon">
-            <label>Start</label>
-          </md-datepicker>
-          <md-datepicker md-immediately v-model="chargeDateEnd" class="no-date-icon">
-            <label>End</label>
-          </md-datepicker>
-        </div>
-
-        <!-- PROGRAMS -->
-        <div class="filter-title">
-          <div class="bold">
-            Programs
-          </div>
-          <md-button class="md-dense md-icon-button md-accent lblue" @click="programFilter = []">
-            <md-icon>clear</md-icon>
-          </md-button>
-        </div>
-        <md-checkbox v-for="program in programs" :key="program" class="lblue" v-model="programFilter" :value="program">{{program}}</md-checkbox>
-
-        <!-- DEPOSIT DATE 
-        <div class="filter-title">
-          <div class="bold">
-            Deposit Date
-          </div>
-          <md-button class="md-dense md-icon-button md-accent lblue">
-            <md-icon>clear</md-icon>
-          </md-button>
-        </div>
-        <div class="range-date">
-          <md-datepicker md-immediately class="no-date-icon">
-            <label>Start</label>
-          </md-datepicker>
-          <md-datepicker md-immediately class="no-date-icon">
-            <label>End</label>
-          </md-datepicker>
-        </div>-->
-
-        <!-- STATUS -->
-        <div class="filter-title">
-          <div class="bold">
-            Status
-          </div>
-          <md-button @click="statusFilter = []" class="md-dense md-icon-button md-accent lblue">
-            <md-icon>clear</md-icon>
-          </md-button>
-        </div>
-        <md-checkbox v-for="sts in status" :key="sts" class="lblue" v-model="statusFilter" :value="sts">{{capitalize(sts)}}</md-checkbox>
-
-        <!-- TAGS -->
-        <div class="filter-title">
-          <div class="bold">
-            Tags
-          </div>
-          <md-button @click="removeAllTags" class="md-dense md-icon-button md-accent lblue">
-            <md-icon>clear</md-icon>
-          </md-button>
-        </div>
-        <div class="tags-box">
-          <md-chip class="lblue" @md-delete="removeTag(chip)" v-for="chip in tagsFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
-          <md-chip class="" @click="selectTag(chip)" v-for="chip in tags" :key="chip" md-clickable>{{ chip }}</md-chip>
-        </div>
-      </div>
-      <br/>
-      <br/>
-    </md-drawer>
 
     <v-pay-animation :animate="loading" :result="{}"/>
   </div>
 </template>
 
 <script>
+  import splitArray from 'split-array'
   import { mapState, mapActions } from 'vuex'
-  import currency from '@/helpers/currency'
-  import capitalize from '@/helpers/capitalize'
+  import {currency, formatDate, capitalize} from '@/helpers'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 
   export default {
     components: { VPayAnimation },
     data: function () {
       return {
-        showFiltersPanel: false,
-        checkArray: [],
-        indeterminateCheck: false,
-        organization: null,
-        programFilter: [],
-        statusFilter: [],
-        tagsFilter: [],
-        tags: [],
-        seasonSelected: null,
-        invoiceDateStart: null,
-        invoiceDateEnd: null,
-        chargeDateStart: null,
-        chargeDateEnd: null,
-        status: [],
-        programs: [],
-        search: '',
-        reportFields: {
-          'Invoice ID': 'receiptId',
-          'Charge Date': 'chargeDate',
-          'Invoice Date': 'receiptDate',
-          'Description': 'description',
-          'Program': 'program',
-          'Status': 'status',
-          'Parent Name': 'parentName',
-          'Parent Email': 'parentEmail',
-          'Parent Phone': 'parentPhone',
-          'Player Name': 'playerName',
-          'Amount': 'amount',
-          'Processing Fee': 'processingFee',
-          'PaidUp Fee': 'paidupFee',
-          'Total Fee': 'totalFee',
-          'Tags': 'tags',
-          'Payment Account Brand': 'paymentMethodBrand',
-          'Payment Account Last4': 'paymentMethodLast4'
-        },
         loading: false,
-        paymentsFiltered: [],
-        paginationStart: 0,
-        pag: 100
+        paginationPos: 0,
+        pag: 5
       }
     },
     computed: {
@@ -246,43 +103,31 @@
       ...mapState('organizationModule', {
         payouts: 'payouts'
       }),
-      seasons () {
-        if (!this.organization) return []
-        return this.organization.seasons
+      payoutsPag () {
+        return this.payoutSplit[this.paginationPos] || []
       },
-      seasonSelectedObj () {
-        let ssn = null
-        if (!this.seasonSelected) return ssn
-
-        this.organization.seasons.forEach(season => {
-          if (season._id === this.seasonSelected) {
-            ssn = season
-          }
-        })
-        return ssn
-      },
-      paymentsFilteredPag () {
-        return this.paymentsFiltered.reduce((curr, pf, idx) => {
-          if (idx >= this.paginationStart && idx <= (this.paginationStart + this.pag)) {
-            curr.push(pf)
-          }
-          return curr
-        }, [])
+      payoutSplit () {
+        return splitArray(this.payouts, this.pag)
       }
     },
     mounted () {
       if (this.user && this.user.organizationId) {
         this.getOrganization(this.user.organizationId).then(organization => {
           this.organization = organization
-          console.log(organization)
           this.fetchPayouts(organization.connectAccount)
         })
       }
     },
     watch: {
-      // search () {
-      //   this.getPaymentsFiltered()
-      // }
+      user () {
+        this.getOrganization(this.user.organizationId).then(organization => {
+          this.organization = organization
+          this.fetchPayouts(organization.connectAccount)
+        })
+      },
+      payouts () {
+        // this.loading = false
+      }
     },
     methods: {
       ...mapActions('organizationModule', {
@@ -290,107 +135,22 @@
         fetchPayouts: 'fetchPayouts'
       }),
       currency (value) {
-        return currency(value)
+        return currency(value / 100)
       },
       capitalize (value) {
-        return capitalize(value)
+        const tmp = value.replace(new RegExp('_', 'g'), ' ')
+        return capitalize(tmp)
       },
-      selectTag (value) {
-        this.tagsFilter.push(value)
-        this.tags.splice(this.tags.indexOf(value), 1)
-      },
-      removeTag (value) {
-        this.tags.push(value)
-        this.tagsFilter.splice(this.tagsFilter.indexOf(value), 1)
-        this.getPaymentsFiltered()
-      },
-      removeProgram (value) {
-        this.programFilter.splice(this.programFilter.indexOf(value), 1)
-        this.getPaymentsFiltered()
-      },
-      removeStatus (value) {
-        this.statusFilter.splice(this.statusFilter.indexOf(value), 1)
-        this.getPaymentsFiltered()
-      },
-      removeAllTags () {
-        this.tags = this.tags.concat(this.tagsFilter)
-        this.tagsFilter = []
-      },
-      getPaymentsFiltered () {
-        this.paginationStart = 0
-        this.loading = true
-        let response = this.payments.reduce((curr, receipt, idx) => {
-          let receiptDate = receipt.receiptDate ? new Date(receipt.receiptDate) : ''
-          let chargeDate = receipt.chargeDate ? new Date(receipt.chargeDate) : ''
-          let resp = true
-          // invoice date filter
-          if (this.invoiceDateStart && resp) {
-            if (!receiptDate) resp = false
-            else {
-              resp = (this.invoiceDateStart.getTime() <= receiptDate.getTime()) && resp
-            }
-          }
-          if (this.invoiceDateEnd && resp) {
-            if (!receiptDate) resp = false
-            else {
-              let tmpDate = new Date(this.invoiceDateEnd.getTime())
-              tmpDate.setHours(24, 59, 59)
-              resp = (tmpDate >= receiptDate.getTime()) && resp
-            }
-          }
-          // charge date filter
-          if (this.chargeDateStart && resp) {
-            if (!chargeDate) resp = false
-            else {
-              resp = (this.chargeDateStart.getTime() <= chargeDate.getTime()) && resp
-            }
-          }
-          if (this.chargeDateEnd && resp) {
-            if (!chargeDate) resp = false
-            else {
-              let tmpDate = new Date(this.chargeDateEnd.getTime())
-              tmpDate.setHours(24, 59, 59)
-              resp = (this.chargeDateEnd.getTime() >= tmpDate) && resp
-            }
-          }
-          if (this.programFilter.length && resp) {
-            resp = (this.programFilter.indexOf(receipt.program) > -1) && resp
-          }
-          if (this.statusFilter.length && resp) {
-            resp = (this.statusFilter.indexOf(receipt.status) > -1) && resp
-          }
-          if (this.tagsFilter.length && resp) {
-            if (!receipt.tags) resp = false
-            else {
-              resp = receipt.tags.some(r => this.tagsFilter.indexOf(r) >= 0) && resp
-            }
-          }
-          if (this.search && resp) {
-            resp = receipt.index.toLowerCase().includes(this.search.toLowerCase()) && resp
-          }
-          if (resp) {
-            let tmp = JSON.parse(JSON.stringify(receipt))
-            tmp.chargeDate = tmp.chargeDate ? this.$d(new Date(tmp.chargeDate), 'short') : ''
-            tmp.receiptDate = tmp.receiptDate ? this.$d(new Date(tmp.receiptDate), 'short') : ''
-            tmp.status = this.capitalize(tmp.status)
-            tmp.amount = this.currency(tmp.amount)
-            tmp.processingFee = this.currency(tmp.processingFee)
-            tmp.paidupFee = this.currency(tmp.paidupFee)
-            tmp.totalFee = this.currency(tmp.totalFee)
-            curr.push(tmp)
-          }
-          return curr
-        }, [])
-        this.loading = false
-        this.paymentsFiltered = response
+      formatDate (value) {
+        return formatDate.unix(value)
       },
       previous (event) {
-        if (this.paginationStart <= 0) return false
-        this.paginationStart = this.paginationStart - this.pag
+        if (this.paginationPos <= 0) return false
+        return this.paginationPos --
       },
       next (event) {
-        if (this.paginationStart >= this.paymentsFiltered.length - 1) return false
-        this.paginationStart = this.paginationStart + this.pag
+        if (this.payoutSplit.length - 1 <= this.paginationPos) return false
+        return this.paginationPos ++
       }
     }
   }
