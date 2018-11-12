@@ -8,7 +8,8 @@ const module = {
     organizations: [],
     plans: {},
     payments: [],
-    payouts: []
+    payouts: [],
+    transfers: []
   },
   mutations: {
     setOrganizations (state, organizations) {
@@ -22,6 +23,9 @@ const module = {
     },
     setPayouts (state, payouts) {
       state.payouts = payouts
+    },
+    setTransfers (state, transfers) {
+      state.transfers = transfers
     }
   },
   actions: {
@@ -79,6 +83,7 @@ const module = {
               last4
             }
             status
+            source_type
           }
         }`,
         variables: { account },
@@ -87,6 +92,44 @@ const module = {
         }
       })
       commit('setPayouts', response.data.fetchPayouts)
+    },
+    async fetchTransfers ({ commit }, { account, arrival, source }) {
+      const response = await graphqlClient.query({
+        query: gql`query fetchTransfers($account: String!, $arrival: Int!, $source: String!) {
+          fetchTransfers(account: $account, arrival: $arrival, source: $source) {
+            _id
+            id
+            amount
+            amount_reversed
+            source_transaction {
+              created
+              description
+              application_fee {
+                amount
+                amount_refunded
+                balance_transaction {
+                  available_on
+                }
+              }
+              metadata {
+                organizationName
+                productName
+                beneficiaryFirstName
+                beneficiaryLastName
+                invoiceId
+                userFirstName
+                userLastName
+                userEmail
+              }
+            }
+          }
+        }`,
+        variables: { account, arrival, source },
+        skip () {
+          return !account
+        }
+      })
+      commit('setTransfers', response.data.fetchTransfers)
     }
   }
 }

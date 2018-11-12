@@ -38,7 +38,7 @@
 
     <!-- TABLE -->
     <div class="table-container">
-    <md-table v-model="payouts" class="md-table custom-table" >
+    <md-table v-model="transfers" class="md-table custom-table" >
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
           <h1 class="md-title"></h1>
@@ -50,32 +50,38 @@
       </md-table-toolbar>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }" :class="{totals: (item.status === 'failed'), 'red-row': item.id === 3}">
+        <md-table-cell md-label="Invoice Id">
+          {{item.source_transaction.metadata.invoiceId}}
+        </md-table-cell>
+        <md-table-cell md-label="Charge Date">
+          {{formatDate(item.source_transaction.created)}}
+        </md-table-cell>
         <md-table-cell md-label="Amount">
           ${{currency(item.amount)}}
         </md-table-cell>
-        <md-table-cell  md-label="Status">
-          {{item.status}}
+        <md-table-cell md-label="Fee">
+          ${{currency(item.source_transaction.application_fee.amount)}}
         </md-table-cell>
-        <md-table-cell md-label="Bank/Card">
-          {{`${item.destination.bank_name}••••${item.destination.last4}`}}
+        <md-table-cell md-label="Net Deposit">
+          ${{currency(item.amount - item.source_transaction.application_fee.amount)}}
+        </md-table-cell>
+        <md-table-cell  md-label="Description">
+          {{item.source_transaction.description}}
+        </md-table-cell>
+        <md-table-cell  md-label="Program">
+          {{item.source_transaction.metadata.productName}}
+        </md-table-cell>
+        <md-table-cell  md-label="Parent Name">
+          {{item.source_transaction.metadata.userFirstName + ' ' + item.source_transaction.metadata.userLastName}}
+        </md-table-cell>
+        <md-table-cell md-label="Player Name">
+          {{item.source_transaction.metadata.beneficiaryFirstName + ' ' + item.source_transaction.metadata.beneficiaryLastName}}
         </md-table-cell>
         <md-table-cell md-label="Arrival Date">
-          {{formatDate(item.arrival_date)}}
+          
         </md-table-cell>
       </md-table-row>
     </md-table>
-      <div class="pagination">
-      <md-button class="md-icon-button md-primary" :disabled="paginationStart <= 0" @click="previous">
-        <md-icon>chevron_left</md-icon>
-      </md-button>
-      <md-button class="md-icon-button md-primary" :disabled="paginationStart >= paymentsFiltered.length - 1" @click="next">
-        <md-icon>chevron_right</md-icon>
-      </md-button>
-      </div>
-      <!-- <div class="pagination">
-        <a href="#" :class="{disabled: paginationStart <= 0}" @click="previous"><md-icon>chevron_left</md-icon> Previous</a>
-        <a href="#" :class="{disabled: paginationStart >= paymentsFiltered.length - 1}" @click="next">Next <md-icon class="md-primary">chevron_right</md-icon></a>
-      </div> -->
     </div>
      <!-- FILTERS SIDEBAR -->
     <md-drawer class="md-right filters-sidebar" :md-active.sync="showFiltersPanel">
@@ -190,9 +196,7 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import currency from '@/helpers/currency'
-  import formatDate from '@/helpers/formatDate'
-  import capitalize from '@/helpers/capitalize'
+  import {currency, formatDate, capitalize} from '@/helpers'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 
   export default {
@@ -237,7 +241,9 @@
         loading: false,
         paymentsFiltered: [],
         paginationStart: 0,
-        pag: 100
+        pag: 100,
+        arrival: this.$route.params.arrival,
+        source: this.$route.params.source
       }
     },
     computed: {
@@ -245,37 +251,22 @@
         user: 'user'
       }),
       ...mapState('organizationModule', {
-        payouts: 'payouts'
+        transfers: 'transfers'
       }),
       seasons () {
         if (!this.organization) return []
         return this.organization.seasons
-      },
-      seasonSelectedObj () {
-        let ssn = null
-        if (!this.seasonSelected) return ssn
-
-        this.organization.seasons.forEach(season => {
-          if (season._id === this.seasonSelected) {
-            ssn = season
-          }
-        })
-        return ssn
-      },
-      paymentsFilteredPag () {
-        return this.paymentsFiltered.reduce((curr, pf, idx) => {
-          if (idx >= this.paginationStart && idx <= (this.paginationStart + this.pag)) {
-            curr.push(pf)
-          }
-          return curr
-        }, [])
       }
     },
     mounted () {
       if (this.user && this.user.organizationId) {
         this.getOrganization(this.user.organizationId).then(organization => {
           this.organization = organization
-          this.fetchPayouts(organization.connectAccount)
+          this.fetchTransfers({
+            account: organization.connectAccount,
+            arrival: this.arrival,
+            source: this.source
+          })
         })
       }
     },
@@ -283,14 +274,18 @@
       user () {
         this.getOrganization(this.user.organizationId).then(organization => {
           this.organization = organization
-          this.fetchPayouts(organization.connectAccount)
+          this.fetchTransfers({
+            account: organization.connectAccount,
+            arrival: this.arrival,
+            source: this.source
+          })
         })
       }
     },
     methods: {
       ...mapActions('organizationModule', {
         getOrganization: 'getOrganization',
-        fetchPayouts: 'fetchPayouts'
+        fetchTransfers: 'fetchTransfers'
       }),
       currency (value) {
         return currency(value / 100)
@@ -299,7 +294,7 @@
         return capitalize(value)
       },
       formatDate (value) {
-        return formatDate(value)
+        return formatDate.unix(value)
       },
       selectTag (value) {
         this.tagsFilter.push(value)
@@ -321,82 +316,6 @@
       removeAllTags () {
         this.tags = this.tags.concat(this.tagsFilter)
         this.tagsFilter = []
-      },
-      getPaymentsFiltered () {
-        this.paginationStart = 0
-        this.loading = true
-        let response = this.payments.reduce((curr, receipt, idx) => {
-          let receiptDate = receipt.receiptDate ? new Date(receipt.receiptDate) : ''
-          let chargeDate = receipt.chargeDate ? new Date(receipt.chargeDate) : ''
-          let resp = true
-          // invoice date filter
-          if (this.invoiceDateStart && resp) {
-            if (!receiptDate) resp = false
-            else {
-              resp = (this.invoiceDateStart.getTime() <= receiptDate.getTime()) && resp
-            }
-          }
-          if (this.invoiceDateEnd && resp) {
-            if (!receiptDate) resp = false
-            else {
-              let tmpDate = new Date(this.invoiceDateEnd.getTime())
-              tmpDate.setHours(24, 59, 59)
-              resp = (tmpDate >= receiptDate.getTime()) && resp
-            }
-          }
-          // charge date filter
-          if (this.chargeDateStart && resp) {
-            if (!chargeDate) resp = false
-            else {
-              resp = (this.chargeDateStart.getTime() <= chargeDate.getTime()) && resp
-            }
-          }
-          if (this.chargeDateEnd && resp) {
-            if (!chargeDate) resp = false
-            else {
-              let tmpDate = new Date(this.chargeDateEnd.getTime())
-              tmpDate.setHours(24, 59, 59)
-              resp = (this.chargeDateEnd.getTime() >= tmpDate) && resp
-            }
-          }
-          if (this.programFilter.length && resp) {
-            resp = (this.programFilter.indexOf(receipt.program) > -1) && resp
-          }
-          if (this.statusFilter.length && resp) {
-            resp = (this.statusFilter.indexOf(receipt.status) > -1) && resp
-          }
-          if (this.tagsFilter.length && resp) {
-            if (!receipt.tags) resp = false
-            else {
-              resp = receipt.tags.some(r => this.tagsFilter.indexOf(r) >= 0) && resp
-            }
-          }
-          if (this.search && resp) {
-            resp = receipt.index.toLowerCase().includes(this.search.toLowerCase()) && resp
-          }
-          if (resp) {
-            let tmp = JSON.parse(JSON.stringify(receipt))
-            tmp.chargeDate = tmp.chargeDate ? this.$d(new Date(tmp.chargeDate), 'short') : ''
-            tmp.receiptDate = tmp.receiptDate ? this.$d(new Date(tmp.receiptDate), 'short') : ''
-            tmp.status = this.capitalize(tmp.status)
-            tmp.amount = this.currency(tmp.amount)
-            tmp.processingFee = this.currency(tmp.processingFee)
-            tmp.paidupFee = this.currency(tmp.paidupFee)
-            tmp.totalFee = this.currency(tmp.totalFee)
-            curr.push(tmp)
-          }
-          return curr
-        }, [])
-        this.loading = false
-        this.paymentsFiltered = response
-      },
-      previous (event) {
-        if (this.paginationStart <= 0) return false
-        this.paginationStart = this.paginationStart - this.pag
-      },
-      next (event) {
-        if (this.paginationStart >= this.paymentsFiltered.length - 1) return false
-        this.paginationStart = this.paginationStart + this.pag
       }
     }
   }

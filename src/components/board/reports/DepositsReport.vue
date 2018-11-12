@@ -50,7 +50,7 @@
         </md-field>
       </md-table-toolbar -->
 
-      <md-table-row slot="md-table-row" slot-scope="{ item }" class="pointer" :class="{totals: (item.status === 'failed'), 'red-row': item.id === 3}">
+      <md-table-row @click="goTransfers(item)" slot="md-table-row" slot-scope="{ item }" class="pointer" :class="{totals: (item.status === 'failed'), 'red-row': item.id === 3}">
         <md-table-cell md-label="Amount" class="col-15">
           ${{currency(item.amount)}}
         </md-table-cell>
@@ -151,6 +151,9 @@
       next (event) {
         if (this.payoutSplit.length - 1 <= this.paginationPos) return false
         return this.paginationPos ++
+      },
+      goTransfers (payout) {
+        this.$router.push(`/reports/deposits/${payout.arrival_date}/${payout.source_type}`)
       }
     }
   }
