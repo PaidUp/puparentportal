@@ -1,16 +1,17 @@
 <template>
   <div class="reports-page">
     <div class="top-bar">
-      <div class="title">
-        Deposits
+      <div class="">
+        <md-button to="/reports/deposits/" class="md-button md-accent lblue md-icon-button">
+          <md-icon>arrow_back</md-icon>
+        </md-button>
+        <div class="title title-align">Deposits</div>
       </div>
       <div>
-        <md-button v-if="false" class="md-button md-accent lblue">
-          <md-icon>print</md-icon> Print
-        </md-button>
+        
         
 
-        <download-excel :data= "paymentsFiltered" :fields="reportFields" type= "csv" name= "payments.csv">
+        <download-excel :data= "transfersFiltered" :fields="reportFields" type= "csv" name= "transfers.csv">
           <md-button class="md-button md-accent lblue">
             <md-icon>get_app</md-icon> Export
           </md-button>
@@ -25,20 +26,15 @@
           <md-icon>add</md-icon>
         </md-button>
       </md-chip>
-      <!-- <md-chip v-if="seasonSelectedObj" class="lblue">Season: {{seasonSelectedObj.name}}</md-chip>
-      <md-chip v-if="invoiceDateStart" class="lblue" md-deletable @md-delete="invoiceDateStart = null">Receipt date start: {{$d(invoiceDateStart, 'short')}}</md-chip>
-      <md-chip v-if="invoiceDateEnd" class="lblue" md-deletable @md-delete="invoiceDateEnd = null">Receipt date end: {{$d(invoiceDateEnd, 'short')}}</md-chip>
-      <md-chip v-if="chargeDateStart" class="lblue" md-deletable @md-delete="chargeDateStart = null">Charge date start: {{$d(chargeDateStart, 'short')}}</md-chip>
-      <md-chip v-if="chargeDateEnd" class="lblue" md-deletable @md-delete="chargeDateEnd = null">Charge date end: {{$d(chargeDateEnd, 'short')}}</md-chip>
+      <!-- <md-chip v-if="seasonSelectedObj" class="lblue">Season: {{seasonSelectedObj.name}}</md-chip> -->
       <md-chip class="lblue" @md-delete="removeProgram(chip)" v-for="chip in programFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
-      <md-chip class="lblue" @md-delete="removeStatus(chip)" v-for="chip in statusFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
-      <md-chip class="lblue" @md-delete="removeTag(chip)" v-for="chip in tagsFilter" :key="chip" md-deletable>{{ chip }}</md-chip> -->
+      <md-chip class="lblue" @md-delete="removeTag(chip)" v-for="chip in tagsFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
 
     </div>
 
     <!-- TABLE -->
     <div class="table-container">
-    <md-table v-model="transfers" class="md-table custom-table" >
+    <md-table v-model="transfersFiltered" class="md-table custom-table" >
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
           <h1 class="md-title"></h1>
@@ -51,34 +47,40 @@
 
       <md-table-row slot="md-table-row" slot-scope="{ item }" :class="{totals: (item.status === 'failed'), 'red-row': item.id === 3}">
         <md-table-cell md-label="Invoice Id">
-          {{item.source_transaction.metadata.invoiceId}}
+          {{item.invoiceId}}
+        </md-table-cell>
+        <md-table-cell md-label="Invoice Date">
+          {{item.invoiceDate}}
         </md-table-cell>
         <md-table-cell md-label="Charge Date">
-          {{formatDate(item.source_transaction.created)}}
+          {{item.chargeDate}}
         </md-table-cell>
-        <md-table-cell md-label="Amount">
-          ${{currency(item.amount)}}
+        <md-table-cell md-label="Processed">
+          ${{item.processed}}
         </md-table-cell>
-        <md-table-cell md-label="Fee">
-          ${{currency(item.source_transaction.application_fee.amount)}}
+        <md-table-cell md-label="Processing Fee">
+          ${{item.processingFee}}
+        </md-table-cell>
+        <md-table-cell md-label="PaidUp Fee">
+          ${{item.paidupFee}}
+        </md-table-cell>
+        <md-table-cell md-label="Total Fee">
+          ${{item.totalFee}}
         </md-table-cell>
         <md-table-cell md-label="Net Deposit">
-          ${{currency(item.amount - item.source_transaction.application_fee.amount)}}
+          ${{item.netDeposit}}
         </md-table-cell>
         <md-table-cell  md-label="Description">
-          {{item.source_transaction.description}}
+          {{item.description}}
         </md-table-cell>
         <md-table-cell  md-label="Program">
-          {{item.source_transaction.metadata.productName}}
+          {{item.program}}
         </md-table-cell>
         <md-table-cell  md-label="Parent Name">
-          {{item.source_transaction.metadata.userFirstName + ' ' + item.source_transaction.metadata.userLastName}}
+          {{item.parentName}}
         </md-table-cell>
         <md-table-cell md-label="Player Name">
-          {{item.source_transaction.metadata.beneficiaryFirstName + ' ' + item.source_transaction.metadata.beneficiaryLastName}}
-        </md-table-cell>
-        <md-table-cell md-label="Arrival Date">
-          
+          {{item.playerName}}
         </md-table-cell>
       </md-table-row>
     </md-table>
@@ -87,50 +89,17 @@
     <md-drawer class="md-right filters-sidebar" :md-active.sync="showFiltersPanel">
       <div class="title-section">
         <span class="md-title">Edit Filters</span>
-        <md-button class="md-accent lblue md-dense">clear all filters</md-button>
+        <md-button @click="clearAll" class="md-accent lblue md-dense">clear all filters</md-button>
       </div>
       <div class="filters-section">
         <!-- SEASONS -->
-        <div class="filter-title">
+        <!-- <div class="filter-title">
           <div class="bold">
             Season
           </div>
         </div>
-        <md-radio :v-if="organization" v-for="season of seasons" :key="season._id" v-model="seasonSelected" :value="season._id" class="md-primary">{{season.name}}</md-radio>
+        <md-checkbox :v-if="organization" v-for="season of seasons" :key="season._id" v-model="seasonSelected" :value="season._id" class="md-primary">{{season.name}}</md-checkbox> -->
 
-        <!-- DATES -->
-        <div class="filter-title">
-          <div class="bold">
-            Invoice Date
-          </div>
-          <md-button class="md-dense md-icon-button md-accent lblue">
-            <md-icon>clear</md-icon>
-          </md-button>
-        </div>
-        <div class="range-date">
-          <md-datepicker md-immediately v-model="invoiceDateStart" class="no-date-icon">
-            <label>Start</label>
-          </md-datepicker>
-          <md-datepicker md-immediately v-model="invoiceDateEnd" class="no-date-icon">
-            <label>End</label>
-          </md-datepicker>
-        </div>
-        <div class="filter-title">
-          <div class="bold">
-            Charge Date
-          </div>
-          <md-button class="md-dense md-icon-button md-accent lblue">
-            <md-icon>clear</md-icon>
-          </md-button>
-        </div>
-        <div class="range-date">
-          <md-datepicker md-immediately v-model="chargeDateStart" class="no-date-icon">
-            <label>Start</label>
-          </md-datepicker>
-          <md-datepicker md-immediately v-model="chargeDateEnd" class="no-date-icon">
-            <label>End</label>
-          </md-datepicker>
-        </div>
 
         <!-- PROGRAMS -->
         <div class="filter-title">
@@ -142,35 +111,6 @@
           </md-button>
         </div>
         <md-checkbox v-for="program in programs" :key="program" class="lblue" v-model="programFilter" :value="program">{{program}}</md-checkbox>
-
-        <!-- DEPOSIT DATE 
-        <div class="filter-title">
-          <div class="bold">
-            Deposit Date
-          </div>
-          <md-button class="md-dense md-icon-button md-accent lblue">
-            <md-icon>clear</md-icon>
-          </md-button>
-        </div>
-        <div class="range-date">
-          <md-datepicker md-immediately class="no-date-icon">
-            <label>Start</label>
-          </md-datepicker>
-          <md-datepicker md-immediately class="no-date-icon">
-            <label>End</label>
-          </md-datepicker>
-        </div>-->
-
-        <!-- STATUS -->
-        <div class="filter-title">
-          <div class="bold">
-            Status
-          </div>
-          <md-button @click="statusFilter = []" class="md-dense md-icon-button md-accent lblue">
-            <md-icon>clear</md-icon>
-          </md-button>
-        </div>
-        <md-checkbox v-for="sts in status" :key="sts" class="lblue" v-model="statusFilter" :value="sts">{{capitalize(sts)}}</md-checkbox>
 
         <!-- TAGS -->
         <div class="filter-title">
@@ -196,7 +136,6 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import {currency, formatDate, capitalize} from '@/helpers'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 
   export default {
@@ -208,40 +147,28 @@
         indeterminateCheck: false,
         organization: null,
         programFilter: [],
-        statusFilter: [],
         tagsFilter: [],
         tags: [],
         seasonSelected: null,
-        invoiceDateStart: null,
-        invoiceDateEnd: null,
-        chargeDateStart: null,
-        chargeDateEnd: null,
-        status: [],
         programs: [],
         search: '',
         reportFields: {
-          'Invoice ID': 'receiptId',
+          'Invoice ID': 'invoiceId',
+          'Invoice Date': 'invoiceDate',
           'Charge Date': 'chargeDate',
-          'Invoice Date': 'receiptDate',
-          'Description': 'description',
-          'Program': 'program',
-          'Status': 'status',
-          'Parent Name': 'parentName',
-          'Parent Email': 'parentEmail',
-          'Parent Phone': 'parentPhone',
-          'Player Name': 'playerName',
-          'Amount': 'amount',
+          'Processed': 'processed',
           'Processing Fee': 'processingFee',
           'PaidUp Fee': 'paidupFee',
           'Total Fee': 'totalFee',
-          'Tags': 'tags',
-          'Payment Account Brand': 'paymentMethodBrand',
-          'Payment Account Last4': 'paymentMethodLast4'
+          'Net Deposit': 'netDeposit',
+          'Description': 'description',
+          'Program': 'program',
+          'Parent Name': 'parentName',
+          'Player Name': 'playerName',
+          'Tags': 'tags'
         },
         loading: false,
-        paymentsFiltered: [],
-        paginationStart: 0,
-        pag: 100,
+        transfersFiltered: [],
         arrival: this.$route.params.arrival,
         source: this.$route.params.source
       }
@@ -271,6 +198,30 @@
       }
     },
     watch: {
+      search () {
+        this.getTransfersFiltered()
+      },
+      programFilter () {
+        this.getTransfersFiltered()
+      },
+      tagsFilter () {
+        this.getTransfersFiltered()
+      },
+      transfers () {
+        let programs = new Set()
+        let tags1 = new Set()
+        this.transfers.forEach(tr => {
+          programs.add(tr.program)
+          if (tr.tags) {
+            tr.tags.forEach(tag => {
+              tags1.add(tag)
+            })
+          }
+        })
+        this.programs = Array.from(programs).sort()
+        this.tags = Array.from(tags1).sort()
+        this.getTransfersFiltered()
+      },
       user () {
         this.getOrganization(this.user.organizationId).then(organization => {
           this.organization = organization
@@ -287,15 +238,6 @@
         getOrganization: 'getOrganization',
         fetchTransfers: 'fetchTransfers'
       }),
-      currency (value) {
-        return currency(value / 100)
-      },
-      capitalize (value) {
-        return capitalize(value)
-      },
-      formatDate (value) {
-        return formatDate.unix(value)
-      },
       selectTag (value) {
         this.tagsFilter.push(value)
         this.tags.splice(this.tags.indexOf(value), 1)
@@ -303,24 +245,49 @@
       removeTag (value) {
         this.tags.push(value)
         this.tagsFilter.splice(this.tagsFilter.indexOf(value), 1)
-        this.getPaymentsFiltered()
+        // this.getTransfersFiltered()
       },
       removeProgram (value) {
         this.programFilter.splice(this.programFilter.indexOf(value), 1)
-        this.getPaymentsFiltered()
-      },
-      removeStatus (value) {
-        this.statusFilter.splice(this.statusFilter.indexOf(value), 1)
-        this.getPaymentsFiltered()
       },
       removeAllTags () {
         this.tags = this.tags.concat(this.tagsFilter)
         this.tagsFilter = []
+      },
+      clearAll () {
+        this.removeAllTags()
+        this.programFilter = []
+      },
+      getTransfersFiltered () {
+        let response = this.transfers.reduce((curr, tr) => {
+          let resp = true
+          if (this.programFilter.length) {
+            resp = (this.programFilter.indexOf(tr.program) > -1)
+          }
+          if (this.tagsFilter.length && resp) {
+            if (!tr.tags) resp = false
+            else {
+              resp = tr.tags.some(r => this.tagsFilter.indexOf(r) >= 0) && resp
+            }
+          }
+          if (this.search && resp) {
+            resp = tr.index.toLowerCase().includes(this.search.toLowerCase()) && resp
+          }
+          if (resp) {
+            curr.push(tr)
+          }
+          return curr
+        }, [])
+        this.transfersFiltered = response
       }
     }
   }
 </script>
 <style>
+.title-align {
+  float: right;
+  padding-top: 10px;
+}
 .pagination {
     display: inline-block;
     margin-top: 10px;
