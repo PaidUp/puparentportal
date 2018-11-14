@@ -92,8 +92,8 @@
     data: function () {
       return {
         loading: false,
-        paginationPos: 0,
-        pag: 5
+        paginationPos: this.$route.params.paginationPos || 0,
+        pag: 10
       }
     },
     computed: {
@@ -153,7 +153,14 @@
         return this.paginationPos ++
       },
       goTransfers (payout) {
-        this.$router.push(`/reports/deposits/${payout.arrival_date}/${payout.source_type}`)
+        this.$router.push({
+          name: 'depositsTransferReport',
+          params: {
+            paginationPos: this.paginationPos,
+            arrival: payout.arrival_date,
+            source: payout.source_type
+          }
+        })
       }
     }
   }

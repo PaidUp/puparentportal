@@ -2,7 +2,7 @@
   <div class="reports-page">
     <div class="top-bar">
       <div class="">
-        <md-button to="/reports/deposits/" class="md-button md-accent lblue md-icon-button">
+        <md-button @click="goBack" class="md-button md-accent lblue md-icon-button">
           <md-icon>arrow_back</md-icon>
         </md-button>
         <div class="title title-align">Deposits</div>
@@ -170,7 +170,8 @@
         loading: false,
         transfersFiltered: [],
         arrival: this.$route.params.arrival,
-        source: this.$route.params.source
+        source: this.$route.params.source,
+        paginationPos: this.$route.params.paginationPos
       }
     },
     computed: {
@@ -279,6 +280,14 @@
           return curr
         }, [])
         this.transfersFiltered = response
+      },
+      goBack () {
+        this.$router.push({
+          name: 'depositsReport',
+          params: {
+            paginationPos: this.paginationPos
+          }
+        })
       }
     }
   }

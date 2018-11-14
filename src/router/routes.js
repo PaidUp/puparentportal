@@ -136,6 +136,7 @@ const routes = [
         component: SearchResultPage
       },
       {
+        name: 'paymentsReport',
         path: '/reports/payments',
         component: PaymentsReport,
         meta: {
@@ -143,6 +144,7 @@ const routes = [
         }
       },
       {
+        name: 'depositsReport',
         path: '/reports/deposits',
         component: DepositsReport,
         meta: {
@@ -150,6 +152,7 @@ const routes = [
         }
       },
       {
+        name: 'depositsTransferReport',
         path: '/reports/deposits/:arrival/:source',
         component: DepositTransfersReport,
         meta: {
