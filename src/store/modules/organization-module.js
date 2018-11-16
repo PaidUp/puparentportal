@@ -167,7 +167,7 @@ const module = {
         }
       }).then(response => {
         return response.data.fetchBalanceHistory.map(tr => {
-          let {processingFee, paidupFee, invoiceDate, program} = ''
+          let {processingFee, paidupFee, invoiceDate, program, netDeposit, processed} = ''
           let tags = []
           let totalFee
           if (tr.invoice) {
@@ -175,6 +175,8 @@ const module = {
             program = tr.invoice.productName
             tags = tr.invoice.tags
             if (tr.type === 'payment') {
+              processed = currency(tr.source.amount / 100)
+              netDeposit = currency(tr.net / 100)
               if (tr.invoice.paymentDetails.paymentMethodtype === 'card') {
                 totalFee = currency(tr.fee / 100)
                 processingFee = currency(calculateStripeCreditFee(tr.source.amount, tr.invoice))
@@ -187,13 +189,15 @@ const module = {
               }
             }
             if (tr.type === 'adjustment') {
+              processed = currency((tr.source.amount_refunded / 100) * -1)
+              netDeposit = currency((tr.source.amount_refunded / 100) * -1)
               if (tr.invoice.paymentDetails.paymentMethodtype === 'card') {
                 totalFee = currency(tr.amount / 100) * -1
                 processingFee = currency(calculateStripeCreditFee(tr.source.amount_refunded, tr.invoice)) * -1
-                paidupFee = currency(totalFee + processingFee)
+                paidupFee = currency(totalFee - processingFee)
               }
               if (tr.invoice.paymentDetails.paymentMethodtype === 'bank_account') {
-                totalFee = currency((tr.amount / 100) - 0.25)
+                totalFee = currency((tr.amount / 100) - 0.25) * -1
                 processingFee = currency(0)
                 paidupFee = totalFee
               }
@@ -203,11 +207,11 @@ const module = {
             invoiceId: tr.source.source_transfer.source_transaction.metadata.invoiceId,
             invoiceDate,
             chargeDate: formatDate.unix(tr.source.source_transfer.source_transaction.created),
-            processed: currency(tr.source.amount / 100),
+            processed,
             processingFee,
             paidupFee,
             totalFee: totalFee,
-            netDeposit: currency(tr.net / 100),
+            netDeposit,
             description: tr.source.source_transfer.source_transaction.description,
             program,
             parentName: tr.source.source_transfer.source_transaction.metadata.userFirstName + ' ' + tr.source.source_transfer.source_transaction.metadata.userLastName,
