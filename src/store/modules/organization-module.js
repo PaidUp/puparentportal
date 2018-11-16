@@ -3,12 +3,11 @@ import graphqlClient from '@/util/graphql'
 import gql from 'graphql-tag'
 import {currency, formatDate} from '@/helpers'
 
-function calculateStripeFee (amount, invoice) {
-  let result = 0
-  if (invoice.paymentDetails.paymentMethodtype === 'card') {
-    result = (((amount / 100) * (invoice.processingFees.cardFee / 100)) + invoice.processingFees.cardFeeFlat)
-  }
-  return result
+function calculateStripeCreditFee (amount, invoice) {
+  return (((amount / 100) * (invoice.processingFees.cardFee / 100)) + invoice.processingFees.cardFeeFlat)
+  // if (invoice.paymentDetails.paymentMethodtype === 'bank_account') {
+  //   result = result - 0.25
+  // }
 }
 
 const module = {
@@ -107,6 +106,7 @@ const module = {
             amount
             net
             fee
+            type
             invoice {
               _id
               label
@@ -169,13 +169,35 @@ const module = {
         return response.data.fetchBalanceHistory.map(tr => {
           let {processingFee, paidupFee, invoiceDate, program} = ''
           let tags = []
-          let totalFee = currency(tr.fee / 100)
+          let totalFee
           if (tr.invoice) {
             invoiceDate = tr.invoice.dateCharge
             program = tr.invoice.productName
             tags = tr.invoice.tags
-            processingFee = currency(calculateStripeFee(tr.source.amount, tr.invoice))
-            paidupFee = currency(totalFee - processingFee)
+            if (tr.type === 'payment') {
+              if (tr.invoice.paymentDetails.paymentMethodtype === 'card') {
+                totalFee = currency(tr.fee / 100)
+                processingFee = currency(calculateStripeCreditFee(tr.source.amount, tr.invoice))
+                paidupFee = currency(totalFee - processingFee)
+              }
+              if (tr.invoice.paymentDetails.paymentMethodtype === 'bank_account') {
+                totalFee = currency((tr.fee / 100) - 0.25)
+                processingFee = currency(0)
+                paidupFee = totalFee
+              }
+            }
+            if (tr.type === 'adjustment') {
+              if (tr.invoice.paymentDetails.paymentMethodtype === 'card') {
+                totalFee = currency(tr.amount / 100) * -1
+                processingFee = currency(calculateStripeCreditFee(tr.source.amount_refunded, tr.invoice)) * -1
+                paidupFee = currency(totalFee + processingFee)
+              }
+              if (tr.invoice.paymentDetails.paymentMethodtype === 'bank_account') {
+                totalFee = currency((tr.amount / 100) - 0.25)
+                processingFee = currency(0)
+                paidupFee = totalFee
+              }
+            }
           }
           return {
             invoiceId: tr.source.source_transfer.source_transaction.metadata.invoiceId,
