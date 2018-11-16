@@ -22,7 +22,7 @@ import FeesCalculator from '@/components/chap/FeesCalculator.vue'
 import SearchResultPage from '@/components/board/SearchResultPage.vue'
 import PaymentsReport from '@/components/board/reports/PaymentsReport.vue'
 import DepositsReport from '@/components/board/reports/DepositsReport.vue'
-import DepositTransfersReport from '@/components/board/reports/DepositTransfersReport.vue'
+import DepositBalanceReport from '@/components/board/reports/DepositBalanceReport.vue'
 import PrintInvoice from '@/components/pages/PrintInvoice.vue'
 import PrintIneligible from '@/components/pages/PrintIneligible.vue'
 import PrintEligible from '@/components/pages/PrintEligible.vue'
@@ -152,9 +152,9 @@ const routes = [
         }
       },
       {
-        name: 'depositsTransferReport',
-        path: '/reports/deposits/:arrival/:source',
-        component: DepositTransfersReport,
+        name: 'depositsBalanceReport',
+        path: '/reports/balance',
+        component: DepositBalanceReport,
         meta: {
           roles: ['coach']
         }

@@ -169,8 +169,7 @@
         },
         loading: false,
         transfersFiltered: [],
-        arrival: this.$route.params.arrival,
-        source: this.$route.params.source,
+        payout: this.$route.params.payout,
         paginationPos: this.$route.params.paginationPos
       }
     },
@@ -190,10 +189,9 @@
       if (this.user && this.user.organizationId) {
         this.getOrganization(this.user.organizationId).then(organization => {
           this.organization = organization
-          this.fetchTransfers({
+          this.fetchBalanceHistory({
             account: organization.connectAccount,
-            arrival: this.arrival,
-            source: this.source
+            payout: this.payout
           })
         })
       }
@@ -226,7 +224,7 @@
       user () {
         this.getOrganization(this.user.organizationId).then(organization => {
           this.organization = organization
-          this.fetchTransfers({
+          this.fetchBalanceHistory({
             account: organization.connectAccount,
             arrival: this.arrival,
             source: this.source
@@ -237,7 +235,7 @@
     methods: {
       ...mapActions('organizationModule', {
         getOrganization: 'getOrganization',
-        fetchTransfers: 'fetchTransfers'
+        fetchBalanceHistory: 'fetchBalanceHistory'
       }),
       selectTag (value) {
         this.tagsFilter.push(value)
@@ -246,7 +244,6 @@
       removeTag (value) {
         this.tags.push(value)
         this.tagsFilter.splice(this.tagsFilter.indexOf(value), 1)
-        // this.getTransfersFiltered()
       },
       removeProgram (value) {
         this.programFilter.splice(this.programFilter.indexOf(value), 1)

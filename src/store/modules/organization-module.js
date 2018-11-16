@@ -6,10 +6,10 @@ import {currency, formatDate} from '@/helpers'
 const module = {
   namespaced: true,
   state: {
+    loading: false,
     organizations: [],
     plans: {},
     payments: [],
-    payouts: [],
     transfers: []
   },
   mutations: {
@@ -21,9 +21,6 @@ const module = {
     },
     setPayments (state, payments) {
       state.payments = payments
-    },
-    setPayouts (state, payouts) {
-      state.payouts = payouts
     },
     setTransfers (state, transfers) {
       state.transfers = transfers
@@ -38,8 +35,8 @@ const module = {
     getOrganization (context, organizationId) {
       return organizationService.getOrganization(organizationId)
     },
-    async fetchPayments ({ commit }, { organizationId, seasonId }) {
-      const response = await graphqlClient.query({
+    fetchPayments ({ commit }, { organizationId, seasonId }) {
+      return graphqlClient.query({
         query: gql`query APayments($organizationId: String!, $seasonId: String!) {
           payments(organizationId: $organizationId, seasonId: $seasonId) {
             receiptId
@@ -67,41 +64,45 @@ const module = {
         skip () {
           return !organizationId || !seasonId
         }
+      }).then(response => {
+        commit('setPayments', response.data.payments)
       })
-      commit('setPayments', response.data.payments)
     },
-    async fetchPayouts ({ commit }, account) {
-      const response = await graphqlClient.query({
+    fetchPayouts ({ commit }, { account, startingAfter }) {
+      return graphqlClient.query({
         query: gql`query fetchPayouts($account: String!) {
           fetchPayouts(account: $account) {
-            _id
-            id
-            amount
-            arrival_date
-            destination {
-              account
-              bank_name
-              last4
+            has_more
+            data {
+              id
+              amount
+              arrival_date
+              destination {
+                account
+                bank_name
+                last4
+              }
+              status
+              source_type
             }
-            status
-            source_type
           }
         }`,
-        variables: { account },
+        variables: { account, startingAfter },
         skip () {
           return !account
         }
+      }).then(response => {
+        return response.data.fetchPayouts
       })
-      commit('setPayouts', response.data.fetchPayouts)
     },
-    async fetchTransfers ({ commit }, { account, arrival, source }) {
+    async fetchBalanceHistory ({ commit }, { account, payout }) {
       const response = await graphqlClient.query({
-        query: gql`query fetchTransfers($account: String!, $arrival: Int!, $source: String!) {
-          fetchTransfers(account: $account, arrival: $arrival, source: $source) {
-            _id
+        query: gql`query fetchBalanceHistory($account: String!, $payout: String!) {
+          fetchBalanceHistory(account: $account, payout: $payout) {
             id
             amount
-            amount_reversed
+            net
+            fee
             invoice {
               _id
               label
@@ -116,54 +117,54 @@ const module = {
               productName
               status
             }
-            source_transaction {
-              created
-              description
-              application_fee {
-                amount
-                amount_refunded
-                balance_transaction {
-                  available_on
+            source {
+              source_transfer {
+                source_transaction {
+                  id
+                  amount
+                  amount_refunded
+                  description
+                  created
+                  metadata {
+                    organizationName
+                    productName
+                    beneficiaryFirstName
+                    beneficiaryLastName
+                    invoiceId
+                    userFirstName
+                    userLastName
+                    userEmail
+                  }
                 }
-              }
-              metadata {
-                organizationName
-                productName
-                beneficiaryFirstName
-                beneficiaryLastName
-                invoiceId
-                userFirstName
-                userLastName
-                userEmail
               }
             }
           }
         }`,
-        variables: { account, arrival, source },
+        variables: { account, payout },
         skip () {
           return !account
         }
       })
-      const transfers = response.data.fetchTransfers.map(tr => {
+      const transfers = response.data.fetchBalanceHistory.map(tr => {
         return {
-          invoiceId: tr.source_transaction.metadata.invoiceId,
+          invoiceId: tr.source.source_transfer.source_transaction.metadata.invoiceId,
           invoiceDate: tr.invoice ? tr.invoice.dateCharge : '',
-          chargeDate: formatDate.unix(tr.source_transaction.created),
+          chargeDate: formatDate.unix(tr.source.source_transfer.source_transaction.created),
           processed: currency(tr.amount / 100),
           processingFee: tr.invoice ? currency(tr.invoice.stripeFee) : '',
           paidupFee: tr.invoice ? currency(tr.invoice.paidupFee) : '',
           totalFee: tr.invoice ? currency(tr.invoice.totalFee) : '',
-          netDeposit: currency((tr.amount - tr.source_transaction.application_fee.amount) / 100),
-          description: tr.source_transaction.description,
+          netDeposit: currency(tr.net / 100),
+          description: tr.source.source_transfer.source_transaction.description,
           program: tr.invoice ? tr.invoice.productName : '',
-          parentName: tr.source_transaction.metadata.userFirstName + ' ' + tr.source_transaction.metadata.userLastName,
-          playerName: tr.source_transaction.metadata.beneficiaryFirstName + ' ' + tr.source_transaction.metadata.beneficiaryLastName,
+          parentName: tr.source.source_transfer.source_transaction.metadata.userFirstName + ' ' + tr.source.source_transfer.source_transaction.metadata.userLastName,
+          playerName: tr.source.source_transfer.source_transaction.metadata.beneficiaryFirstName + ' ' + tr.source.source_transfer.source_transaction.metadata.beneficiaryLastName,
           tags: tr.invoice ? tr.invoice.tags : [],
-          index: `${tr.source_transaction.metadata.invoiceId} 
-                  ${tr.source_transaction.description} 
+          index: `${tr.source.source_transfer.source_transaction.metadata.invoiceId} 
+                  ${tr.source.source_transfer.source_transaction.description} 
                   ${tr.invoice ? tr.invoice.productName : ''} 
-                  ${tr.source_transaction.metadata.userFirstName} ${tr.source_transaction.metadata.userLastName} 
-                  ${tr.source_transaction.metadata.beneficiaryFirstName} ${tr.source_transaction.metadata.beneficiaryLastName}`
+                  ${tr.source.source_transfer.source_transaction.metadata.userFirstName} ${tr.source.source_transfer.source_transaction.metadata.userLastName} 
+                  ${tr.source.source_transfer.source_transaction.metadata.beneficiaryFirstName} ${tr.source.source_transfer.source_transaction.metadata.beneficiaryLastName}`
         }
       })
       commit('setTransfers', transfers)

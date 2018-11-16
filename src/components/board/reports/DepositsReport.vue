@@ -39,7 +39,7 @@
 
     <!-- TABLE -->
     <div class="table-container">
-    <md-table v-model="payoutsPag" class="md-table custom-table" >
+    <md-table v-model="payouts.data" class="md-table custom-table" >
       <!--- md-table-toolbar>
         <div class="md-toolbar-section-start">
           <h1 class="md-title"></h1>
@@ -66,10 +66,10 @@
       </md-table-row>
     </md-table>
       <div class="pagination">
-      <md-button class="md-icon-button md-primary" :disabled="paginationPos <= 0"  @click="previous">
+      <md-button class="md-icon-button md-primary"  @click="previous">
         <md-icon>chevron_left</md-icon>
       </md-button>
-      <md-button class="md-icon-button md-primary" :disabled="this.payoutSplit.length - 1 <= this.paginationPos" @click="next">
+      <md-button class="md-icon-button md-primary" @click="next">
         <md-icon>chevron_right</md-icon>
       </md-button>
       </div>
@@ -91,30 +91,27 @@
     components: { VPayAnimation },
     data: function () {
       return {
+        payouts: {
+          has_more: false,
+          data: []
+        },
         loading: false,
-        paginationPos: this.$route.params.paginationPos || 0,
-        pag: 10
+        pag: 10,
+        startingAfter: null,
+        paginationPos: 0
       }
     },
     computed: {
       ...mapState('userModule', {
         user: 'user'
-      }),
-      ...mapState('organizationModule', {
-        payouts: 'payouts'
-      }),
-      payoutsPag () {
-        return this.payoutSplit[this.paginationPos] || []
-      },
-      payoutSplit () {
-        return splitArray(this.payouts, this.pag)
-      }
+      })
     },
     mounted () {
+      this.loading = true
       if (this.user && this.user.organizationId) {
         this.getOrganization(this.user.organizationId).then(organization => {
           this.organization = organization
-          this.fetchPayouts(organization.connectAccount)
+          this.loadPayouts()
         })
       }
     },
@@ -122,7 +119,7 @@
       user () {
         this.getOrganization(this.user.organizationId).then(organization => {
           this.organization = organization
-          this.fetchPayouts(organization.connectAccount)
+          this.loadPayouts()
         })
       },
       payouts () {
@@ -134,6 +131,16 @@
         getOrganization: 'getOrganization',
         fetchPayouts: 'fetchPayouts'
       }),
+      loadPayouts () {
+        console.log('loading')
+        this.fetchPayouts({ account: this.organization.connectAccount, startingAfter: this.startingAfter }).then(payouts => {
+          console.log('end')
+
+          this.payouts = payouts
+          this.startingAfter = payouts.data[payouts.data.length - 1].id
+          this.loading = false
+        })
+      },
       currency (value) {
         return currency(value / 100)
       },
@@ -149,16 +156,14 @@
         return this.paginationPos --
       },
       next (event) {
-        if (this.payoutSplit.length - 1 <= this.paginationPos) return false
-        return this.paginationPos ++
+        this.loadPayouts()
       },
       goTransfers (payout) {
         this.$router.push({
-          name: 'depositsTransferReport',
+          name: 'depositsBalanceReport',
           params: {
             paginationPos: this.paginationPos,
-            arrival: payout.arrival_date,
-            source: payout.source_type
+            payout: payout.id
           }
         })
       }
