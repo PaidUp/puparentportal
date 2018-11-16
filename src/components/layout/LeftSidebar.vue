@@ -30,7 +30,7 @@
               Payments
             </div>
           </md-list-item>
-          <md-list-item v-if="false" to="/reports/deposits">
+          <md-list-item to="/reports/deposits">
             <div class="md-list-item-text">
               Deposits
             </div>

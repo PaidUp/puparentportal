@@ -3,6 +3,14 @@ import graphqlClient from '@/util/graphql'
 import gql from 'graphql-tag'
 import {currency, formatDate} from '@/helpers'
 
+function calculateStripeFee (amount, invoice) {
+  let result = 0
+  if (invoice.paymentDetails.paymentMethodtype === 'card') {
+    result = (((amount / 100) * (invoice.processingFees.cardFee / 100)) + invoice.processingFees.cardFeeFlat)
+  }
+  return result
+}
+
 const module = {
   namespaced: true,
   state: {
@@ -112,8 +120,25 @@ const module = {
               priceBase
               productName
               status
+              processingFees {
+                cardFee
+                cardFeeFlat
+                achFee
+                achFeeFlat
+                achFeeCap
+              }
+              paymentDetails {
+                externalCustommerId
+                statementDescriptor
+                paymentMethodtype
+                externalPaymentMethodId
+                brand
+                last4
+              }
             }
             source {
+              amount
+              amount_refunded
               source_transfer {
                 source_transaction {
                   id
@@ -142,20 +167,30 @@ const module = {
         }
       }).then(response => {
         return response.data.fetchBalanceHistory.map(tr => {
+          let {processingFee, paidupFee, invoiceDate, program} = ''
+          let tags = []
+          let totalFee = currency(tr.fee / 100)
+          if (tr.invoice) {
+            invoiceDate = tr.invoice.dateCharge
+            program = tr.invoice.productName
+            tags = tr.invoice.tags
+            processingFee = currency(calculateStripeFee(tr.source.amount, tr.invoice))
+            paidupFee = currency(totalFee - processingFee)
+          }
           return {
             invoiceId: tr.source.source_transfer.source_transaction.metadata.invoiceId,
-            invoiceDate: tr.invoice ? tr.invoice.dateCharge : '',
+            invoiceDate,
             chargeDate: formatDate.unix(tr.source.source_transfer.source_transaction.created),
-            processed: currency(tr.amount / 100),
-            processingFee: tr.invoice ? currency(tr.invoice.stripeFee) : '',
-            paidupFee: tr.invoice ? currency(tr.invoice.paidupFee) : '',
-            totalFee: tr.invoice ? currency(tr.invoice.totalFee) : '',
+            processed: currency(tr.source.amount / 100),
+            processingFee,
+            paidupFee,
+            totalFee: totalFee,
             netDeposit: currency(tr.net / 100),
             description: tr.source.source_transfer.source_transaction.description,
-            program: tr.invoice ? tr.invoice.productName : '',
+            program,
             parentName: tr.source.source_transfer.source_transaction.metadata.userFirstName + ' ' + tr.source.source_transfer.source_transaction.metadata.userLastName,
             playerName: tr.source.source_transfer.source_transaction.metadata.beneficiaryFirstName + ' ' + tr.source.source_transfer.source_transaction.metadata.beneficiaryLastName,
-            tags: tr.invoice ? tr.invoice.tags : [],
+            tags,
             index: `${tr.source.source_transfer.source_transaction.metadata.invoiceId} 
                     ${tr.source.source_transfer.source_transaction.description} 
                     ${tr.invoice ? tr.invoice.productName : ''} 
