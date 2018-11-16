@@ -192,7 +192,7 @@ const module = {
               if (tr.invoice.paymentDetails.paymentMethodtype === 'card') {
                 totalFee = currency(tr.amount / 100) * -1
                 processingFee = currency(calculateStripeCreditFee(tr.source.amount_refunded, tr.invoice)) * -1
-                paidupFee = currency(totalFee - processingFee)
+                paidupFee = currency(totalFee + processingFee)
               }
               if (tr.invoice.paymentDetails.paymentMethodtype === 'bank_account') {
                 totalFee = currency((tr.amount / 100) - 0.25) * -1
@@ -200,7 +200,7 @@ const module = {
                 paidupFee = totalFee
               }
               processed = currency((tr.source.amount_refunded / 100) * -1)
-              netDeposit = currency(processed - totalFee)
+              netDeposit = currency(processed + totalFee)
             }
           }
           return {
