@@ -168,17 +168,15 @@
           'Tags': 'tags'
         },
         loading: false,
+        transfers: [],
         transfersFiltered: [],
         payout: this.$route.params.payout,
-        paginationPos: this.$route.params.paginationPos
+        startingAfterPrev: this.$route.params.startingAfterPrev
       }
     },
     computed: {
       ...mapState('userModule', {
         user: 'user'
-      }),
-      ...mapState('organizationModule', {
-        transfers: 'transfers'
       }),
       seasons () {
         if (!this.organization) return []
@@ -186,12 +184,18 @@
       }
     },
     mounted () {
-      if (this.user && this.user.organizationId) {
+      this.loading = true
+      if (!this.payout) {
+        this.goBack()
+      } else if (this.user && this.user.organizationId) {
         this.getOrganization(this.user.organizationId).then(organization => {
           this.organization = organization
           this.fetchBalanceHistory({
             account: organization.connectAccount,
             payout: this.payout
+          }).then(transfers => {
+            this.transfers = transfers
+            this.loading = false
           })
         })
       }
@@ -222,12 +226,16 @@
         this.getTransfersFiltered()
       },
       user () {
+        this.loading = true
         this.getOrganization(this.user.organizationId).then(organization => {
           this.organization = organization
           this.fetchBalanceHistory({
             account: organization.connectAccount,
             arrival: this.arrival,
             source: this.source
+          }).then(transfers => {
+            this.transfers = transfers
+            this.loading = false
           })
         })
       }
@@ -282,7 +290,7 @@
         this.$router.push({
           name: 'depositsReport',
           params: {
-            paginationPos: this.paginationPos
+            startingAfterPrev: this.$route.params.startingAfterPrev
           }
         })
       }

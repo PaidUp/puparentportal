@@ -9,8 +9,7 @@ const module = {
     loading: false,
     organizations: [],
     plans: {},
-    payments: [],
-    transfers: []
+    payments: []
   },
   mutations: {
     setOrganizations (state, organizations) {
@@ -21,9 +20,6 @@ const module = {
     },
     setPayments (state, payments) {
       state.payments = payments
-    },
-    setTransfers (state, transfers) {
-      state.transfers = transfers
     }
   },
   actions: {
@@ -68,10 +64,10 @@ const module = {
         commit('setPayments', response.data.payments)
       })
     },
-    fetchPayouts ({ commit }, { account, startingAfter }) {
+    fetchPayouts ({ commit }, { account, startingAfter, endingBefore }) {
       return graphqlClient.query({
-        query: gql`query fetchPayouts($account: String!) {
-          fetchPayouts(account: $account) {
+        query: gql`query fetchPayouts($account: String!, $startingAfter: String, $endingBefore: String) {
+          fetchPayouts(account: $account, startingAfter: $startingAfter, endingBefore: $endingBefore) {
             has_more
             data {
               id
@@ -87,7 +83,7 @@ const module = {
             }
           }
         }`,
-        variables: { account, startingAfter },
+        variables: { account, startingAfter, endingBefore },
         skip () {
           return !account
         }
@@ -95,8 +91,8 @@ const module = {
         return response.data.fetchPayouts
       })
     },
-    async fetchBalanceHistory ({ commit }, { account, payout }) {
-      const response = await graphqlClient.query({
+    fetchBalanceHistory ({ commit }, { account, payout }) {
+      return graphqlClient.query({
         query: gql`query fetchBalanceHistory($account: String!, $payout: String!) {
           fetchBalanceHistory(account: $account, payout: $payout) {
             id
@@ -144,30 +140,30 @@ const module = {
         skip () {
           return !account
         }
+      }).then(response => {
+        return response.data.fetchBalanceHistory.map(tr => {
+          return {
+            invoiceId: tr.source.source_transfer.source_transaction.metadata.invoiceId,
+            invoiceDate: tr.invoice ? tr.invoice.dateCharge : '',
+            chargeDate: formatDate.unix(tr.source.source_transfer.source_transaction.created),
+            processed: currency(tr.amount / 100),
+            processingFee: tr.invoice ? currency(tr.invoice.stripeFee) : '',
+            paidupFee: tr.invoice ? currency(tr.invoice.paidupFee) : '',
+            totalFee: tr.invoice ? currency(tr.invoice.totalFee) : '',
+            netDeposit: currency(tr.net / 100),
+            description: tr.source.source_transfer.source_transaction.description,
+            program: tr.invoice ? tr.invoice.productName : '',
+            parentName: tr.source.source_transfer.source_transaction.metadata.userFirstName + ' ' + tr.source.source_transfer.source_transaction.metadata.userLastName,
+            playerName: tr.source.source_transfer.source_transaction.metadata.beneficiaryFirstName + ' ' + tr.source.source_transfer.source_transaction.metadata.beneficiaryLastName,
+            tags: tr.invoice ? tr.invoice.tags : [],
+            index: `${tr.source.source_transfer.source_transaction.metadata.invoiceId} 
+                    ${tr.source.source_transfer.source_transaction.description} 
+                    ${tr.invoice ? tr.invoice.productName : ''} 
+                    ${tr.source.source_transfer.source_transaction.metadata.userFirstName} ${tr.source.source_transfer.source_transaction.metadata.userLastName} 
+                    ${tr.source.source_transfer.source_transaction.metadata.beneficiaryFirstName} ${tr.source.source_transfer.source_transaction.metadata.beneficiaryLastName}`
+          }
+        })
       })
-      const transfers = response.data.fetchBalanceHistory.map(tr => {
-        return {
-          invoiceId: tr.source.source_transfer.source_transaction.metadata.invoiceId,
-          invoiceDate: tr.invoice ? tr.invoice.dateCharge : '',
-          chargeDate: formatDate.unix(tr.source.source_transfer.source_transaction.created),
-          processed: currency(tr.amount / 100),
-          processingFee: tr.invoice ? currency(tr.invoice.stripeFee) : '',
-          paidupFee: tr.invoice ? currency(tr.invoice.paidupFee) : '',
-          totalFee: tr.invoice ? currency(tr.invoice.totalFee) : '',
-          netDeposit: currency(tr.net / 100),
-          description: tr.source.source_transfer.source_transaction.description,
-          program: tr.invoice ? tr.invoice.productName : '',
-          parentName: tr.source.source_transfer.source_transaction.metadata.userFirstName + ' ' + tr.source.source_transfer.source_transaction.metadata.userLastName,
-          playerName: tr.source.source_transfer.source_transaction.metadata.beneficiaryFirstName + ' ' + tr.source.source_transfer.source_transaction.metadata.beneficiaryLastName,
-          tags: tr.invoice ? tr.invoice.tags : [],
-          index: `${tr.source.source_transfer.source_transaction.metadata.invoiceId} 
-                  ${tr.source.source_transfer.source_transaction.description} 
-                  ${tr.invoice ? tr.invoice.productName : ''} 
-                  ${tr.source.source_transfer.source_transaction.metadata.userFirstName} ${tr.source.source_transfer.source_transaction.metadata.userLastName} 
-                  ${tr.source.source_transfer.source_transaction.metadata.beneficiaryFirstName} ${tr.source.source_transfer.source_transaction.metadata.beneficiaryLastName}`
-        }
-      })
-      commit('setTransfers', transfers)
     }
   }
 }

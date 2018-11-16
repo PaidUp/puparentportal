@@ -39,7 +39,7 @@
 
     <!-- TABLE -->
     <div class="table-container">
-    <md-table v-model="payouts.data" class="md-table custom-table" >
+    <md-table v-model="payouts" class="md-table custom-table" >
       <!--- md-table-toolbar>
         <div class="md-toolbar-section-start">
           <h1 class="md-title"></h1>
@@ -66,10 +66,10 @@
       </md-table-row>
     </md-table>
       <div class="pagination">
-      <md-button class="md-icon-button md-primary"  @click="previous">
+      <md-button :disabled="!previousMore" class="md-icon-button md-primary"  @click="previous">
         <md-icon>chevron_left</md-icon>
       </md-button>
-      <md-button class="md-icon-button md-primary" @click="next">
+      <md-button :disabled="!nextMore" class="md-icon-button md-primary" @click="next">
         <md-icon>chevron_right</md-icon>
       </md-button>
       </div>
@@ -82,7 +82,6 @@
 </template>
 
 <script>
-  import splitArray from 'split-array'
   import { mapState, mapActions } from 'vuex'
   import {currency, formatDate, capitalize} from '@/helpers'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
@@ -91,13 +90,14 @@
     components: { VPayAnimation },
     data: function () {
       return {
-        payouts: {
-          has_more: false,
-          data: []
-        },
+        payouts: [],
+        nextMore: false,
+        previousMore: false,
         loading: false,
         pag: 10,
+        startingAfterPrev: this.$route.params.startingAfterPrev,
         startingAfter: null,
+        endingBefore: null,
         paginationPos: 0
       }
     },
@@ -107,11 +107,10 @@
       })
     },
     mounted () {
-      this.loading = true
       if (this.user && this.user.organizationId) {
         this.getOrganization(this.user.organizationId).then(organization => {
           this.organization = organization
-          this.loadPayouts()
+          this.load({startingAfter: this.startingAfterPrev})
         })
       }
     },
@@ -119,7 +118,7 @@
       user () {
         this.getOrganization(this.user.organizationId).then(organization => {
           this.organization = organization
-          this.loadPayouts()
+          this.load({startingAfter: this.startingAfterPrev})
         })
       },
       payouts () {
@@ -131,15 +130,31 @@
         getOrganization: 'getOrganization',
         fetchPayouts: 'fetchPayouts'
       }),
-      loadPayouts () {
-        console.log('loading')
-        this.fetchPayouts({ account: this.organization.connectAccount, startingAfter: this.startingAfter }).then(payouts => {
-          console.log('end')
-
-          this.payouts = payouts
-          this.startingAfter = payouts.data[payouts.data.length - 1].id
+      load ({startingAfter, endingBefore} = {}) {
+        this.startingAfterPrev = startingAfter
+        this.loading = true
+        this.fetchPayouts({ account: this.organization.connectAccount, startingAfter, endingBefore }).then(resp => {
+          this.payouts = resp.data
+          if (!startingAfter && !endingBefore) this.nextMore = resp.has_more
+          else if (startingAfter) {
+            this.nextMore = resp.has_more
+            this.previousMore = true
+          } else if (endingBefore) {
+            this.nextMore = true
+            this.previousMore = resp.has_more
+          }
+          if (resp.data.length) {
+            this.startingAfter = resp.data[resp.data.length - 1].id
+            this.endingBefore = resp.data[0].id
+          }
           this.loading = false
         })
+      },
+      next () {
+        this.load({startingAfter: this.startingAfter})
+      },
+      previous () {
+        this.load({endingBefore: this.endingBefore})
       },
       currency (value) {
         return currency(value / 100)
@@ -151,18 +166,11 @@
       formatDate (value) {
         return formatDate.unix(value)
       },
-      previous (event) {
-        if (this.paginationPos <= 0) return false
-        return this.paginationPos --
-      },
-      next (event) {
-        this.loadPayouts()
-      },
       goTransfers (payout) {
         this.$router.push({
           name: 'depositsBalanceReport',
           params: {
-            paginationPos: this.paginationPos,
+            startingAfterPrev: this.startingAfterPrev,
             payout: payout.id
           }
         })
