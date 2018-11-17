@@ -34,6 +34,7 @@ const module = {
           preorderAssignmentFiles(email: $email) {
             _id
             rows
+            rowsFailed
             keyFile
             fileName
             user

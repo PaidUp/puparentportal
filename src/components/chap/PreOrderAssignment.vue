@@ -28,7 +28,8 @@
           </div>
           <md-table class="custom-table" md-card>
             <md-table-row>
-              <md-table-head md-numeric>Rows</md-table-head>
+              <md-table-head >Rows</md-table-head>
+              <md-table-head >Load Failed</md-table-head>
               <md-table-head>File Name</md-table-head>
               <md-table-head>Date</md-table-head>
               <md-table-head>Key</md-table-head>
@@ -36,6 +37,7 @@
 
             <md-table-row class="pointer" v-for="row in files" :key="row._id" @click="loadRows(row.keyFile)">
               <md-table-cell md-numeric>{{row.rows}}</md-table-cell>
+              <md-table-cell md-numeri>{{row.rowsFailed}}</md-table-cell>
               <md-table-cell>{{row.fileName}}</md-table-cell>
               <md-table-cell>{{row.onUpload}}</md-table-cell>
               <md-table-cell>{{row.keyFile}}</md-table-cell>
