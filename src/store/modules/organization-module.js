@@ -190,7 +190,7 @@ const module = {
             }
             if (tr.type === 'adjustment') {
               processed = currency((tr.source.amount_refunded / 100) * -1)
-              netDeposit = currency((tr.source.amount_refunded / 100) + (tr.amount / 100)) * -1
+              netDeposit = currency((tr.source.amount_refunded / 100) - (tr.amount / 100)) * -1
               if (tr.invoice.paymentDetails.paymentMethodtype === 'card') {
                 totalFee = currency(tr.amount / 100) * -1
                 processingFee = currency(calculateStripeCreditFee(tr.source.amount_refunded, tr.invoice)) * -1
