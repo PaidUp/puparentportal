@@ -17,7 +17,7 @@
             <md-file v-if="!submited" v-model="fileName" accept=".csv" @md-change="handleFileUpload" />
           </md-field>
           <md-button class="md-accent lblue" @click="cancel">CANCEL</md-button>
-          <md-button :disabled="!fileName || !subject.trim().length" @click="upload" class="md-accent lblue md-raised">UPLOAD</md-button>
+          <md-button :disabled="!fileName || !subject.trim().length || submited" @click="upload" class="md-accent lblue md-raised">UPLOAD</md-button>
       </md-tab>
       <md-tab id="tab-files" md-label="Files">
         <div v-if="!rows.length">

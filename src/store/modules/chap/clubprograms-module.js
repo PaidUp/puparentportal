@@ -1,8 +1,12 @@
 import { organizationService, commerceService, productService, reduceDataCardService } from '@/services'
+import moment from 'moment'
 
 function getChargeDate (invoice) {
   return invoice.attempts.reduce((curr, att) => {
-    if (att.object === 'charge') curr = new Date(att.created)
+    if (att.object === 'charge' && att.status === 'succeeded') {
+      if (typeof att.created === 'number') curr = moment.unix(att.created)
+      else curr = new Date(att.created)
+    }
     return curr
   }, new Date(invoice.dateCharge))
 }

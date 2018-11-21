@@ -39,6 +39,7 @@
 <script>
   import VCurrency from '@/components/shared/VCurrency.vue'
   import { mapState } from 'vuex'
+  import moment from 'moment'
   
   export default {
     props: {
@@ -62,7 +63,10 @@
       chargeDate () {
         if (this.invoice.invoiceId) {
           return this.invoice.attempts.reduce((curr, att) => {
-            if (att.object === 'charge') curr = new Date(att.created)
+            if (att.object === 'charge' && att.status === 'succeeded') {
+              if (typeof att.created === 'number') curr = moment.unix(att.created)
+              else curr = new Date(att.create)
+            }
             return curr
           }, new Date(this.invoice.dateCharge))
         }
