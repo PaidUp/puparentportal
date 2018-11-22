@@ -67,23 +67,8 @@
           </div>
         </md-tab>
 
-        <md-tab v-if="false" id="tab-parents" md-label="PARENTS">
-          <div class="cards-layout">
-            <md-card class="card-person">
-              <md-avatar class="md-large">
-                <img src="@/assets/avatar.jpg" alt="avatar">
-              </md-avatar>
-              <div class="name">Felipe Fernandez</div>
-              <div class="title-info">Isotopes Club</div>
-              <div class="title-info">(512) 234-1233</div>
-            </md-card>
-
-            <div class="md-card-add-circle">
-              <md-button class="md-fab lblue">
-                <md-icon>add</md-icon>
-              </md-button>
-            </div>
-          </div>
+        <md-tab id="tab-parents" md-label="PARENTS">
+          <v-parents></v-parents>
         </md-tab>
       </md-tabs>
       <chap-invoice-dialog :show="showInvoiceDialog" :invoice="item" @close="showInvoiceDialog = false" @submited="setShowAnimate" :isClone="isClone" @updated="reloadItems"></chap-invoice-dialog>
@@ -104,9 +89,10 @@ import ChapCreditDialog from './ChapPlayerInvoices/ChapCreditDialog.vue'
 import ChapRefundDialog from './ChapPlayerInvoices/ChapRefundDialog.vue'
 import ChapNewInvoiceDialog from './ChapPlayerInvoices/ChapNewInvoiceDialog.vue'
 import VPayAnimation from '@/components/shared/VPayAnimation.vue'
+import VParents from '@/components/shared/admin/VParents.vue'
 import { mapActions, mapState } from 'vuex'
 export default {
-  components: { ChapInvoiceCard, ChapCreditCard, ChapPreorderCard, ChapInvoiceDialog, ChapNewInvoiceDialog, ChapCreditDialog, ChapRefundDialog, VPayAnimation },
+  components: { ChapInvoiceCard, ChapCreditCard, ChapPreorderCard, ChapInvoiceDialog, ChapNewInvoiceDialog, ChapCreditDialog, ChapRefundDialog, VPayAnimation, VParents },
   data () {
     return {
       items: null,
@@ -142,6 +128,9 @@ export default {
   computed: {
     ...mapState('playerInvoicesModule', {
       parents: 'parents'
+    }),
+    ...mapActions('clubprogramsModule', {
+      playerSelected: 'playerSelected'
     })
   },
   mounted () {

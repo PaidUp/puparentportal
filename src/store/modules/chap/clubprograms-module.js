@@ -44,6 +44,13 @@ const module = {
       }
       return name
     },
+    playerSelectedObj (state) {
+      let res = {}
+      if (state.playerSelected) {
+        res = state.beneficiaries[state.playerSelected]
+      }
+      return res
+    },
     playerSelectedName (state) {
       let name = ''
       if (state.playerSelected) {
