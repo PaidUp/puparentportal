@@ -25,7 +25,7 @@
           
         </md-tab>
 
-        <md-tab id="tab-assigned-parents" md-label="PAID/UNPAID PARENTS">
+        <md-tab v-if="false" id="tab-assigned-parents" md-label="PAID/UNPAID PARENTS">
           <div class="table-actions-box">
             <md-button class="lblue md-accent md-raised md-dense">Add row</md-button>
             <md-button class="lblue md-accent md-raised md-dense" to="/chapassignplanparent">GO TO PARENTS STEPPERS</md-button>
@@ -67,7 +67,7 @@
           </div>
         </md-tab>
 
-        <md-tab id="tab-parents" md-label="PARENTS">
+        <md-tab v-if="false" id="tab-parents" md-label="PARENTS">
           <div class="cards-layout">
             <md-card class="card-person">
               <md-avatar class="md-large">
