@@ -462,7 +462,7 @@
             let tmp = JSON.parse(JSON.stringify(receipt))
             tmp.chargeDate = ''
             if (tmp.chargeDate && typeof tmp.chargeDate === 'number') {
-              tmp.chargeDate = formatDate(tmp.chargeDate)
+              tmp.chargeDate = formatDate.unix(tmp.chargeDate)
             } else if (tmp.chargeDate) {
               tmp.chargeDate = this.$d(new Date(tmp.chargeDate))
             }
