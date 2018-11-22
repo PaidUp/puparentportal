@@ -297,6 +297,40 @@
         </md-card-actions>
       </md-card>
 
+      <md-table md-card v-model="tableData" md-sort="name" md-sort-order="asc" class="custom-table">
+        <md-table-row slot="md-table-row" slot-scope="{ item }">
+          <md-table-cell md-label="Description">
+            Dues Installment {{item.id}}
+          </md-table-cell>
+          <md-table-cell md-label="Amount" md-numeric>
+            $300
+          </md-table-cell>
+          <md-table-cell md-label="Charge Date">
+            05-01-2018
+          </md-table-cell>
+          <md-table-cell md-label="Max Charge Date">
+            -
+          </md-table-cell>
+          <md-table-cell md-label="Status">
+            PAID
+          </md-table-cell>
+          <md-table-cell md-label="Parent" md-sort-by="parentName" class="col-with-img">
+            <md-icon class="md-size-2" v-if="item.id ===1">account_circle</md-icon>
+            <md-avatar class="md-small" v-if="item.id !==1">
+              <img src="@/assets/avatar.jpg" alt="img">
+            </md-avatar>
+            <div>
+              {{ item.parentName }}
+            </div>
+          </md-table-cell>
+          <md-table-cell md-label="Tags">
+            <div class="col-chips">
+              <md-chip class="lblue">Travel</md-chip>
+            </div>
+          </md-table-cell>
+        </md-table-row>
+      </md-table>
+
     </div>
   </div>
 </template>
@@ -308,7 +342,25 @@
       VCurrency
     },
     data: function () {
-      return {}
+      return {
+        tableData: [ {
+          id: 1,
+          name: 'Shawna Dubbin',
+          email: 'sdubbin0@geocities.com',
+          phone: '888-999-8888',
+          playerName: 'Eliana Fernandez',
+          parentName: 'Fernando Lopex'
+        },
+        {
+          id: 2,
+          name: 'Odette Demageard',
+          email: 'odemageard1@spotify.com',
+          phone: '888-999-1111',
+          playerName: 'Rockefel Eslo',
+          parentName: 'Simano Cigar'
+        }
+        ]
+      }
     },
     methods: {}
   }

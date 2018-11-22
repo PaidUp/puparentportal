@@ -66,6 +66,25 @@
             <md-button class="lblue md-accent md-raised">Save</md-button>
           </div>
         </md-tab>
+
+        <md-tab id="tab-parents" md-label="PARENTS">
+          <div class="cards-layout">
+            <md-card class="card-person">
+              <md-avatar class="md-large">
+                <img src="@/assets/avatar.jpg" alt="avatar">
+              </md-avatar>
+              <div class="name">Felipe Fernandez</div>
+              <div class="title-info">Isotopes Club</div>
+              <div class="title-info">(512) 234-1233</div>
+            </md-card>
+
+            <div class="md-card-add-circle">
+              <md-button class="md-fab lblue">
+                <md-icon>add</md-icon>
+              </md-button>
+            </div>
+          </div>
+        </md-tab>
       </md-tabs>
       <chap-invoice-dialog :show="showInvoiceDialog" :invoice="item" @close="showInvoiceDialog = false" @submited="setShowAnimate" :isClone="isClone" @updated="reloadItems"></chap-invoice-dialog>
       <chap-credit-dialog :show="showCreditDialog" @close="showCreditDialog = false" :invoice="creditItem" @submited="setShowAnimate" :isClone="isCreditClone" @updated="reloadItems"></chap-credit-dialog>
