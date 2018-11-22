@@ -226,8 +226,6 @@
   import currency from '@/helpers/currency'
   import capitalize from '@/helpers/capitalize'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
-  import moment from 'moment'
-  import formatDate from '@/helpers'
 
   export default {
     components: { VPayAnimation },
@@ -406,12 +404,7 @@
         this.loading = true
         let response = this.payments.reduce((curr, receipt, idx) => {
           let receiptDate = receipt.receiptDate ? new Date(receipt.receiptDate) : ''
-          let chargeDate = ''
-          if (receipt.chargeDate && typeof receipt.chargeDate === 'number') {
-            chargeDate = moment.unix(receipt.chargeDate)
-          } else if (receipt.chargeDate) {
-            chargeDate = new Date(receipt.chargeDate)
-          }
+          let chargeDate = receipt.chargeDate ? new Date(receipt.chargeDate) : ''
           let resp = true
           // invoice date filter
           if (this.invoiceDateStart && resp) {
@@ -460,12 +453,7 @@
           }
           if (resp) {
             let tmp = JSON.parse(JSON.stringify(receipt))
-            tmp.chargeDate = ''
-            if (tmp.chargeDate && typeof tmp.chargeDate === 'number') {
-              tmp.chargeDate = formatDate.unix(tmp.chargeDate)
-            } else if (tmp.chargeDate) {
-              tmp.chargeDate = this.$d(new Date(tmp.chargeDate))
-            }
+            tmp.chargeDate = tmp.chargeDate ? this.$d(new Date(tmp.chargeDate), 'short') : ''
             tmp.receiptDate = tmp.receiptDate ? this.$d(new Date(tmp.receiptDate), 'short') : ''
             tmp.status = this.capitalize(tmp.status)
             tmp.amount = this.currency(tmp.amount)
@@ -473,6 +461,7 @@
             tmp.paidupFee = this.currency(tmp.paidupFee)
             tmp.totalFee = this.currency(tmp.totalFee)
             curr.push(tmp)
+            console.log('tmp: ', tmp)
           }
           return curr
         }, [])
