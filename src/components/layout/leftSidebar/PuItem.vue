@@ -1,7 +1,7 @@
 <template lang="pug">
 md-list-item(:to="item.to")
-  md-avatar.md-size-c(v-if="showAvatar")
-    img(:src="avatar" @error="showAvatar = false")
+  md-avatar.md-size-c(v-if="avatar")
+    img(:src="avatar")
   md-icon(v-else class="md-size-2x ca1") account_circle  
   .md-list-item-text
     div
@@ -11,6 +11,7 @@ md-list-item(:to="item.to")
   span.notification-number(v-if="item.notification") {{ item.notification }}
 </template>
 <script>
+import { mapActions } from 'vuex'
 import config from '@/config'
 
 export default {
@@ -22,18 +23,29 @@ export default {
   },
   data () {
     return {
-      showAvatar: true
+      avatar: null
     }
   },
+  mounted () {
+    const url = `${config.media.beneficiary.url}avatar/${this.item.id}.png?a=${Math.random()}`
+    this.validateUrl(url).then(response => {
+      this.avatar = response.data.validateUrl
+    }).catch(reason => reason)
+  },
   computed: {
-    avatar () {
-      return `${config.media.beneficiary.url}avatar/${this.item.id}.png?a=${Math.random()}`
-    }
   },
   watch: {
     item () {
-      this.showAvatar = true
+      const url = `${config.media.beneficiary.url}avatar/${this.item.id}.png?a=${Math.random()}`
+      this.validateUrl(url).then(response => {
+        this.avatar = response.data.validateUrl
+      }).catch(reason => reason)
     }
+  },
+  methods: {
+    ...mapActions('commonModule', {
+      validateUrl: 'validateUrl'
+    })
   }
 }
 </script>

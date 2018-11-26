@@ -34,8 +34,7 @@ const module = {
       contacts: {
         phone: ''
       }
-    },
-    avatar: null
+    }
   },
 
   getters: {
@@ -48,10 +47,6 @@ const module = {
   },
 
   mutations: {
-    reloadAvatar (state) {
-      let urlPath = `${config.media.user.url}avatar/${state.user._id}.png?a=${Math.random()}`
-      state.avatar = urlPath
-    },
     setSession (state, data) {
       let arr = data.token.split('.')
       if (arr.length === 3 && data.user) {
@@ -66,6 +61,11 @@ const module = {
       if (user) {
         localStorage.user = JSON.stringify(user)
         state.user = user
+      }
+    },
+    reloadUser (state) {
+      if (localStorage.user) {
+        state.user = JSON.parse(localStorage.user)
       }
     },
     clean (state) {
@@ -272,6 +272,7 @@ const module = {
       const response = await graphqlClient.query({
         query: gql`query getUsersByEmails($emails: [String]!) {
             getUsersByEmails(emails: $emails) {
+              _id
               firstName
               lastName
               email
@@ -284,6 +285,9 @@ const module = {
         curr[user.email] = user
         return curr
       }, {})
+    },
+    getAvatarUrl (context, userId) {
+      return `${config.media.user.url}avatar/${userId}.png?a=${Math.random()}`
     }
   }
 }

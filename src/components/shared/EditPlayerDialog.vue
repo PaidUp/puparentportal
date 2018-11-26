@@ -4,8 +4,8 @@
       <div class="title">Player Details</div>
     </div>
     <div class="common-player-info">
-      <md-avatar v-if="showAvatar" class="md-large">
-        <img :src="avatar" @error="showAvatar = false" alt="avatar">
+      <md-avatar v-if="avatar" class="md-large">
+        <img :src="avatar" alt="avatar">
       </md-avatar>
       <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
       <div class="name">
@@ -61,8 +61,7 @@
         organization: {},
         submited: false,
         deleteAction: false,
-        avatar: null,
-        showAvatar: true
+        avatar: null
       }
     },
     computed: {
@@ -81,11 +80,12 @@
         return this.submited || this.$v.$invalid
       }
     },
-    mounted () {
+    async mounted () {
       if (this.player) {
-        this.avatarUrl(this.player._id).then(url => {
-          this.avatar = url
-        })
+        let url = await this.avatarUrl(this.player._id)
+        this.validateUrl(url).then(response => {
+          this.avatar = response.data.validateUrl
+        }).catch(reason => reason)
         this.getOrganization(this.player.organizationId)
         .then(organization => {
           this.organization = organization
@@ -101,6 +101,9 @@
       }),
       ...mapActions('organizationModule', {
         getOrganization: 'getOrganization'
+      }),
+      ...mapActions('commonModule', {
+        validateUrl: 'validateUrl'
       }),
       close () {
         this.$emit('close', true)
@@ -137,7 +140,6 @@
       setAvatar () {
         const url = `${config.media.beneficiary.url}avatar/${this.player._id}.png?a=${Math.random()}`
         this.avatar = url
-        this.showAvatar = true
         this.$emit('avatarChanged', url)
       }
     },

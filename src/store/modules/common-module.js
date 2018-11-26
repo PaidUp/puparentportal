@@ -1,3 +1,6 @@
+import graphqlClient from '@/util/graphql'
+import gql from 'graphql-tag'
+
 const module = {
   namespaced: true,
   state: {
@@ -15,6 +18,18 @@ const module = {
     }
   },
   mutations: {
+  },
+  actions: {
+    validateUrl ({ commit }, url) {
+      return graphqlClient.mutate({
+        variables: { url },
+        mutation: gql`
+          mutation validateUrl($url: String!) {
+            validateUrl(url: $url)
+          }
+        `
+      })
+    }
   }
 }
 

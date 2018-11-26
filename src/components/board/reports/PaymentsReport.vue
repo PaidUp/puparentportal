@@ -461,7 +461,6 @@
             tmp.paidupFee = this.currency(tmp.paidupFee)
             tmp.totalFee = this.currency(tmp.totalFee)
             curr.push(tmp)
-            console.log('tmp: ', tmp)
           }
           return curr
         }, [])

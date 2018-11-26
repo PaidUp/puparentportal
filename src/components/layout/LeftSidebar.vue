@@ -2,10 +2,10 @@
   <div class="left-sidebar">
     <md-list class="top-list">
       <md-list-item class="edit-user-nav-item" to="/profile">
-        <md-avatar v-if="showAvatar">
-          <img :src="avatar" @error="showAvatar = false"/>
+        <md-avatar v-if="avatar">
+          <img :src="avatar"/>
         </md-avatar>
-        <md-icon v-if="!showAvatar" class="md-size-2x ca1">account_circle</md-icon>
+        <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
         <div class="md-list-item-text bold">
           {{ user.firstName }} {{ user.lastName}}
         </div>
@@ -87,13 +87,13 @@
   import PuPayNewInvoice from './leftSidebar/PuPayNewInvoice.vue'
   import PuPaymentAccounts from './leftSidebar/PuPaymentAccounts.vue'
   import PuBotton from './leftSidebar/PuBotton.vue'
-  import { mapState, mapActions, mapMutations } from 'vuex'
+  import { mapState, mapActions } from 'vuex'
 
   export default {
     components: { PuItem, PuBotton, PuPlayerPaymentHistory, PuPayNewInvoice, PuPaymentAccounts },
     data: function () {
       return {
-        showAvatar: true
+        avatar: null
       }
     },
     computed: {
@@ -101,31 +101,36 @@
         beneficiaries: 'beneficiaries'
       }),
       ...mapState('userModule', {
-        user: 'user',
-        avatar: 'avatar'
+        user: 'user'
       })
     },
-    mounted () {
+    async mounted () {
       if (this.user.email) {
         this.getBeneficiaries(this.user.email)
-        this.reloadAvatar()
+        let url = await this.getAvatarUrl(this.user._id)
+        this.validateUrl(url).then(response => {
+          this.avatar = response.data.validateUrl
+        }).catch(reason => reason)
       }
     },
     watch: {
-      user () {
+      async user () {
         this.getBeneficiaries(this.user.email)
-        this.reloadAvatar()
-      },
-      avatar () {
-        this.showAvatar = true
+        let url = await this.getAvatarUrl(this.user._id)
+        this.validateUrl(url).then(response => {
+          this.avatar = response.data.validateUrl
+        }).catch(reason => reason)
       }
     },
     methods: {
       ...mapActions('playerModule', {
         getBeneficiaries: 'getBeneficiaries'
       }),
-      ...mapMutations('userModule', {
-        reloadAvatar: 'reloadAvatar'
+      ...mapActions('userModule', {
+        getAvatarUrl: 'getAvatarUrl'
+      }),
+      ...mapActions('commonModule', {
+        validateUrl: 'validateUrl'
       }),
       isRole (role) {
         if (this.user && this.user.roles) return this.user.roles.indexOf(role) > -1

@@ -2,8 +2,8 @@
   .common-player-info
     .with-menu-box
       div.player-info
-        md-avatar.md-large(v-if="showAvatar")
-          img(:src="avatar" @error="showAvatar = false")
+        md-avatar.md-large(v-if="avatar")
+          img(:src="avatar")
         md-icon(v-else class="md-size-3x ca1") account_circle        
         .name.md-title {{player.firstName}} {{player.lastName}}
         .team.md-subheading {{ player.organizationName }}
@@ -26,8 +26,7 @@
     data () {
       return {
         editPlayerDialog: false,
-        avatar: null,
-        showAvatar: true
+        avatar: null
       }
     },
     props: {
@@ -40,20 +39,23 @@
         required: true
       }
     },
-    mounted () {
+    async mounted () {
       if (this.player) {
-        this.avatarUrl(this.player._id).then(url => {
-          this.avatar = url
-        })
+        let url = await this.avatarUrl(this.player._id)
+        this.validateUrl(url).then(response => {
+          this.avatar = response.data.validateUrl
+        }).catch(reason => reason)
       }
     },
     methods: {
       ...mapActions('playerModule', {
         avatarUrl: 'avatarUrl'
       }),
+      ...mapActions('commonModule', {
+        validateUrl: 'validateUrl'
+      }),
       setAvatar (url) {
         this.avatar = url
-        this.showAvatar = true
         this.$emit('avatarChanged', url)
       }
     },

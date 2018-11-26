@@ -49,3 +49,33 @@ export default class Trae {
     return this.instance.delete
   }
 }
+
+export const existURL = (url) => {
+  if (!existURL.instance) {
+    existURL.instance = trae.create({
+      mode: 'no-cors'
+    })
+  }
+  return existURL.instance.head(url)
+  .then(response => {
+    console.log('success')
+    console.log('response: ', response)
+    return true
+  }).catch(reason => {
+    console.log('err', reason)
+    return false
+  })
+}
+// export const existURL = (url) => {
+//   return new Promise((resolve, reject) => {
+//     var http = new XMLHttpRequest()
+//     http.open('HEAD', url)
+//     http.setRequestHeader('Access-Control-Allow-Origin', '*')
+//     http.onreadystatechange = function () {
+//       if (this.readyState === this.DONE) {
+//         resolve(this.status !== 404)
+//       }
+//     }
+//     http.send()
+//   })
+// }

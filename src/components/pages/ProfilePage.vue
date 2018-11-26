@@ -4,13 +4,13 @@
       <div class="title bold">Profile</div>
       <div class="content-box">
         <div class="centered">
-          <md-avatar v-if="showAvatar" class="md-avatar-icon md-large md-elevation-4">
-            <img :src="avatar" @error="showAvatar = false" />
+          <md-avatar v-if="avatar" class="md-avatar-icon md-large md-elevation-4">
+            <img :src="avatar" />
           </md-avatar>
           <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
         </div>
         <update-avatar :url="url" @charged="uploadedAvatar"></update-avatar>
-        <div class="names-box" :md-description="fullName">
+        <div class="names-box">
           <md-field :class="{'md-invalid': $v.firstName.$error}">
             <label>First Name</label>
             <md-input v-model.trim="firstName" :disabled="!editName" @input="$v.firstName.$touch()"></md-input>
@@ -68,17 +68,15 @@
 </template>
 
 <script>
-  import { mapState, mapActions, mapMutations } from 'vuex'
+  import { mapState, mapMutations, mapActions } from 'vuex'
   import { required, email, minLength, sameAs, numeric } from 'vuelidate/lib/validators'
   import UpdateAvatar from '@/components/shared/UpdateAvatar.vue'
   import config from '@/config'
-  import capitalize from '@/helpers/capitalize'
   export default {
     components: { UpdateAvatar },
     data: function () {
       return {
         url: config.api.user + '/avatar',
-        showAvatar: true,
         firstName: '',
         lastName: '',
         editName: false,
@@ -89,19 +87,14 @@
         editPassword: false,
         phone: '',
         editPhone: false,
-        submmited: false
+        submmited: false,
+        avatar: null
       }
     },
     computed: {
       ...mapState('userModule', {
-        user: 'user',
-        avatar: 'avatar'
+        user: 'user'
       }),
-      fullName () {
-        this.firstName = capitalize(this.firstName)
-        this.lastName = capitalize(this.lastName)
-        return this
-      },
       disableSaveButton () {
         return this.$v.$invalid || this.submmited
       },
@@ -122,19 +115,26 @@
       }
     },
     methods: {
-      ...mapMutations('userModule', {
-        reloadAvatar: 'reloadAvatar'
-      }),
       ...mapActions('userModule', {
-        update: 'update'
+        update: 'update',
+        getAvatarUrl: 'getAvatarUrl'
+      }),
+      ...mapMutations('userModule', {
+        reloadUser: 'reloadUser'
       }),
       ...mapActions('messageModule', {
         setSuccess: 'setSuccess',
         setWarning: 'setWarning'
       }),
-      uploadedAvatar () {
-        this.showAvatar = true
-        this.reloadAvatar()
+      ...mapActions('commonModule', {
+        validateUrl: 'validateUrl'
+      }),
+      async uploadedAvatar () {
+        let url = await this.getAvatarUrl(this.user._id)
+        this.validateUrl(url).then(response => {
+          this.avatar = response.data.validateUrl
+          this.reloadUser()
+        }).catch(reason => reason)
       },
       reset () {
         this.load()
@@ -164,12 +164,16 @@
           this.setWarning('Error, your profile wasn\'t update')
         })
       },
-      load () {
+      async load () {
         if (this.user) {
           this.firstName = this.user.firstName
           this.lastName = this.user.lastName
           this.email = this.user.email
           this.phone = this.user.phone
+          let url = await this.getAvatarUrl(this.user._id)
+          this.validateUrl(url).then(response => {
+            this.avatar = response.data.validateUrl
+          }).catch(reason => reason)
         }
       }
     },

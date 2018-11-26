@@ -3,7 +3,7 @@
 			<div class="card-player-eligibility"  @click="selectPlayer">
         <div class="top-box">
         				<md-avatar class="md-size-c">
-        					<img v-if="showAvatar" @error="showAvatar = false" :src="avatar" alt="avatar">
+        					<img v-if="avatar" :src="avatar" alt="avatar">
         					<md-icon v-else class="md-size-2x ca1"> account_circle </md-icon>
         				</md-avatar>
         				<div class="name">{{ item.firstName }} {{ item.lastName }}</div>
@@ -47,10 +47,11 @@ export default {
   props: {
     item: Object
   },
-  mounted () {
-    this.avatarUrl(this.item.id).then(res => {
-      this.avatar = res
-    })
+  async mounted () {
+    let url = await this.avatarUrl(this.item.id)
+    this.validateUrl(url).then(response => {
+      this.avatar = response.data.validateUrl
+    }).catch(reason => reason)
   },
   data () {
     return {
@@ -93,6 +94,9 @@ export default {
     }),
     ...mapMutations('scoreboardModule', {
       setPlayerSelected: 'setPlayerSelected'
+    }),
+    ...mapActions('commonModule', {
+      validateUrl: 'validateUrl'
     }),
     selectPlayer () {
       this.setPlayerSelected(this.item.id)

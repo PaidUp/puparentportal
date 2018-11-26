@@ -2,7 +2,7 @@
 		<md-card md-with-hover class="card-player-eligibility">
 			<div class="top-box" @click="select">
 				<md-avatar class="md-size-c">
-					<img v-if="showAvatar" @error="showAvatar = false" :src="avatar" alt="avatar">
+					<img v-if="avatar" :src="avatar" alt="avatar">
 					<md-icon v-else class="md-size-2x ca1"> account_circle </md-icon>
 				</md-avatar>
 				<div class="name">{{ item.firstName }} {{ item.lastName }}</div>
@@ -69,15 +69,15 @@ export default {
   props: {
     item: Object
   },
-  mounted () {
-    this.avatarUrl(this.item.id).then(res => {
-      this.avatar = res
-    })
+  async mounted () {
+    const url = await this.avatarUrl(this.item.id)
+    this.validateUrl(url).then(response => {
+      this.avatar = response.data.validateUrl
+    }).catch(reason => reason)
   },
   data () {
     return {
-      avatar: null,
-      showAvatar: true
+      avatar: null
     }
   },
   computed: {
@@ -112,6 +112,9 @@ export default {
   methods: {
     ...mapActions('playerModule', {
       avatarUrl: 'avatarUrl'
+    }),
+    ...mapActions('commonModule', {
+      validateUrl: 'validateUrl'
     }),
     select () {
       this.$emit('select', this.item)

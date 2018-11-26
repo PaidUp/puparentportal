@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from '@/store'
+import filters from '@/filters'
 import i18n from '@/i18n'
 import FBSignInButton from 'vue-facebook-signin-button'
 import LoadScript from 'vue-plugin-load-script'
@@ -39,6 +40,16 @@ Vue.component('downloadExcel', JsonExcel)
 
 Vue.config.productionTip = false
 Vue.material.locale.dateFormat = 'MM-DD-YYYY'
+
+Vue.config.ignoredElements = [
+  'trix-editor'
+]
+
+filters(Vue)
+
+Vue.config.errorHandler = function (err, vm, info) {
+  console.log('errHandler', err)
+}
 
 /* eslint-disable no-new */
 new Vue({
