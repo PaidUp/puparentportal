@@ -1,21 +1,27 @@
 <template>
-  <div class="cards-layout">
-    <v-parent-card  :parent="parent" v-for="parent in parents" :key="parent._id"></v-parent-card>
-    <div class="md-card-add-circle">
-      <md-button class="md-fab lblue">
-        <md-icon>add</md-icon>
-      </md-button>
+  <div>
+    <div class="cards-layout">
+      <v-parent-card  :parent="parent" v-for="parent in parents" :key="parent._id"></v-parent-card>
+      <div class="md-card-add-circle">
+        <md-button class="md-fab lblue" @click="showDialog = true">
+          <md-icon>add</md-icon>
+        </md-button>
+      </div>
     </div>
+    <v-edit-parent-dialog :parent="parentSelected" showDialog=""></v-edit-parent-dialog>
   </div>
 </template>
 <script>
-import VParentCard from './VParentCard'
+import VParentCard from './VParentCard.vue'
+import VEditParentDialog from './VEditParentDialog.vue'
 import { mapGetters, mapActions } from 'vuex'
 export default {
-  components: { VParentCard },
+  components: { VParentCard, VEditParentDialog },
   data () {
     return {
-      parents: {}
+      parents: {},
+      parentSelected: null,
+      showDialog: false
     }
   },
   async mounted () {
