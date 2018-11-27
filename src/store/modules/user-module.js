@@ -2,6 +2,7 @@ import { userService } from '@/services'
 import config from '@/config'
 import graphqlClient from '@/util/graphql'
 import gql from 'graphql-tag'
+import randomstring from 'randomstring'
 
 function handlerError (err, context, message) {
   if (!message) {
@@ -199,6 +200,22 @@ const module = {
       }).catch(err => {
         const message = (err.message && err.message.indexOf('The specified email address is already in use') > -1) ? 'module.user.email_address_in_use' : null
         handlerError(err, context, message)
+      })
+    },
+    createUser (context, {beneficiaryId, user}) {
+      user.type = 'customer'
+      user.pendingSignup = true
+      user.password = randomstring.generate(12)
+      return graphqlClient.mutate({
+        variables: { beneficiaryId, user },
+        mutation: gql`
+          mutation userCreate ($beneficiaryId: String, $user: NewUser!) {
+          userCreate(beneficiaryId: $beneficiaryId, user: $user){
+            _id
+            email
+          }
+        }
+      `
       })
     },
     logout (context) {

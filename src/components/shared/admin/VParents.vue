@@ -8,7 +8,7 @@
         </md-button>
       </div>
     </div>
-    <v-edit-parent-dialog :parent="parentSelected" showDialog=""></v-edit-parent-dialog>
+    <v-edit-parent-dialog :beneficiary-id="playerSelectedObj._id" :parent="parentSelected" :show-dialog="showDialog" @close="showDialog = false" @completed="reloadParents"></v-edit-parent-dialog>
   </div>
 </template>
 <script>
@@ -42,7 +42,14 @@ export default {
   methods: {
     ...mapActions('userModule', {
       getParentsByEmails: 'getParentsByEmails'
-    })
+    }),
+    reloadParents (usr) {
+      this.playerSelectedObj.assigneesEmail.push(usr.email)
+      this.getParentsByEmails(this.playerSelectedObj.assigneesEmail).then(parents => {
+        this.parents = parents
+      })
+      this.showDialog = false
+    }
   }
 }
 </script>

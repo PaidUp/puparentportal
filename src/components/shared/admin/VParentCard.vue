@@ -5,12 +5,12 @@
       </md-avatar>
       <md-icon v-else class="md-size-3x">account_circle</md-icon>
       <div class="name">{{parent.firstName}} {{parent.lastName}}</div>
-      <div class="title-info">{{organization.businessName}}</div>
+      <div class="title-info">{{parent.email}}</div>
       <div class="title-info">{{parent.phone | formatPhone}}</div>
     </md-card>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   props: {
     parent: {
@@ -29,11 +29,6 @@ export default {
     this.validateUrl(url).then(response => {
       this.avatar = response.data.validateUrl
     }).catch(reason => reason)
-  },
-  computed: {
-    ...mapState('clubprogramsModule', {
-      organization: 'organization'
-    })
   },
   methods: {
     ...mapActions('commonModule', {

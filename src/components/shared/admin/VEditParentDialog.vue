@@ -34,55 +34,60 @@
       <md-field :class="{'md-invalid': $v.phone.$error, 'md-focused': phoneFocus}">
         <label @click="alert('on focus')" for="phoneField">Phone</label>
         <!-- md-input v-model.trim="phone" @input="$v.phone.$touch()"></md-input-->
-        <the-mask @focus.native="phoneFocus = true" @blur.native="phone.length === 0 ? phoneFocus = false : ''" id="phoneField" class="md-input" @input="$v.phone.$touch()" mask="+1(###) ###-####" v-model.trim="phone" type="tel" :masked="false" placeholder=""></the-mask>
-        <span class="md-error" v-if="!$v.phone.required">{{ $t('validations.required', { field: 'Phone' }) }}</span>
-        <span class="md-error" v-if="!$v.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: $v.phone.$params.minLength.min }) }}</span>
-        <span class="md-error" v-if="!$v.phone.numeric">{{ $t('validations.numeric', { field: 'Phone' }) }} </span>
+        <the-mask @focus.native="phoneFocus = true" @blur.native="phone.length === 0 ? phoneFocus = false : ''" id="phoneField" class="md-input" @input="$v.phone.$touch()" mask="(###) ###-####" v-model.trim="phone" type="tel" :masked="true" placeholder=""></the-mask>
+        <span class="md-error" v-if="!$v.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: 10 }) }}</span>
       </md-field>
     </div>
     
     
     
     <div class="actions">
-      <md-button :disabled="disableDeleteButton" @click="remove" class="md-accent lblue delete-btn">DELETE</md-button>
+      <md-button v-if="false" :disabled="disableDeleteButton" @click="remove" class="md-accent lblue delete-btn">DELETE</md-button>
       <div>
-        <md-button class="md-accent lblue" @click="close">CANCEL</md-button>
+        <md-button class="md-accent lblue" @click="close(null)">CANCEL</md-button>
         <md-button class="md-accent lblue md-raised" :disabled="disableSaveButton" @click="save">SAVE</md-button>
       </div>
     </div>
-    <v-pay-animation :animate="submited" :result="{}" @finish="close" />
+    <v-pay-animation :animate="submited" :result="userCreated" @finish="completed" />
   </md-dialog>
 </template>
 
 <script>
-  import config from '@/config'
   import { mapState, mapActions } from 'vuex'
-  import { required, email, numeric, minLength } from 'vuelidate/lib/validators'
+  import { required, email, minLength } from 'vuelidate/lib/validators'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
-  import capitalize from '@/helpers/capitalize'
   export default {
     components: { VPayAnimation },
     props: {
+      beneficiaryId: String,
       parent: Object,
       showDialog: Boolean
     },
     data () {
       return {
-        url: `${config.api.organization}/beneficiary/avatar`,
         firstName: '',
         lastName: '',
         email: '',
         phone: '',
-        organization: {},
         submited: false,
         deleteAction: false,
-        avatar: null,
-        phoneFocus: false
+        phoneFocus: false,
+        userCreated: null
+      }
+    },
+    watch: {
+      showDialog () {
+        if (!this.showDialog) {
+          this.reset()
+        }
       }
     },
     computed: {
       ...mapState('userModule', {
         user: 'user'
+      }),
+      ...mapState('clubprogramsModule', {
+        organization: 'organization'
       }),
       disableDeleteButton () {
         return this.numInvoices > 0
@@ -96,31 +101,49 @@
     },
     methods: {
       ...mapActions('userModule', {
-        getAvatarUrl: 'getAvatarUrl'
-      }),
-      ...mapActions('organizationModule', {
-        getOrganization: 'getOrganization'
+        createUser: 'createUser'
       }),
       ...mapActions('commonModule', {
         validateUrl: 'validateUrl'
       }),
+      ...mapActions('messageModule', {
+        setSuccess: 'setSuccess',
+        setWarning: 'setWarning'
+      }),
+      completed () {
+        const usr = JSON.parse(JSON.stringify(this.userCreated))
+        this.$emit('completed', usr)
+      },
       close () {
-        this.$emit('close', true)
+        this.$emit('close')
+      },
+      reset () {
+        this.firstName = ''
+        this.lastName = ''
+        this.email = ''
+        this.phone = ''
+        this.userCreated = null
+        this.$v.$reset()
       },
       save () {
         this.submited = true
-        this.update({
-          id: this.player._id,
-          values: {
-            firstName: capitalize(this.firstName),
-            lastName: capitalize(this.lastName)
+        const params = {
+          beneficiaryId: this.beneficiaryId,
+          user: {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            phone: this.phone ? `1${this.phone.replace(/\D/g, '')}` : ''
           }
-        }).then(player => {
+        }
+        this.createUser(params).then(res => {
           this.submited = false
-          this.getBeneficiaries(this.user.email)
-        }).catch(reason => {
-          console.log(reason)
+          this.setSuccess('Parent created successfully')
+          this.userCreated = res.data.userCreate
+        }).catch(err => {
           this.submited = false
+          const message = (err.message && err.message.indexOf('The specified email address is already in use') > -1) ? 'module.user.email_address_in_use' : 'common.error.default'
+          this.setWarning(message)
         })
       },
       remove () {
@@ -149,9 +172,7 @@
         email
       },
       phone: {
-        numeric,
-        required,
-        minLength: minLength(10)
+        minLength: minLength(14)
       }
     }
   }
