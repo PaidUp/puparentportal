@@ -1,5 +1,5 @@
 <template>
-  <div class="left-sidebar">
+  <div class="left-sidebar" v-if="false">
     <md-list class="top-list">
       <md-list-item class="edit-user-nav-item" to="/profile">
         <md-avatar v-if="avatar">
@@ -12,17 +12,17 @@
       </md-list-item>
 
       <!-- CHAP CLUBS CARDS -->
-      <!-- <md-list-item to="/clubs" v-if="isRole('chap')">
+      <md-list-item to="/clubs" v-if="isRole('chap')">
         <span class="md-list-item-text ca1 bold">Clubs &amp; Programs</span>
-      </md-list-item> -->
+      </md-list-item>
 
       <!-- Programs -->
-      <!-- <md-list-item to="/scoreboard" v-if="isRole('coach')">
+      <md-list-item to="/scoreboard" v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Scoreboard</span>
-      </md-list-item> -->
+      </md-list-item>
       
       <!-- Reports -->
-      <!-- <md-list-item md-expand v-if="isRole('coach')">
+      <md-list-item md-expand v-if="isRole('coach')">
         <span class="md-list-item-text ca1 bold">Reports</span>
         <md-list slot="md-expand">
           <md-list-item to="/reports/payments">
@@ -46,24 +46,24 @@
             </div>
           </md-list-item>
         </md-list>
-      </md-list-item> -->
+      </md-list-item>
       
       <!-- FEES CALCULATOR -->
-      <!-- <md-list-item  to="/calculator" v-if="isRole('coach1')">
+      <md-list-item  to="/calculator" v-if="isRole('coach1')">
         <span class="md-list-item-text ca1 bold">Fees Calculator</span>
       </md-list-item>
 
       <pu-player-payment-history v-if="isRole('parent') && beneficiaries" :beneficiaries="beneficiaries"/>
       <pu-pay-new-invoice v-if="isRole('parent') && beneficiaries" :beneficiaries="beneficiaries"/>
-      <pu-payment-accounts v-if="isRole('parent')" /> -->
+      <pu-payment-accounts v-if="isRole('parent')" />
 
       <!-- TO DELETE: CHAP/SCORE DESIGNS -->
-      <!-- <md-list-item to="/chapdesigns" v-if="isRole('chap')">
+      <md-list-item to="/chapdesigns" v-if="isRole('chap')">
         <span class="md-list-item-text ca1 bold">Chap Designs</span>
-      </md-list-item> -->
+      </md-list-item>
 
       <!-- TO BULK: CHAP/BULK -->
-      <!-- <md-list-item to="/reports/payments" md-expand v-if="isRole('chap')">
+      <md-list-item to="/reports/payments" md-expand v-if="isRole('chap')">
         <span class="md-list-item-text ca1 bold">Bulk</span>
         <md-list slot="md-expand">
           <md-list-item to="/bulk/preorders">
@@ -73,7 +73,7 @@
             <span class="md-list-item-text ca1 bold">Import Credits</span>
           </md-list-item>
         </md-list>
-      </md-list-item> -->
+      </md-list-item>
 
       
     </md-list>
