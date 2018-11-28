@@ -2,10 +2,10 @@
   <div class="left-sidebar">
     <md-list class="top-list">
       <md-list-item class="edit-user-nav-item" to="/profile">
-        <md-avatar v-if="avatar">
+        <!-- <md-avatar v-if="avatar">
           <img :src="avatar"/>
         </md-avatar>
-        <md-icon v-else class="md-size-2x ca1">account_circle</md-icon>
+        <md-icon v-else class="md-size-2x ca1">account_circle</md-icon> -->
         <div class="md-list-item-text bold">
           {{ user.firstName }} {{ user.lastName}}
         </div>
@@ -105,13 +105,13 @@
       })
     },
     async mounted () {
-      if (this.user.email) {
-        this.getBeneficiaries(this.user.email)
-        let url = await this.getAvatarUrl(this.user._id)
-        this.validateUrl(url).then(response => {
-          this.avatar = response.data.validateUrl
-        }).catch(reason => reason)
-      }
+      // if (this.user.email) {
+      //   this.getBeneficiaries(this.user.email)
+      //   let url = await this.getAvatarUrl(this.user._id)
+      //   this.validateUrl(url).then(response => {
+      //     this.avatar = response.data.validateUrl
+      //   }).catch(reason => reason)
+      // }
     },
     watch: {
       async user () {
