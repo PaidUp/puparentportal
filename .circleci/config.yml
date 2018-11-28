@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:8.11.2
+      - image: circleci/node:8.9
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -37,7 +37,7 @@ jobs:
 
   deploy-develop:
     docker:
-      - image: circleci/node:8.11.2
+      - image: circleci/node:8.9
     environment:
         - APP_ENV: 'develop'
     working_directory: ~/tmp
@@ -64,7 +64,7 @@ jobs:
 
   deploy-stage:
     docker:
-      - image: circleci/node:8.11.2
+      - image: circleci/node:8.9
     environment:
         - APP_ENV: 'stage'
     working_directory: ~/tmp
@@ -91,7 +91,7 @@ jobs:
   
   deploy-production:
     docker:
-      - image: circleci/node:8.11.2
+      - image: circleci/node:8.9
     environment:
         - APP_ENV: 'production'
     working_directory: ~/tmp
