@@ -49,9 +49,9 @@ Vue.config.ignoredElements = [
 
 filters(Vue)
 
-Vue.config.errorHandler = function (err, vm, info) {
-  console.log('errHandler', err)
-}
+// Vue.config.errorHandler = function (err, vm, info) {
+//   console.log('errHandler', err)
+// }
 
 /* eslint-disable no-new */
 new Vue({
