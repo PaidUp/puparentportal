@@ -1,5 +1,5 @@
 <template>
-  <div class="left-sidebar" v-if="false">
+  <div class="left-sidebar">
     <md-list class="top-list">
       <md-list-item class="edit-user-nav-item" to="/profile">
         <md-avatar v-if="avatar">
