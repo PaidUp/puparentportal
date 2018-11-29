@@ -7,7 +7,7 @@
         </div>
 			</md-tab>
 			
-      <md-tab id="tab-plans" md-label="Program Payment Plans">
+      <md-tab id="tab-plans" v-if="false" md-label="Program Payment Plans">
 				<chap-product-plans></chap-product-plans>
 			</md-tab>
 

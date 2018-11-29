@@ -6,7 +6,7 @@
 				  <pu-player-card :item="item" v-for="item in items" :key="item.id"></pu-player-card>
         </div>
 			</md-tab>
-			<md-tab id="tab-plans" md-label="Program Payment Plans">
+			<md-tab id="tab-plans" md-label="Program Payment Plans" v-if="false">
 				<pu-product-plans></pu-product-plans>
 			</md-tab>
 		</md-tabs>

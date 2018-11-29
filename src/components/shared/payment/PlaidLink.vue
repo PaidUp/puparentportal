@@ -36,7 +36,6 @@ export default {
     publicKey: String,
     webhook: String,
     onSuccess: Function,
-    onExit: Function,
     onEvent: Function
   },
   created () {
@@ -68,6 +67,9 @@ export default {
       if (window.linkHandler) {
         window.linkHandler.open(institution)
       }
+    },
+    onExit (err, metadata) {
+      this.$emit('onExit', {err, metadata})
     }
   }
 }
