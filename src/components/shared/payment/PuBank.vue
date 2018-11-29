@@ -4,7 +4,7 @@
     :product="props.product" :selectAccount="props.selectAccount"
     :apiVersion='props.apiVersion' @onExit="onExit" :type="type" v-bind="{ onSuccess }"></plaid-link>
 
-    <md-dialog class="checkout-success-dialog" :md-active.sync="showDialog" :md-click-outside-to-close="false">
+    <md-dialog class="add-account-dialog" :md-active.sync="showDialog" :md-click-outside-to-close="false">
       <md-dialog-title>
         <md-icon class="md-size-c cgreen icon"> account_balance </md-icon>
         <br/>
@@ -36,14 +36,63 @@
       </div>
       <div class="bank_form">
         <md-field :class="{'md-invalid': $v.name.$error}">
-          <label>Name on Checking Account*</label>
+          <label :class="{'md-error': $v.name.$error}">Name on Checking Account*</label>
           <md-input v-model.trim="name" @input="$v.name.$touch()"></md-input>
-          <span class="md-error" v-if="!$v.name.required">{{ $t('validations.required', { field: 'Name' }) }}</span>
+          <!-- <span class="md-error" v-if="!$v.name.required">{{ $t('validations.required', { field: 'Name' }) }}</span> -->
+        </md-field>
+        
+        <md-field :class="{'md-invalid': $v.routingNumber.$error}">
+          <label :class="{'md-error': $v.routingNumber.$error}">Bank Routing Number*</label>
+          <md-input v-model.trim="routingNumber" @input="$v.routingNumber.$touch()"></md-input>
+          <!-- <span class="md-error" v-if="!$v.routingNumber.required">{{ $t('validations.required', { field: 'Routing Number' }) }}</span> -->
+        </md-field>
+        <md-field :class="{'md-invalid': $v.accountNumber.$error}">
+          <label :class="{'md-error': $v.accountNumber.$error}">Bank Routing Number*</label>
+          <md-input type="password" v-model.trim="accountNumber" @input="$v.accountNumber.$touch()"></md-input>
+          <!-- <span class="md-error" v-if="!$v.accountNumber.required">{{ $t('validations.required', { field: 'Account Number' }) }}</span> -->
+        </md-field>
+        <md-field :class="{'md-invalid': $v.confirmAccountNumber.$error}">
+          <label :class="{'md-error': $v.confirmAccountNumber.$error}">Re-Enter Bank Routing Number*</label>
+          <md-input type="password" v-model.trim="confirmAccountNumber" @input="$v.confirmAccountNumber.$touch()"></md-input>
+          <!-- <span class="md-error" v-if="!$v.confirmAccountNumber.required">{{ $t('validations.required', { field: 'Account Number' }) }}</span> -->
         </md-field>
       </div>
       <div class="actions">
         <div>
-          <md-button class="md-accent lblue" @click="showDialog = false">VIEW PAYMENT HISTORY</md-button>
+          <md-button class="md-accent lblue md-dense" @click="showDialog = false">Cancel</md-button>
+          <md-button :disabled="$v.$invalid" class="md-accent lblue md-dense md-raised" @click="showDialog = false; showDialogSuccess = true">Add Bank Account</md-button>
+        </div>
+      </div>
+        
+    </md-dialog>
+
+    <md-dialog class="add-account-success-dialog" :md-active.sync="showDialogSuccess" :md-click-outside-to-close="false">
+      <md-dialog-title>
+        <md-icon class="md-size-c cgreen icon"> check_circle </md-icon>
+        <br/>
+        Thank you for adding your bank account
+      </md-dialog-title>
+      <div class="text-instructions">
+        <div align="center" class="title">What Happens Next</div>
+        <ul>
+          <li>
+            For your security, we need to verify you are the owner of the checking account.
+          </li>
+          <li>
+            In 2-3 business days, we will make two smalls deposits into your bank account.
+          </li>
+          <li>
+            Please check your bank statement, visit our site and enter those amounts by clicking on your account under the “Payment Accounts” section in the menu.
+          </li>
+          <li>
+            Once verified, you will be able to use it for all future payments.
+          </li>
+        </ul>
+      </div>
+      
+      <div class="actions">
+        <div>
+          <md-button class="md-accent lblue md-dense" @click="showDialogSuccess = false">View Payment Account</md-button>
         </div>
       </div>
         
@@ -56,7 +105,7 @@
 <script>
 import PlaidLink from './PlaidLink.vue'
 import config from '@/config'
-import { required } from 'vuelidate/lib/validators'
+import { required, sameAs, numeric, minLength, maxLength } from 'vuelidate/lib/validators'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -67,9 +116,11 @@ export default {
     return {
       props: config.plaid,
       showDialog: false,
+      showDialogSuccess: false,
       name: '',
       routingNumber: '',
       accountNumber: '',
+      confirmAccountNumber: ''
     }
   },
   computed: {
@@ -103,10 +154,23 @@ export default {
     }
   },
   validations: {
-      name: {
-        required
-      }
+    name: {
+      required
+    },
+    routingNumber: {
+      required,
+      numeric,
+      minLength: minLength(9),
+      maxLength: maxLength(9)
+    },
+    accountNumber: {
+      required,
+      numeric
+    },
+    confirmAccountNumber: {
+      sameAsaccountNumber: sameAs('accountNumber')
     }
+  }
 }
 </script>
 <style>
