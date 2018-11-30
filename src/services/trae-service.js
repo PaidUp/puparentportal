@@ -10,7 +10,7 @@ const rejectMiddleware = (err) => {
     })
     router.push({name: 'login'})
   }
-  return Promise.reject(err)
+  return Promise.reject(err.data)
 }
 
 export default class Trae {

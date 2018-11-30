@@ -14,7 +14,9 @@ const module = {
     cards: [],
     bankAccounts: [],
     products: null,
-    plans: []
+    plans: [],
+    stripe: null,
+    cardElement: null
   },
 
   getters: {
@@ -24,6 +26,10 @@ const module = {
   },
 
   mutations: {
+    setStripe (state, stripe) {
+      state.stripe = stripe
+      state.cardElement = stripe.elements().create('card')
+    },
     clean (state) {
       state.playerSelected = null
       state.programSelected = {}
@@ -96,11 +102,15 @@ const module = {
             })
           }).then(userUpd => {
             resolve(userUpd)
+          }).catch(reason => {
+            reject(reason)
           })
         } else {
           paymentService.associateCard(user.externalCustomerId, token).then(card => {
             context.commit('pushCard', card)
             resolve(card)
+          }).catch(reason => {
+            reject(reason)
           })
         }
       })

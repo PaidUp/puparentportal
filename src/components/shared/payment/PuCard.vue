@@ -3,8 +3,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import config from '@/config'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -19,9 +17,6 @@ export default {
   },
   data () {
     return {
-      publicKey: config.stripe.publicKey,
-      stripe: null,
-      elements: null,
       card: null,
       stripeOptions: {
         // see https://stripe.com/docs/stripe.js#element-options for details
@@ -29,33 +24,28 @@ export default {
     }
   },
   computed: {
+    ...mapState('paymentModule', {
+      stripe: 'stripe',
+      cardElement: 'cardElement'
+    }),
     ...mapState('userModule', {
       user: 'user'
     })
   },
-  watch: {
-    elements () {
-      this.card = this.elements.create('card')
-      this.card.mount('#card-element')
-      this.card.on('change', event => {
+  mounted () {
+    if (this.cardElement) {
+      this.cardElement.mount('#card-element')
+      this.cardElement.on('change', event => {
         this.$emit('done', event.complete)
-      })
-    },
-    submited () {
-      this.stripe.createToken(this.card, this.details).then(resp => {
-        this.add(resp.token.id)
       })
     }
   },
-  created () {
-    Vue.loadScript('https://js.stripe.com/v3/')
-      .then(() => {
-        this.stripe = window.Stripe(config.stripe.publicKey)
-        this.elements = this.stripe.elements()
+  watch: {
+    submited () {
+      this.stripe.createToken(this.cardElement, this.details).then(resp => {
+        this.add(resp.token.id)
       })
-      .catch(() => {
-        console.log('There was an issue loading the link-initialize.js script')
-      })
+    }
   },
   methods: {
     ...mapActions('messageModule', {

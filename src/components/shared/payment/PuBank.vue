@@ -60,7 +60,7 @@
       <div class="actions">
         <div>
           <md-button class="md-accent lblue md-dense" @click="showDialog = false">Cancel</md-button>
-          <md-button :disabled="$v.$invalid" class="md-accent lblue md-dense md-raised" @click="showDialog = false; showDialogSuccess = true">Add Bank Account</md-button>
+          <md-button :disabled="$v.$invalid" class="md-accent lblue md-dense md-raised" @click="save">Add Bank Account</md-button>
         </div>
       </div>
         
@@ -115,6 +115,7 @@ export default {
   data () {
     return {
       props: config.plaid,
+      submited: false,
       showDialog: false,
       showDialogSuccess: false,
       name: '',
@@ -124,6 +125,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('paymentModule', {
+      stripe: 'stripe'
+    }),
     ...mapState('userModule', {
       user: 'user'
     })
@@ -136,6 +140,7 @@ export default {
     }),
     ...mapActions('paymentModule', {
       addBank: 'addBank',
+      addCard: 'addCard',
       listBanks: 'listBanks'
     }),
     onSuccess (publicToken, metadata) {
@@ -144,13 +149,34 @@ export default {
         this.listBanks(this.user)
         this.setSuccess('module.payment.add_bank_success')
       }).catch(reason => {
-        this.setSuccess('module.payment.add_bank_fail')
+        this.setDanger('module.payment.add_bank_fail')
       })
     },
-    onExit ({err, metadata}) {
-      console.log('err: ', err)
-      console.log('metadata: ', metadata)
+    onExit ({error, metadata}) {
+      if (error) console.log(error)
       this.showDialog = true
+    },
+    save () {
+      this.submited = true
+      this.stripe.createToken('bank_account', {
+        country: 'US',
+        currency: 'usd',
+        routing_number: this.routingNumber,
+        account_number: this.accountNumber,
+        account_holder_name: this.name,
+        account_holder_type: 'individual'
+      }).then(result => {
+        this.addCard({ token: result.token.id, user: this.user }).then(res => {
+          this.setSuccess('module.payment.add_bank_success')
+          this.submited = false
+          this.showDialog = false
+          this.showDialogSuccess = true
+        }).catch(reason => {
+          console.log('reason: ', reason.message)
+          const message = reason.message || 'module.payment.add_bank_fail'
+          this.setDanger(message)
+        })
+      })
     }
   },
   validations: {
