@@ -12,14 +12,27 @@
         <label>Name on Bank</label>
         <md-input v-model="bank.account_holder_name" disabled></md-input>
       </md-field>
-      <md-field>
-        <label>Country</label>
-        <md-input v-model="bank.country" disabled></md-input>
-      </md-field>
-      <md-field>
-        <label>Currency</label>
-        <md-input v-model="bank.currency" disabled></md-input>
-      </md-field>
+      <div v-if="bank.status === 'verified'">
+        <md-field >
+          <label>Country</label>
+          <md-input v-model="bank.country" disabled></md-input>
+        </md-field>
+        <md-field v-if="bank.status === 'verified'">
+          <label>Currency</label>
+          <md-input v-model="bank.currency" disabled></md-input>
+        </md-field>
+      </div>
+      <div v-else>
+        <md-field :class="{'md-invalid': $v.amount1.$error, 'md-focused': amount1Focus}">
+          <label :class="{'md-error': $v.amount1.$error}">Verify Deposit Amount 1 (in cents)</label>
+          <the-mask @focus.native="amount1Focus = true" @blur.native="amount1Focus = amount1.length" id="amountField" class="md-input" @input="$v.amount1.$touch()" mask="0.##" v-model.trim="amount1" type="numeric" :masked="true" placeholder=""></the-mask>
+        </md-field>
+        <md-field :class="{'md-invalid': $v.amount2.$error, 'md-focused': amount2Focus}">
+          <label :class="{'md-error': $v.amount2.$error}">Verify Deposit Amount 2 (in cents)</label>
+          <the-mask @focus.native="amount2Focus = true" @blur.native="amount2Focus = amount2.length" id="amountField" class="md-input" @input="$v.amount2.$touch()" mask="0.##" v-model.trim="amount2" type="numeric" :masked="true" placeholder=""></the-mask>
+        </md-field>
+      </div>
+      
     </div>
     <v-pay-animation :animate="submited" :result="{}" @finish="done" />
     <md-dialog-actions>
@@ -31,6 +44,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 import states from '@/util/states'
 export default {
@@ -41,6 +55,10 @@ export default {
   components: { VPayAnimation },
   data () {
     return {
+      amount1: null,
+      amount2: null,
+      amount1Focus: false,
+      amount2Focus: false,
       submited: false,
       states
     }
@@ -83,6 +101,18 @@ export default {
     },
     closeDialog () {
       this.$emit('close')
+    }
+  },
+  validations: {
+    amount1: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(4)
+    },
+    amount2: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(4)
     }
   }
 }

@@ -32,7 +32,7 @@
         <span class="md-error" v-if="!$v.email.email">{{ $t('validations.email') }}</span>
       </md-field>
       <md-field :class="{'md-invalid': $v.phone.$error, 'md-focused': phoneFocus}">
-        <label @click="alert('on focus')" for="phoneField">Phone</label>
+        <label for="phoneField">Phone</label>
         <!-- md-input v-model.trim="phone" @input="$v.phone.$touch()"></md-input-->
         <the-mask @focus.native="phoneFocus = true" @blur.native="phone.length === 0 ? phoneFocus = false : ''" id="phoneField" class="md-input" @input="$v.phone.$touch()" mask="(###) ###-####" v-model.trim="phone" type="tel" :masked="true" placeholder=""></the-mask>
         <span class="md-error" v-if="!$v.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: 10 }) }}</span>

@@ -47,12 +47,12 @@
           <!-- <span class="md-error" v-if="!$v.routingNumber.required">{{ $t('validations.required', { field: 'Routing Number' }) }}</span> -->
         </md-field>
         <md-field :class="{'md-invalid': $v.accountNumber.$error}">
-          <label :class="{'md-error': $v.accountNumber.$error}">Bank Routing Number*</label>
+          <label :class="{'md-error': $v.accountNumber.$error}">Bank Account Number*</label>
           <md-input type="password" v-model.trim="accountNumber" @input="$v.accountNumber.$touch()"></md-input>
           <!-- <span class="md-error" v-if="!$v.accountNumber.required">{{ $t('validations.required', { field: 'Account Number' }) }}</span> -->
         </md-field>
         <md-field :class="{'md-invalid': $v.confirmAccountNumber.$error}">
-          <label :class="{'md-error': $v.confirmAccountNumber.$error}">Re-Enter Bank Routing Number*</label>
+          <label :class="{'md-error': $v.confirmAccountNumber.$error}">Re-Enter Bank Account Number*</label>
           <md-input type="password" v-model.trim="confirmAccountNumber" @input="$v.confirmAccountNumber.$touch()"></md-input>
           <!-- <span class="md-error" v-if="!$v.confirmAccountNumber.required">{{ $t('validations.required', { field: 'Account Number' }) }}</span> -->
         </md-field>
@@ -60,7 +60,7 @@
       <div class="actions">
         <div>
           <md-button class="md-accent lblue md-dense" @click="showDialog = false">Cancel</md-button>
-          <md-button :disabled="$v.$invalid" class="md-accent lblue md-dense md-raised" @click="save">Add Bank Account</md-button>
+          <md-button :disabled="$v.$invalid || submited" class="md-accent lblue md-dense md-raised" @click="save">Add Bank Account</md-button>
         </div>
       </div>
         
@@ -97,6 +97,7 @@
       </div>
         
     </md-dialog>
+    <v-pay-animation :animate="submited" :result="source" @finish="closeDialog" />
   </div>
   
 
@@ -105,10 +106,12 @@
 <script>
 import PlaidLink from './PlaidLink.vue'
 import config from '@/config'
+import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 import { required, sameAs, numeric, minLength, maxLength } from 'vuelidate/lib/validators'
 import { mapState, mapActions } from 'vuex'
 
 export default {
+  components: { PlaidLink, VPayAnimation },
   props: {
     type: String
   },
@@ -121,7 +124,8 @@ export default {
       name: '',
       routingNumber: '',
       accountNumber: '',
-      confirmAccountNumber: ''
+      confirmAccountNumber: '',
+      source: null
     }
   },
   computed: {
@@ -132,7 +136,6 @@ export default {
       user: 'user'
     })
   },
-  components: { PlaidLink },
   methods: {
     ...mapActions('messageModule', {
       setSuccess: 'setSuccess',
@@ -156,6 +159,19 @@ export default {
       if (error) console.log(error)
       this.showDialog = true
     },
+    reset () {
+      this.name = ''
+      this.routingNumber = ''
+      this.accountNumber = ''
+      this.confirmAccountNumber = ''
+      this.source = null
+      this.$v.$reset()
+    },
+    closeDialog () {
+      if (this.source) {
+        this.reset()
+      }
+    },
     save () {
       this.submited = true
       this.stripe.createToken('bank_account', {
@@ -166,16 +182,26 @@ export default {
         account_holder_name: this.name,
         account_holder_type: 'individual'
       }).then(result => {
-        this.addCard({ token: result.token.id, user: this.user }).then(res => {
+        if (result.error) {
+          this.submited = false
+          const message = result.error.message || 'module.payment.add_bank_fail'
+          this.setDanger(message)
+          return false
+        }
+        this.addCard({ token: result.token.id, user: this.user }).then(source => {
           this.setSuccess('module.payment.add_bank_success')
           this.submited = false
           this.showDialog = false
           this.showDialogSuccess = true
+          this.source = source
         }).catch(reason => {
           console.log('reason: ', reason.message)
+          this.submited = false
           const message = reason.message || 'module.payment.add_bank_fail'
           this.setDanger(message)
         })
+      }).catch(reason => {
+        console.log('reason: ', reason.message)
       })
     }
   },

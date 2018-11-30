@@ -10,7 +10,6 @@ const module = {
     paymentPlanSelected: null,
     paymentAccountSelected: null,
     dues: {},
-
     cards: [],
     bankAccounts: [],
     products: null,
@@ -56,6 +55,9 @@ const module = {
     },
     pushCard (state, card) {
       state.cards.push(card)
+    },
+    pushBankAccount (state, bankAccount) {
+      state.bankAccounts.push(bankAccount)
     },
     delCard (state, cardId) {
       state.cards = state.cards.filter(card => {
@@ -106,9 +108,13 @@ const module = {
             reject(reason)
           })
         } else {
-          paymentService.associateCard(user.externalCustomerId, token).then(card => {
-            context.commit('pushCard', card)
-            resolve(card)
+          paymentService.associateCard(user.externalCustomerId, token).then(source => {
+            if (source.object === 'card') {
+              context.commit('pushCard', source)
+            } else if (source.object === 'bank_account') {
+              context.commit('pushBankAccount', source)
+            }
+            resolve(source)
           }).catch(reason => {
             reject(reason)
           })
