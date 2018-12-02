@@ -1,3 +1,5 @@
+import graphqlClient from '@/util/graphql'
+import gql from 'graphql-tag'
 import { paymentService, organizationService, productService, commerceService } from '@/services'
 
 const module = {
@@ -218,6 +220,25 @@ const module = {
     },
     updateInvoice (context, { id, values }) {
       return commerceService.updateInvoice({ id, values })
+    },
+    verifySource ({ commit }, {customerId, sourceId, amounts}) {
+      return graphqlClient.mutate({
+        variables: { customerId, sourceId, amounts },
+        mutation: gql`
+        mutation vefifySource(
+          $customerId: String!
+          $sourceId: String!
+          $amounts: [Int!]
+        ) {
+          verifySource(customerId: $customerId, sourceId: $sourceId, amounts: $amounts) {
+            id
+            account_holder_name
+            bank_name
+            last4
+          }
+        }
+        `
+      })
     }
   }
 }

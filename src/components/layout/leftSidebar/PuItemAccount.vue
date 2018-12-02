@@ -9,6 +9,7 @@ md-list-item(@click="click")
       span {{ title }}
       br
       span.caption {{ description }}
+  span.notification-number(v-if="item.status === 'new'") !
 </template>
 <script>
 export default {

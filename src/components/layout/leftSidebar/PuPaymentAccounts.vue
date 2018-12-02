@@ -11,7 +11,7 @@ md-list-item(md-expand :md-expanded.sync="expand")
     pu-bank(type="item")
   add-card-dialog(:showDialog="showAddCardDialog" @close="showAddCardDialog = false")
   del-card-dialog(:card="cardSelected" :showDialog="showDelCardDialog" @close="close")
-  del-bank-dialog(:bank="bankSelected" :showDialog="showDelBankDialog" @close="closeBankDialog")
+  del-bank-dialog(:bank="bankSelected" :showDialog="showDelBankDialog" @close="closeBankDialog" @verified="closeBankDialogVerify")
 </template>
 <script>
 import PuItem from './PuItem.vue'
@@ -99,6 +99,14 @@ export default {
           return this.setSuccess('component.left_side_bar.del_bank_success')
         }
         return this.setWarning('component.left_side_bar.del_bank_fail')
+      }
+    },
+    closeBankDialogVerify ({response, error}) {
+      this.showDelBankDialog = false
+      if (error) {
+        this.setWarning(error.graphQLErrors[0].message)
+      } else {
+        this.setSuccess('component.left_side_bar.verify_bank_success')
       }
     }
   }
