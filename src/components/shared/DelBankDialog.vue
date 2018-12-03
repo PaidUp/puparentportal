@@ -1,5 +1,5 @@
 <template>
-  <md-dialog :md-active.sync="showDialog" class="add-card-dialog" :md-close-on-esc="false" :md-click-outside-to-close="false">
+  <md-dialog v-if="bank" :md-active.sync="showDialog" class="add-card-dialog" :md-close-on-esc="false" :md-click-outside-to-close="false">
     <div class="dialog-header white-dialog-header">
       <div class="title">Bank Details</div>
     </div>
@@ -73,7 +73,7 @@ export default {
       user: 'user'
     }),
     bankDescription () {
-      if (this.bank.last4) return `${this.bank.bank_name}••••${this.bank.last4}`
+      if (this.bank && this.bank.last4) return `${this.bank.bank_name}••••${this.bank.last4}`
       return ''
     }
   },
@@ -120,9 +120,8 @@ export default {
         sourceId: this.bank.id,
         amounts: [parseInt(this.amount1), parseInt(this.amount2)]
       }).then(res => {
-        this.submitedVerify = false
         this.verifiedResult = res
-        this.listBanks(this.user)
+        this.submitedVerify = false
       }).catch(reason => {
         this.verifiedResultError = reason
         this.submitedVerify = false

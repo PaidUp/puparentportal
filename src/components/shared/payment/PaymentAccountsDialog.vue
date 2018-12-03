@@ -35,14 +35,17 @@
       <pu-bank type="button"></pu-bank>
     </md-dialog-actions>
     <add-card-dialog :showDialog="showAddCardDialog" @close="showAddCardDialog = false"></add-card-dialog>
+    <del-bank-dialog :bank="bankSelected" :showDialog="showDelBankDialog" @close="closeBankDialog" @verified="closeBankDialogVerify"></del-bank-dialog>
   </md-dialog>
 </template>
 
 <script>
   import AddCardDialog from '@/components/shared/AddCardDialog.vue'
   import PuBank from '@/components/shared/payment/PuBank.vue'
+  import DelBankDialog from '@/components/shared/DelBankDialog.vue'
+  import { mapState, mapActions } from 'vuex'
   export default {
-    components: { AddCardDialog, PuBank },
+    components: { AddCardDialog, PuBank, DelBankDialog },
     props: {
       accounts: Array,
       showDialog: Boolean,
@@ -52,15 +55,37 @@
       return {
         title: 'Edit Invoice',
         show: false,
-        showAddCardDialog: false
+        bankSelected: null,
+        showAddCardDialog: false,
+        showDelBankDialog: false
       }
     },
     methods: {
+      ...mapActions('messageModule', {
+        setSuccess: 'setSuccess',
+        setWarning: 'setWarning'
+      }),
       selectAccount (account) {
+        if (account.status === 'new') {
+          this.bankSelected = account
+          this.showDelBankDialog = true
+          return false
+        }
         if (account) {
           this.$emit('selected', account)
         }
         this.show = false
+      },
+      closeBankDialog () {},
+      closeBankDialogVerify ({response, error}) {
+        this.showDelBankDialog = false
+        if (error) {
+          this.setWarning(error.graphQLErrors[0].message)
+        } else {
+          this.$emit('selected', this.bankSelected)
+          this.show = false
+          this.setSuccess('component.left_side_bar.verify_bank_success')
+        }
       }
     },
     watch: {
@@ -77,6 +102,9 @@
       }
     },
     computed: {
+      ...mapState('userModule', {
+        user: 'user'
+      })
     }
   }
 </script>

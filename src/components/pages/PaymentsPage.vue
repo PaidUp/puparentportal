@@ -134,7 +134,8 @@
       ...mapActions('paymentModule', {
         getPlans: 'getPlans',
         getProducts: 'getProducts',
-        checkout: 'checkout'
+        checkout: 'checkout',
+        listBanks: 'listBanks'
       }),
       ...mapActions('messageModule', {
         setWarning: 'setWarning',
@@ -205,6 +206,7 @@
           this.checkoutResult = res
           this.getBeneficiaries(this.user.email).then(res => {
             this.setSuccess('component.payment.done')
+            this.listBanks(this.user)
             this.processing = false
           })
         }).catch(reason => {

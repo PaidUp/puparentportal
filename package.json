@@ -15,9 +15,10 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
     "build": "node build/build.js",
     "build-theme": "sass --style expanded build/theme-input.scss src/style/theme.css",
-    "build-dev": "export APP_ENV=develop && cp src/config/development.js src/config/index.js && npm run build",
-    "build-stg": "export APP_ENV=develop && cp src/config/stage.js src/config/index.js && npm run build",
-    "build-prod": "export APP_ENV=production && cp src/config/production.js src/config/index.js && npm run build"
+    "build-dev": "export APP_ENV=develop && cp -f src/config/development.js src/config/index.js && npm run build && cp -f src/config/index.base.js src/config/index.js",
+    "build-stg": "export APP_ENV=develop && cp src/config/stage.js src/config/index.js && npm run build && cp src/config/index.base.js src/config/index.js",
+    "build-prod": "export APP_ENV=production && cp src/config/production.js src/config/index.js && npm run build && cp src/config/index.base.js src/config/index.js",
+    "deploy-dev": "ansible-playbook ansible/develop.yml"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.3.6",
