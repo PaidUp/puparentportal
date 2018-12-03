@@ -18,7 +18,9 @@
     "build-dev": "export APP_ENV=develop && cp -f src/config/development.js src/config/index.js && npm run build && cp -f src/config/index.base.js src/config/index.js",
     "build-stg": "export APP_ENV=develop && cp src/config/stage.js src/config/index.js && npm run build && cp src/config/index.base.js src/config/index.js",
     "build-prod": "export APP_ENV=production && cp src/config/production.js src/config/index.js && npm run build && cp src/config/index.base.js src/config/index.js",
-    "deploy-dev": "ansible-playbook ansible/develop.yml"
+    "deploy-dev": "ansible-playbook ansible/develop.yml",
+    "deploy-stg": "ansible-playbook ansible/stage.yml",
+    "deploy-prd": "ansible-playbook ansible/production.yml"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.3.6",
