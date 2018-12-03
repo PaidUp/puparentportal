@@ -1,0 +1,20 @@
+- hosts: localhost
+  connection: local  
+  tasks:
+    - name: Install dependencies
+      command: npm install
+
+    - name: Build project
+      command: npm run build-stg
+      args:
+        chdir: '../'
+
+    - name: Deploy files to s3
+      command: aws s3 sync dist/ s3://stg-pp.getpaidup.com --delete
+      args:
+        chdir: '../'
+
+    - name: Clean aws cloudfront cache
+      command: aws cloudfront create-invalidation --distribution-id E1KZW0VLN8DNRE --paths /index.html /static
+      args:
+        chdir: '../'
