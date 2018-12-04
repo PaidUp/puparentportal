@@ -156,6 +156,7 @@ export default {
       })
     },
     onExit ({error, metadata}) {
+      console.log('on exit')
       if (error) console.log(error)
       this.showDialog = true
     },

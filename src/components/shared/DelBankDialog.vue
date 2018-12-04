@@ -121,7 +121,9 @@ export default {
         amounts: [parseInt(this.amount1), parseInt(this.amount2)]
       }).then(res => {
         this.verifiedResult = res
-        this.submitedVerify = false
+        this.listBanks(this.user).then(res => {
+          this.submitedVerify = false
+        })
       }).catch(reason => {
         this.verifiedResultError = reason
         this.submitedVerify = false

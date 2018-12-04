@@ -148,14 +148,14 @@ const module = {
     },
     listCards (context, user) {
       if (user.externalCustomerId) {
-        paymentService.listCards(user.externalCustomerId).then(cards => {
+        return paymentService.listCards(user.externalCustomerId).then(cards => {
           context.commit('setCards', cards.data)
         })
       }
     },
     listBanks (context, user) {
       if (user.externalCustomerId) {
-        paymentService.listBanks(user.externalCustomerId).then(banks => {
+        return paymentService.listBanks(user.externalCustomerId).then(banks => {
           context.commit('setBankAccounts', banks.data)
         })
       }

@@ -49,7 +49,8 @@ export default {
   },
   methods: {
     ...mapActions('messageModule', {
-      setSuccess: 'setSuccess'
+      setSuccess: 'setSuccess',
+      setDanger: 'setDanger'
     }),
     ...mapActions('paymentModule', {
       addCard: 'addCard'
@@ -59,6 +60,10 @@ export default {
         this.$emit('token', res)
         this.setSuccess('module.payment.add_card_success')
         this.complete = true
+      }).catch(reason => {
+        this.setDanger(reason.message)
+        this.complete = true
+        this.$emit('token', null)
       })
     }
   }

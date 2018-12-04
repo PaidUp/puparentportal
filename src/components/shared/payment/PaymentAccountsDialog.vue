@@ -76,7 +76,9 @@
         }
         this.show = false
       },
-      closeBankDialog () {},
+      closeBankDialog () {
+        this.showDelBankDialog = false
+      },
       closeBankDialogVerify ({response, error}) {
         this.showDelBankDialog = false
         if (error) {

@@ -65,7 +65,7 @@
           return this.invoice.attempts.reduce((curr, att) => {
             if (att.object === 'charge' && att.status === 'succeeded') {
               if (typeof att.created === 'number') curr = moment.unix(att.created)
-              else curr = new Date(att.create)
+              else curr = new Date(att.created)
             }
             return curr
           }, new Date(this.invoice.dateCharge))
