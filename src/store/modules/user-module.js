@@ -218,6 +218,23 @@ const module = {
       `
       })
     },
+    updateUser (context, {id, values}) {
+      return graphqlClient.mutate({
+        variables: { id, values },
+        mutation: gql`
+        mutation userUpdate($id: String!, $values: UpdateUser!) {
+          userUpdate(id: $id, values: $values) {
+            _id,
+            firstName
+            lastName
+            email
+            phone
+            pendingSignup
+          }
+        }
+      `
+      })
+    },
     logout (context) {
       return userService
         .logout()

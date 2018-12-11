@@ -1,4 +1,5 @@
 <template>
+  <div @click="click(parent)">
     <md-card class="card-person">
       <md-avatar class="md-large" v-if="avatar">
         <img :src="avatar" @error="showAvatar = false"/>
@@ -8,6 +9,7 @@
       <div class="title-info">{{parent.email}}</div>
       <div class="title-info">{{parent.phone | formatPhone}}</div>
     </md-card>
+  </div>
 </template>
 <script>
 import { mapActions } from 'vuex'
@@ -36,7 +38,10 @@ export default {
     }),
     ...mapActions('userModule', {
       getAvatarUrl: 'getAvatarUrl'
-    })
+    }),
+    click (parent) {
+      this.$emit('click', parent)
+    }
   }
 }
 </script>

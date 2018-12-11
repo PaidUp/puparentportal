@@ -1,7 +1,7 @@
 <template>
   <md-dialog :md-active.sync="showDialog" class="edit-parent-dialog small" :md-close-on-esc="false" :md-click-outside-to-close="false">
     <div class="dialog-header white-dialog-header">
-      <div class="title">Edit Parent</div>
+      <div class="title">Add New Parent</div>
     </div>
     <div class="common-player-info">
       <md-icon class="md-size-3x ca1">account_circle</md-icon>
@@ -25,9 +25,11 @@
       </md-field>
     </div>
     <div class="field-box"> 
-      <md-field>
+      <md-field :class="{'md-invalid': $v.email.$error}">
         <label>Email</label>
-        <md-input v-model.trim="email" :disabled="true"></md-input>
+        <md-input v-model.trim="email" @input="$v.email.$touch()"></md-input>
+        <span class="md-error" v-if="!$v.email.required">{{ $t('validations.required', { field: 'Email' }) }}</span>
+        <span class="md-error" v-if="!$v.email.email">{{ $t('validations.email') }}</span>
       </md-field>
       <md-field :class="{'md-invalid': $v.phone.$error, 'md-focused': phoneFocus}">
         <label for="phoneField">Phone</label>
@@ -45,47 +47,36 @@
         <md-button class="md-accent lblue md-raised" :disabled="disableSaveButton" @click="save">SAVE</md-button>
       </div>
     </div>
-    <v-pay-animation :animate="submited" :result="userUpdated" @finish="completed" />
+    <v-pay-animation :animate="submited" :result="userCreated" @finish="completed" />
   </md-dialog>
 </template>
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import { required, minLength } from 'vuelidate/lib/validators'
+  import { required, email, minLength } from 'vuelidate/lib/validators'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
   export default {
     components: { VPayAnimation },
     props: {
       beneficiaryId: String,
-      parent: Object,
       showDialog: Boolean
     },
     data () {
       return {
-        id: '',
         firstName: '',
         lastName: '',
         email: '',
         phone: '',
         submited: false,
         deleteAction: false,
-        phoneFocus: true,
-        userUpdated: null
+        phoneFocus: false,
+        userCreated: null
       }
     },
     watch: {
       showDialog () {
         if (!this.showDialog) {
           this.reset()
-        }
-      },
-      parent () {
-        if (this.parent) {
-          this.id = this.parent._id
-          this.firstName = this.parent.firstName
-          this.lastName = this.parent.lastName
-          this.phone = this.parent.phone ? this.parent.phone.slice(-10) : ''
-          this.email = this.parent.email
         }
       }
     },
@@ -103,9 +94,12 @@
         return this.submited || this.$v.$invalid
       }
     },
+    async mounted () {
+  
+    },
     methods: {
       ...mapActions('userModule', {
-        updateUser: 'updateUser'
+        createUser: 'createUser'
       }),
       ...mapActions('commonModule', {
         validateUrl: 'validateUrl'
@@ -115,7 +109,7 @@
         setWarning: 'setWarning'
       }),
       completed () {
-        const usr = JSON.parse(JSON.stringify(this.userUpdated))
+        const usr = JSON.parse(JSON.stringify(this.userCreated))
         this.$emit('completed', usr)
       },
       close () {
@@ -126,26 +120,41 @@
         this.lastName = ''
         this.email = ''
         this.phone = ''
+        this.userCreated = null
         this.$v.$reset()
       },
       save () {
         this.submited = true
         const params = {
-          id: this.id,
-          values: {
+          beneficiaryId: this.beneficiaryId,
+          user: {
             firstName: this.firstName,
             lastName: this.lastName,
+            email: this.email,
             phone: this.phone ? `1${this.phone.replace(/\D/g, '').slice(-10)}` : ''
           }
         }
-        this.updateUser(params).then(res => {
+        this.createUser(params).then(res => {
           this.submited = false
-          this.setSuccess('Parent updated successfully')
-          this.userUpdated = res.data.userUpdate
+          this.setSuccess('Parent created successfully')
+          this.userCreated = res.data.userCreate
         }).catch(err => {
           this.submited = false
           const message = (err.message && err.message.indexOf('The specified email address is already in use') > -1) ? 'module.user.email_address_in_use' : 'common.error.default'
           this.setWarning(message)
+        })
+      },
+      remove () {
+        this.submited = true
+        this.deleteBeneficiary(this.player._id)
+        .then(resp => {
+          this.submited = false
+          this.getBeneficiaries(this.user.email).then(resp => {
+            this.$router.push({name: 'home'})
+          })
+        }).catch(reason => {
+          console.log(reason)
+          this.submited = false
         })
       }
     },
@@ -155,6 +164,10 @@
       },
       lastName: {
         required
+      },
+      email: {
+        required,
+        email
       },
       phone: {
         minLength: minLength(14)

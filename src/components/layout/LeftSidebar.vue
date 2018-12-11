@@ -105,7 +105,7 @@
       })
     },
     async mounted () {
-      if (this.user.email) {
+      if (this.user && this.user.email && this.user.roles.includes('parent')) {
         this.getBeneficiaries(this.user.email)
         let url = await this.getAvatarUrl(this.user._id)
         this.validateUrl(url).then(response => {
@@ -117,11 +117,13 @@
     },
     watch: {
       async user () {
-        this.getBeneficiaries(this.user.email)
-        let url = await this.getAvatarUrl(this.user._id)
-        this.validateUrl(url).then(response => {
-          this.avatar = response.data.validateUrl
-        }).catch(reason => reason)
+        if (this.user.roles.includes('parent')) {
+          this.getBeneficiaries(this.user.email)
+          let url = await this.getAvatarUrl(this.user._id)
+          this.validateUrl(url).then(response => {
+            this.avatar = response.data.validateUrl
+          }).catch(reason => reason)
+        }
       }
     },
     methods: {
