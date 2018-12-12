@@ -67,6 +67,9 @@
         <md-table-cell md-label="Total Fee">
           ${{item.totalFee}}
         </md-table-cell>
+        <md-table-cell md-label="Adjustment">
+          ${{item.adjustment}}
+        </md-table-cell>
         <md-table-cell md-label="Net Deposit">
           ${{item.netDeposit}}
         </md-table-cell>
@@ -224,21 +227,21 @@
         this.programs = Array.from(programs).sort()
         this.tags = Array.from(tags1).sort()
         this.getTransfersFiltered()
-      },
-      user () {
-        this.loading = true
-        this.getOrganization(this.user.organizationId).then(organization => {
-          this.organization = organization
-          this.fetchBalanceHistory({
-            account: organization.connectAccount,
-            arrival: this.arrival,
-            source: this.source
-          }).then(transfers => {
-            this.transfers = transfers
-            this.loading = false
-          })
-        })
-      }
+      } // ,
+      // user () {
+      //   this.loading = true
+      //   this.getOrganization(this.user.organizationId).then(organization => {
+      //     this.organization = organization
+      //     this.fetchBalanceHistory({
+      //       account: organization.connectAccount,
+      //       arrival: this.arrival,
+      //       source: this.source
+      //     }).then(transfers => {
+      //       this.transfers = transfers
+      //       this.loading = false
+      //     })
+      //   })
+      // }
     },
     methods: {
       ...mapActions('organizationModule', {
