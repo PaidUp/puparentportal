@@ -42,16 +42,18 @@
           <md-input v-model.trim="cpassword" @input="$v.cpassword.$touch()" type="password"></md-input>
           <span class="md-error" v-if="!$v.cpassword.sameAsPassword">{{ $t('validations.identical', { field: 'Password' }) }}</span>
         </md-field>
-        <md-field :class="{'md-invalid': $v.phone.$error}">
-          <label>Phone Number</label>
-          <md-input v-model.trim="phone" @input="$v.phone.$touch()" type="number" :disabled="!editPhone"></md-input>
+
+        <md-field :class="{'md-invalid': $v.phone.$error, 'md-focused': phoneFocus}">
+          <label for="phoneField">Phone Number</label>
+          <the-mask :disabled="!editPhone" @focus.native="phoneFocus = true" @blur.native="phone.length === 0 ? phoneFocus = false : ''" id="phoneField" class="md-input" @input="$v.phone.$touch()" mask="(###) ###-####" v-model.trim="phone" type="tel" :masked="true" placeholder=""></the-mask>
           <span v-show="!editPhone" @click="editPhone = true">
             <md-icon>editable</md-icon>
           </span>
-          <span class="md-error" v-if="!$v.phone.required">{{ $t('validations.required', { field: 'Phone' }) }}</span>
-          <span class="md-error" v-if="!$v.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: $v.phone.$params.minLength.min }) }}</span>
-          <span class="md-error" v-if="!$v.phone.numeric">{{ $t('validations.numeric', { field: 'Phone' }) }} </span>
+          <span class="md-error" v-if="!$v.phone.required">{{ $t('validations.required', { field: 'Phone' }) }}</span>          
+          <span class="md-error" v-if="!$v.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: 10 }) }}</span>
         </md-field>
+
+
         <div class="actions-box" v-show="showSaveButton">
           <md-button class="md-accent lblue" @click="reset" >CANCEL</md-button>
           <md-button class="md-accent lblue md-raised" @click="submmit" :disabled="disableSaveButton">SAVE</md-button>
@@ -69,13 +71,14 @@
 
 <script>
   import { mapState, mapMutations, mapActions } from 'vuex'
-  import { required, email, minLength, sameAs, numeric } from 'vuelidate/lib/validators'
+  import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
   import UpdateAvatar from '@/components/shared/UpdateAvatar.vue'
   import config from '@/config'
   export default {
     components: { UpdateAvatar },
     data: function () {
       return {
+        phoneFocus: true,
         url: config.api.user + '/avatar',
         firstName: '',
         lastName: '',
@@ -169,7 +172,7 @@
           this.firstName = this.user.firstName
           this.lastName = this.user.lastName
           this.email = this.user.email
-          this.phone = this.user.phone
+          this.phone = this.user.phone.replace(/\D/g, '').slice(-10)
           let url = await this.getAvatarUrl(this.user._id)
           this.validateUrl(url).then(response => {
             this.avatar = response.data.validateUrl
@@ -192,9 +195,8 @@
         email
       },
       phone: {
-        numeric,
         required,
-        minLength: minLength(10)
+        minLength: minLength(14)
       }
 
     }

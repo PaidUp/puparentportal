@@ -23,12 +23,8 @@ const module = {
       return productService.getProduct(id)
     },
     loadParents (context, beneficiary) {
-      let parentsPromise = []
       if (beneficiary.assigneesEmail) {
-        beneficiary.assigneesEmail.forEach(email => {
-          parentsPromise.push(userService.getByEmail(email))
-        })
-        Promise.all(parentsPromise).then(values => {
+        userService.getUsersByEmails(beneficiary.assigneesEmail).then(values => {
           context.commit('setParents', values)
         })
       } else {

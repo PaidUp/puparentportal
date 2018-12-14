@@ -8,7 +8,7 @@
         </md-button>
       </div>
     </div>
-    <v-add-parent-dialog :beneficiary-id="playerSelectedObj._id" :show-dialog="showDialog" @close="showDialog = false" @completed="reloadParents"></v-add-parent-dialog>
+    <v-add-parent-dialog :beneficiary="playerSelectedObj" :show-dialog="showDialog" @close="showDialog = false" @completed="reloadParents"></v-add-parent-dialog>
     <v-edit-parent-dialog :beneficiary-id="playerSelectedObj._id" :parent="parentSelected" :show-dialog="showDialogEdit" @close="closeDialogEdit" @completed="reloadParents"></v-edit-parent-dialog>
   </div>
 </template>
@@ -16,7 +16,7 @@
 import VParentCard from './VParentCard.vue'
 import VAddParentDialog from './VAddParentDialog.vue'
 import VEditParentDialog from './VEditParentDialog.vue'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   components: { VParentCard, VAddParentDialog, VEditParentDialog },
   data () {
@@ -29,7 +29,7 @@ export default {
   },
   async mounted () {
     if (this.playerSelectedObj) {
-      this.parents = await this.getParentsByEmails(this.playerSelectedObj.assigneesEmail)
+      this.parents = await this.getParentsByEmailsObj(this.playerSelectedObj.assigneesEmail)
     }
   },
   computed: {
@@ -39,12 +39,16 @@ export default {
   },
   watch: {
     async playerSelectedObj () {
-      this.parents = await this.getParentsByEmails(this.playerSelectedObj.assigneesEmail)
+      this.parents = await this.getParentsByEmailsObj(this.playerSelectedObj.assigneesEmail)
     }
   },
   methods: {
     ...mapActions('userModule', {
-      getParentsByEmails: 'getParentsByEmails'
+      getParentsByEmails: 'getParentsByEmails',
+      getParentsByEmailsObj: 'getParentsByEmailsObj'
+    }),
+    ...mapMutations('playerInvoicesModule', {
+      setParents: 'setParents'
     }),
     closeDialogEdit () {
       this.showDialogEdit = false
@@ -57,7 +61,11 @@ export default {
     reloadParents (usr) {
       this.playerSelectedObj.assigneesEmail.push(usr.email)
       this.getParentsByEmails(this.playerSelectedObj.assigneesEmail).then(parents => {
-        this.parents = parents
+        this.setParents(parents)
+        this.parents = parents.reduce((curr, user) => {
+          curr[user.email] = user
+          return curr
+        }, {})
       })
       this.showDialog = false
       this.showDialogEdit = false

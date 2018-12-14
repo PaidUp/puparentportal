@@ -28,13 +28,16 @@
       <md-input v-model.trim="confirmPassword" @input="$v.confirmPassword.$touch()" type="password"></md-input>
       <span class="md-error" v-if="!$v.confirmPassword.sameAsPassword">{{ $t('validations.identical', { field: 'Password' }) }}</span>
     </md-field>
-    <md-field :class="{'md-invalid': $v.userForm.phone.$error}">
-      <label>{{ $t('component.signup.phone') }}</label>
-      <md-input v-model="userForm.phone" type="number" @input="$v.userForm.phone.$touch()"></md-input>
-      <span class="md-error" v-if="!$v.userForm.phone.required">{{ $t('validations.required', { field: 'Phone' }) }}</span>      
-      <span class="md-error" v-if="!$v.userForm.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: $v.userForm.phone.$params.minLength.min }) }}</span>
-      <span class="md-error" v-if="!$v.userForm.phone.numeric">{{ $t('validations.numeric', { field: 'Phone' }) }} </span>
-    </md-field>
+
+    <md-field :class="{'md-invalid': $v.userForm.phone.$error, 'md-focused': phoneFocus}">
+        <label for="phoneField">{{ $t('component.signup.phone') }}</label>
+        <the-mask @focus.native="phoneFocus = true" @blur.native="userForm.phone.length === 0 ? phoneFocus = false : ''" id="phoneField" class="md-input" @input="$v.userForm.phone.$touch()" mask="(###) ###-####" v-model.trim="userForm.phone" type="tel" :masked="true" placeholder=""></the-mask>
+        <span class="md-error" v-if="!$v.userForm.phone.required">{{ $t('validations.required', { field: 'Phone' }) }}</span>
+        <span class="md-error" v-if="!$v.userForm.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: 10 }) }}</span>
+      </md-field>
+
+
+
     <md-checkbox v-model="agree" class="lblue bold">
       {{ $t('component.signup.terms.agree') }}
       <a href="https://getpaidup.com/terms-of-service/" target="_blank" class="clblue">{{ $t('component.signup.terms.ts') }}</a>
@@ -52,11 +55,12 @@
 </template>
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import { required, email, minLength, sameAs, numeric } from 'vuelidate/lib/validators'
+  import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
   import capitalize from '@/helpers/capitalize'
   export default {
     data () {
       return {
+        phoneFocus: false,
         agree: false,
         confirmPassword: '',
         userForm: {
@@ -109,6 +113,9 @@
         if (!this.agree) {
           return this.setWarning('validations.agree')
         }
+        if (this.userForm.phone) {
+          this.userForm.phone = `1${this.userForm.phone.replace(/\D/g, '').slice(-10)}`
+        }
         this.signup(this.userForm)
       }
     },
@@ -134,9 +141,8 @@
           required
         },
         phone: {
-          numeric,
           required,
-          minLength: minLength(10)
+          minLength: minLength(14)
         }
       }
     }

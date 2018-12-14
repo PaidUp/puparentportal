@@ -1,5 +1,7 @@
 import Trae from '@/services/trae-service'
 import config from '@/config'
+import gql from 'graphql-tag'
+import graphqlClient from '@/util/graphql'
 
 const trae = new Trae(config.api.user)
 
@@ -55,6 +57,22 @@ class UserService {
   verifyResetToken (token) {
     return trae
       .get(`/reset/${token}`)
+  }
+
+  async getUsersByEmails (emails) {
+    const response = await graphqlClient.query({
+      query: gql`query getUsersByEmails($emails: [String]!) {
+          getUsersByEmails(emails: $emails) {
+            _id
+            firstName
+            lastName
+            email
+            phone
+          }
+        }`,
+      variables: { emails }
+    })
+    return response.data.getUsersByEmails
   }
 }
 
