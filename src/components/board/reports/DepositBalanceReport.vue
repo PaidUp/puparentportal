@@ -67,9 +67,9 @@
         <md-table-cell md-label="Total Fee">
           ${{item.totalFee}}
         </md-table-cell>
-        <md-table-cell md-label="Adjustment">
+        <!-- <md-table-cell md-label="Adjustment">
           ${{item.adjustment}}
-        </md-table-cell>
+        </md-table-cell> -->
         <md-table-cell md-label="Net Deposit">
           ${{item.netDeposit}}
         </md-table-cell>
