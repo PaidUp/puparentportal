@@ -58,7 +58,7 @@
   export default {
     components: { VPayAnimation },
     props: {
-      beneficiaryId: String,
+      beneficiary: Object,
       showDialog: Boolean
     },
     data () {
@@ -126,7 +126,7 @@
       save () {
         this.submited = true
         const params = {
-          beneficiaryId: this.beneficiaryId,
+          beneficiaryId: this.beneficiary._id,
           user: {
             firstName: this.firstName,
             lastName: this.lastName,

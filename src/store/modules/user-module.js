@@ -302,20 +302,12 @@ const module = {
         })
       })
     },
-    async getParentsByEmails (context, emails) {
-      const response = await graphqlClient.query({
-        query: gql`query getUsersByEmails($emails: [String]!) {
-            getUsersByEmails(emails: $emails) {
-              _id
-              firstName
-              lastName
-              email
-              phone
-            }
-          }`,
-        variables: { emails }
-      })
-      return response.data.getUsersByEmails.reduce((curr, user) => {
+    getParentsByEmails (context, emails) {
+      return userService.getUsersByEmails(emails)
+    },
+    async getParentsByEmailsObj (context, emails) {
+      const response = await userService.getUsersByEmails(emails)
+      return response.reduce((curr, user) => {
         curr[user.email] = user
         return curr
       }, {})

@@ -98,7 +98,7 @@ export default {
       loadParents: 'loadParents'
     }),
     ...mapActions('userModule', {
-      getParentsByEmails: 'getParentsByEmails'
+      getParentsByEmailsObj: 'getParentsByEmailsObj'
     }),
     selectPlayer (player) {
       this.setPlayerSelected(player.id)
@@ -112,7 +112,7 @@ export default {
       })
     },
     async players () {
-      const parents = await this.getParentsByEmails(this.emailParents)
+      const parents = await this.getParentsByEmailsObj(this.emailParents)
       return Object.keys(this.items).reduce((curr, key) => {
         const beneficiary = this.items[key]
         beneficiary.assigneesEmail.forEach(email => {
