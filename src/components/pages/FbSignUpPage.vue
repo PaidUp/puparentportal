@@ -18,13 +18,21 @@
       <span class="md-error" v-if="!$v.fbUser.email.required">{{ $t('validations.required', { field: 'Email' }) }}</span>
       <span class="md-error" v-if="!$v.fbUser.email.email">{{ $t('validations.email') }}</span>
     </md-field>
-    <md-field :class="{'md-invalid': $v.fbUser.contacts.phone.$error}">
+    <!-- <md-field :class="{'md-invalid': $v.fbUser.contacts.phone.$error}">
       <label>{{ $t('component.signup.phone') }}</label>
       <md-input v-model="fbUser.contacts.phone" type="number" @input="$v.fbUser.contacts.phone.$touch()"></md-input>
       <span class="md-error" v-if="!$v.fbUser.contacts.phone.required">{{ $t('validations.required', { field: 'Phone' }) }}</span>
       <span class="md-error" v-if="!$v.fbUser.contacts.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: $v.fbUser.contacts.phone.$params.minLength.min }) }} </span>
       <span class="md-error" v-if="!$v.fbUser.contacts.phone.numeric">{{ $t('validations.numeric', { field: 'Phone' }) }} </span>
+    </md-field> -->
+
+    <md-field :class="{'md-invalid': $v.fbUser.contacts.phone.$error, 'md-focused': phoneFocus}">
+      <label for="phoneField">{{ $t('component.signup.phone') }}</label>
+      <the-mask @focus.native="phoneFocus = true" @blur.native="fbUser.contacts.phone.length === 0 ? phoneFocus = false : ''" id="phoneField" class="md-input" @input="$v.fbUser.contacts.phone.$touch()" mask="(###) ###-####" v-model.trim="fbUser.contacts.phone" type="tel" :masked="true" placeholder=""></the-mask>
+      <span class="md-error" v-if="!$v.fbUser.contacts.phone.required">{{ $t('validations.required', { field: 'Phone' }) }}</span>
+      <span class="md-error" v-if="!$v.fbUser.contacts.phone.minLength">{{ $t('validations.min_length_num', { field: 'Phone', value: 10 }) }}</span>
     </md-field>
+
     <md-checkbox v-model="agree" class="lblue bold">
       {{ $t('component.signup.terms.agree') }}
       <a href="https://getpaidup.com/terms-of-service/" target="_blank" class="clblue">{{ $t('component.signup.terms.ts') }}</a>
@@ -41,21 +49,13 @@
   </div>
 </template>
 <script>
-  import {
-    mapState,
-    mapActions,
-    mapGetters
-  } from 'vuex'
-  import {
-    required,
-    email,
-    minLength,
-    numeric
-  } from 'vuelidate/lib/validators'
+  import { mapState, mapActions, mapGetters } from 'vuex'
+  import { required, email, minLength } from 'vuelidate/lib/validators'
 
   export default {
     data () {
       return {
+        phoneFocus: false,
         fbSignInParams: {
           scope: 'email',
           return_scopes: true
@@ -116,8 +116,7 @@
         contacts: {
           phone: {
             required,
-            numeric,
-            minLength: minLength(10)
+            minLength: minLength(14)
           }
         }
       }

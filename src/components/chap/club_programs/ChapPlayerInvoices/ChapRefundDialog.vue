@@ -157,7 +157,7 @@
         let chargeId = null
         if (this.invoiceReq) {
           this.invoiceReq.attempts.forEach(attemp => {
-            if (attemp.object === 'charge' && attemp.status === 'succeeded') chargeId = attemp.id
+            if (attemp.object === 'charge' && (attemp.status === 'succeeded' || attemp.status === 'pending')) chargeId = attemp.id
           })
         }
         return chargeId
