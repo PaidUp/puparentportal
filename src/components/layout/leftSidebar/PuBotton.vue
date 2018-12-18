@@ -1,6 +1,14 @@
 <template lang="pug">
+
 md-list.bottom-list.has-arrow
   md-icon.down-arrow expand_more
+  md-list-item
+    md-icon contact_phone
+    p.md-list-item-text PaidUp Support
+      br 
+      | Mon - Fri: 7am - 7pm CT
+      br
+      | Sat: 9am - 6pm CT
   md-list-item
     md-icon send
     a.md-list-item-text(href="mailto:support@getpaidup.com")
