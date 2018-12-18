@@ -136,7 +136,10 @@
           this.$emit('updated', true)
           this.submited = false
         }).catch(reason => {
-          this.setWarning('Invoice was not refunded')
+          const msg = reason.message || 'Invoice was not refunded'
+          this.$emit('updated', false)
+          this.submited = false
+          this.setWarning(msg)
         })
       }
     },
