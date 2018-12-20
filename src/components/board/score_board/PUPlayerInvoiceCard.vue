@@ -13,8 +13,11 @@
             {{ item.seq }}
           </span>
           <br>
-          <span class="md-caption">
-            {{ $d(item.chargeDate || item.date, 'short') }}
+          <span v-if="item.chargeDate" class="md-caption">
+            {{ $moment.formatDate(item.chargeDate) }}
+          </span>
+          <span v-else class="md-caption">
+            {{ $moment.formatDate(item.date) }}
           </span>
         </div>
         <v-currency :amount="item.price" clazz="total md-title"></v-currency>

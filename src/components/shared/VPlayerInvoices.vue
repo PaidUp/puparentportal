@@ -12,7 +12,7 @@
           .details
             span.md-caption {{ invoice.invoiceId }}
             br
-            span.md-caption {{ $d(chargeDate, 'short') }}
+            span.md-caption {{chargeDate}}
           v-currency(:amount="invoice.price" clazz="total md-title")
       md-card-actions
         md-button.md-accent.lblue(@click="select") {{ nameButton }}
@@ -29,7 +29,7 @@
           .details
             span.md-caption {{ invoice.memoId }}
             br
-            span.md-caption {{ $d(chargeDate, 'short') }}
+            span.md-caption {{chargeDate}}
           v-currency(:amount="invoice.price" clazz="total md-title")
       md-card-actions
         md-button.md-accent.lblue(v-if=false)
@@ -39,7 +39,6 @@
 <script>
   import VCurrency from '@/components/shared/VCurrency.vue'
   import { mapState } from 'vuex'
-  import moment from 'moment'
   
   export default {
     props: {
@@ -64,14 +63,13 @@
         if (this.invoice.invoiceId) {
           return this.invoice.attempts.reduce((curr, att) => {
             if (att.object === 'charge' && att.status === 'succeeded') {
-              if (typeof att.created === 'number') curr = moment.unix(att.created)
-              else curr = new Date(att.created)
+              curr = this.$moment.formatDate(att.created)
             }
             return curr
-          }, new Date(this.invoice.dateCharge))
+          }, this.$moment.formatDate(this.invoice.dateCharge))
         }
-        if (this.invoice.memoId) return new Date(this.invoice.createOn)
-        return new Date()
+        if (this.invoice.memoId) return this.$moment.formatDate(this.invoice.createOn)
+        return this.$moment.formatDate()
       },
       icon () {
         return this.getInvoiceStatusMapper().key

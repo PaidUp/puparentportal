@@ -11,7 +11,7 @@
       </div>
       <div class="amount-details">
         <div class="details">
-          <span class="md-caption">{{ $d(item.date, 'short') }}</span>
+          <span class="md-caption">{{ $moment.formatDate(item.date) }}</span>
         </div>
         <v-currency :amount="item.price" clazz="total md-title"></v-currency>
       </div>

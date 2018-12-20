@@ -26,10 +26,10 @@
         </md-button>
       </md-chip>
       <md-chip v-if="seasonSelectedObj" class="lblue">Season: {{seasonSelectedObj.name}}</md-chip>
-      <md-chip v-if="invoiceDateStart" class="lblue" md-deletable @md-delete="invoiceDateStart = null">Receipt date start: {{$d(invoiceDateStart, 'short')}}</md-chip>
-      <md-chip v-if="invoiceDateEnd" class="lblue" md-deletable @md-delete="invoiceDateEnd = null">Receipt date end: {{$d(invoiceDateEnd, 'short')}}</md-chip>
-      <md-chip v-if="chargeDateStart" class="lblue" md-deletable @md-delete="chargeDateStart = null">Charge date start: {{$d(chargeDateStart, 'short')}}</md-chip>
-      <md-chip v-if="chargeDateEnd" class="lblue" md-deletable @md-delete="chargeDateEnd = null">Charge date end: {{$d(chargeDateEnd, 'short')}}</md-chip>
+      <md-chip v-if="invoiceDateStart" class="lblue" md-deletable @md-delete="invoiceDateStart = null">Receipt date start: {{$moment.formatDate(invoiceDateStart)}}</md-chip>
+      <md-chip v-if="invoiceDateEnd" class="lblue" md-deletable @md-delete="invoiceDateEnd = null">Receipt date end: {{$moment.formatDate(invoiceDateEnd)}}</md-chip>
+      <md-chip v-if="chargeDateStart" class="lblue" md-deletable @md-delete="chargeDateStart = null">Charge date start: {{$moment.formatDate(chargeDateStart)}}</md-chip>
+      <md-chip v-if="chargeDateEnd" class="lblue" md-deletable @md-delete="chargeDateEnd = null">Charge date end: {{$moment.formatDate(chargeDateEnd)}}</md-chip>
       <md-chip class="lblue" @md-delete="removeProgram(chip)" v-for="chip in programFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
       <md-chip class="lblue" @md-delete="removeStatus(chip)" v-for="chip in statusFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
       <md-chip class="lblue" @md-delete="removeTag(chip)" v-for="chip in tagsFilter" :key="chip" md-deletable>{{ chip }}</md-chip>
@@ -452,9 +452,10 @@
             resp = receipt.index.toLowerCase().includes(this.search.toLowerCase()) && resp
           }
           if (resp) {
-            let tmp = JSON.parse(JSON.stringify(receipt))
-            tmp.chargeDate = tmp.chargeDate ? this.$d(new Date(tmp.chargeDate), 'short') : ''
-            tmp.receiptDate = tmp.receiptDate ? this.$d(new Date(tmp.receiptDate), 'short') : ''
+            let tmp = JSON.parse(JSON.stringify(receipt)
+            )
+            tmp.chargeDate = tmp.chargeDate || ''
+            tmp.receiptDate = tmp.receiptDate || ''
             tmp.status = this.capitalize(tmp.status)
             tmp.amount = this.currency(tmp.amount)
             tmp.processingFee = this.currency(tmp.processingFee)

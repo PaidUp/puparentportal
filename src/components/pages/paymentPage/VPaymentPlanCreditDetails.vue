@@ -10,7 +10,7 @@
         <div class="caption cgreen">{{ mapper.desc }}</div>
       </div>
       <div class="amount-side">
-        <div class="caption">{{ $d(due.dateCharge, 'short') }}</div>
+        <div class="caption">{{ $moment.formatDate(due.dateCharge) }}</div>
         <v-currency :amount="due.amount" :clazz="'cgreen number-big'" />
       </div>
     </div>

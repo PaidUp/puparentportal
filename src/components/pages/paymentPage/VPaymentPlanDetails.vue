@@ -11,7 +11,7 @@
       </div>
       <div class="amount-side">
         <div v-if="overdue" class="caption cred">CHARGED TODAY</div>
-        <div class="caption">{{ $d(due.dateCharge, 'short') }}</div>
+        <div class="caption">{{ $moment.formatDate(due.dateCharge) }}</div>
         <v-currency :amount="due.amount" :clazz="style[0] + ' number-big'" />
       </div>
     </div>

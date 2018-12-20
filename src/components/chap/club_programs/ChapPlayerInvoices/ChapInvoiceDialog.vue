@@ -50,11 +50,11 @@
         </md-field>
         <md-field v-if="disabled">
           <label>Invoice Date</label>
-          <md-input :value="$d(updInvoice.dateCharge, 'short')" :disabled="disabled"></md-input>
+          <md-input :value="$moment.formatDate(updInvoice.dateCharge)" :disabled="disabled"></md-input>
         </md-field>
         <md-field v-if="disabled">
           <label>Charge Date</label>
-          <md-input :value="$d(invoice.chargeDate, 'short')" :disabled="disabled"></md-input>
+          <md-input :value="$moment.formatDate(invoice.chargeDate)" :disabled="disabled"></md-input>
         </md-field>
         <div v-else :class="{'md-invalid': $v.updInvoice.dateCharge.$error}">
           <label>Charge Date</label>
@@ -63,7 +63,7 @@
         </div>
         <md-field v-if="disabled">
           <label>Max Charge Date</label>
-          <md-input :value="$d(updInvoice.maxDateCharge, 'short')" :disabled="disabled"></md-input>
+          <md-input :value="$moment.formatDate(updInvoice.maxDateCharge)" :disabled="disabled"></md-input>
         </md-field>
         <div v-else :class="{'md-invalid': $v.updInvoice.maxDateCharge.$error}">
           <label>Max Charge Date</label>

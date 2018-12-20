@@ -61,7 +61,7 @@
           {{`${item.destination.bank_name}••••${item.destination.last4}`}}
         </md-table-cell>
         <md-table-cell md-label="Arrival Date" class="col-15">
-          {{formatDate(item.arrival_date)}}
+          {{$moment.formatDate(item.arrival_date)}}
         </md-table-cell>
       </md-table-row>
     </md-table>
@@ -83,7 +83,7 @@
 
 <script>
   import { mapState, mapActions } from 'vuex'
-  import {currency, formatDate, capitalize} from '@/helpers'
+  import {currency, capitalize} from '@/helpers'
   import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 
   export default {
@@ -162,9 +162,6 @@
       capitalize (value) {
         const tmp = value.replace(new RegExp('_', 'g'), ' ')
         return capitalize(tmp)
-      },
-      formatDate (value) {
-        return formatDate.unix(value)
       },
       goTransfers (payout) {
         this.$router.push({

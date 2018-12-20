@@ -78,7 +78,7 @@
           today.setHours(0, 0, 0, 0)
           return date.getTime() < today.getTime() || date.getTime() > maxDateCharge
         },
-        dateCharge: new Date(this.due.dateCharge),
+        dateCharge: this.$moment.formatDate(this.due.dateCharge),
         description: this.due.description,
         paymentMethod: this.due.account ? `${this.due.account.brand || this.due.account.bank_name}••••${this.due.account.last4}` : '',
         paymentMethodObj: null,

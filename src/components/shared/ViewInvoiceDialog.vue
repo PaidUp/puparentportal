@@ -19,7 +19,7 @@
             <div>
             </div>
             <div>
-              Invoice Approval Date: {{ $d(date, 'short') }}
+              Invoice Approval Date: {{ $moment.formatDate(date) }}
             </div>
           </div>
           <div class="instructions">
@@ -157,7 +157,7 @@
       invoice () {
         if (this.invoice._id) {
           this.dateCharge = new Date(this.invoice.dateCharge)
-          this.dateChargeDisable = this.$d(this.dateCharge, 'short')
+          this.dateChargeDisable = this.$moment.formatDate(this.dateCharge)
           this.description = this.invoice.label
           this.amount = currency(this.invoice.price)
           this.status = capitalize(this.invoice.status)

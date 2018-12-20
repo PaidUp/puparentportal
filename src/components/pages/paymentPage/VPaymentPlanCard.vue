@@ -6,7 +6,7 @@
         .title.title-total ${{ total }}
         .md-caption {{ plan.dues.length }} {{ plan.dues.length === 1 ? 'Installment' : 'Installments' }}
         .md-caption(v-if="chargeToday") ${{ currency(chargeToday) }} PaidUp by Today
-        .md-caption(v-if="chargeRemaining") ${{ currency(chargeRemaining) }} PaidUp by {{ $d(lastDateCharge, 'card') }}
+        .md-caption(v-if="chargeRemaining") ${{ currency(chargeRemaining) }} PaidUp by {{ $moment.formatDate(lastDateCharge) }}
 
 </template>
 <script>
