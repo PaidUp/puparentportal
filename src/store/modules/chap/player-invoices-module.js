@@ -32,9 +32,11 @@ const module = {
       }
     },
     loadPaymentMethods (context) {
+      console.log('into pm')
       if (context.state.parents) {
         let parentsAccPromises = []
         context.state.parents.forEach(parent => {
+          console.log('parent: ', parent)
           if (parent.externalCustomerId) {
             parentsAccPromises.push(
               new Promise((resolve, reject) => {
@@ -59,8 +61,10 @@ const module = {
         Promise.all(parentsAccPromises).then(values => {
           let resp = {}
           values.forEach(val => {
+            console.log('val: ', val)
             resp[val.id] = val.accounts
           })
+          console.log('resp: ', resp)
           context.commit('setPaymentMethods', resp)
         })
       }

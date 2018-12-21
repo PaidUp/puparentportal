@@ -67,7 +67,10 @@ class UserService {
             firstName
             lastName
             email
-            phone
+            phone,
+            externalCustomerId
+            roles,
+            pendingSignup
           }
         }`,
       variables: { emails }
