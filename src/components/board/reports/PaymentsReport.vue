@@ -241,9 +241,13 @@
         tags: [],
         seasonSelected: null,
         invoiceDateStart: null,
+        invoiceDateStartTZ: null,
         invoiceDateEnd: null,
+        invoiceDateEndTZ: null,
         chargeDateStart: null,
+        chargeDateStartTZ: null,
         chargeDateEnd: null,
+        chargeDateEndTZ: null,
         status: [],
         programs: [],
         search: '',
@@ -346,16 +350,20 @@
         }
       },
       invoiceDateStart () {
-        if (!this.invoiceDateStart) this.getPaymentsFiltered()
+        this.invoiceDateStartTZ = this.invoiceDateStart ? this.$moment.removeTimeZone(this.invoiceDateStart) : null
+        this.getPaymentsFiltered()
       },
       invoiceDateEnd () {
-        if (!this.invoiceDateEnd) this.getPaymentsFiltered()
+        this.invoiceDateEndTZ = this.invoiceDateEnd ? this.$moment.removeTimeZone(this.invoiceDateEnd) : null
+        this.getPaymentsFiltered()
       },
       chargeDateStart () {
-        if (!this.chargeDateStart) this.getPaymentsFiltered()
+        this.chargeDateStartTZ = this.chargeDateStart ? this.$moment.removeTimeZone(this.chargeDateStart) : null
+        this.getPaymentsFiltered()
       },
       chargeDateEnd () {
-        if (!this.chargeDateEnd) this.getPaymentsFiltered()
+        this.chargeDateEndTZ = this.chargeDateEnd ? this.$moment.removeTimeZone(this.chargeDateEnd) : null
+        this.getPaymentsFiltered()
       },
       search () {
         this.getPaymentsFiltered()
@@ -403,37 +411,38 @@
         this.paginationStart = 0
         this.loading = true
         let response = this.payments.reduce((curr, receipt, idx) => {
-          let receiptDate = receipt.receiptDate ? new Date(receipt.receiptDate) : ''
-          let chargeDate = receipt.chargeDate ? new Date(receipt.chargeDate) : ''
+          let receiptDate = receipt.receiptDate ? new Date(receipt.receiptDate) : null
+          let chargeDate = receipt.chargeDate ? new Date(receipt.chargeDate) : null
           let resp = true
           // invoice date filter
-          if (this.invoiceDateStart && resp) {
+          if (this.invoiceDateStartTZ && resp) {
             if (!receiptDate) resp = false
             else {
-              resp = (this.invoiceDateStart.getTime() <= receiptDate.getTime()) && resp
+              resp = (this.invoiceDateStartTZ.startOf('day').toDate().getTime() <= receiptDate.getTime()) && resp
             }
           }
-          if (this.invoiceDateEnd && resp) {
+          if (this.invoiceDateEndTZ && resp) {
             if (!receiptDate) resp = false
             else {
-              let tmpDate = new Date(this.invoiceDateEnd.getTime())
-              tmpDate.setHours(24, 59, 59)
+              let tmpDate = this.invoiceDateEndTZ.endOf('day').toDate().getTime()
               resp = (tmpDate >= receiptDate.getTime()) && resp
             }
           }
           // charge date filter
-          if (this.chargeDateStart && resp) {
+          if (this.chargeDateStartTZ && resp) {
             if (!chargeDate) resp = false
             else {
-              resp = (this.chargeDateStart.getTime() <= chargeDate.getTime()) && resp
+              resp = (this.chargeDateStartTZ.startOf('day').toDate().getTime() <= chargeDate.getTime()) && resp
             }
           }
-          if (this.chargeDateEnd && resp) {
+          if (this.chargeDateEndTZ && resp) {
             if (!chargeDate) resp = false
             else {
-              let tmpDate = new Date(this.chargeDateEnd.getTime())
-              tmpDate.setHours(24, 59, 59)
-              resp = (this.chargeDateEnd.getTime() >= tmpDate) && resp
+              console.log('chargeDate: ', chargeDate)
+              console.log('chargeDateEndTZ: ', this.chargeDateEndTZ.endOf('day').toDate())
+              let tmpDate = this.chargeDateEndTZ.endOf('day').toDate().getTime()
+              resp = (tmpDate >= chargeDate.getTime()) && resp
+              console.log('resp: ', resp)
             }
           }
           if (this.programFilter.length && resp) {

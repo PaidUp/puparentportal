@@ -12,7 +12,7 @@ import VueResource from 'vue-resource'
 import JsonExcel from 'vue-json-excel'
 import VueTheMask from 'vue-the-mask'
 import moment from 'moment-timezone'
-import { formatDate } from '@/helpers'
+import { formatDate, removeTimeZone } from '@/helpers'
 
 // eslint-disable-next-line
 import fs from '@/vendor/fb'
@@ -30,9 +30,10 @@ import '@/style/theme.css'
 //   // You should use an absolute URL here
 //   uri: config.api.broker + '/graphql'
 // })
-// moment.tz.setDefault('America/Chicago')
-moment.tz.setDefault('Australia/Sydney')
+moment.tz.setDefault('America/Chicago')
+// moment.tz.setDefault('Australia/Sydney')
 moment.formatDate = formatDate
+moment.removeTimeZone = removeTimeZone
 Vue.prototype.$moment = moment
 
 Vue.use(VueMaterial)

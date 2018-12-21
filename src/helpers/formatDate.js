@@ -8,3 +8,9 @@ export const formatDate = (value) => {
   if (typeof value === 'number') return moment.unix(value).format(formatStr)
   return moment(value).format(formatStr)
 }
+
+export const removeTimeZone = (value) => {
+  const str = value.toISOString(0, 10)
+  const res = moment(str)
+  return res
+}
