@@ -138,7 +138,6 @@ export default {
   },
   watch: {
     parents () {
-      console.log('parents...')
       this.loadPaymentMethods()
     }
   },

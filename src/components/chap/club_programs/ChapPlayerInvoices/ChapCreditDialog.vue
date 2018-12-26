@@ -152,6 +152,7 @@
         this.showDialog = false
         this.submited = true
         this.updInvoice.updateOn = new Date()
+        this.updInvoice.dateCharge = this.$moment.removeTimeZone(this.updInvoice.dateCharge)
         let params = {
           id: this.invoice.id,
           values: this.updInvoice
@@ -175,6 +176,7 @@
           this.updInvoice['productName'] = product.name
           this.updInvoice['organizationId'] = this.organization._id
           this.updInvoice['season'] = this.seasonSelected
+          this.updInvoice['dateCharge'] = this.$moment.removeTimeZone(this.updInvoice.dateCharge)
           this.newCredit(this.updInvoice).then(resp => {
             this.setSuccess('Credit was cloned succeeded')
             this.$emit('updated', true)
