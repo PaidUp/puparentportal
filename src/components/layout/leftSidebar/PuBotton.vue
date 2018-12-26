@@ -3,8 +3,8 @@
 md-list.bottom-list.has-arrow
   md-icon.down-arrow expand_more
   md-list-item
-    md-icon notification_important
-    .notification-important PaidUp Support will be closed on Christmas Eve and Christmas Day (December 24 and December 25, 2018)
+    md-icon(style="color: red") notification_important
+    .notification-important PaidUp Support will be closed on New Year’s Day (January 1, 2019)
   md-list-item
     md-icon contact_phone
     p.md-list-item-text PaidUp Support
