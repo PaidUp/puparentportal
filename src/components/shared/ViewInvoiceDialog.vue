@@ -53,7 +53,7 @@
         </md-datepicker>
         <md-field v-else>
           <label>Charge date</label>
-          <md-input :disabled="true" v-model="dateChargeDisable"></md-input>
+          <md-input :disabled="true" v-model="dateCharge"></md-input>
         </md-field>
         <md-field>
           <label for="payment">Payment Account</label>
@@ -148,7 +148,6 @@
         paymentMethodObj: null,
         submited: false,
         showPaymentAccountDialog: false,
-        dateChargeDisable: '',
         processingFees: 0,
         showDialog: false
       }
@@ -156,8 +155,7 @@
     watch: {
       invoice () {
         if (this.invoice._id) {
-          this.dateCharge = new Date(this.invoice.dateCharge)
-          this.dateChargeDisable = this.$moment.formatDate(this.dateCharge)
+          this.dateCharge = this.getChargeDate()
           this.description = this.invoice.label
           this.amount = currency(this.invoice.price)
           this.status = capitalize(this.invoice.status)
@@ -202,7 +200,7 @@
           id: this.invoice._id,
           values: {
             unbundle: this.invoice.unbundle,
-            dateCharge: this.dateCharge,
+            dateCharge: this.$moment.removeTimeZone(this.dateCharge),
             status: 'autopay'
           }
         }
@@ -226,6 +224,18 @@
           this.submited = false
           this.setWarning('common.error.default')
         })
+      },
+      getChargeDate () {
+        if (this.invoice.invoiceId) {
+          return this.invoice.attempts.reduce((curr, att) => {
+            if (att.object === 'charge' && att.status === 'succeeded') {
+              curr = this.$moment.formatDate(att.created)
+            }
+            return curr
+          }, this.$moment.formatDate(this.invoice.dateCharge))
+        }
+        if (this.invoice.memoId) return this.$moment.formatDate(this.invoice.createOn)
+        return this.$moment.formatDate()
       }
     },
     computed: {

@@ -108,7 +108,7 @@
         this.showPaymentAccountDialog = false
       },
       apply () {
-        this.due.dateCharge = this.dateCharge
+        this.due.dateCharge = this.$moment.removeTimeZone(this.dateCharge)
         if (this.paymentMethodObj) {
           this.due.account = this.paymentMethodObj
         }
