@@ -9,6 +9,7 @@ export const formatDate = (value) => {
 }
 
 export const removeTimeZone = (value) => {
+  if (!value) return value
   const ltz = moment.tz.guess()
   const str = moment.tz(value, ltz).format().substring(0, 10)
   const res = moment.utc(str).add(16, 'hours')

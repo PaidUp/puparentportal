@@ -239,8 +239,8 @@
           label: this.label,
           price: this.price,
           priceBase: this.priceBase,
-          dateCharge: this.dateCharge,
-          maxDateCharge: this.maxDateCharge,
+          dateCharge: this.$moment.removeTimeZone(this.dateCharge),
+          maxDateCharge: this.$moment.removeTimeZone(this.maxDateCharge),
           status: 'autopay',
           paymentDetails: this.paymentDetails,
           user: this.user,
@@ -284,7 +284,7 @@
             organizationId: this.organization._id,
             season: this.seasonSelected,
             status: this.status,
-            dateCharge: this.dateCharge,
+            dateCharge: this.$moment.removeTimeZone(this.dateCharge),
             tags: this.tags
           }
           this.newCredit(params).then(resp => {
