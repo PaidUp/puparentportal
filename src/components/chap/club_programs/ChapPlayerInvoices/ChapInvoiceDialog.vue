@@ -254,8 +254,8 @@
           label: this.invoice.title,
           price: this.invoice.price,
           priceBase: this.invoice.priceBase,
-          dateCharge: this.invoice.date,
-          maxDateCharge: this.invoice.maxDate,
+          dateCharge: this.$moment.formatDate(this.invoice.date),
+          maxDateCharge: this.$moment.formatDate(this.invoice.maxDate),
           status: this.isClone ? 'autopay' : this.invoice.status,
           paymentDetails: this.invoice.paymentDetails,
           tags: this.invoice.tags,
@@ -272,6 +272,8 @@
       save () {
         if (this.submited) return false
         this.submited = true
+        this.updInvoice.dateCharge = this.$moment.removeTimeZone(this.updInvoice.dateCharge)
+        this.updInvoice.maxDateCharge = this.$moment.removeTimeZone(this.updInvoice.maxDateCharge)
         if (this.updInvoice.user && !this.updInvoice.paymentDetails) {
           this.setWarning('Payment account is required')
           this.submited = false
@@ -312,6 +314,8 @@
           this.updInvoice['beneficiaryLastName'] = this.beneficiary.lastName
           this.updInvoice['season'] = this.seasonSelected
           this.updInvoice['status'] = 'autopay'
+          this.updInvoice.dateCharge = this.$moment.removeTimeZone(this.updInvoice.dateCharge)
+          this.updInvoice.maxDateCharge = this.$moment.removeTimeZone(this.updInvoice.maxDateCharge)
           let params = {
             product,
             values: this.updInvoice

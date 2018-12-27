@@ -128,7 +128,7 @@
         this.updInvoice = {
           label: this.invoice.title,
           price: this.invoice.price,
-          dateCharge: this.invoice.date,
+          dateCharge: this.$moment.formatDate(this.invoice.date),
           status: this.invoice.status,
           tags: this.invoice.tags,
           assigneeEmail: this.invoice.assigneeEmail
