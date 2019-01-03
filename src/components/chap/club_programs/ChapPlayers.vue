@@ -4,6 +4,12 @@
 			<md-tab id="tab-player" md-label="Players" >
         <div class="cards-layout">
 				  <chap-player-card :item="item" v-for="item in items" :key="item.id" @select="selectPlayer"></chap-player-card>
+
+          <div class="md-card-add-circle">
+            <md-button class="md-fab lblue">
+              <md-icon>add</md-icon>
+            </md-button>
+          </div>
         </div>
 			</md-tab>
 			
