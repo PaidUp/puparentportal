@@ -2,7 +2,7 @@
 
 md-list.bottom-list.has-arrow
   md-icon.down-arrow expand_more
-  md-list-item
+  md-list-item(v-if="false")
     md-icon(style="color: red") notification_important
     .notification-important PaidUp Support will be closed on New Year’s Day (January 1, 2019)
   md-list-item
