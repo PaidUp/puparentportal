@@ -2,16 +2,16 @@
 
 md-list.bottom-list.has-arrow
   md-icon.down-arrow expand_more
-  md-list-item(v-if="false")
+  md-list-item(v-if="showAlert")
     md-icon(style="color: red") notification_important
-    .notification-important PaidUp Support will be closed on New Year’s Day (January 1, 2019)
+    .notification-important Please note new PaidUp Support hours effective January 7, 2019
   md-list-item
     md-icon contact_phone
     p.md-list-item-text PaidUp Support
       br 
       | Mon - Fri: 7am - 7pm CT
       br
-      | Sat: 9am - 6pm CT
+      | Sat, Sun : 9am - 6pm CT
   md-list-item
     md-icon send
     a.md-list-item-text(href="mailto:support@getpaidup.com")
@@ -32,8 +32,12 @@ md-list.bottom-list.has-arrow
 </template>
 <script>
 import { mapActions } from 'vuex'
-
 export default {
+  computed: {
+    showAlert () {
+      return this.$moment().isBefore('2019-01-07')
+    }
+  },
   methods: {
     ...mapActions('userModule', {
       logout: 'logout'
