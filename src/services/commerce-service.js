@@ -1,5 +1,7 @@
 import Trae from '@/services/trae-service'
 import config from '@/config'
+import graphqlClient from '@/util/graphql'
+import gql from 'graphql-tag'
 
 const trae = new Trae(config.api.commerce)
 
@@ -97,6 +99,34 @@ class CommerceService {
     if (userEmail) query = encodeURI(`?assegnee=${userEmail}`)
     return trae
       .get(`/credit/beneficiary/${beneficiaryId}${query}`)
+  }
+
+  async getReducePlayers ({ organizationId, seasonId, productId }) {
+    const response = await graphqlClient.query({
+      query: gql`query getReducePlayers(
+        $organizationId: String!
+        $seasonId: String!
+        $productId: String!
+      ) {
+        getReducePlayers(
+          organizationId: $organizationId
+          seasonId: $seasonId
+          productId: $productId
+        ) {
+          id
+          firstName
+          lastName
+          total
+          assigneesEmail
+          paid
+          unpaid
+          overdue
+          other
+        }
+      }`,
+      variables: { organizationId, seasonId, productId }
+    })
+    return response.data.getReducePlayers
   }
 }
 

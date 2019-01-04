@@ -6,7 +6,7 @@
 				  <chap-player-card :item="item" v-for="item in items" :key="item.id" @select="selectPlayer"></chap-player-card>
 
           <div class="md-card-add-circle">
-            <md-button class="md-fab lblue">
+            <md-button @click="showPlayerDialog = true" class="md-fab lblue">
               <md-icon>add</md-icon>
             </md-button>
           </div>
@@ -30,19 +30,22 @@
 			</md-tab>
 
 		</md-tabs>
+    <chap-player-dialog :showDialog="showPlayerDialog" @close="showPlayerDialog = false"></chap-player-dialog>
 	</div>
 </template>
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import ChapPlayerCard from './ChapPlayerCard.vue'
 import ChapProductPlans from './ChapProductPlans.vue'
+import ChapPlayerDialog from './ChapPlayerDialog.vue'
 export default {
-  components: { ChapPlayerCard, ChapProductPlans },
+  components: { ChapPlayerCard, ChapProductPlans, ChapPlayerDialog },
   mounted () {
     this.getAll()
   },
   data () {
     return {
+      showPlayerDialog: false,
       items: null,
       reportFields: {
         beneficiaryFirstName: 'beneficiaryFirstName',

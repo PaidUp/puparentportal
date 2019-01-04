@@ -129,21 +129,14 @@ const module = {
       let productId = context.state.programSelected
       return Promise.all([
         organizationService.getBeneficiaries(organizationId),
-        commerceService.invoicesByOrganization(organizationId, seasonId, productId),
-        commerceService.creditsByOrganization(organizationId, seasonId, productId),
-        commerceService.preordersByOrganization(organizationId, seasonId, productId)
+        commerceService.getReducePlayers({ organizationId, seasonId, productId })
       ]).then(values => {
         let beneficiaries = values[0].reduce((val, curr) => {
           val[curr._id] = curr
           return val
         }, {})
         context.commit('setBeneficiaries', beneficiaries)
-        let items = reduceDataCardService.reduceInvoicePlayers(values[1], beneficiaries)
-        reduceDataCardService.reduceCreditPlayers(values[2], items, beneficiaries)
-        reduceDataCardService.reducePreorderPlayers(values[3], items, beneficiaries)
-        return reduceDataCardService.sortObj(items, 'id', item => {
-          return item.lastName + ' ' + item.firstName
-        })
+        return values[1]
       })
     },
     getReducePlayerInvoices (context) {
