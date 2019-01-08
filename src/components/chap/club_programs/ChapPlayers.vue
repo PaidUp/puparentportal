@@ -3,7 +3,7 @@
 		<md-tabs class="tabs-lblue">
 			<md-tab id="tab-player" md-label="Players" >
         <div class="cards-layout">
-				  <chap-player-card :item="item" v-for="item in items" :key="item.id" @select="selectPlayer"></chap-player-card>
+				  <chap-player-card :item="item" v-for="item in items" :key="item.id" @edit="selectPlayerEdit" @select="selectPlayer" @deleted="getAll"></chap-player-card>
 
           <div class="md-card-add-circle">
             <md-button @click="showPlayerDialog = true" class="md-fab lblue">
@@ -30,7 +30,7 @@
 			</md-tab>
 
 		</md-tabs>
-    <chap-player-dialog :showDialog="showPlayerDialog" @close="showPlayerDialog = false"></chap-player-dialog>
+    <chap-player-dialog :player="playerToEdit" @completed="getAll" :showDialog="showPlayerDialog" ></chap-player-dialog>
 	</div>
 </template>
 <script>
@@ -46,6 +46,7 @@ export default {
   data () {
     return {
       showPlayerDialog: false,
+      playerToEdit: null,
       items: null,
       reportFields: {
         beneficiaryFirstName: 'beneficiaryFirstName',
@@ -115,7 +116,13 @@ export default {
       this.loadParents(player)
       this.setBeneficiary(player)
     },
+    selectPlayerEdit (player) {
+      this.playerToEdit = player
+      this.showPlayerDialog = true
+    },
     getAll () {
+      this.showPlayerDialog = false
+      this.playerToEdit = null
       this.getReducePlayers().then(items => {
         this.items = items
       })

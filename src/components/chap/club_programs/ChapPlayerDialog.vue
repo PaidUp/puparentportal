@@ -25,13 +25,14 @@
       </md-field>
     </div>
     <div class="actions">
-      <md-button :disabled="disableDeleteButton" @click="remove" class="md-accent lblue delete-btn">DELETE</md-button>
+      <div></div>
       <div>
         <md-button class="md-accent lblue" @click="close">CANCEL</md-button>
-        <md-button class="md-accent lblue md-raised" :disabled="disableSaveButton" @click="save">SAVE</md-button>
+        <md-button v-if="player" class="md-accent lblue md-raised" :disabled="disableSaveButton" @click="update">UPDATE</md-button>
+        <md-button v-else class="md-accent lblue md-raised" :disabled="disableSaveButton" @click="save">SAVE</md-button>
       </div>
     </div>
-    <v-pay-animation :animate="submited" :result="{}" @finish="close" />
+    <v-pay-animation :animate="submited" :result="playerEdited" @finish="close" />
   </md-dialog>
 </template>
 
@@ -52,7 +53,8 @@
         firstName: this.player ? capitalize(this.player.firstName) : '',
         lastName: this.player ? capitalize(this.player.lastName) : '',
         submited: false,
-        deleteAction: false
+        deleteAction: false,
+        playerEdited: null
       }
     },
     computed: {
@@ -68,19 +70,40 @@
         return true
       },
       disableSaveButton () {
-        return this.submited || this.$v.$invalid
+        return this.submited || this.$v.$invalid || this.playerEdited !== null
+      },
+      disableUpdateButton () {
+        return this.submited || this.$v.$invalid || this.playerEdited !== null
       }
     },
-    async mounted () {
+    watch: {
+      showDialog () {
+        if (!this.showDialog) {
+          this.submited = false
+          this.deleteAction = false
+          this.playerEdited = null
+          this.firstName = ''
+          this.lastName = ''
+          this.$v.$reset()
+        }
+      },
+      player () {
+        if (this.player) {
+          this.firstName = capitalize(this.player.firstName)
+          this.lastName = capitalize(this.player.lastName)
+        }
+      }
+    },
+    mounted () {
     },
     methods: {
       close () {
-        this.$emit('close', true)
+        this.$emit('completed', this.playerEdited)
       },
-      save () {
+      async save () {
         try {
           this.submited = true
-          beneficiaryService.create({
+          this.playerEdited = await beneficiaryService.create({
             organizationId: this.organization._id,
             organizationName: this.organization.businessName,
             firstName: capitalize(this.firstName),
@@ -92,18 +115,21 @@
           this.submited = false
         }
       },
-      remove () {
-        this.submited = true
-        this.deleteBeneficiary(this.player._id)
-        .then(resp => {
+      async update () {
+        try {
+          this.submited = true
+          this.playerEdited = await beneficiaryService.update(
+            this.player.id,
+            {
+              firstName: capitalize(this.firstName),
+              lastName: capitalize(this.lastName)
+            }
+          )
           this.submited = false
-          this.getBeneficiaries(this.user.email).then(resp => {
-            this.$router.push({name: 'home'})
-          })
-        }).catch(reason => {
-          console.log(reason)
+        } catch (error) {
+          console.log(error)
           this.submited = false
-        })
+        }
       }
     },
     validations: {

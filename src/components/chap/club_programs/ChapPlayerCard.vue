@@ -19,52 +19,23 @@
             <md-icon>more_vert</md-icon>
           </md-button>
           <md-menu-content>
-            <md-menu-item>
+            <md-menu-item v-if="!item.total" @click="confirm = true">
               DELETE
             </md-menu-item>
-            <md-menu-item>
-              DUPLICATE
-            </md-menu-item>
-            <md-menu-item>
+            <md-menu-item @click="edit">
               EDIT
             </md-menu-item>
           </md-menu-content>
         </md-menu>
       </div>
+      <md-dialog-confirm :md-active.sync="confirm" md-title="Delete Credit" md-content="Are you sure want to delete this player?" md-confirm-text="Delete" md-cancel-text="Cancel" @md-cancel="confirm = false" @md-confirm="remove" />
 
-
-
-			<div v-if="false" class="bars-with-hover">
-				<div class="green" :style="paidWidth">
-					<div class="hover">
-						<div class="hover-title">Paid</div>
-						<div class="hover-number">${{paid}}</div>
-					</div>
-				</div>
-				<div class="gray" :style="unpaidWidth">
-					<div class="hover">
-						<div class="hover-title">Unpaid</div>
-						<div class="hover-number">${{unpaid}}</div>
-					</div>
-				</div>
-				<div class="red" :style="overdueWidth">
-					<div class="hover">
-						<div class="hover-title">Overdue</div>
-						<div class="hover-number">${{overdue}}</div>
-					</div>
-				</div>
-				<div class="blue" :style="otherWidth">
-					<div class="hover">
-						<div class="hover-title">Other</div>
-						<div class="hover-number">${{other}}</div>
-					</div>
-				</div>
-			</div>
 		</md-card>
 </template>
 <script>
 import { mapActions } from 'vuex'
-import currency from '@/helpers/currency'
+import { currency } from '@/helpers'
+import { beneficiaryService } from '@/services'
 export default {
   props: {
     item: Object
@@ -77,36 +48,13 @@ export default {
   },
   data () {
     return {
-      avatar: null
+      avatar: null,
+      confirm: false
     }
   },
   computed: {
     total () {
       return currency(this.item.total)
-    },
-    paid () {
-      return currency(this.item.paid)
-    },
-    paidWidth () {
-      return `width: ${(this.item.paid / this.item.total) * 100}%`
-    },
-    unpaid () {
-      return currency(this.item.unpaid)
-    },
-    unpaidWidth () {
-      return `width: ${(this.item.unpaid / this.item.total) * 100}%`
-    },
-    overdue () {
-      return currency(this.item.overdue)
-    },
-    overdueWidth () {
-      return `width: ${(this.item.overdue / this.item.total) * 100}%`
-    },
-    other () {
-      return currency(this.item.other)
-    },
-    otherWidth () {
-      return `width: ${(this.item.other / this.item.total) * 100}%`
     }
   },
   methods: {
@@ -118,6 +66,14 @@ export default {
     }),
     select () {
       this.$emit('select', this.item)
+    },
+    edit () {
+      this.$emit('edit', this.item)
+    },
+    remove () {
+      beneficiaryService.deleteBeneficiary(this.item.id).then(res => {
+        this.$emit('deleted', this.item)
+      })
     }
   }
 }
