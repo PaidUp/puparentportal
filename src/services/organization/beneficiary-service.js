@@ -10,7 +10,7 @@ class BeneficiaryService {
   //   return trae
   //     .post('/', { organizationId, organizationName, firstName, lastName, assigneesEmail, description })
   // }
-  async create ({ organizationId, organizationName, firstName, lastName, assigneesEmail, description }) {
+  async create ({ organizationId, organizationName, firstName, lastName, assigneesEmail, description, programs }) {
     const response = await graphqlClient.mutate({
       mutation: gql`mutation createBeneficiary(
         $organizationId: String!
@@ -19,6 +19,7 @@ class BeneficiaryService {
         $lastName: String!
         $assigneesEmail: [String]
         $description: String
+        $programs: String
       ) {
         createBeneficiary(
           organizationId: $organizationId
@@ -27,6 +28,7 @@ class BeneficiaryService {
           lastName: $lastName
           assigneesEmail: $assigneesEmail
           description: $description
+          programs: $programs
         ) {
           _id
           organizationId
@@ -37,9 +39,10 @@ class BeneficiaryService {
           description
           assigneesEmail
           status
+          programs
         }
       }`,
-      variables: { organizationId, organizationName, firstName, lastName, assigneesEmail, description }
+      variables: { organizationId, organizationName, firstName, lastName, assigneesEmail, description, programs }
     })
     return response.data.createBeneficiary
   }

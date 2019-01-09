@@ -59,7 +59,8 @@
     },
     computed: {
       ...mapState('clubprogramsModule', {
-        organization: 'organization'
+        organization: 'organization',
+        programSelected: 'programSelected'
       }),
       fullName () {
         this.firstName = capitalize(this.firstName)
@@ -107,7 +108,8 @@
             organizationId: this.organization._id,
             organizationName: this.organization.businessName,
             firstName: capitalize(this.firstName),
-            lastName: capitalize(this.lastName)
+            lastName: capitalize(this.lastName),
+            programs: this.programSelected
           })
           this.submited = false
         } catch (error) {
