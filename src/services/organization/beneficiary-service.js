@@ -6,10 +6,6 @@ import graphqlClient from '@/util/graphql'
 const trae = new Trae(config.api.organization + '/beneficiary')
 
 class BeneficiaryService {
-  // create ({ organizationId, organizationName, firstName, lastName, assigneesEmail, description }) {
-  //   return trae
-  //     .post('/', { organizationId, organizationName, firstName, lastName, assigneesEmail, description })
-  // }
   async create ({ organizationId, organizationName, firstName, lastName, assigneesEmail, description, programs }) {
     const response = await graphqlClient.mutate({
       mutation: gql`mutation createBeneficiary(
@@ -93,11 +89,6 @@ class BeneficiaryService {
     return trae
       .get(`/${id}`)
   }
-
-  // deleteBeneficiary = function (id) {
-  //   return trae
-  //     .delete(`/${id}`)
-  // }
 
   async deleteBeneficiary (id) {
     const response = await graphqlClient.mutate({
