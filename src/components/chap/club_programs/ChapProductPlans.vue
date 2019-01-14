@@ -7,7 +7,7 @@
     <div class="body">
       <div class="number-big cgreen">${{format(plan.amount)}}</div>
       <div class="title-info">{{plan.installments}} Installments</div>
-      <div class="title-info">Nov 15, 2018 - Mar 1, 2019 ??</div>
+      <div class="title-info">{{$moment(plan.startCharge).format('DD MMM, YYYY')}} {{plan.installments > 1 ? ' - ' + $moment(plan.endCharge).format('DD MMM, YYYY') : ''}}</div>
     </div>
     <div class="actions">
       <md-button class="md-icon-button">
@@ -31,6 +31,11 @@
       </md-menu>
     </div>
   </md-card>
+  <div class="md-card-add-circle">
+    <md-button @click="add" class="md-fab lblue">
+      <md-icon>add</md-icon>
+    </md-button>
+  </div>
 </div>
 </template>
 <script>
@@ -65,6 +70,9 @@ export default {
     }),
     format (value) {
       return currency(value)
+    },
+    add () {
+      this.$emit('add', true)
     }
   }
 }

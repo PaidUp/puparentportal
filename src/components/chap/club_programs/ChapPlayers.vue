@@ -13,8 +13,9 @@
         </div>
 			</md-tab>
 			
-      <md-tab id="tab-plans" v-if="false" md-label="Program Payment Plans">
-				<chap-product-plans></chap-product-plans>
+      <md-tab id="tab-plans" md-label="Program Payment Plans">
+        <chap-manage-payment-plans v-if="managePaymentPlans"></chap-manage-payment-plans>
+				<chap-product-plans v-else @add="managePaymentPlans = true"></chap-product-plans>
 			</md-tab>
 
 			<md-tab id="tab-download" md-label="Downloads" >
@@ -38,8 +39,9 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import ChapPlayerCard from './ChapPlayerCard.vue'
 import ChapProductPlans from './ChapProductPlans.vue'
 import ChapPlayerDialog from './ChapPlayerDialog.vue'
+import ChapManagePaymentPlans from './ChapManagePaymentPlans'
 export default {
-  components: { ChapPlayerCard, ChapProductPlans, ChapPlayerDialog },
+  components: { ChapPlayerCard, ChapProductPlans, ChapPlayerDialog, ChapManagePaymentPlans },
   mounted () {
     this.getAll()
   },
@@ -58,7 +60,8 @@ export default {
         productName: 'productName',
         organization: 'organization',
         season: 'season'
-      }
+      },
+      managePaymentPlans: false
     }
   },
   computed: {

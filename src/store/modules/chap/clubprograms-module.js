@@ -232,20 +232,7 @@ const module = {
       })
     },
     getPlans (context, productId) {
-      return productService.getPlans(productId).then(values => {
-        return values.reduce((val, curr) => {
-          let amount = 0
-          if (curr.dues) { curr.dues.forEach(due => { amount = amount + due.amount }) }
-          if (curr.credits) { curr.dues.forEach(crd => { amount = amount + crd.amount }) }
-          val.push({
-            id: curr._id,
-            description: curr.description,
-            amount,
-            installments: curr.dues.length
-          })
-          return val
-        }, [])
-      })
+      return productService.getPlans(productId)
     }
   }
 }

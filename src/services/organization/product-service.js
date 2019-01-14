@@ -1,5 +1,7 @@
 import Trae from '@/services/trae-service'
 import config from '@/config'
+import graphqlClient from '@/util/graphql'
+import gql from 'graphql-tag'
 
 const trae = new Trae(config.api.organization + '/product')
 
@@ -32,9 +34,21 @@ class ProductService {
       .get(`/${productId}`)
   }
 
-  getPlans (productId) {
-    return trae
-      .get(`/${productId}/plans`)
+  async getPlans (productId) {
+    const response = await graphqlClient.query({
+      query: gql`query getReducePlans($productId: String!) {
+        getReducePlans(productId: $productId) {
+          id
+          description
+          amount
+          installments
+          startCharge
+          endCharge
+        }
+      }`,
+      variables: { productId }
+    })
+    return response.data.getReducePlans
   }
 
   getPlan (productId, planId) {
