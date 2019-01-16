@@ -39,7 +39,7 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import ChapPlayerCard from './ChapPlayerCard.vue'
 import ChapProductPlans from './ChapProductPlans.vue'
 import ChapPlayerDialog from './ChapPlayerDialog.vue'
-import ChapManagePaymentPlans from './ChapManagePaymentPlans'
+import ChapManagePaymentPlans from '../ChapManagePaymentPlans'
 export default {
   components: { ChapPlayerCard, ChapProductPlans, ChapPlayerDialog, ChapManagePaymentPlans },
   mounted () {
