@@ -23,7 +23,6 @@
       }
     },
     created () {
-      console.log('load scrips')
       Vue.loadScript('https://js.stripe.com/v3/')
       .then(() => {
         this.setStripe(window.Stripe(config.stripe.publicKey))
