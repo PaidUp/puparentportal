@@ -28,23 +28,19 @@
         <div class="details-numbers">
           <div>
             <div class="concept">Total</div>
-            <div class="title-big">${{100 | currency}}</div>
+            <div class="title-big">${{totals.total | currency}}</div>
           </div>
           <div>
             <div class="concept">Paid</div>
-            <div class="title-big green">${{100 | currency}}</div>
+            <div class="title-big green">${{totals.paid | currency}}</div>
           </div>
           <div>
             <div class="concept">Unpaid</div>
-            <div class="title-big gray">${{100 | currency}}</div>
-          </div>
-          <div>
-            <div class="concept">Overdue</div>
-            <div class="title-big red">${{100 | currency}}</div>
+            <div class="title-big gray">${{totals.unpaid | currency}}</div>
           </div>
           <div>
             <div class="concept">Others</div>
-            <div class="title-big blue">${{100 | currency}}</div>
+            <div class="title-big blue">${{totals.others | currency}}</div>
           </div>
         </div>
         
@@ -70,7 +66,7 @@
             <div class="details">
               <span class="md-caption">{{$moment.formatDate(box.dateCharge)}}</span>
             </div>
-            <v-currency :amount="433.00" clazz="total md-title"></v-currency>
+            <v-currency :amount="box.amount" clazz="total md-title"></v-currency>
           </div>
         </md-card-content>
         <md-card-actions>
@@ -129,6 +125,15 @@ export default {
         if (this.$moment(boxA.dateCharge).isBefore(boxB.dateCharge)) return -1
         return 1
       })
+    },
+    totals () {
+      return this.boxes.reduce((curr, val) => {
+        curr.total = curr.total + val.amount
+        if (val.status === 'autopay') curr.unpaid = curr.unpaid + val.amount
+        else if (val.status === 'paid' || val.status === 'credited') curr.paid = curr.paid + val.amount
+        else curr.others = curr.others + val.amount
+        return curr
+      }, {total: 0, paid: 0, unpaid: 0, others: 0})
     }
   },
   methods: {

@@ -47,7 +47,7 @@
     </md-tabs>
     <md-dialog-actions>
       <md-button class="md-accent lblue" @click="close">CANCEL</md-button>
-      <md-button class="md-accent lblue" @click="add">ADD</md-button>
+      <md-button class="md-accent lblue md-raised" :disabled="$v.$invalid" @click="add">ADD</md-button>
     </md-dialog-actions>
   </md-dialog>
 </template>
@@ -70,7 +70,7 @@ export default {
     add () {
       this.$emit('add', {
         description: this.description,
-        amount: this.amount,
+        amount: Number(this.amount),
         dateCharge: this.dateCharge,
         maxDateCharge: this.maxDateCharge,
         status: this.status
