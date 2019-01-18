@@ -6,8 +6,13 @@
       <div class="details-box">
         <div class="details-selects">
           <md-field>
+            <label>Group Id</label>
+            <md-input v-model="groupId"></md-input>
+          </md-field>
+          <md-field :class="{'md-invalid': $v.paymentPlanName.$error}">
             <label>Payment Plan Name</label>
-            <md-input v-model="paymentPlanName"></md-input>
+            <md-input v-model="paymentPlanName" @input="$v.paymentPlanName.$touch()"></md-input>
+            <span class="md-error" v-if="!$v.paymentPlanName.required">{{ $t('validations.required', { field: 'Plan Name' }) }}</span>
           </md-field>
           <md-field>
             <label>Custom Payment Plan</label>
@@ -19,9 +24,9 @@
           <md-field>
             <label>Accepted Payments Accounts</label>
             <md-select v-model="acceptedPaymentAccounts">
+              <md-option value="bank,card">Cards & Banks</md-option>
               <md-option value="card">Cards</md-option>
               <md-option value="bank">Banks</md-option>
-              <md-option value="bc">Cards & Banks</md-option>
             </md-select>
           </md-field>
         </div>
@@ -89,9 +94,9 @@
     </div>
 
     <md-dialog-actions>
-      <md-button class="md-accent lblue" >CANCEL</md-button>
-      <md-button class="md-accent lblue md-raised">UPDATE</md-button>
-      <md-button class="md-accent lblue md-raised">SAVE</md-button>
+      <md-button class="md-accent lblue" @click="$emit('cancel')" >CANCEL</md-button>
+      <md-button v-if="false" class="md-accent lblue md-raised">UPDATE</md-button>
+      <md-button :disabled="disableBtn" @click="save" class="md-accent lblue md-raised">SAVE</md-button>
     </md-dialog-actions>
 
     <add-invoice-modal :showDialog="showDialog" @close="showDialog = false" @add="add"></add-invoice-modal>
@@ -100,17 +105,25 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { required, decimal } from 'vuelidate/lib/validators'
+import { required } from 'vuelidate/lib/validators'
 import VCurrency from '@/components/shared/VCurrency.vue'
 import addInvoiceModal from './addInvoiceModal'
+import moment from 'moment'
+
+function sortBoxes (boxA, boxB) {
+  if (moment(boxA.dateCharge).isBefore(boxB.dateCharge)) return -1
+  return 1
+}
+
 export default {
   components: { VCurrency, addInvoiceModal },
   data () {
     return {
+      groupId: '',
       showDialog: false,
       customPaymentPlan: false,
       paymentPlanName: '',
-      acceptedPaymentAccounts: 'card',
+      acceptedPaymentAccounts: 'bank,card',
       credits: [],
       dues: []
     }
@@ -119,12 +132,15 @@ export default {
     ...mapState('commonModule', {
       invoiceMapper: 'invoiceMapper'
     }),
+    ...mapState('clubprogramsModule', {
+      programSelected: 'programSelected'
+    }),
+    disableBtn () {
+      return this.$v.$invalid || this.boxes.length < 1
+    },
     boxes () {
       let boxes = this.dues.concat(this.credits)
-      return boxes.sort((boxA, boxB) => {
-        if (this.$moment(boxA.dateCharge).isBefore(boxB.dateCharge)) return -1
-        return 1
-      })
+      return boxes.sort(sortBoxes)
     },
     totals () {
       return this.boxes.reduce((curr, val) => {
@@ -144,41 +160,25 @@ export default {
         this.credits.push(box)
       }
       this.showDialog = false
+    },
+    save () {
+      const params = {
+        key: this.paymentPlanName.replace(/\s/g, '_'),
+        groupId: this.groupId,
+        description: this.paymentPlanName,
+        paymentMethods: this.acceptedPaymentAccounts.split(','),
+        visible: !this.customPaymentPlan,
+        status: 'active',
+        credits: this.credits.sort(sortBoxes),
+        dues: this.dues.sort(sortBoxes),
+        productId: this.programSelected
+      }
+      console.log('params: ', JSON.stringify(params))
     }
   },
-  validations () {
-    if (this.status === 'autopay') {
-      return {
-        description: {
-          required
-        },
-        amount: {
-          required, decimal
-        },
-        dateCharge: {
-          required
-        },
-        maxDateCharge: {
-          required
-        },
-        status: {
-          required
-        }
-      }
-    }
-    return {
-      label: {
-        required
-      },
-      amount: {
-        required, decimal
-      },
-      dateCharge: {
-        required
-      },
-      status: {
-        required
-      }
+  validations: {
+    paymentPlanName: {
+      required
     }
   }
 }

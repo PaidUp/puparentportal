@@ -14,7 +14,7 @@
 			</md-tab>
 			
       <md-tab id="tab-plans" md-label="Program Payment Plans">
-        <chap-manage-payment-plans v-if="managePaymentPlans"></chap-manage-payment-plans>
+        <chap-manage-payment-plans v-if="managePaymentPlans" @cancel="managePaymentPlans = false"></chap-manage-payment-plans>
 				<chap-product-plans v-else @add="managePaymentPlans = true"></chap-product-plans>
 			</md-tab>
 
