@@ -50,6 +50,7 @@ class ProductService {
             description
             dateCharge
             amount
+            status
           }
           dues {
             _id

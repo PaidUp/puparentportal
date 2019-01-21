@@ -43,6 +43,7 @@ class PlanService {
             description
             dateCharge
             amount
+            status
           }
           dues {
             _id
