@@ -100,6 +100,7 @@
     </md-dialog-actions>
 
     <add-invoice-modal :showDialog="showDialog" @close="showDialog = false" @add="add"></add-invoice-modal>
+    <v-pay-animation :animate="submit" :result="result" @finish="close"/>
 
   </div>
 </template>
@@ -107,8 +108,10 @@
 import { mapState } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import VCurrency from '@/components/shared/VCurrency.vue'
-import addInvoiceModal from './addInvoiceModal'
+import AddInvoiceModal from './addInvoiceModal'
 import moment from 'moment'
+import { planService } from '@/services'
+import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 
 function sortBoxes (boxA, boxB) {
   if (moment(boxA.dateCharge).isBefore(boxB.dateCharge)) return -1
@@ -116,7 +119,7 @@ function sortBoxes (boxA, boxB) {
 }
 
 export default {
-  components: { VCurrency, addInvoiceModal },
+  components: { VCurrency, AddInvoiceModal, VPayAnimation },
   data () {
     return {
       groupId: '',
@@ -125,7 +128,9 @@ export default {
       paymentPlanName: '',
       acceptedPaymentAccounts: 'bank,card',
       credits: [],
-      dues: []
+      dues: [],
+      submit: false,
+      result: null
     }
   },
   computed: {
@@ -162,6 +167,7 @@ export default {
       this.showDialog = false
     },
     save () {
+      this.submit = true
       const params = {
         key: this.paymentPlanName.replace(/\s/g, '_'),
         groupId: this.groupId,
@@ -173,7 +179,16 @@ export default {
         dues: this.dues.sort(sortBoxes),
         productId: this.programSelected
       }
-      console.log('params: ', JSON.stringify(params))
+      planService.create(params).then(response => {
+        this.result = response
+        this.submit = false
+      }).catch(reason => {
+        this.submit = false
+        console.log('reason: ', reason)
+      })
+    },
+    close () {
+      this.$emit('added', this.result)
     }
   },
   validations: {
