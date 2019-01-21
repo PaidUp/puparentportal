@@ -36,6 +36,38 @@ class ProductService {
 
   async getPlans (productId) {
     const response = await graphqlClient.query({
+      query: gql`query getPlans($productId: String!) {
+        getPlans(productId: $productId) {
+          _id
+          key
+          groupId
+          description
+          paymentMethods
+          visible
+          status
+          credits {
+            _id
+            description
+            dateCharge
+            amount
+          }
+          dues {
+            _id
+            description
+            dateCharge
+            maxDateCharge
+            amount
+          }
+          productId
+        }
+      }`,
+      variables: { productId }
+    })
+    return response.data.getPlans
+  }
+
+  async getReducePlans (productId) {
+    const response = await graphqlClient.query({
       query: gql`query getReducePlans($productId: String!) {
         getReducePlans(productId: $productId) {
           id

@@ -231,8 +231,8 @@ const module = {
         return resp
       })
     },
-    getPlans (context, productId) {
-      return productService.getPlans(productId)
+    getReducePlans (context, productId) {
+      return productService.getReducePlans(productId)
     }
   }
 }

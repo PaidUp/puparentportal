@@ -54,19 +54,19 @@ export default {
   },
   watch: {
     programSelected () {
-      this.getPlans(this.programSelected).then(plans => {
+      this.getReducePlans(this.programSelected).then(plans => {
         this.plans = plans
       })
     }
   },
   mounted () {
-    this.getPlans(this.programSelected).then(plans => {
+    this.getReducePlans(this.programSelected).then(plans => {
       this.plans = plans
     })
   },
   methods: {
     ...mapActions('clubprogramsModule', {
-      getPlans: 'getPlans'
+      getReducePlans: 'getReducePlans'
     }),
     format (value) {
       return currency(value)
