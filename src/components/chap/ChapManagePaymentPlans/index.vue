@@ -69,7 +69,7 @@
           </div>
           <div class="amount-details">
             <div class="details">
-              <span class="md-caption">{{$moment.formatDate(box.dateCharge)}}</span>
+              <span class="md-caption">{{box.dateCharge | localFormatDate}}</span>
             </div>
             <v-currency :amount="box.amount" clazz="total md-title"></v-currency>
           </div>
@@ -109,13 +109,11 @@ import { mapState } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import VCurrency from '@/components/shared/VCurrency.vue'
 import AddInvoiceModal from './addInvoiceModal'
-import moment from 'moment'
 import { planService } from '@/services'
 import VPayAnimation from '@/components/shared/VPayAnimation.vue'
 
 function sortBoxes (boxA, boxB) {
-  if (moment(boxA.dateCharge).isBefore(boxB.dateCharge)) return -1
-  return 1
+  return boxA.dateCharge.getTime() - boxB.dateCharge.getTime()
 }
 
 export default {
@@ -167,6 +165,19 @@ export default {
       this.showDialog = false
     },
     save () {
+      const credits = this.credits.map(credit => {
+        credit.dateCharge = this.$moment.removeTimeZone(credit.dateCharge).toDate()
+        return credit
+      }).sort(sortBoxes)
+      const dues = this.dues.map(due => {
+        due.dateCharge = this.$moment.removeTimeZone(due.dateCharge).toDate()
+        due.maxDateCharge = this.$moment.removeTimeZone(due.maxDateCharge).toDate()
+        return due
+      }).sort(sortBoxes)
+
+      console.log('dues: ', dues)
+      console.log('credits: ', credits)
+
       this.submit = true
       const params = {
         key: this.paymentPlanName.replace(/\s/g, '_'),
@@ -175,8 +186,8 @@ export default {
         paymentMethods: this.acceptedPaymentAccounts.split(','),
         visible: !this.customPaymentPlan,
         status: 'active',
-        credits: this.credits.sort(sortBoxes),
-        dues: this.dues.sort(sortBoxes),
+        credits,
+        dues,
         productId: this.programSelected
       }
       planService.create(params).then(response => {

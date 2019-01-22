@@ -68,13 +68,14 @@ export default {
   },
   methods: {
     add () {
-      this.$emit('add', {
+      const inv = {
         description: this.description,
         amount: Number(this.amount),
         dateCharge: this.dateCharge,
-        maxDateCharge: this.maxDateCharge,
         status: this.status
-      })
+      }
+      if (this.maxDateCharge) inv.maxDateCharge = this.maxDateCharge
+      this.$emit('add', inv)
       this.reset()
     },
     close () {
