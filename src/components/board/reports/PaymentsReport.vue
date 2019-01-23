@@ -378,6 +378,7 @@
         return currency(value)
       },
       capitalize (value) {
+        if (!value) return value
         return capitalize(value)
       },
       selectTag (value) {
