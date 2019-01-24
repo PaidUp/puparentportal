@@ -81,6 +81,7 @@ const module = {
       return beneficiaryService.deleteBeneficiary(id)
     },
     create (context, body) {
+      body.multipleBeneficiaries = context.state.beneficiaries.length > 0
       return beneficiaryService.create(body)
     },
     update (context, {id, values}) {

@@ -133,7 +133,7 @@ const module = {
       const input = {
         accessToken: fbResponse.authResponse.accessToken,
         rememberMe: false,
-        phone: context.state.fbUser.contacts.phone
+        phone: `1${context.state.fbUser.contacts.phone.replace(/\D/g, '').slice(-10)}`
       }
       if (localStorage.getItem('email')) input.emailSuggested = localStorage.getItem('email')
       graphqlClient.mutate({

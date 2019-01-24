@@ -6,7 +6,7 @@ import graphqlClient from '@/util/graphql'
 const trae = new Trae(config.api.organization + '/beneficiary')
 
 class BeneficiaryService {
-  async create ({ organizationId, organizationName, firstName, lastName, assigneesEmail, description, programs }) {
+  async create ({ organizationId, organizationName, firstName, lastName, assigneesEmail, description, programs, multipleBeneficiaries }) {
     const response = await graphqlClient.mutate({
       mutation: gql`mutation createBeneficiary(
         $organizationId: String!
@@ -16,6 +16,7 @@ class BeneficiaryService {
         $assigneesEmail: [String]
         $description: String
         $programs: String
+        $multipleBeneficiaries: Boolean
       ) {
         createBeneficiary(
           organizationId: $organizationId
@@ -25,6 +26,7 @@ class BeneficiaryService {
           assigneesEmail: $assigneesEmail
           description: $description
           programs: $programs
+          multipleBeneficiaries: $multipleBeneficiaries
         ) {
           _id
           organizationId
@@ -38,7 +40,7 @@ class BeneficiaryService {
           programs
         }
       }`,
-      variables: { organizationId, organizationName, firstName, lastName, assigneesEmail, description, programs }
+      variables: { organizationId, organizationName, firstName, lastName, assigneesEmail, description, programs, multipleBeneficiaries }
     })
     return response.data.createBeneficiary
   }

@@ -108,11 +108,8 @@
       if (this.user && this.user.email && this.user.roles.includes('parent')) {
         this.getBeneficiaries(this.user.email)
         let url = await this.getAvatarUrl(this.user._id)
-        this.validateUrl(url).then(response => {
-          this.avatar = response.data.validateUrl
-        }).catch(reason => {
-          console.log('reason: ', reason)
-        })
+        const response = await this.validateUrl(url)
+        this.avatar = response.data.validateUrl
       }
     },
     watch: {
@@ -120,9 +117,8 @@
         if (this.user.roles.includes('parent')) {
           this.getBeneficiaries(this.user.email)
           let url = await this.getAvatarUrl(this.user._id)
-          this.validateUrl(url).then(response => {
-            this.avatar = response.data.validateUrl
-          }).catch(reason => reason)
+          const response = await this.validateUrl(url)
+          this.avatar = response.data.validateUrl
         }
       }
     },
