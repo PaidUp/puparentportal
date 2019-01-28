@@ -11,7 +11,8 @@
     </div>
     <div class="actions">
       <md-button class="md-icon-button">
-        <md-icon>visibility_off</md-icon>
+        <md-icon v-if="plan.visible">visibility</md-icon>
+        <md-icon v-else>visibility_off</md-icon>
       </md-button>
       <md-menu md-size="small" md-direction="top-start">
         <md-button class="md-icon-button md-accent lblue" md-menu-trigger>

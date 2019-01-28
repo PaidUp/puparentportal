@@ -76,7 +76,8 @@ class ProductService {
           amount
           installments
           startCharge
-          endCharge
+          endCharge,
+          visible
         }
       }`,
       variables: { productId }
