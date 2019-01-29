@@ -54,9 +54,9 @@
     },
     computed: {
       nameButton () {
-        if (this.invoice.status === 'autopay') return 'Edit'
+        if (this.invoice.status === 'paidup' || this.invoice.status === 'refunded') return 'View'
         else if (this.invoice.status === 'failed') return 'Fix'
-        else return 'View'
+        else return 'Edit'
       },
       paymetMethod () {
         return this.invoice.paymentDetails.brand + '••••' + this.invoice.paymentDetails.last4

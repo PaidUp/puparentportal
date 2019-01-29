@@ -240,7 +240,7 @@
     },
     computed: {
       disabled () {
-        return !(this.invoice.status === 'autopay' || this.invoice.status === 'failed')
+        return (this.invoice.status === 'paidup' || this.invoice.status === 'refunded')
       },
       ...mapGetters('paymentModule', {
         paymentAccounts: 'paymentAccounts'

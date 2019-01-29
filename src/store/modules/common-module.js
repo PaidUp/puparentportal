@@ -23,7 +23,7 @@ const module = {
       if (map) return map
       return {
         desc: status.replace(/_/g, ' ').toUpperCase(),
-        key: 'category',
+        key: 'pan_tool',
         subtext: ' ',
         class: 'cblue'
       }
