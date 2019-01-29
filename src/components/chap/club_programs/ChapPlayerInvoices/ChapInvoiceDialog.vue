@@ -72,13 +72,15 @@
         </div>
         <md-field :class="{'md-invalid': $v.updInvoice.status.$error}">
           <label>Status</label>
-          <md-select disabled v-if="invoice.status !== 'failed'" class="custom-select" v-model="updInvoice.status">
+          <md-select disabled v-if="invoice.status !== 'failed' && invoice.status !== 'autopay' && invoice.status !== 'on_hold'" class="custom-select" v-model="updInvoice.status">
             <md-option value="paidup">Paidup</md-option>
             <md-option value="autopay">Autopay</md-option>
+            <md-option value="on_hold">On Hold</md-option>
           </md-select>
           <md-select v-else @input="$v.updInvoice.status.$touch()" class="custom-select" v-model="updInvoice.status">
-            <md-option value="failed">Failed</md-option>
+            <md-option v-if="invoice.status === 'failed'" value="failed">Failed</md-option>
             <md-option value="autopay">Autopay</md-option>
+            <md-option value="on_hold">On Hold</md-option>
           </md-select>
           <span class="md-error" v-if="!$v.updInvoice.status.required">{{ $t('validations.required', { field: 'Status' }) }}</span>
         </md-field>
@@ -293,6 +295,8 @@
             this.submited = false
           }).catch(reason => {
             this.setWarning('Invoice was not updated')
+            this.setWarning(reason)
+            this.submited = false
           })
         })
       },
@@ -346,7 +350,7 @@
         organization: 'organization'
       }),
       disabled () {
-        return !this.isClone && this.invoice.status !== 'autopay' && this.invoice.status !== 'failed'
+        return !this.isClone && this.invoice.status !== 'autopay' && this.invoice.status !== 'failed' && this.invoice.status !== 'on_hold'
       },
       disableSaveButton () {
         return this.$v.$invalid || this.submited

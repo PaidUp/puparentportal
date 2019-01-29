@@ -222,7 +222,7 @@
         }).catch(reason => {
           this.paymentMethodObj = null
           this.submited = false
-          this.setWarning('common.error.default')
+          this.setWarning(reason)
         })
       },
       getChargeDate () {
