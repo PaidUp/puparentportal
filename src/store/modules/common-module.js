@@ -17,9 +17,17 @@ const module = {
       overdue: { desc: 'OVERDUE', key: 'note_add', subtext: 'New Invoice', class: 'cred' }
     }
   },
-  mutations: {
-  },
   actions: {
+    getInvoiceDesc ({state}, status) {
+      const map = state.invoiceMapper[status]
+      if (map) return map
+      return {
+        desc: status.replace(/_/g, ' ').toUpperCase(),
+        key: 'category',
+        subtext: ' ',
+        class: 'cblue'
+      }
+    },
     validateUrl ({ commit }, url) {
       return graphqlClient.mutate({
         variables: { url },

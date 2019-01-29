@@ -1,13 +1,13 @@
 <template lang="pug">
-  md-card(md-with-hover)
+  md-card(md-with-hover v-if="statusMapper")
     md-ripple(v-if="invoice.invoiceId" class="card-invoice")
       md-card-header
         .title {{ invoice.label }}
         .caption {{ paymetMethod }}
       md-card-content.card-content
         .status
-          md-icon.md-size-c(:class="clazz") {{ icon }}
-          .md-caption(v-html="status")
+          md-icon.md-size-c(:class="statusMapper.clazz") {{ statusMapper.icon }}
+          .md-caption(v-html="statusMapper.status")
         .amount-details
           .details
             span.md-caption {{ invoice.invoiceId }}
@@ -20,11 +20,11 @@
     md-ripple(v-if="invoice.memoId" class="card-invoice")
       md-card-header
         .title {{ invoice.label }}
-        .caption {{ subtext }}
+        .caption {{ statusMapper.subtext }}
       md-card-content.card-content
         .status
-          md-icon.md-size-c(:class="clazz") {{ icon }}
-          .md-caption(v-html="status")
+          md-icon.md-size-c(:class="statusMapper.clazz") {{ statusMapper.icon }}
+          .md-caption(v-html="statusMapper.status")
         .amount-details
           .details
             span.md-caption {{ invoice.memoId }}
@@ -38,7 +38,7 @@
 
 <script>
   import VCurrency from '@/components/shared/VCurrency.vue'
-  import { mapState } from 'vuex'
+  import { mapActions } from 'vuex'
   
   export default {
     props: {
@@ -47,10 +47,12 @@
     components: {
       VCurrency
     },
+    data () {
+      return {
+        statusMapper: null
+      }
+    },
     computed: {
-      ...mapState('commonModule', {
-        invoiceMapper: 'invoiceMapper'
-      }),
       nameButton () {
         if (this.invoice.status === 'autopay') return 'Edit'
         else if (this.invoice.status === 'failed') return 'Fix'
@@ -70,24 +72,24 @@
         }
         if (this.invoice.memoId) return this.$moment.formatDate(this.invoice.createOn)
         return this.$moment.formatDate()
-      },
-      icon () {
-        return this.getInvoiceStatusMapper().key
-      },
-      clazz () {
-        return this.getInvoiceStatusMapper().class
-      },
-      status () {
-        return this.getInvoiceStatusMapper().desc
-      },
-      subtext () {
-        return this.getInvoiceStatusMapper().subtext
+      }
+    },
+    async mounted () {
+      const resp = await this.getInvoiceDesc(this.invoice.status)
+      this.statusMapper = {
+        icon: resp.key,
+        clazz: resp.class,
+        status: resp.desc,
+        subtext: resp.subtext
       }
     },
     methods: {
       select () {
         this.$emit('select', this.invoice)
       },
+      ...mapActions('commonModule', {
+        getInvoiceDesc: 'getInvoiceDesc'
+      }),
       getInvoiceStatusMapper () {
         return this.invoiceMapper[this.invoice.status] || { desc: '', key: '', class: [] }
       }
