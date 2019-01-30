@@ -60,7 +60,7 @@
           status: resp.desc,
           subtext: resp.subtext
         }
-      },
+      }
     }
   }
 </script>
