@@ -89,10 +89,7 @@
       },
       ...mapActions('commonModule', {
         getInvoiceDesc: 'getInvoiceDesc'
-      }),
-      getInvoiceStatusMapper () {
-        return this.invoiceMapper[this.invoice.status] || { desc: '', key: '', class: [] }
-      }
+      })
     }
   }
 </script>

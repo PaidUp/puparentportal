@@ -174,10 +174,6 @@ export default {
         due.maxDateCharge = this.$moment.removeTimeZone(due.maxDateCharge).toDate()
         return due
       }).sort(sortBoxes)
-
-      console.log('dues: ', dues)
-      console.log('credits: ', credits)
-
       this.submit = true
       const params = {
         key: this.paymentPlanName.replace(/\s/g, '_'),

@@ -1,13 +1,13 @@
 <template>
-  <md-card md-with-hover class="card-invoice2">
+  <md-card v-if="statusMapper" md-with-hover class="card-invoice2">
     <md-card-header>
       <div class="title cgray">{{ item.title }}</div>
       <div class="caption">{{ paymetMethod }}</div>
     </md-card-header>
     <md-card-content>
       <div class="status">
-        <md-icon class="md-size-c" :class="clazz">{{ icon }}</md-icon>
-        <div class="md-caption" v-html="status"></div>
+        <md-icon class="md-size-c" :class="statusMapper.clazz">{{ statusMapper.icon }}</md-icon>
+        <div class="md-caption" v-html="statusMapper.status"></div>
       </div>
       <div class="amount-details">
         <div class="details">
@@ -39,7 +39,7 @@
 
 <script>
   import VCurrency from '@/components/shared/VCurrency.vue'
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
   
   export default {
     props: {
@@ -48,32 +48,26 @@
     components: {
       VCurrency
     },
+    mounted () {
+      this.refreshMapper()
+    },
     data () {
       return {
         confirm: false,
         showEditDialog: false,
-        isClone: false
+        isClone: false.subtext,
+        statusMapper: null
+      }
+    },
+    watch: {
+      item () {
+        this.refreshMapper()
       }
     },
     computed: {
-      ...mapState('commonModule', {
-        invoiceMapper: 'invoiceMapper'
-      }),
       paymetMethod () {
         if (this.item.paymentDetails) return this.item.paymentDetails.brand + '••••' + this.item.paymentDetails.last4
         return ''
-      },
-      icon () {
-        return this.getInvoiceStatusMapper().key
-      },
-      clazz () {
-        return this.getInvoiceStatusMapper().class
-      },
-      status () {
-        return this.getInvoiceStatusMapper().desc
-      },
-      subtext () {
-        return this.getInvoiceStatusMapper().subtext
       }
     },
     methods: {
@@ -84,6 +78,18 @@
         setSuccess: 'setSuccess',
         setWarning: 'setWarning'
       }),
+      ...mapActions('commonModule', {
+        getInvoiceDesc: 'getInvoiceDesc'
+      }),
+      async refreshMapper () {
+        const resp = await this.getInvoiceDesc(this.item.status)
+        this.statusMapper = {
+          icon: resp.key,
+          clazz: resp.class,
+          status: resp.desc,
+          subtext: resp.subtext
+        }
+      },
       openDialog (isClone) {
         this.$emit('select', {
           item: this.item,
@@ -92,9 +98,6 @@
       },
       openRefundDialog () {
         this.$emit('selectRefund', this.item)
-      },
-      getInvoiceStatusMapper () {
-        return this.invoiceMapper[this.item.status] || { desc: '', key: '', class: [] }
       },
       remove () {
         this.deleteInvoice(this.item.id).then(result => {

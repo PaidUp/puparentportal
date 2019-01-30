@@ -1,13 +1,13 @@
 <template lang="pug">
-  <md-card md-with-hover class="card-invoice2">
+  <md-card v-if="statusMapper" md-with-hover class="card-invoice2">
     <md-card-header>
       <div class="title cgray">{{ item.title }}</div>
-      <div class="caption">{{ subtext }}</div>
+      <div class="caption">{{ statusMapper.subtext }}</div>
     </md-card-header>
     <md-card-content>
       <div class="status">
-        <md-icon class="md-size-c" :class="clazz">{{ icon }}</md-icon>
-        <div class="md-caption" v-html="status"></div>
+        <md-icon class="md-size-c" :class="statusMapper.clazz">{{ statusMapper.icon }}</md-icon>
+        <div class="md-caption" v-html="statusMapper.status"></div>
       </div>
       <div class="amount-details">
         <div class="details">
@@ -35,33 +35,25 @@
 
 <script>
   import VCurrency from '@/components/shared/VCurrency.vue'
-  import { mapState, mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
   
   export default {
     props: {
       item: Object
     },
+    components: { VCurrency },
     data () {
       return {
-        confirm: false
+        confirm: false,
+        statusMapper: null
       }
     },
-    components: { VCurrency },
-    computed: {
-      ...mapState('commonModule', {
-        invoiceMapper: 'invoiceMapper'
-      }),
-      icon () {
-        return this.getInvoiceStatusMapper().key
-      },
-      clazz () {
-        return this.getInvoiceStatusMapper().class
-      },
-      status () {
-        return this.getInvoiceStatusMapper().desc
-      },
-      subtext () {
-        return this.getInvoiceStatusMapper().subtext
+    async mounted () {
+      this.refreshMapper()
+    },
+    watch: {
+      item () {
+        this.refreshMapper()
       }
     },
     methods: {
@@ -78,6 +70,15 @@
           isClone
         })
       },
+      async refreshMapper () {
+        const resp = await this.getInvoiceDesc(this.item.status)
+        this.statusMapper = {
+          icon: resp.key,
+          clazz: resp.class,
+          status: resp.desc,
+          subtext: resp.subtext
+        }
+      },
       remove () {
         this.deleteCredit(this.item.id).then(result => {
           this.setSuccess('Credit was cloned succeeded')
@@ -86,9 +87,9 @@
           this.setSuccess(`Credit don't was cloned`)
         })
       },
-      getInvoiceStatusMapper () {
-        return this.invoiceMapper[this.item.status] || { desc: '', key: '', class: [] }
-      }
+      ...mapActions('commonModule', {
+        getInvoiceDesc: 'getInvoiceDesc'
+      })
     }
   }
 </script>
