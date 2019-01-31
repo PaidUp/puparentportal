@@ -6,6 +6,7 @@ import router from './router'
 import store from '@/store'
 import filters from '@/filters'
 import i18n from '@/i18n'
+import config from '@/config'
 import FBSignInButton from 'vue-facebook-signin-button'
 import LoadScript from 'vue-plugin-load-script'
 import VueResource from 'vue-resource'
@@ -28,7 +29,7 @@ import 'vue-material/dist/vue-material.min.css'
 // import 'vue-material/dist/theme/default.css'
 import '@/style/theme.css'
 
-const bugsnagClient = bugsnag('bdba250d6f17ab6a90cc462b79b36d6f')
+const bugsnagClient = bugsnag(config.bugsnag)
 bugsnagClient.use(bugsnagVue, Vue)
 Vue.prototype.$bugsnag = bugsnagClient
 

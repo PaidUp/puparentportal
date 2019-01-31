@@ -28,6 +28,10 @@ const config = {
     user: {
       url: 'https://s3.amazonaws.com/pu-media-dev/user/'
     }
+  },
+  bugsnag: {
+    apiKey: 'bdba250d6f17ab6a90cc462b79b36d6f',
+    releaseStage: 'local'
   }
 }
 
