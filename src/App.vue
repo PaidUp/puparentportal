@@ -6,11 +6,14 @@
 
 <script>
   import Vue from 'vue'
-  import { mapGetters, mapMutations, mapActions } from 'vuex'
+  import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
   import config from '@/config'
   export default {
     name: 'app',
     computed: {
+      ...mapState('userModule', {
+        user: 'user'
+      }),
       ...mapGetters('userModule', {
         isAutenticated: 'isAutenticated'
       })
@@ -19,6 +22,15 @@
       isAutenticated () {
         if (!this.isAutenticated) {
           this.$router.push({ name: 'login' })
+        }
+      },
+      user () {
+        if (this.user._id) {
+          this.$bugsnag.user = {
+            id: this.user._id,
+            name: this.user.firstName + '' + this.user.lastName,
+            email: this.user.email
+          }
         }
       }
     },

@@ -102,6 +102,7 @@
         this.organizationSelected = organization
       },
       cretePlayer () {
+        const bugsnag = this.$bugsnag
         this.processing = true
         let body = {
           organizationId: this.organizationSelected._id,
@@ -117,6 +118,7 @@
           this.apiUrl = `${config.api.organization}/beneficiary/avatar/${player._id}`
         }).catch(reason => {
           this.setWarning('common.error.default')
+          bugsnag.notify(reason)
           this.processing = false
         })
       },

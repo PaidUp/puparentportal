@@ -13,6 +13,8 @@ import JsonExcel from 'vue-json-excel'
 import VueTheMask from 'vue-the-mask'
 import moment from 'moment-timezone'
 import { formatDate, removeTimeZone } from '@/helpers'
+import bugsnag from '@bugsnag/js'
+import bugsnagVue from '@bugsnag/plugin-vue'
 
 // eslint-disable-next-line
 import fs from '@/vendor/fb'
@@ -25,6 +27,10 @@ import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 // import 'vue-material/dist/theme/default.css'
 import '@/style/theme.css'
+
+const bugsnagClient = bugsnag('bdba250d6f17ab6a90cc462b79b36d6f')
+bugsnagClient.use(bugsnagVue, Vue)
+Vue.prototype.$bugsnag = bugsnagClient
 
 // const httpLink = new HttpLink({
 //   // You should use an absolute URL here
