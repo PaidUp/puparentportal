@@ -31,7 +31,7 @@ const config = {
   },
   bugsnag: {
     apiKey: 'bdba250d6f17ab6a90cc462b79b36d6f',
-    releaseStage: 'local'
+    releaseStage: 'development'
   }
 }
 

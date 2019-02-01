@@ -7,13 +7,14 @@ const trae = new Trae(config.api.organization + '/beneficiary')
 
 class BeneficiaryService {
   async create ({ organizationId, organizationName, firstName, lastName, assigneesEmail, description, programs, multipleBeneficiaries }) {
+    console.log('assigneesEmail', assigneesEmail)
     const response = await graphqlClient.mutate({
       mutation: gql`mutation createBeneficiary(
         $organizationId: String!
         $organizationName: String!
         $firstName: String!
         $lastName: String!
-        $assigneesEmail: [String]
+        $assigneesEmail: String
         $description: String
         $programs: String
         $multipleBeneficiaries: Boolean
