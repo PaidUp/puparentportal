@@ -64,6 +64,7 @@ class ProductService {
       }`,
       variables: { productId }
     })
+    if (response.errors) throw new Error(response.errors[0].message)
     return response.data.getPlans
   }
 
@@ -82,6 +83,7 @@ class ProductService {
       }`,
       variables: { productId }
     })
+    if (response.errors) throw new Error(response.errors[0].message)
     return response.data.getReducePlans
   }
 
