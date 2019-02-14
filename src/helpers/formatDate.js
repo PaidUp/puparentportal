@@ -18,6 +18,6 @@ export const removeTimeZone = (value) => {
   if (!value) return value
   const ltz = moment.tz.guess()
   const str = moment.tz(value, ltz).format('YYYY-MM-DD')
-  const res = moment.utc(str.substring(0, 10)).add(16, 'hours')
-  return res
+  const res = moment.utc(str.substring(0, 10), 'YYYY-MM-DD').add(16, 'hours')
+  return res.toDate()
 }
