@@ -90,7 +90,12 @@ export default {
     },
     items () {
       if (this.items && this.$route.params.player) {
-        const player = this.items[this.$route.params.player]
+        const player = this.items.reduce((curr, val) => {
+          if (val.id === this.$route.params.player) {
+            curr = val
+          }
+          return curr
+        }, null)
         if (player) this.selectPlayer(player)
         this.$route.params.player = null
       }
